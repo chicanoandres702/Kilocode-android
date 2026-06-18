@@ -12,6 +12,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kilocode-android
 
     steps:
       - name: Check out repository
@@ -25,13 +28,13 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./kilocode-android/gradlew
+        run: chmod +x ./gradlew
 
       - name: Run Android tests
-        run: ./kilocode-android/gradlew test
+        run: ./gradlew test
 
       - name: Run Android lint
-        run: ./kilocode-android/gradlew lintDebug
+        run: ./gradlew lintDebug
 
       - name: Build debug APK
-        run: ./kilocode-android/gradlew assembleDebug
+        run: ./gradlew assembleDebug
