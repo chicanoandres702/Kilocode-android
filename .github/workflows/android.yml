@@ -1,4 +1,4 @@
-kilocode-android: Android CI
+name: Android CI
 
 on:
   push:
@@ -21,6 +21,6 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-     +x kilocode-androidcode-android/gradlew
+      run: chmod +x ./kilocode-android/gradlew
     - name: Build with build
-      run: ./kilocode-android/gradlew assembleDebug
+      run: ./kilocode-android/ggradlew assembleDebug
