@@ -21,6 +21,6 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-      run: chmod kilocode-android/ggradleww
+      run: chmod kilocode-android/gradlew
     - name: Build with build
-      run: ./kilocode-androidggradlew assembleDebug
+      run: ./kilocode-android/gradlew assembleDebug
