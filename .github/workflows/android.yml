@@ -2,25 +2,37 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 11
-      uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x ./kilocode-android/gradlew
-    - name: Build with build
-      run: ./kilocode-android/gradlew assembleDebug
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: kilocode-android/gradle.lockfile
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./kilocode-android/gradlew
+
+      - name: Run Android tests
+        run: ./kilocode-android/gradlew test
+
+      - name: Run Android lint
+        run: ./kilocode-android/gradlew lintDebug
+
+      - name: Build debug APK
+        run: ./kilocode-android/gradlew assembleDebug
