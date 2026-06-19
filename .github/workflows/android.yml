@@ -60,18 +60,18 @@ jobs:
 
       - name: Install dependencies
         run: bun install
-        working-directory: kilocode_source
+        working-directory: kilocode
 
       - name: Build Kilo CLI binary
         run: |
-          cd kilocode_source/packages/opencode
+          cd kilocode/packages/opencode
           bun run script/build.ts
 
       - name: Upload Kilo CLI artifact
         uses: actions/upload-artifact@v4
         with:
           name: kilo-android-arm64
-          path: kilocode_source/packages/opencode/bin/kilo
+          path: kilocode/packages/opencode/bin/kilo
 
   release:
     needs: build
