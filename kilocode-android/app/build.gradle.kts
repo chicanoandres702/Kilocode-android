@@ -62,6 +62,9 @@ android {
 }
 
 dependencies {
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    
     // Core
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")

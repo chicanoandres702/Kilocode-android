@@ -14,20 +14,22 @@ import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
 import kotlinx.coroutines.launch
 
+import com.kilocode.android.ui.viewmodel.SessionViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     serverUrl: String,
-    onSessionClick: (String) -> Unit,
-    onSettingsClick: () -> Unit,
+    sharedSecret: String?,
+    onNavigateToSession: (String) -> Unit,
+    onNavigateToSettings: () -> Unit,
+    viewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")))
 ) {
-    val apiClient = remember { ApiClient.getInstance(serverUrl, BuildConfig.KILO_SHARED_SECRET) }
-    val repository = remember { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
-
-    val sessions by repository.sessions.collectAsState()
-    val isLoading by repository.isLoading.collectAsState()
-    val error by repository.error.collectAsState()
+    val sessions by viewModel.sessions.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     var showNewSessionDialog by remember { mutableStateOf(false) }
     var directoryPath by remember { mutableStateOf("/") }
@@ -37,12 +39,7 @@ fun HomeScreen(
     }
 
     fun createSession() {
-        scope.launch {
-            val session = repository.createSession(directoryPath.ifBlank { "/" })
-            if (session != null) {
-                onSessionClick(session.id)
-            }
-        }
+        viewModel.createSession(directoryPath.ifBlank { "/" })
     }
 
     Scaffold(
@@ -58,7 +55,7 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onSettingsClick) {
+                    IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "Settings",
@@ -104,12 +101,10 @@ fun HomeScreen(
                 else -> {
                     SessionList(
                         sessions = sessions,
-                        onSessionClick = onSessionClick,
+                        onSessionClick = onNavigateToSession,
                         onNewSession = { showNewSessionDialog = true },
                         onDeleteSession = { sessionId ->
-                            scope.launch {
-                                repository.deleteSession(sessionId)
-                            }
+                            viewModel.deleteSession(sessionId)
                         },
                     )
                 }

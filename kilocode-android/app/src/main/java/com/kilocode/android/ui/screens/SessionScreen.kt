@@ -20,11 +20,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionScreen(
-    serverUrl: String,
     sessionId: String,
+    serverUrl: String,
+    sharedSecret: String?,
     onBack: () -> Unit,
 ) {
-    val apiClient = remember { ApiClient.getInstance(serverUrl, BuildConfig.KILO_SHARED_SECRET) }
+    val apiClient = remember(sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
+
     val repository = remember { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
 
