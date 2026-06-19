@@ -39,13 +39,32 @@ object BinaryManager {
             val processBuilder = ProcessBuilder(file.absolutePath, "serve", "--url", serverUrl)
             processBuilder.redirectErrorStream(true)
             process = processBuilder.start()
-            isServerRunning = true
+            
+            // Check process status after a short delay to catch immediate crashes
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (process?.isAlive == true) {
+                    isServerRunning = true
+                    Log.d("KiloServer", "Server started with URL: $serverUrl")
+                } else {
+                    isServerRunning = false
+                    val exitValue = process?.exitValue()
+                    Log.e("KiloServer", "Server exited immediately with code: $exitValue")
+                    
+                    // Read output to get error message
+                    process?.inputStream?.bufferedReader()?.use { reader ->
+                        reader.forEachLine { line ->
+                            Log.e("KiloServer", "Binary Output: $line")
+                        }
+                    }
+                }
+            }, 500)
 
-            Log.d("KiloServer", "Server started with URL: $serverUrl")
         } catch (e: Exception) {
             Log.e("KiloServer", "Failed to start Kilo server", e)
             isServerRunning = false
         }
+    }
+
     }
 
     fun stopServer() {
