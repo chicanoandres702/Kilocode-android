@@ -65,7 +65,8 @@ jobs:
       - name: Build Kilo CLI binary
         run: |
           cd kilocode/packages/opencode
-          bun run script/build.ts
+          # Use the musl target for static linking to improve compatibility
+          bun build ./src/index.ts --compile --outfile kilo --target bun-linux-aarch64-musl
 
       - name: Upload Kilo CLI artifact
         uses: actions/upload-artifact@v4
