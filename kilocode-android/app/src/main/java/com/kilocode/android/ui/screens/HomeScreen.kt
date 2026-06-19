@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kilocode.android.BuildConfig
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
@@ -20,7 +21,7 @@ fun HomeScreen(
     onSessionClick: (String) -> Unit,
     onSettingsClick: () -> Unit,
 ) {
-    val apiClient = remember { ApiClient.getInstance(serverUrl) }
+    val apiClient = remember { ApiClient.getInstance(serverUrl, BuildConfig.KILO_SHARED_SECRET) }
     val repository = remember { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
 

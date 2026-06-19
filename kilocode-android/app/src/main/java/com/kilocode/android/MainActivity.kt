@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.kilocode.android.BuildConfig
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.ui.navigation.KiloCodeNavHost
 import com.kilocode.android.ui.theme.KiloCodeTheme
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         serverUrl = serverUrl,
                         onServerUrlChanged = { newUrl ->
                             serverUrl = newUrl
-                            ApiClient.updateBaseUrl(newUrl)
+                            ApiClient.updateBaseUrl(newUrl, BuildConfig.KILO_SHARED_SECRET)
                             com.kilocode.android.data.BinaryManager.stopServer()
                             com.kilocode.android.data.BinaryManager.startServer(context, newUrl)
                         },
