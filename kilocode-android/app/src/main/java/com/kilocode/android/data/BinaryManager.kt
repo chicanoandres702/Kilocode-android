@@ -36,7 +36,17 @@ object BinaryManager {
             addLog("Binary extracted.")
         }
 
-        binaryFile.setExecutable(true)
+        // Use Runtime.exec to ensure chmod +x is applied
+        try {
+            Runtime.getRuntime().exec("chmod +x ${binaryFile.absolutePath}").waitFor()
+        } catch (e: Exception) {
+            addLog("Failed to chmod: ${e.message}")
+        }
+        
+        if (!binaryFile.canExecute()) {
+            addLog("Warning: Binary is not executable!")
+        }
+        
         return binaryFile
     }
 
