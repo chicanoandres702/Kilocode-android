@@ -1,0 +1,35 @@
+name: CI Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ci-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run CI Gate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Web linting/testing
+          npm install
+          npm run lint
+          npm run test
+          npm run typecheck
+          
+          # Android linting
+          # Note: Requires setup or emulation for full gradle execution
+          # ./gradlew lint
+
+      - name: Run Kilo Security Reviewer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          kilo run security-reviewer --input "Review the PR changes for security risks."

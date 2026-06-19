@@ -16,14 +16,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kilocode.android.BuildConfig
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kilocode.android.ui.viewmodel.SettingsViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     serverUrl: String,
     onBack: () -> Unit,
     onServerUrlChanged: (String) -> Unit,
+    viewModel: SettingsViewModel = viewModel()
 ) {
     var serverUrlText by remember { mutableStateOf(serverUrl) }
+    var sharedSecretText by remember { mutableStateOf("") }
+    val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
     var showSaveConfirmation by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -145,6 +151,23 @@ fun SettingsScreen(
                     )
                 },
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = sharedSecretText.ifEmpty { sharedSecret ?: "" },
+                onValueChange = { sharedSecretText = it },
+                label = { Text("Shared Secret") },
+                placeholder = { Text("Enter API Secret") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null,
+                    )
+                },
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Enter the URL of your running Kilo Code server. Default is http://localhost:4096",
@@ -156,6 +179,9 @@ fun SettingsScreen(
             Button(
                 onClick = {
                     onServerUrlChanged(serverUrlText)
+                    if (sharedSecretText.isNotEmpty()) {
+                        viewModel.saveSharedSecret(sharedSecretText)
+                    }
                     showSaveConfirmation = true
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -165,7 +191,7 @@ fun SettingsScreen(
                     contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Save Server URL")
+                Text("Save Settings")
             }
 
             if (showSaveConfirmation) {
