@@ -2,6 +2,7 @@ package com.kilocode.android.data
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import java.io.File
 import java.io.FileOutputStream
@@ -14,15 +15,25 @@ object BinaryManager {
     var isServerRunning = mutableStateOf(false)
         private set
 
+    val logs = mutableStateListOf<String>()
+
+    private fun addLog(message: String) {
+        val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        logs.add(0, "[$timestamp] $message")
+        if (logs.size > 50) logs.removeAt(logs.size - 1)
+    }
+
     fun prepareBinary(context: Context): File {
         val binaryFile = File(context.filesDir, INTERNAL_BINARY_NAME)
 
         if (!binaryFile.exists()) {
+            addLog("Extracting binary...")
             context.assets.open(BINARY_NAME).use { inputStream ->
                 FileOutputStream(binaryFile).use { outputStream ->
                     inputStream.copyTo(outputStream)
                 }
             }
+            addLog("Binary extracted.")
         }
 
         binaryFile.setExecutable(true)
@@ -33,30 +44,39 @@ object BinaryManager {
         if (isServerRunning.value) return
 
         try {
+            addLog("Preparing binary...")
             val file = prepareBinary(context)
+            
+            addLog("Starting server at $serverUrl...")
             val processBuilder = ProcessBuilder(file.absolutePath, "serve", "--url", serverUrl)
+            
+            // Set environment for data storage
+            val env = processBuilder.environment()
+            env["HOME"] = context.filesDir.absolutePath
+            env["XDG_DATA_HOME"] = context.filesDir.absolutePath
+            
             processBuilder.redirectErrorStream(true)
             process = processBuilder.start()
             
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 if (process?.isAlive == true) {
                     isServerRunning.value = true
-                    Log.d("KiloServer", "Server started with URL: $serverUrl")
+                    addLog("Server started successfully.")
                 } else {
                     isServerRunning.value = false
                     val exitValue = process?.exitValue()
-                    Log.e("KiloServer", "Server exited immediately with code: $exitValue")
+                    addLog("Server failed (Exit code: $exitValue)")
                     
                     process?.inputStream?.bufferedReader()?.use { reader ->
                         reader.forEachLine { line ->
-                            Log.e("KiloServer", "Binary Output: $line")
+                            addLog("Error: $line")
                         }
                     }
                 }
             }, 500)
 
         } catch (e: Exception) {
-            Log.e("KiloServer", "Failed to start Kilo server", e)
+            addLog("Failed to start: ${e.message}")
             isServerRunning.value = false
         }
     }
@@ -65,7 +85,7 @@ object BinaryManager {
         process?.destroy()
         process = null
         isServerRunning.value = false
-        Log.d("KiloServer", "Server stopped")
+        addLog("Server stopped.")
     }
 }
 
