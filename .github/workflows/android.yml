@@ -56,9 +56,11 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
-        run: bun install
-        working-directory: kilocode_source
+      - name: Debug and Install dependencies
+        run: |
+          ls -R
+          cd kilocode_source
+          bun install
 
       - name: Build Kilo CLI binary
         run: |
