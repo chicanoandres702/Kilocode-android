@@ -38,14 +38,15 @@ object BinaryManager {
 
         // Use Runtime.exec to ensure chmod +x is applied
         try {
-            Runtime.getRuntime().exec("chmod +x ${binaryFile.absolutePath}").waitFor()
+            val chmod = Runtime.getRuntime().exec("chmod 755 ${binaryFile.absolutePath}")
+            val exitCode = chmod.waitFor()
+            addLog("chmod exit code: $exitCode")
         } catch (e: Exception) {
             addLog("Failed to chmod: ${e.message}")
         }
         
-        if (!binaryFile.canExecute()) {
-            addLog("Warning: Binary is not executable!")
-        }
+        addLog("Binary executable status: ${binaryFile.canExecute()}")
+        addLog("Binary path: ${binaryFile.absolutePath}")
         
         return binaryFile
     }
@@ -57,10 +58,13 @@ object BinaryManager {
             addLog("Preparing binary...")
             val file = prepareBinary(context)
             
-            addLog("Starting server at $serverUrl...")
-            val processBuilder = ProcessBuilder(file.absolutePath, "serve", "--url", serverUrl)
+            if (!file.canExecute()) {
+                addLog("Error: Binary is not executable after preparation.")
+                return
+            }
             
-            // Set environment for data storage
+            addLog("Starting server at $serverUrl...")
+
             val env = processBuilder.environment()
             env["HOME"] = context.filesDir.absolutePath
             env["XDG_DATA_HOME"] = context.filesDir.absolutePath
