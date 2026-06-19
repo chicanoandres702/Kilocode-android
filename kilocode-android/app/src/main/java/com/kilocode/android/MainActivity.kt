@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     var serverUrl by remember { mutableStateOf(BuildConfig.DEFAULT_SERVER_URL) }
+                    val context = LocalContext.current
 
                     LaunchedEffect(Unit) {
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrl)
