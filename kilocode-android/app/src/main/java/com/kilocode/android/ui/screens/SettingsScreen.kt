@@ -51,13 +51,36 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
         ) {
-            // Server Configuration
+            // Kilo Server Management
             Text(
-                text = "Server Configuration",
+                text = "Kilo Server Management",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = {
+                        com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText)
+                    },
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text("Start Server")
+                }
+                OutlinedButton(
+                    onClick = {
+                        com.kilocode.android.data.BinaryManager.stopServer()
+                    },
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text("Stop Server")
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedTextField(
                 value = serverUrlText,
