@@ -30,6 +30,7 @@ fun SettingsScreen(
     var serverUrlText by remember { mutableStateOf(serverUrl) }
     var sharedSecretText by remember { mutableStateOf("") }
     val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
+    val connectionStatus by viewModel.connectionStatus.collectAsState()
     var showSaveConfirmation by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -192,6 +193,26 @@ fun SettingsScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Save Settings")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    viewModel.testConnection(serverUrlText, sharedSecretText.ifEmpty { sharedSecret ?: "" })
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Test Connection")
+            }
+
+            connectionStatus?.let { status ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = status,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (status.startsWith("Success")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                )
             }
 
             if (showSaveConfirmation) {
