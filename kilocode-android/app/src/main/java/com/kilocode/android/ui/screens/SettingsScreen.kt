@@ -63,9 +63,8 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val statusColor = if (com.kilocode.android.data.BinaryManager.isServerRunning) 
-                    MaterialTheme.colorScheme.primary 
-                    else MaterialTheme.colorScheme.error
+                val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
+                val statusColor = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 
                 Surface(
                     modifier = Modifier.size(12.dp),
@@ -74,7 +73,7 @@ fun SettingsScreen(
                 ) {}
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (com.kilocode.android.data.BinaryManager.isServerRunning) "Server Running" else "Server Stopped",
+                    text = if (isRunning) "Server Running" else "Server Stopped",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -84,12 +83,13 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
                 Button(
                     onClick = {
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText)
                     },
                     modifier = Modifier.weight(1f),
-                    enabled = !com.kilocode.android.data.BinaryManager.isServerRunning
+                    enabled = !isRunning
                 ) {
                     Text("Start Server")
                 }
@@ -98,9 +98,34 @@ fun SettingsScreen(
                         com.kilocode.android.data.BinaryManager.stopServer()
                     },
                     modifier = Modifier.weight(1f),
-                    enabled = com.kilocode.android.data.BinaryManager.isServerRunning
+                    enabled = isRunning
                 ) {
                     Text("Stop Server")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Server Logs
+            Text(
+                text = "Server Logs",
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            androidx.compose.foundation.lazy.LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(8.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                items(com.kilocode.android.data.BinaryManager.logs.size) { index ->
+                    Text(
+                        text = com.kilocode.android.data.BinaryManager.logs[index],
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(4.dp)
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))
