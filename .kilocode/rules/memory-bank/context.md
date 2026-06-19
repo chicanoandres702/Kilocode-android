@@ -23,6 +23,9 @@
 - [x] **Signing**: Configured release keystore and signing
 - [x] **ProGuard**: Comprehensive rules for Gson, Retrofit, OkHttp, Coroutines, Compose
 - [x] **Next.js**: All typecheck and lint checks pass
+- [x] Updated Android GitHub Actions workflow to use JDK 17, Gradle cache, tests, lint, and debug APK build
+- [x] Implemented `BinaryManager` for running `kilo serve` binary
+- [x] Added Kilo Server management UI to `SettingsScreen`
 
 ## APK Output
 
@@ -53,3 +56,4 @@
 | 2026-03-30 | Created Android client app |
 | 2026-03-30 | Code review round 1 - fixed 18 issues |
 | 2026-03-30 | Code review round 2 - fixed 32 issues, APK release build |
+| 2026-06-18 | Updated Android CI workflow and committed the workflow file; push is blocked by missing GitHub HTTPS credentials |
