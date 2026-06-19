@@ -57,6 +57,22 @@ object BinaryManager {
             processBuilder.redirectErrorStream(true)
             process = processBuilder.start()
             
+            // Re-added the check logic that was deleted by accident
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (process?.isAlive == true) {
+                    isServerRunning.value = true
+                    addLog("Server started successfully.")
+                } else {
+                    isServerRunning.value = false
+                    addLog("Server failed (Process dead).")
+                    process?.inputStream?.bufferedReader()?.use { reader ->
+                        reader.forEachLine { line ->
+                            addLog("Error: $line")
+                        }
+                    }
+                }
+            }, 500)
+            
             isServerRunning.value = true
             addLog("Server process started.")
 
