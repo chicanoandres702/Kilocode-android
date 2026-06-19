@@ -42,7 +42,7 @@ class SessionViewModel(private val repository: SessionRepository) : ViewModel() 
             }
         }
     }
-    
+
     fun clearError() {
         _error.value = null
     }

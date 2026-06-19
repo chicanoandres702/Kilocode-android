@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = AuthPreferencesRepository(application)
-    
+
     val sharedSecret: StateFlow<String?> = repository.sharedSecretFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
