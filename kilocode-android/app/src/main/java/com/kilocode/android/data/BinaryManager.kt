@@ -25,7 +25,6 @@ object BinaryManager {
 
     fun prepareBinary(context: Context): File {
         val binaryFile = File(context.filesDir, INTERNAL_BINARY_NAME)
-
         if (!binaryFile.exists()) {
             addLog("Extracting binary...")
             context.assets.open(BINARY_NAME).use { inputStream ->
@@ -35,36 +34,22 @@ object BinaryManager {
             }
             addLog("Binary extracted.")
         }
-
-        // Use Runtime.exec to ensure chmod +x is applied
         try {
-            val chmod = Runtime.getRuntime().exec("chmod 755 ${binaryFile.absolutePath}")
-            val exitCode = chmod.waitFor()
-            addLog("chmod exit code: $exitCode")
+            Runtime.getRuntime().exec("chmod 755 ${binaryFile.absolutePath}").waitFor()
         } catch (e: Exception) {
             addLog("Failed to chmod: ${e.message}")
         }
-        
-        addLog("Binary executable status: ${binaryFile.canExecute()}")
-        addLog("Binary path: ${binaryFile.absolutePath}")
-        
         return binaryFile
     }
 
     fun startServer(context: Context, serverUrl: String) {
         if (isServerRunning.value) return
-
         try {
             addLog("Preparing binary...")
             val file = prepareBinary(context)
-            
-            if (!file.canExecute()) {
-                addLog("Error: Binary is not executable after preparation.")
-                return
-            }
-            
             addLog("Starting server at $serverUrl...")
-
+            val processBuilder = ProcessBuilder(file.absolutePath, "serve", "--url", serverUrl)
+            
             val env = processBuilder.environment()
             env["HOME"] = context.filesDir.absolutePath
             env["XDG_DATA_HOME"] = context.filesDir.absolutePath
@@ -72,22 +57,8 @@ object BinaryManager {
             processBuilder.redirectErrorStream(true)
             process = processBuilder.start()
             
-            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                if (process?.isAlive == true) {
-                    isServerRunning.value = true
-                    addLog("Server started successfully.")
-                } else {
-                    isServerRunning.value = false
-                    val exitValue = process?.exitValue()
-                    addLog("Server failed (Exit code: $exitValue)")
-                    
-                    process?.inputStream?.bufferedReader()?.use { reader ->
-                        reader.forEachLine { line ->
-                            addLog("Error: $line")
-                        }
-                    }
-                }
-            }, 500)
+            isServerRunning.value = true
+            addLog("Server process started.")
 
         } catch (e: Exception) {
             addLog("Failed to start: ${e.message}")
@@ -102,4 +73,3 @@ object BinaryManager {
         addLog("Server stopped.")
     }
 }
-
