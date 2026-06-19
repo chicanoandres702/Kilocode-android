@@ -61,6 +61,27 @@ fun SettingsScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val statusColor = if (com.kilocode.android.data.BinaryManager.isServerRunning) 
+                    MaterialTheme.colorScheme.primary 
+                    else MaterialTheme.colorScheme.error
+                
+                Surface(
+                    modifier = Modifier.size(12.dp),
+                    shape = androidx.compose.foundation.shape.CircleShape,
+                    color = statusColor
+                ) {}
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = if (com.kilocode.android.data.BinaryManager.isServerRunning) "Server Running" else "Server Stopped",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
@@ -68,6 +89,7 @@ fun SettingsScreen(
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText)
                     },
                     modifier = Modifier.weight(1f),
+                    enabled = !com.kilocode.android.data.BinaryManager.isServerRunning
                 ) {
                     Text("Start Server")
                 }
@@ -76,6 +98,7 @@ fun SettingsScreen(
                         com.kilocode.android.data.BinaryManager.stopServer()
                     },
                     modifier = Modifier.weight(1f),
+                    enabled = com.kilocode.android.data.BinaryManager.isServerRunning
                 ) {
                     Text("Stop Server")
                 }
