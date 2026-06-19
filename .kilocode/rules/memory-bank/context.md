@@ -26,6 +26,7 @@
 - [x] Updated Android GitHub Actions workflow to use JDK 17, Gradle cache, tests, lint, and debug APK build
 - [x] Implemented `BinaryManager` for running `kilo serve` binary
 - [x] Added Kilo Server management UI to `SettingsScreen`
+- [x] Implemented auto-start for Kilo server in `MainActivity`
 
 ## APK Output
 
