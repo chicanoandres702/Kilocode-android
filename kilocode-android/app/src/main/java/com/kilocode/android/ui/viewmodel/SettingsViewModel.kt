@@ -7,6 +7,7 @@
  */
 package com.kilocode.android.ui.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.kilocode.android.data.api.ApiClient
