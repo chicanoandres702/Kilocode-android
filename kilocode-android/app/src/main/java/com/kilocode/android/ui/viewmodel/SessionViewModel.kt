@@ -17,8 +17,7 @@ import kotlinx.coroutines.launch
 
 class SessionViewModel(private val repository: SessionRepository) : ViewModel() {
 
-    private val _sessions = MutableStateFlow<List<Session>>(emptyList())
-    val sessions: StateFlow<List<Session>> = _sessions
+    val sessions: StateFlow<List<Session>> = repository.sessions
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -34,7 +33,7 @@ class SessionViewModel(private val repository: SessionRepository) : ViewModel() 
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _sessions.value = repository.listSessions()
+                repository.listSessions()
                 _error.value = null
             } catch (e: Exception) {
                 _error.value = e.message

@@ -16,7 +16,7 @@ class SessionViewModelFactory(private val apiClient: ApiClient) : ViewModelProvi
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SessionViewModel(SessionRepository(apiClient.api)) as T
+            return SessionViewModel(SessionRepository(apiClient)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

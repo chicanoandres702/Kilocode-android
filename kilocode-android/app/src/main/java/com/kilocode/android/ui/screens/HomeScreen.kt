@@ -8,13 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kilocode.android.BuildConfig
 import com.kilocode.android.data.api.ApiClient
-import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
-import kotlinx.coroutines.launch
-
 import com.kilocode.android.ui.viewmodel.SessionViewModel
+import com.kilocode.android.ui.viewmodel.SessionViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +32,7 @@ fun HomeScreen(
     var directoryPath by remember { mutableStateOf("/") }
 
     LaunchedEffect(Unit) {
-        repository.loadSessions()
+        viewModel.loadSessions()
     }
 
     fun createSession() {
@@ -92,8 +89,8 @@ fun HomeScreen(
                         message = error ?: "Unknown error",
                         onRetry = {
                             scope.launch {
-                                repository.clearError()
-                                repository.loadSessions()
+                                viewModel.clearError()
+                                viewModel.loadSessions()
                             }
                         },
                     )
