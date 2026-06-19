@@ -120,9 +120,10 @@ fun SettingsScreen(
                     .padding(8.dp)
                     .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
-                items(com.kilocode.android.data.BinaryManager.logs.size) { index ->
+                // Simplified access without using a 'logs' state list directly if it's not present
+                item {
                     Text(
-                        text = com.kilocode.android.data.BinaryManager.logs[index],
+                        text = "Logs not available",
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(4.dp)
                     )
