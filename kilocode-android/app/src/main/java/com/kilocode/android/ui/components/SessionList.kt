@@ -36,12 +36,12 @@ fun SessionList(
         ) {
             items(
                 items = sessions,
-                key = { it.id ?: it.sessionID ?: "" },
+                key = { it.id.orEmpty() },
             ) { session ->
                 SessionListItem(
                     session = session,
-                    onClick = { onSessionClick(session.id) },
-                    onDelete = { onDeleteSession(session.id) },
+                    onClick = { session.id?.let { onSessionClick(it) } },
+                    onDelete = { session.id?.let { onDeleteSession(it) } },
                 )
             }
         }

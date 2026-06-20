@@ -72,7 +72,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 if (session != null) {
                     _sessions.value = listOf(session) + _sessions.value
                     _currentSession.value = session
-                    loadMessages(session.id)
+                    session.id?.let { loadMessages(it) }
                 }
                 session
             } else {
