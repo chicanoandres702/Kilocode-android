@@ -27,8 +27,8 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel()
 ) {
     var serverUrlText by remember { mutableStateOf(serverUrl) }
-    var sharedSecretText by remember { mutableStateOf("") }
     val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
+    var sharedSecretText by remember(sharedSecret) { mutableStateOf(sharedSecret ?: "") }
     val connectionStatus by viewModel.connectionStatus.collectAsState()
     var showSaveConfirmation by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -72,7 +72,7 @@ fun SettingsScreen(
             ) {
                 val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
                 val statusColor = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                
+
                 Surface(
                     modifier = Modifier.size(12.dp),
                     shape = androidx.compose.foundation.shape.CircleShape,
@@ -112,14 +112,14 @@ fun SettingsScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Server Logs
             Text(
                 text = "Server Logs",
                 style = MaterialTheme.typography.titleSmall,
             )
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             androidx.compose.foundation.lazy.LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -179,9 +179,7 @@ fun SettingsScreen(
             Button(
                 onClick = {
                     onServerUrlChanged(serverUrlText)
-                    if (sharedSecretText.isNotEmpty()) {
-                        viewModel.saveSharedSecret(sharedSecretText)
-                    }
+                    viewModel.saveSharedSecret(sharedSecretText)
                     showSaveConfirmation = true
                 },
                 modifier = Modifier.fillMaxWidth(),

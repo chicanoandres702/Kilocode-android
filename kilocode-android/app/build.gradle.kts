@@ -15,8 +15,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        buildConfigField("String", "DEFAULT_SERVER_URL", "\"${System.getenv("SERVER_URL") ?: ""}\"")
-        buildConfigField("String", "KILO_SHARED_SECRET", "\"${System.getenv("KILO_SHARED_SECRET") ?: ""}\"")
+        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://127.0.0.1:4096"
+        val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
+        buildConfigField("String", "DEFAULT_SERVER_URL", "\"$defaultServerUrl\"")
+        buildConfigField("String", "KILO_SHARED_SECRET", "\"$sharedSecret\"")
     }
 
     signingConfigs {

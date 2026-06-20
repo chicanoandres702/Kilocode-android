@@ -24,9 +24,9 @@ fun SessionScreen(
     sharedSecret: String?,
     onBack: () -> Unit,
 ) {
-    val apiClient = remember(sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
+    val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
 
-    val repository = remember { SessionRepository(apiClient) }
+    val repository = remember(apiClient) { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
 
     val currentSession by repository.currentSession.collectAsState()

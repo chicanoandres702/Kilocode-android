@@ -25,16 +25,14 @@ class SessionViewModel(private val repository: SessionRepository) : ViewModel() 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    init {
-        loadSessions()
-    }
-
     fun loadSessions() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 repository.listSessions()
-                _error.value = null
+                if (repository.error.value == null) {
+                    _error.value = null
+                }
             } catch (e: Exception) {
                 _error.value = e.message
             } finally {
@@ -47,11 +45,10 @@ class SessionViewModel(private val repository: SessionRepository) : ViewModel() 
         _error.value = null
     }
 
-    fun createSession(name: String) {
-        viewModelScope.launch {
-            repository.createSession(name)
-            loadSessions()
-        }
+    suspend fun createSession(name: String): Session? {
+        val session = repository.createSession(name)
+        loadSessions()
+        return session
     }
 
     fun deleteSession(sessionId: String) {
