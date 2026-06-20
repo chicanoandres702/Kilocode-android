@@ -58,3 +58,4 @@
 | 2026-03-30 | Code review round 1 - fixed 18 issues |
 | 2026-03-30 | Code review round 2 - fixed 32 issues, APK release build |
 | 2026-06-18 | Updated Android CI workflow and committed the workflow file; push is blocked by missing GitHub HTTPS credentials |
+| 2026-06-20 | Added `18.227.97.23` to Android network security cleartext domain allowlist and base cleartext config |
