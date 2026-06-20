@@ -7,6 +7,7 @@
  */
 package com.kilocode.android.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -21,7 +22,7 @@ class AuthPreferencesRepository(private val context: Context) {
     companion object {
         val SHARED_SECRET_KEY = stringPreferencesKey("shared_secret")
         val SERVER_URL_KEY = stringPreferencesKey("server_url")
-        val AUTONOMOUS_MODE_KEY = stringPreferencesKey("autonomous_mode")
+        val AUTONOMOUS_MODE_KEY = booleanPreferencesKey("autonomous_mode")
     }
 
     val sharedSecretFlow: Flow<String?> = context.dataStore.data

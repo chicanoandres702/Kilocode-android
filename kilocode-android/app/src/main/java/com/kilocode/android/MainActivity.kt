@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
                     var serverUrl by remember(savedServerUrl) { mutableStateOf(savedServerUrl ?: BuildConfig.DEFAULT_SERVER_URL) }
 
                     LaunchedEffect(savedServerUrl) {
-                        if (!savedServerUrl.isNullOrBlank()) {
-                            serverUrl = savedServerUrl
+                        savedServerUrl?.let {
+                            serverUrl = it
                         }
                     }
 
