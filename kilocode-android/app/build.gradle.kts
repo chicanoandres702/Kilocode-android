@@ -15,7 +15,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        buildConfigField("String", "DEFAULT_SERVER_URL", "\"http://10.0.2.2:4096\"")
+        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://127.0.0.1:4096"
+        val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
+        buildConfigField("String", "DEFAULT_SERVER_URL", "\"$defaultServerUrl\"")
+        buildConfigField("String", "KILO_SHARED_SECRET", "\"$sharedSecret\"")
     }
 
     signingConfigs {
@@ -61,6 +64,9 @@ android {
 }
 
 dependencies {
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+
     // Core
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
@@ -92,4 +98,7 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+
+    // Tests
+    testImplementation("junit:junit:4.13.2")
 }

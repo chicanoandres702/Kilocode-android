@@ -14,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kilocode.android.BuildConfig
+import com.kilocode.android.ui.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,8 +24,12 @@ fun SettingsScreen(
     serverUrl: String,
     onBack: () -> Unit,
     onServerUrlChanged: (String) -> Unit,
+    viewModel: SettingsViewModel = viewModel()
 ) {
     var serverUrlText by remember { mutableStateOf(serverUrl) }
+    val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
+    var sharedSecretText by remember(sharedSecret) { mutableStateOf(sharedSecret ?: "") }
+    val connectionStatus by viewModel.connectionStatus.collectAsState()
     var showSaveConfirmation by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -66,7 +72,7 @@ fun SettingsScreen(
             ) {
                 val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
                 val statusColor = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                
+
                 Surface(
                     modifier = Modifier.size(12.dp),
                     shape = androidx.compose.foundation.shape.CircleShape,
@@ -106,14 +112,14 @@ fun SettingsScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Server Logs
             Text(
                 text = "Server Logs",
                 style = MaterialTheme.typography.titleSmall,
             )
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             androidx.compose.foundation.lazy.LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,6 +151,23 @@ fun SettingsScreen(
                     )
                 },
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = sharedSecretText.ifEmpty { sharedSecret ?: "" },
+                onValueChange = { sharedSecretText = it },
+                label = { Text("Shared Secret") },
+                placeholder = { Text("Enter API Secret") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null,
+                    )
+                },
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Enter the URL of your running Kilo Code server. Default is http://localhost:4096",
@@ -156,6 +179,7 @@ fun SettingsScreen(
             Button(
                 onClick = {
                     onServerUrlChanged(serverUrlText)
+                    viewModel.saveSharedSecret(sharedSecretText)
                     showSaveConfirmation = true
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -165,7 +189,27 @@ fun SettingsScreen(
                     contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Save Server URL")
+                Text("Save Settings")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    viewModel.testConnection(serverUrlText, sharedSecretText.ifEmpty { sharedSecret ?: "" })
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Test Connection")
+            }
+
+            connectionStatus?.let { status ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = status,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (status.startsWith("Success")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                )
             }
 
             if (showSaveConfirmation) {

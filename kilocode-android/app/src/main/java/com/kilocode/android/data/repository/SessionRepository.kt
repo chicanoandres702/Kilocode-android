@@ -1,3 +1,10 @@
+/*
+ * [Parent Feature/Milestone] Phase 1: Foundation
+ * [Child Task/Issue] #1
+ * [Subtask] Implement SessionRepository
+ * [Upstream] KiloCodeApi -> [Downstream] SessionViewModel
+ * [Law Check] 200 lines | Passed Do It Check
+ */
 package com.kilocode.android.data.repository
 
 import android.util.Log
@@ -10,48 +17,43 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.sse.EventSource
 import java.util.UUID
 
 class SessionRepository(private val apiClient: ApiClient) {
 
-    private var eventSource: EventSource? = null
-    private val sseMutex = Mutex()
-
     private val _sessions = MutableStateFlow<List<Session>>(emptyList())
-    val sessions: StateFlow<List<Session>> = _sessions.asStateFlow()
+    val sessions: StateFlow<List<Session>> = _sessions
 
     private val _currentSession = MutableStateFlow<Session?>(null)
-    val currentSession: StateFlow<Session?> = _currentSession.asStateFlow()
+    val currentSession: StateFlow<Session?> = _currentSession
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
-    val messages: StateFlow<List<Message>> = _messages.asStateFlow()
+    val messages: StateFlow<List<Message>> = _messages
 
     private val _parts = MutableStateFlow<Map<String, List<Part>>>(emptyMap())
-    val parts: StateFlow<Map<String, List<Part>>> = _parts.asStateFlow()
-
-    private val _isConnected = MutableStateFlow(false)
-    val isConnected: StateFlow<Boolean> = _isConnected.asStateFlow()
+    val parts: StateFlow<Map<String, List<Part>>> = _parts
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _isConnected = MutableStateFlow(false)
+    val isConnected: StateFlow<Boolean> = _isConnected
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
+    val error: StateFlow<String?> = _error
 
-    suspend fun loadSessions() {
+    private var eventSource: EventSource? = null
+
+    suspend fun listSessions() = withContext(Dispatchers.IO) {
+        _isLoading.value = true
         try {
-            _isLoading.value = true
-            _error.value = null
             val response = apiClient.api.listSessions()
             if (response.isSuccessful) {
                 _sessions.value = response.body() ?: emptyList()
             } else {
-                _error.value = "Failed to load sessions: ${response.code()}"
+                _error.value = "Failed to list sessions: ${response.code()}"
             }
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading sessions", e)
@@ -70,7 +72,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 if (session != null) {
                     _sessions.value = listOf(session) + _sessions.value
                     _currentSession.value = session
-                    loadMessages(session.id)
+                    session.id?.let { loadMessages(it) }
                 }
                 session
             } else {
@@ -109,7 +111,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 _messages.value = msgs
                 withContext(Dispatchers.IO) {
                     msgs.map { message ->
-                        async { loadParts(sessionId, message.id) }
+                        async {
+                            message.id?.let { loadParts(sessionId, it) }
+                        }
                     }.awaitAll()
                 }
             } else {
@@ -191,7 +195,7 @@ class SessionRepository(private val apiClient: ApiClient) {
         disconnectSse()
         val baseUrl = apiClient.baseUrl.removeSuffix("/")
         eventSource = apiClient.createEventSource(
-            "$baseUrl/session/$sessionId/events",
+            "session/$sessionId/events",
             object : okhttp3.sse.EventSourceListener() {
                 override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                     _isConnected.value = true
@@ -231,8 +235,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
                     val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
+                    val messageId = message.id ?: return
                     val current = _messages.value.toMutableList()
-                    val index = current.indexOfFirst { it.id == message.id }
+                    val index = current.indexOfFirst { it.id == messageId }
                     if (index >= 0) {
                         current[index] = message
                     } else {
@@ -247,15 +252,17 @@ class SessionRepository(private val apiClient: ApiClient) {
                 "part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: return
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
+                    val messageId = part.messageID ?: return
+                    val partId = part.id ?: return
                     val currentParts = _parts.value.toMutableMap()
-                    val messageParts = currentParts[part.messageID]?.toMutableList() ?: mutableListOf()
-                    val index = messageParts.indexOfFirst { it.id == part.id }
+                    val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+                    val index = messageParts.indexOfFirst { it.id == partId }
                     if (index >= 0) {
                         messageParts[index] = part
                     } else {
                         messageParts.add(part)
                     }
-                    currentParts[part.messageID] = messageParts
+                    currentParts[messageId] = messageParts
                     _parts.value = currentParts
                 }
             }

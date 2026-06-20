@@ -9,37 +9,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kilocode.android.data.api.ApiClient
-import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
+import com.kilocode.android.ui.viewmodel.SessionViewModel
+import com.kilocode.android.ui.viewmodel.SessionViewModelFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     serverUrl: String,
-    onSessionClick: (String) -> Unit,
-    onSettingsClick: () -> Unit,
+    sharedSecret: String?,
+    onNavigateToSession: (String) -> Unit,
+    onNavigateToSettings: () -> Unit,
+    viewModel: SessionViewModel = viewModel(
+        key = "$serverUrl|$sharedSecret",
+        factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")),
+    )
 ) {
-    val apiClient = remember { ApiClient.getInstance(serverUrl) }
-    val repository = remember { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
-
-    val sessions by repository.sessions.collectAsState()
-    val isLoading by repository.isLoading.collectAsState()
-    val error by repository.error.collectAsState()
+    val sessions by viewModel.sessions.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     var showNewSessionDialog by remember { mutableStateOf(false) }
     var directoryPath by remember { mutableStateOf("/") }
 
     LaunchedEffect(Unit) {
-        repository.loadSessions()
+        viewModel.loadSessions()
     }
 
     fun createSession() {
         scope.launch {
-            val session = repository.createSession(directoryPath.ifBlank { "/" })
-            if (session != null) {
-                onSessionClick(session.id)
+            val session = viewModel.createSession(directoryPath.ifBlank { "/" })
+            if (session?.id != null) {
+                onNavigateToSession(session.id!!)
             }
         }
     }
@@ -57,7 +61,7 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onSettingsClick) {
+                    IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "Settings",
@@ -94,8 +98,8 @@ fun HomeScreen(
                         message = error ?: "Unknown error",
                         onRetry = {
                             scope.launch {
-                                repository.clearError()
-                                repository.loadSessions()
+                                viewModel.clearError()
+                                viewModel.loadSessions()
                             }
                         },
                     )
@@ -103,12 +107,10 @@ fun HomeScreen(
                 else -> {
                     SessionList(
                         sessions = sessions,
-                        onSessionClick = onSessionClick,
+                        onSessionClick = onNavigateToSession,
                         onNewSession = { showNewSessionDialog = true },
                         onDeleteSession = { sessionId ->
-                            scope.launch {
-                                repository.deleteSession(sessionId)
-                            }
+                            viewModel.deleteSession(sessionId)
                         },
                     )
                 }

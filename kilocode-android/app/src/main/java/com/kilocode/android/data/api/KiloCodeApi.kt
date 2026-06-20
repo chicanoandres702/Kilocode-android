@@ -92,6 +92,9 @@ interface KiloCodeApi {
         @Body server: McpServer,
     ): Response<McpServer>
 
+    @POST("api/auth/github")
+    suspend fun authenticateGitHub(@Body body: Map<String, String>): Response<Unit>
+
     @DELETE("mcp/{name}")
     suspend fun removeMcpServer(
         @Path("name") name: String,

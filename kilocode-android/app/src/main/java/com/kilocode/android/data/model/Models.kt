@@ -1,25 +1,25 @@
 package com.kilocode.android.data.model
 
 data class Session(
-    val id: String,
-    val directory: String,
-    val title: String,
-    val time: SessionTime,
+    val id: String? = null,
+    val directory: String? = null,
+    val title: String? = null,
+    val time: SessionTime? = null,
     val parentID: String? = null,
     val version: String? = null,
     val pinned: Boolean = false,
 )
 
 data class SessionTime(
-    val created: Long,
-    val updated: Long,
+    val created: Long = 0,
+    val updated: Long = 0,
 )
 
 data class Message(
-    val id: String,
-    val sessionID: String,
-    val role: String,
-    val time: MessageTime,
+    val id: String? = null,
+    val sessionID: String? = null,
+    val role: String? = null,
+    val time: MessageTime? = null,
     val model: ModelInfo? = null,
     val agent: String? = null,
     val error: MessageError? = null,
@@ -59,10 +59,10 @@ data class MessageError(
 )
 
 data class Part(
-    val id: String,
-    val sessionID: String,
-    val messageID: String,
-    val type: String,
+    val id: String? = null,
+    val sessionID: String? = null,
+    val messageID: String? = null,
+    val type: String? = null,
     val text: String? = null,
     val tool: String? = null,
     val state: ToolState? = null,

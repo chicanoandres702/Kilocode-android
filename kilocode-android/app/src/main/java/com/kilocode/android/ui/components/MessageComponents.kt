@@ -56,21 +56,28 @@ fun MessageBubble(
                 modifier = Modifier.padding(12.dp),
             ) {
                 for (part in parts) {
-                    when (part.type) {
-                        "text" -> {
-                            Text(
-                                text = part.text ?: "",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                        }
-                        "tool" -> {
-                            ToolPartView(part = part)
-                        }
-                        "reasoning" -> {
-                            ReasoningPartView(part = part)
-                        }
+                when (part.type) {
+                    "text" -> {
+                        Text(
+                            text = part.text.orEmpty(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
                     }
+                    "tool" -> {
+                        ToolPartView(part = part)
+                    }
+                    "reasoning" -> {
+                        ReasoningPartView(part = part)
+                    }
+                    else -> {
+                        Text(
+                            text = part.text.orEmpty(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
                 }
             }
         }
