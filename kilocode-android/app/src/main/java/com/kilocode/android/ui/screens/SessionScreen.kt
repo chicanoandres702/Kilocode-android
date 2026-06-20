@@ -32,11 +32,24 @@ fun SessionScreen(
     val currentSession by repository.currentSession.collectAsState()
     val messages by repository.messages.collectAsState()
     val parts by repository.parts.collectAsState()
+    val agents by repository.agents.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
     val isConnected by repository.isConnected.collectAsState()
     val error by repository.error.collectAsState()
 
     val listState = rememberLazyListState()
+    var selectedAgent by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        repository.listAgents()
+    }
+
+    LaunchedEffect(agents) {
+        val currentAgent = selectedAgent
+        selectedAgent = agents.firstOrNull { it.name == currentAgent }?.name
+            ?: agents.firstOrNull { it.mode == "primary" || it.mode == "all" }?.name
+            ?: agents.firstOrNull()?.name
+    }
 
     LaunchedEffect(sessionId) {
         repository.selectSession(sessionId)
@@ -63,6 +76,12 @@ fun SessionScreen(
                         Text(
                             text = currentSession?.title ?: "Session",
                             maxLines = 1,
+                        )
+                        Text(
+                            text = "Agent: ${selectedAgent ?: "Default"}",
+                            maxLines = 1,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         StatusChip(
                             text = if (isConnected) "Live" else "Offline",
@@ -97,10 +116,13 @@ fun SessionScreen(
             PromptInput(
                 onSend = { text ->
                     scope.launch {
-                        repository.sendPrompt(sessionId, text)
+                        repository.sendPrompt(sessionId, text, selectedAgent)
                     }
                 },
                 isLoading = isLoading,
+                agents = agents,
+                selectedAgent = selectedAgent,
+                onAgentSelected = { selectedAgent = it },
             )
         },
     ) { paddingValues ->
@@ -112,15 +134,54 @@ fun SessionScreen(
             error?.let { errorMsg ->
                 ErrorCard(
                     message = errorMsg,
-                    onRetry = { repository.clearError() },
+                    onRetry = {
+                        scope.launch {
+                            repository.clearError()
+                            repository.selectSession(sessionId)
+                        }
+                    },
                 )
             }
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
                 state = listState,
-                contentPadding = PaddingValues(vertical = 8.dp),
+                contentPadding = PaddingValues(vertical = 12.dp),
             ) {
+                if (messages.isEmpty()) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    imageVector = Icons.Default.AutoAwesome,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(48.dp),
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = "Ask anything. Kilo will handle the rest.",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "Choose an agent and send a prompt to begin.",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                    }
+                }
+
                 items(
                     items = messages,
                     key = { it.id ?: it.sessionID ?: "" },
@@ -129,6 +190,7 @@ fun SessionScreen(
                     MessageBubble(
                         isUser = message.role == "user",
                         parts = messageParts,
+                        agent = message.agent,
                     )
                 }
 
