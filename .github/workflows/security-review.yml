@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Kilo CLI
+        run: npm install -g @kilocode/cli
+
       - name: Run Kilo Security Reviewer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
