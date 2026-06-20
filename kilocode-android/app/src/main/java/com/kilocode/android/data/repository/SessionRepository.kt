@@ -1,10 +1,3 @@
-/*
- * [Parent Feature/Milestone] Phase 1: Foundation
- * [Child Task/Issue] #1
- * [Subtask] Implement SessionRepository
- * [Upstream] KiloCodeApi -> [Downstream] SessionViewModel
- * [Law Check] 200 lines | Passed Do It Check
- */
 package com.kilocode.android.data.repository
 
 import android.util.Log
@@ -18,7 +11,6 @@ import okhttp3.sse.EventSource
 import java.util.UUID
 
 class SessionRepository(private val apiClient: ApiClient) {
-
     private val _sessions = MutableStateFlow<List<Session>>(emptyList())
     val sessions: StateFlow<List<Session>> = _sessions
 
@@ -30,6 +22,12 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private val _parts = MutableStateFlow<Map<String, List<Part>>>(emptyMap())
     val parts: StateFlow<Map<String, List<Part>>> = _parts
+
+    private val _agents = MutableStateFlow<List<Agent>>(emptyList())
+    val agents: StateFlow<List<Agent>> = _agents
+
+    private val _models = MutableStateFlow<List<ModelOption>>(emptyList())
+    val models: StateFlow<List<ModelOption>> = _models
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -46,11 +44,7 @@ class SessionRepository(private val apiClient: ApiClient) {
         _isLoading.value = true
         try {
             val response = apiClient.api.listSessions()
-            if (response.isSuccessful) {
-                _sessions.value = response.body() ?: emptyList()
-            } else {
-                _error.value = "Failed to list sessions: ${response.code()}"
-            }
+            _sessions.value = response.body() ?: emptyList()
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading sessions", e)
             _error.value = "Connection error: ${e.message}"
@@ -109,9 +103,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 val messagesWithParts = response.body() ?: emptyList()
                 _messages.value = messagesWithParts.mapNotNull { it.info }
                 _parts.value = messagesWithParts
-                    .mapNotNull { messageWithParts ->
-                        messageWithParts.info?.id?.let { it to messageWithParts.parts }
-                    }
+                    .mapNotNull { messageWithParts -> messageWithParts.info?.id?.let { it to messageWithParts.parts } }
                     .toMap()
             } else {
                 _error.value = "Failed to load messages: ${response.code()}"
@@ -122,21 +114,66 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun sendPrompt(sessionId: String, text: String): Boolean {
+    suspend fun listAgents() {
+        try {
+            val response = apiClient.api.getConfig()
+            if (response.isSuccessful) {
+                val config = response.body()
+                val agentNames = config?.models.orEmpty()
+                    .mapNotNull { name -> Agent(id = name, name = name, mode = "model") }
+                _agents.value = agentNames.ifEmpty { emptyList() }
+            }
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading agents", e)
+        }
+    }
+
+    suspend fun listModels() {
+        try {
+            val providers = apiClient.api.listProviders()
+            val config = apiClient.api.getConfig()
+            val options = buildList {
+                providers.takeIf { it.isSuccessful }?.body().orEmpty().forEach { provider ->
+                    provider.models.values.forEach { model ->
+                        add(ModelOption(provider.id, model.id, "${provider.name} · ${model.name}"))
+                    }
+                }
+                if (isEmpty()) {
+                    config.takeIf { it.isSuccessful }?.body()?.models.orEmpty().forEach { id ->
+                        add(ModelOption("default", id, id))
+                    }
+                }
+            }
+            _models.value = options
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading models", e)
+        }
+    }
+
+    suspend fun sendPrompt(
+        sessionId: String,
+        text: String,
+        agent: String? = null,
+        model: ModelOption? = null,
+    ): Boolean {
         return try {
             _isLoading.value = true
-            val request = mapOf(
+            val request = mutableMapOf<String, Any>(
                 "messageID" to generateMessageId(),
                 "parts" to listOf(mapOf("type" to "text", "text" to text))
             )
+            agent?.let { request["agent"] = it }
+            model?.let {
+                request["model"] = mapOf("providerID" to it.providerID, "modelID" to it.modelID)
+                request["providerID"] = it.providerID
+                request["modelID"] = it.modelID
+            }
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
                     messageWithParts.info?.let { message ->
                         upsertMessage(message)
-                        message.id?.let {
-                            _parts.value = _parts.value + (it to messageWithParts.parts)
-                        }
+                        message.id?.let { _parts.value = _parts.value + (it to messageWithParts.parts) }
                     }
                 }
                 loadMessages(sessionId)
@@ -157,9 +194,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     suspend fun abortSession(sessionId: String) {
         try {
             val response = apiClient.api.abortSession(sessionId)
-            if (!response.isSuccessful) {
-                Log.e("SessionRepo", "Failed to abort session: ${response.code()}")
-            }
+            if (!response.isSuccessful) Log.e("SessionRepo", "Failed to abort session: ${response.code()}")
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error aborting session", e)
         }
@@ -188,17 +223,12 @@ class SessionRepository(private val apiClient: ApiClient) {
         disconnectSse()
         eventSource = apiClient.createEventSource(
             "event",
-            object : okhttp3.sse.EventSourceListener() {
+            object : EventSourceListener() {
                 override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                     _isConnected.value = true
                 }
 
-                override fun onEvent(
-                    eventSource: EventSource,
-                    id: String?,
-                    type: String?,
-                    data: String,
-                ) {
+                override fun onEvent(eventSource: EventSource, id: String?, type: String?, data: String) {
                     handleSseEvent(type, data)
                 }
 
@@ -206,11 +236,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                     _isConnected.value = false
                 }
 
-                override fun onFailure(
-                    eventSource: EventSource,
-                    t: Throwable?,
-                    response: okhttp3.Response?,
-                ) {
+                override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
                     _isConnected.value = false
                     Log.e("SessionRepo", "SSE failed: ${t?.message}")
                 }
@@ -226,8 +252,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             when (type) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
-                    val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
-                    upsertMessage(message)
+                    upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
                 }
                 "message.removed" -> {
                     val messageID = properties["messageID"] as? String ?: return
@@ -268,11 +293,7 @@ class SessionRepository(private val apiClient: ApiClient) {
         val messageId = message.id ?: return
         val current = _messages.value.toMutableList()
         val index = current.indexOfFirst { it.id == messageId }
-        if (index >= 0) {
-            current[index] = message
-        } else {
-            current.add(message)
-        }
+        if (index >= 0) current[index] = message else current.add(message)
         _messages.value = current
     }
 
@@ -280,19 +301,14 @@ class SessionRepository(private val apiClient: ApiClient) {
         val currentParts = _parts.value.toMutableMap()
         val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
         val index = messageParts.indexOfFirst { it.id == partId }
-        if (index >= 0) {
-            messageParts[index] = part
-        } else {
-            messageParts.add(part)
-        }
+        if (index >= 0) messageParts[index] = part else messageParts.add(part)
         currentParts[messageId] = messageParts
         _parts.value = currentParts
     }
 
     private fun removePart(messageId: String, partId: String) {
         val currentParts = _parts.value.toMutableMap()
-        val messageParts = currentParts[messageId]?.filter { it.id != partId }.orEmpty()
-        currentParts[messageId] = messageParts
+        currentParts[messageId] = currentParts[messageId]?.filter { it.id != partId }.orEmpty()
         _parts.value = currentParts
     }
 
@@ -302,13 +318,11 @@ class SessionRepository(private val apiClient: ApiClient) {
         _isConnected.value = false
     }
 
-    private fun generateMessageId(): String {
-        return "msg_${UUID.randomUUID()}"
-    }
-
     fun clearError() {
         _error.value = null
     }
+
+    private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"
 
     companion object {
         private val GSON = Gson()
