@@ -29,7 +29,9 @@ fun PromptInput(
     val canSend = text.isNotBlank() && !isLoading
 
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .navigationBarsPadding(),
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp,
         shadowElevation = 8.dp,
@@ -70,6 +72,7 @@ fun PromptInput(
                     DropdownMenu(
                         expanded = agentMenuExpanded,
                         onDismissRequest = { agentMenuExpanded = false },
+                        modifier = Modifier.heightIn(max = 200.dp),
                     ) {
                         DropdownMenuItem(
                             text = { Text("Default Agent") },

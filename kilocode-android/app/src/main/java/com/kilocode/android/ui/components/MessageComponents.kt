@@ -24,7 +24,7 @@ fun MessageBubble(
     agent: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    val bgColor = if (isUser) UserMessageBg else AssistantMessageBg
+    val bgColor = if (isUser) BubbleUser else BubbleAssistant
     val alignment = if (isUser) Alignment.End else Alignment.Start
     val displayName = if (isUser) {
         "You"
@@ -100,11 +100,11 @@ fun MessageBubble(
 fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
     val state = part.state ?: return
     val (icon, bgColor, statusText) = when (state.status) {
-        "pending" -> Triple(Icons.Default.HourglassEmpty, ToolRunningBg, "Pending")
-        "running" -> Triple(Icons.Default.PlayArrow, ToolRunningBg, "Running")
-        "completed" -> Triple(Icons.Default.Check, ToolSuccessBg, "Completed")
-        "error" -> Triple(Icons.Default.Error, ToolErrorBg, "Error")
-        else -> Triple(Icons.Default.Help, ToolRunningBg, "Unknown")
+        "pending" -> Triple(Icons.Default.HourglassEmpty, ToolRunning, "Pending")
+        "running" -> Triple(Icons.Default.PlayArrow, ToolRunning, "Running")
+        "completed" -> Triple(Icons.Default.Check, ToolSuccess, "Completed")
+        "error" -> Triple(Icons.Default.Error, ToolError, "Error")
+        else -> Triple(Icons.Default.Help, ToolRunning, "Unknown")
     }
 
     Card(
@@ -122,7 +122,7 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
                 contentDescription = statusText,
                 tint = when (state.status) {
                     "completed" -> SuccessGreen
-                    "error" -> Error
+                    "error" -> SemanticError
                     else -> MaterialTheme.colorScheme.primary
                 },
                 modifier = Modifier.size(16.dp),
@@ -148,7 +148,7 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
                     Text(
                         text = state.error,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Error,
+                        color = SemanticError,
                         maxLines = 2,
                     )
                 }
