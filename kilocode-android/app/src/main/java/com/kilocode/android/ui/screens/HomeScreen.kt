@@ -22,7 +22,10 @@ fun HomeScreen(
     sharedSecret: String?,
     onNavigateToSession: (String) -> Unit,
     onNavigateToSettings: () -> Unit,
-    viewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")))
+    viewModel: SessionViewModel = viewModel(
+        key = "$serverUrl|$sharedSecret",
+        factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")),
+    )
 ) {
     val scope = rememberCoroutineScope()
     val sessions by viewModel.sessions.collectAsState()
@@ -37,7 +40,12 @@ fun HomeScreen(
     }
 
     fun createSession() {
-        viewModel.createSession(directoryPath.ifBlank { "/" })
+        scope.launch {
+            val session = viewModel.createSession(directoryPath.ifBlank { "/" })
+            if (session != null) {
+                onNavigateToSession(session.id)
+            }
+        }
     }
 
     Scaffold(

@@ -42,16 +42,37 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
     companion object {
         @Volatile
         private var INSTANCE: ApiClient? = null
+        private var instanceBaseUrl: String? = null
+        private var instanceSharedSecret: String? = null
 
         fun getInstance(baseUrl: String, sharedSecret: String): ApiClient {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ApiClient(baseUrl, sharedSecret).also { INSTANCE = it }
+            val normalizedBaseUrl = baseUrl.removeSuffix("/") + "/"
+            return synchronized(this) {
+                if (
+                    INSTANCE == null ||
+                    instanceBaseUrl != normalizedBaseUrl ||
+                    instanceSharedSecret != sharedSecret
+                ) {
+                    INSTANCE = ApiClient(normalizedBaseUrl, sharedSecret)
+                    instanceBaseUrl = normalizedBaseUrl
+                    instanceSharedSecret = sharedSecret
+                }
+                INSTANCE!!
             }
         }
 
         fun updateBaseUrl(baseUrl: String, sharedSecret: String) {
             synchronized(this) {
-                INSTANCE = ApiClient(baseUrl, sharedSecret)
+                val normalizedBaseUrl = baseUrl.removeSuffix("/") + "/"
+                if (
+                    INSTANCE == null ||
+                    instanceBaseUrl != normalizedBaseUrl ||
+                    instanceSharedSecret != sharedSecret
+                ) {
+                    INSTANCE = ApiClient(normalizedBaseUrl, sharedSecret)
+                    instanceBaseUrl = normalizedBaseUrl
+                    instanceSharedSecret = sharedSecret
+                }
             }
         }
     }
