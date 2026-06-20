@@ -1,5 +1,6 @@
 package com.kilocode.android.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.repository.SessionRepository
@@ -69,24 +71,34 @@ fun SessionScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = {
                     Column {
                         Text(
-                            text = currentSession?.title ?: "Session",
+                            text = currentSession?.title ?: "Active Session",
                             maxLines = 1,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleMedium
                         )
-                        Text(
-                            text = "Agent: ${selectedAgent ?: "Default"}",
-                            maxLines = 1,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        StatusChip(
-                            text = if (isConnected) "Live" else "Offline",
-                            isOnline = isConnected,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                text = "${selectedAgent ?: "Default Agent"}",
+                                maxLines = 1,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            StatusChip(
+                                text = if (isConnected) "Live" else "Offline",
+                                isOnline = isConnected,
+                            )
+                        }
                     }
                 },
                 navigationIcon = {

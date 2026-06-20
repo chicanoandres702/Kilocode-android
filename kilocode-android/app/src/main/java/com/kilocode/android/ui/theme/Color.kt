@@ -2,29 +2,37 @@ package com.kilocode.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFF6C63FF)
-val PrimaryDark = Color(0xFF5A52D5)
-val PrimaryLight = Color(0xFF8B84FF)
-val Secondary = Color(0xFF03DAC6)
-val SecondaryDark = Color(0xFF018786)
-val Background = Color(0xFF121212)
-val Surface = Color(0xFF1E1E1E)
-val SurfaceVariant = Color(0xFF2D2D2D)
-val OnPrimary = Color.White
-val OnSecondary = Color.Black
-val OnBackground = Color(0xFFE0E0E0)
-val OnSurface = Color(0xFFE0E0E0)
-val OnSurfaceVariant = Color(0xFFBDBDBD)
-val Error = Color(0xFFCF6679)
-val OnError = Color.Black
+// ── Brand ───────────────────────────────────────────────────────────────────
+val Brand         = Color(0xFF7C6FCD)   // soft indigo — primary accent
+val BrandDim      = Color(0xFF5C52A2)   // deeper indigo for pressed states
+val BrandGlow     = Color(0xFFA89EE0)   // lighter for tonal surfaces
 
-val UserMessageBg = Color(0xFF2D2D4A)
-val AssistantMessageBg = Color(0xFF1E1E2E)
-val CodeBlockBg = Color(0xFF0D1117)
-val ToolRunningBg = Color(0xFF1A2332)
-val ToolSuccessBg = Color(0xFF1A2E1A)
-val ToolErrorBg = Color(0xFF2E1A1A)
+// ── Neutrals (dark-first; each has a light-mode twin in Theme.kt) ──────────
+val Ink900        = Color(0xFF0E0E12)   // near-black background
+val Ink800        = Color(0xFF16161C)   // card surfaces
+val Ink700        = Color(0xFF1E1E27)   // elevated surfaces
+val Ink600        = Color(0xFF28283A)   // borders
+val Ink400        = Color(0xFF5C5C7A)   // muted text / disabled
+val Ink200        = Color(0xFFB0AECF)   // secondary text
+val Ink50         = Color(0xFFE8E7F4)   // primary text on dark
 
-val SuccessGreen = Color(0xFF4CAF50)
-val WarningYellow = Color(0xFFFFC107)
-val InfoBlue = Color(0xFF2196F3)
+// ── Semantic ────────────────────────────────────────────────────────────────
+val SemanticError       = Color(0xFFE05C6A)
+val SemanticErrorSurface= Color(0xFF2A1820)
+val SemanticSuccess     = Color(0xFF4CC98A)
+val SemanticSuccessSurface = Color(0xFF122818)
+val SemanticWarning     = Color(0xFFF4A24A)
+val SemanticWarningBg   = Color(0xFF231A0E)
+
+// ── Chat bubbles ────────────────────────────────────────────────────────────
+val BubbleUser      = Color(0xFF2A2848)   // indigo-tinted user bubble
+val BubbleAssistant = Color(0xFF1C1C26)   // dark neutral for assistant
+
+// ── Tool states ─────────────────────────────────────────────────────────────
+val ToolRunning   = Color(0xFF1A1E30)
+val ToolSuccess   = Color(0xFF122818)
+val ToolError     = Color(0xFF2A1820)
+
+val SuccessGreen = Color(0xFF00E676)
+val WarningYellow = Color(0xFFFFD740)
+val InfoBlue = Color(0xFF2979FF)
