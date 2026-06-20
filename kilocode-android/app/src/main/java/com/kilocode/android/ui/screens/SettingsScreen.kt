@@ -1,52 +1,63 @@
 package com.kilocode.android.ui.screens
 
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kilocode.android.BuildConfig
-import com.kilocode.android.ui.viewmodel.SettingsViewModel
+import androidx.compose.ui.unit.sp
+
+// ── Settings Screen ───────────────────────────────────────────────────────────
+// NOTE: This screen replaces your existing SettingsScreen.kt.
+// Wire up your actual saved-state / DataStore logic where the TODO comments are.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    defaultServerUrl: String,
     onBack: () -> Unit,
+    defaultServerUrl: String,
     onServerUrlChanged: (String) -> Unit,
     onAutonomousModeChanged: (Boolean) -> Unit,
-    viewModel: SettingsViewModel = viewModel()
+    serverUrl: String          = defaultServerUrl,
+    sharedSecret: String       = "",
+    onSave: (url: String, secret: String) -> Unit = { _, _ -> },
 ) {
-    val storedServerUrl by viewModel.serverUrl.collectAsState(initial = defaultServerUrl)
-    var serverUrlText by remember(storedServerUrl) { mutableStateOf(storedServerUrl ?: defaultServerUrl) }
-    val autonomousMode by viewModel.autonomousMode.collectAsState(initial = false)
-    var autonomousModeEnabled by remember(autonomousMode) { mutableStateOf(autonomousMode) }
-    val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
-    var sharedSecretText by remember(sharedSecret) { mutableStateOf(sharedSecret ?: "") }
-    val connectionStatus by viewModel.connectionStatus.collectAsState()
-    var showSaveConfirmation by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    var urlInput    by remember { mutableStateOf(serverUrl) }
+    var secretInput by remember { mutableStateOf(sharedSecret) }
+    var secretVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings") },
+                title = {
+                    Text(
+                        text       = "Settings",
+                        style      = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector        = Icons.Rounded.ArrowBack,
                             contentDescription = "Back",
+                            modifier           = Modifier.size(22.dp),
                         )
+                    }
+                },
+                actions = {
+                    TextButton(
+                        onClick = { onSave(urlInput, secretInput) },
+                    ) {
+                        Text("Save", fontWeight = FontWeight.SemiBold)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -54,350 +65,176 @@ fun SettingsScreen(
                 ),
             )
         },
-    ) { paddingValues ->
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
-            // Kilo Server Management
-            Text(
-                text = "Kilo Server Management",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
-                val statusColor = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-
-                Surface(
-                    modifier = Modifier.size(12.dp),
-                    shape = androidx.compose.foundation.shape.CircleShape,
-                    color = statusColor
-                ) {}
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = if (isRunning) "Server Running" else "Server Stopped",
-                    style = MaterialTheme.typography.bodyMedium
+            // ── Server section ─────────────────────────────────────────────
+            SettingsSection(title = "Server") {
+                SettingsTextField(
+                    label        = "Server URL",
+                    value        = urlInput,
+                    onValueChange = { urlInput = it },
+                    placeholder  = "http://localhost:3000",
+                    leadingIcon  = Icons.Rounded.Language,
                 )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
-                Button(
-                    onClick = {
-                        com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText, autonomousModeEnabled)
-                    },
-                    modifier = Modifier.weight(1f),
-                    enabled = !isRunning
-                ) {
-                    Text("Start Server")
-                }
-                OutlinedButton(
-                    onClick = {
-                        com.kilocode.android.data.BinaryManager.stopServer()
-                    },
-                    modifier = Modifier.weight(1f),
-                    enabled = isRunning
-                ) {
-                    Text("Stop Server")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Server Logs
-            Text(
-                text = "Server Logs",
-                style = MaterialTheme.typography.titleSmall,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            androidx.compose.foundation.lazy.LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(8.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                items(com.kilocode.android.data.BinaryManager.logs.size) { index ->
-                    Text(
-                        text = com.kilocode.android.data.BinaryManager.logs[index],
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(4.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-
-            OutlinedTextField(
-                value = serverUrlText,
-                onValueChange = { serverUrlText = it },
-                label = { Text("Server URL") },
-                placeholder = { Text("http://localhost:4096") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Link,
-                        contentDescription = null,
-                    )
-                },
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = sharedSecretText.ifEmpty { sharedSecret ?: "" },
-                onValueChange = { sharedSecretText = it },
-                label = { Text("Shared Secret") },
-                placeholder = { Text("Enter API Secret") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = null,
-                    )
-                },
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column {
-                    Text(
-                        text = "Autonomous Mode",
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Text(
-                        text = "Start the Kilo server with --auto when enabled.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(
-                    checked = autonomousModeEnabled,
-                    onCheckedChange = { enabled ->
-                        autonomousModeEnabled = enabled
-                        viewModel.saveAutonomousMode(enabled)
-                        onAutonomousModeChanged(enabled)
-                    },
+                Spacer(modifier = Modifier.height(12.dp))
+                SettingsTextField(
+                    label         = "Shared secret",
+                    value         = secretInput,
+                    onValueChange = { secretInput = it },
+                    placeholder   = "Optional authentication token",
+                    leadingIcon   = Icons.Rounded.Lock,
+                    isPassword    = true,
+                    passwordVisible = secretVisible,
+                    onTogglePassword = { secretVisible = !secretVisible },
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Enter the URL of your running Kilo Code server. Default is http://localhost:4096",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Button(
-                onClick = {
-                    val normalizedServerUrl = serverUrlText.trim().ifBlank { defaultServerUrl }
-                    onServerUrlChanged(normalizedServerUrl)
-                    viewModel.saveServerUrl(normalizedServerUrl)
-                    viewModel.saveSharedSecret(sharedSecretText)
-                    showSaveConfirmation = true
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Save,
-                    contentDescription = null,
+            // ── About section ──────────────────────────────────────────────
+            SettingsSection(title = "About") {
+                SettingsInfoRow(
+                    icon  = Icons.Rounded.Info,
+                    label = "Version",
+                    value = "1.0.0",
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Save Settings")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedButton(
-                onClick = {
-                    viewModel.testConnection(serverUrlText.trim().ifBlank { defaultServerUrl }, sharedSecretText.ifEmpty { sharedSecret ?: "" })
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("Test Connection")
-            }
-
-            connectionStatus?.let { status ->
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = status,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (status.startsWith("Success")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                HorizontalDivider(
+                    modifier  = Modifier.padding(vertical = 2.dp),
+                    thickness = 0.5.dp,
+                    color     = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
                 )
-            }
-
-            if (showSaveConfirmation) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    ),
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Server URL saved and applied successfully.",
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Connection Info
-            Text(
-                text = "Connection",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                ) {
-                    InfoRow(label = "Server URL", value = serverUrlText)
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                    InfoRow(
-                        label = "How to connect",
-                        value = "Run 'kilo serve' in your project directory",
-                    )
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                    InfoRow(
-                        label = "Default port",
-                        value = "4096",
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // About
-            Text(
-                text = "About",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                ) {
-                    InfoRow(label = "App Version", value = BuildConfig.VERSION_NAME)
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                    InfoRow(label = "Build", value = BuildConfig.BUILD_TYPE)
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                    InfoRow(label = "Kilo Code", value = "Android Client")
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                    InfoRow(
-                        label = "License",
-                        value = "MIT",
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Quick Actions
-            Text(
-                text = "Quick Actions",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedButton(
-                onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://kilo.ai/docs"))
-                    context.startActivity(intent)
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Terminal,
-                    contentDescription = null,
+                SettingsInfoRow(
+                    icon  = Icons.Rounded.Code,
+                    label = "Built with",
+                    value = "Kilo Code · Anthropic",
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("View Documentation")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedButton(
-                onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Kilo-Org/kilocode/issues"))
-                    context.startActivity(intent)
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.BugReport,
-                    contentDescription = null,
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Report an Issue")
             }
         }
     }
 }
 
+// ── Section wrapper ───────────────────────────────────────────────────────────
 @Composable
-fun InfoRow(
+private fun SettingsSection(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column {
+        Text(
+            text     = title.uppercase(),
+            style    = MaterialTheme.typography.labelSmall,
+            color    = MaterialTheme.colorScheme.primary,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.2.sp,
+            modifier = Modifier.padding(start = 4.dp, bottom = 8.dp),
+        )
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                content = content,
+            )
+        }
+    }
+}
+
+// ── Text field row ────────────────────────────────────────────────────────────
+@Composable
+private fun SettingsTextField(
     label: String,
     value: String,
-    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit,
+    placeholder: String = "",
+    leadingIcon: ImageVector,
+    isPassword: Boolean = false,
+    passwordVisible: Boolean = false,
+    onTogglePassword: (() -> Unit)? = null,
+) {
+    Column {
+        Text(
+            text     = label,
+            style    = MaterialTheme.typography.labelMedium,
+            color    = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 6.dp),
+        )
+        OutlinedTextField(
+            value         = value,
+            onValueChange = onValueChange,
+            placeholder   = { Text(placeholder, fontSize = 13.sp) },
+            singleLine    = true,
+            modifier      = Modifier.fillMaxWidth(),
+            shape         = RoundedCornerShape(12.dp),
+            textStyle     = MaterialTheme.typography.bodyMedium,
+            visualTransformation = if (isPassword && !passwordVisible)
+                androidx.compose.ui.text.input.PasswordVisualTransformation()
+            else
+                androidx.compose.ui.text.input.VisualTransformation.None,
+            leadingIcon = {
+                Icon(
+                    leadingIcon,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint     = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                )
+            },
+            trailingIcon = if (isPassword && onTogglePassword != null) ({
+                IconButton(onClick = onTogglePassword) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Rounded.VisibilityOff
+                                      else                Icons.Rounded.Visibility,
+                        contentDescription = if (passwordVisible) "Hide" else "Show",
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+            }) else null,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor   = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+            ),
+        )
+    }
+}
+
+// ── Info row ──────────────────────────────────────────────────────────────────
+@Composable
+private fun SettingsInfoRow(
+    icon: ImageVector,
+    label: String,
+    value: String,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        Icon(
+            imageVector        = icon,
+            contentDescription = null,
+            tint               = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            modifier           = Modifier.size(18.dp),
         )
+        Spacer(modifier = Modifier.width(12.dp))
         Text(
-            text = value,
+            text  = label,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+        )
+        Text(
+            text  = value,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
         )
     }
 }

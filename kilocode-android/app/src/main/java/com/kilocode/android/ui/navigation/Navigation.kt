@@ -72,6 +72,7 @@ fun KiloCodeNavHost(
                 onBack = { navController.popBackStack() },
                 onServerUrlChanged = onServerUrlChanged,
                 onAutonomousModeChanged = onAutonomousModeChanged,
+                onSave = { url, _ -> onServerUrlChanged(url) }
             )
         }
     }

@@ -1,143 +1,193 @@
 package com.kilocode.android.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.model.Part
 import com.kilocode.android.ui.theme.*
 
+// ── Message bubble ────────────────────────────────────────────────────────────
 @Composable
 fun MessageBubble(
     isUser: Boolean,
     parts: List<Part>,
+    agent: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    val bgColor = if (isUser) UserMessageBg else AssistantMessageBg
-    val alignment = if (isUser) Alignment.End else Alignment.Start
+    val bubbleBg   = if (isUser) BubbleUser else BubbleAssistant
+    val alignment  = if (isUser) Alignment.End else Alignment.Start
+    val displayName = if (isUser) "You" else agent ?: "Kilo"
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp),
         horizontalAlignment = alignment,
     ) {
-        Text(
-            text = if (isUser) "You" else "Kilo",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 12.dp),
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Surface(
-            modifier = Modifier
-                .widthIn(max = 320.dp)
-                .clip(
-                    RoundedCornerShape(
-                        topStart = if (isUser) 16.dp else 4.dp,
-                        topEnd = if (isUser) 4.dp else 16.dp,
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp,
+        // Sender row
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 0.dp),
+        ) {
+            if (!isUser) {
+                // Avatar for assistant
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(Brand.copy(alpha = 0.2f)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = displayName.take(1).uppercase(),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Brand,
                     )
-                ),
-            color = bgColor,
+                }
+                Spacer(modifier = Modifier.width(6.dp))
+            }
+            Text(
+                text = displayName,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (isUser) MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                        else MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 0.3.sp,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        // Bubble
+        Surface(
+            modifier = Modifier.widthIn(max = 320.dp),
+            shape = RoundedCornerShape(
+                topStart    = if (isUser) 20.dp else 4.dp,
+                topEnd      = if (isUser) 4.dp else 20.dp,
+                bottomStart = 20.dp,
+                bottomEnd   = 20.dp,
+            ),
+            color = bubbleBg,
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
         ) {
             Column(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                for (part in parts) {
-                when (part.type) {
-                    "text" -> {
-                        Text(
-                            text = part.text.orEmpty(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
+                parts.forEach { part ->
+                    when (part.type) {
+                        "text"      -> TextPartView(text = part.text.orEmpty())
+                        "tool"      -> ToolPartView(part = part)
+                        "reasoning" -> ReasoningPartView(part = part)
+                        else        -> TextPartView(text = part.text.orEmpty())
                     }
-                    "tool" -> {
-                        ToolPartView(part = part)
-                    }
-                    "reasoning" -> {
-                        ReasoningPartView(part = part)
-                    }
-                    else -> {
-                        Text(
-                            text = part.text.orEmpty(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
                 }
             }
         }
     }
 }
 
+// ── Plain text part ───────────────────────────────────────────────────────────
+@Composable
+private fun TextPartView(text: String) {
+    Text(
+        text  = text,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurface,
+        lineHeight = 24.sp,
+    )
+}
+
+// ── Tool part ─────────────────────────────────────────────────────────────────
 @Composable
 fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
     val state = part.state ?: return
-    val (icon, bgColor, statusText) = when (state.status) {
-        "pending" -> Triple(Icons.Default.HourglassEmpty, ToolRunningBg, "Pending")
-        "running" -> Triple(Icons.Default.PlayArrow, ToolRunningBg, "Running")
-        "completed" -> Triple(Icons.Default.Check, ToolSuccessBg, "Completed")
-        "error" -> Triple(Icons.Default.Error, ToolErrorBg, "Error")
-        else -> Triple(Icons.Default.Help, ToolRunningBg, "Unknown")
+
+    data class StatusSpec(
+        val icon: androidx.compose.ui.graphics.vector.ImageVector,
+        val tint: Color,
+        val bg: Color,
+        val label: String,
+    )
+
+    val spec = when (state.status) {
+        "pending"   -> StatusSpec(Icons.Rounded.HourglassEmpty, MaterialTheme.colorScheme.primary,      ToolRunning, "Pending")
+        "running"   -> StatusSpec(Icons.Rounded.PlayArrow,      MaterialTheme.colorScheme.primary,      ToolRunning, "Running")
+        "completed" -> StatusSpec(Icons.Rounded.CheckCircle,    SemanticSuccess,                        ToolSuccess, "Done")
+        "error"     -> StatusSpec(Icons.Rounded.ErrorOutline,   SemanticError,                          ToolError,   "Failed")
+        else        -> StatusSpec(Icons.Rounded.HelpOutline,    MaterialTheme.colorScheme.onSurfaceVariant, ToolRunning, "?")
     }
 
-    Card(
+    Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = bgColor),
+            .padding(vertical = 2.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = spec.bg,
     ) {
         Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.Top,
         ) {
             Icon(
-                imageVector = icon,
-                contentDescription = statusText,
-                tint = when (state.status) {
-                    "completed" -> SuccessGreen
-                    "error" -> Error
-                    else -> MaterialTheme.colorScheme.primary
-                },
-                modifier = Modifier.size(16.dp),
+                imageVector     = spec.icon,
+                contentDescription = spec.label,
+                tint            = spec.tint,
+                modifier        = Modifier
+                    .size(16.dp)
+                    .padding(top = 1.dp),
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = state.title ?: part.tool ?: "Tool",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                if (state.status == "completed" && state.output != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = state.output.take(200),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 3,
+                        text       = state.title ?: part.tool ?: "Tool call",
+                        style      = MaterialTheme.typography.labelMedium,
+                        color      = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier   = Modifier.weight(1f),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text  = spec.label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = spec.tint.copy(alpha = 0.85f),
                     )
                 }
-                if (state.status == "error" && state.error != null) {
+                val detail = when {
+                    state.status == "completed" && state.output != null ->
+                        state.output.trim().take(240)
+                    state.status == "error" && state.error != null ->
+                        state.error
+                    else -> null
+                }
+                if (detail != null) {
+                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = state.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Error,
-                        maxLines = 2,
+                        text       = detail,
+                        style      = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color      = if (state.status == "error") SemanticError.copy(alpha = 0.9f)
+                                     else MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines   = 4,
+                        lineHeight = 16.sp,
                     )
                 }
             }
@@ -145,44 +195,62 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
     }
 }
 
+// ── Reasoning part ────────────────────────────────────────────────────────────
 @Composable
 fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
-    Card(
+    var expanded by remember { mutableStateOf(false) }
+    val hasText  = !part.text.isNullOrBlank()
+
+    Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        ),
+            .padding(vertical = 2.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
     ) {
-        Column(
-            modifier = Modifier.padding(8.dp),
-        ) {
+        Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = if (hasText) Modifier.clickable { expanded = !expanded }
+                           else Modifier,
             ) {
                 Icon(
-                    imageVector = Icons.Default.Psychology,
-                    contentDescription = "Reasoning",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(14.dp),
+                    imageVector        = Icons.Rounded.Psychology,
+                    contentDescription = "Thinking",
+                    tint               = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    modifier           = Modifier.size(13.dp),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
-                    text = "Thinking...",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    text   = "Thinking…",
+                    style  = MaterialTheme.typography.labelSmall,
+                    color  = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    modifier = Modifier.weight(1f),
                 )
+                if (hasText) {
+                    Icon(
+                        imageVector        = if (expanded) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
+                        contentDescription = if (expanded) "Collapse" else "Expand",
+                        tint               = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        modifier           = Modifier.size(14.dp),
+                    )
+                }
             }
-            if (!part.text.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
+            if (expanded && hasText) {
+                Spacer(modifier = Modifier.height(6.dp))
+                HorizontalDivider(
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                )
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = part.text,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 5,
+                    text       = part.text!!,
+                    style      = MaterialTheme.typography.bodySmall,
+                    color      = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    lineHeight = 17.sp,
                 )
             }
         }
     }
 }
+

@@ -157,3 +157,11 @@ data class McpServer(
     val env: Map<String, String> = emptyMap(),
     val enabled: Boolean = true,
 )
+
+data class Agent(
+    val name: String,
+    val description: String? = null,
+    val mode: String? = null,
+    val builtIn: Boolean = false,
+    val color: String? = null,
+)
