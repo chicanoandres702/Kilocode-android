@@ -36,7 +36,7 @@ fun SessionList(
         ) {
             items(
                 items = sessions,
-                key = { it.id },
+                key = { it.id ?: it.sessionID ?: "" },
             ) { session ->
                 SessionListItem(
                     session = session,
@@ -56,7 +56,7 @@ fun SessionListItem(
     modifier: Modifier = Modifier,
 ) {
     val dateFormat = remember { SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()) }
-    val date = Date(session.time.updated)
+    val date = Date(session.time?.updated ?: 0)
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     Card(
@@ -83,7 +83,7 @@ fun SessionListItem(
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = session.title.ifEmpty { "New Session" },
+                    text = session.title.orEmpty().ifEmpty { "New Session" },
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,

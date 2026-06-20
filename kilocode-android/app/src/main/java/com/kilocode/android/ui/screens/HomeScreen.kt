@@ -42,8 +42,8 @@ fun HomeScreen(
     fun createSession() {
         scope.launch {
             val session = viewModel.createSession(directoryPath.ifBlank { "/" })
-            if (session != null) {
-                onNavigateToSession(session.id)
+            if (session?.id != null) {
+                onNavigateToSession(session.id!!)
             }
         }
     }
