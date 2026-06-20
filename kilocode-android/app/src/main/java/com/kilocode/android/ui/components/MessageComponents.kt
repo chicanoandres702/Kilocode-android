@@ -20,10 +20,16 @@ import com.kilocode.android.ui.theme.*
 fun MessageBubble(
     isUser: Boolean,
     parts: List<Part>,
+    agent: String? = null,
     modifier: Modifier = Modifier,
 ) {
     val bgColor = if (isUser) UserMessageBg else AssistantMessageBg
     val alignment = if (isUser) Alignment.End else Alignment.Start
+    val displayName = if (isUser) {
+        "You"
+    } else {
+        agent ?: "Kilo"
+    }
 
     Column(
         modifier = modifier
@@ -32,41 +38,46 @@ fun MessageBubble(
         horizontalAlignment = alignment,
     ) {
         Text(
-            text = if (isUser) "You" else "Kilo",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text = displayName,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 12.dp),
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         Surface(
             modifier = Modifier
-                .widthIn(max = 320.dp)
+                .widthIn(max = 340.dp)
                 .clip(
                     RoundedCornerShape(
-                        topStart = if (isUser) 16.dp else 4.dp,
-                        topEnd = if (isUser) 4.dp else 16.dp,
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp,
+                        topStart = if (isUser) 18.dp else 6.dp,
+                        topEnd = if (isUser) 6.dp else 18.dp,
+                        bottomStart = 18.dp,
+                        bottomEnd = 18.dp,
                     )
                 ),
             color = bgColor,
+            tonalElevation = 2.dp,
+            shadowElevation = 4.dp,
         ) {
             Column(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                for (part in parts) {
-                when (part.type) {
-                    "text" -> {
-                        Text(
-                            text = part.text.orEmpty(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                    "tool" -> {
-                        ToolPartView(part = part)
-                    }
+                parts.forEach { part ->
+                    when (part.type) {
+                        "text" -> {
+                            Text(
+                                text = part.text.orEmpty(),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 22.dp,
+                            )
+                        }
+                        "tool" -> {
+                            ToolPartView(part = part)
+                        }
                     "reasoning" -> {
                         ReasoningPartView(part = part)
                     }
@@ -77,7 +88,6 @@ fun MessageBubble(
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
-                }
                 }
             }
         }

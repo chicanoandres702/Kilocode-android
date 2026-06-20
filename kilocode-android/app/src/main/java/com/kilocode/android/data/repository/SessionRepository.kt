@@ -40,6 +40,9 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _agents = MutableStateFlow<List<Agent>>(emptyList())
+    val agents: StateFlow<List<Agent>> = _agents
+
     private var eventSource: EventSource? = null
 
     suspend fun listSessions() {
@@ -56,6 +59,19 @@ class SessionRepository(private val apiClient: ApiClient) {
             _error.value = "Connection error: ${e.message}"
         } finally {
             _isLoading.value = false
+        }
+    }
+
+    suspend fun listAgents() {
+        try {
+            val response = apiClient.api.listAgents()
+            if (response.isSuccessful) {
+                _agents.value = response.body() ?: emptyList()
+            } else {
+                Log.e("SessionRepo", "Failed to list agents: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading agents", e)
         }
     }
 
@@ -122,13 +138,14 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun sendPrompt(sessionId: String, text: String): Boolean {
+    suspend fun sendPrompt(sessionId: String, text: String, agent: String? = null): Boolean {
         return try {
             _isLoading.value = true
-            val request = mapOf(
+            val request = mutableMapOf<String, Any>(
                 "messageID" to generateMessageId(),
                 "parts" to listOf(mapOf("type" to "text", "text" to text))
             )
+            agent?.let { request["agent"] = it }
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
