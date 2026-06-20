@@ -36,7 +36,7 @@ fun SessionList(
         ) {
             items(
                 items = sessions,
-                key = { it.id.orEmpty() },
+                key = { session -> session.id?.takeIf { it.isNotEmpty() } ?: sessions.indexOf(session) },
             ) { session ->
                 SessionListItem(
                     session = session,

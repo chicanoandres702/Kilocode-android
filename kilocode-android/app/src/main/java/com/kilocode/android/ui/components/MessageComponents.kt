@@ -89,6 +89,7 @@ fun MessageBubble(
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
                         }
+                    }
                 }
             }
         }
