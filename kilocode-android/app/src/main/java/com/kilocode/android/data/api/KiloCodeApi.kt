@@ -38,19 +38,19 @@ interface KiloCodeApi {
     @GET("session/{sessionID}/message")
     suspend fun listMessages(
         @Path("sessionID") sessionID: String,
-    ): Response<List<Message>>
+    ): Response<List<MessageWithParts>>
 
-    @GET("session/{sessionID}/message/{messageID}/part")
-    suspend fun listParts(
+    @GET("session/{sessionID}/message/{messageID}")
+    suspend fun getMessage(
         @Path("sessionID") sessionID: String,
         @Path("messageID") messageID: String,
-    ): Response<List<Part>>
+    ): Response<MessageWithParts>
 
-    @POST("session/{sessionID}/prompt")
+    @POST("session/{sessionID}/message")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
         @Body request: Map<String, Any>,
-    ): Response<Message>
+    ): Response<MessageWithParts>
 
     @POST("session/{sessionID}/abort")
     suspend fun abortSession(

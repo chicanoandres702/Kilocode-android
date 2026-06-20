@@ -25,8 +25,26 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val sharedSecret: StateFlow<String?> = repository.sharedSecretFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
+    val serverUrl: StateFlow<String?> = repository.serverUrlFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    val autonomousMode: StateFlow<Boolean> = repository.autonomousModeFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     private val _connectionStatus = MutableStateFlow<String?>(null)
     val connectionStatus: StateFlow<String?> = _connectionStatus
+
+    fun saveServerUrl(url: String) {
+        viewModelScope.launch {
+            repository.saveServerUrl(url)
+        }
+    }
+
+    fun saveAutonomousMode(enabled: Boolean) {
+        viewModelScope.launch {
+            repository.saveAutonomousMode(enabled)
+        }
+    }
 
     fun saveSharedSecret(secret: String) {
         viewModelScope.launch {

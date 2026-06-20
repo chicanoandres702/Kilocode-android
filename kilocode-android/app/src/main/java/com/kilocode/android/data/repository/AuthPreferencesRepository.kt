@@ -7,6 +7,7 @@
  */
 package com.kilocode.android.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -20,6 +21,8 @@ class AuthPreferencesRepository(private val context: Context) {
 
     companion object {
         val SHARED_SECRET_KEY = stringPreferencesKey("shared_secret")
+        val SERVER_URL_KEY = stringPreferencesKey("server_url")
+        val AUTONOMOUS_MODE_KEY = booleanPreferencesKey("autonomous_mode")
     }
 
     val sharedSecretFlow: Flow<String?> = context.dataStore.data
@@ -27,9 +30,31 @@ class AuthPreferencesRepository(private val context: Context) {
             preferences[SHARED_SECRET_KEY]
         }
 
+    val serverUrlFlow: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[SERVER_URL_KEY]
+        }
+
+    val autonomousModeFlow: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[AUTONOMOUS_MODE_KEY] ?: false
+        }
+
     suspend fun saveSharedSecret(secret: String) {
         context.dataStore.edit { preferences ->
             preferences[SHARED_SECRET_KEY] = secret
+        }
+    }
+
+    suspend fun saveServerUrl(url: String) {
+        context.dataStore.edit { preferences ->
+            preferences[SERVER_URL_KEY] = url
+        }
+    }
+
+    suspend fun saveAutonomousMode(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[AUTONOMOUS_MODE_KEY] = enabled
         }
     }
 }
