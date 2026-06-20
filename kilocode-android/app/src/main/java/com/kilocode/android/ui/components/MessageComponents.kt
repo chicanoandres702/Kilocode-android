@@ -200,7 +200,6 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
 fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     val hasText  = !part.text.isNullOrBlank()
-    val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
 
     Surface(
         modifier = modifier
@@ -212,11 +211,7 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = if (hasText) Modifier.clickable(
-                    onClick = { expanded = !expanded },
-                    interactionSource = interactionSource,
-                    indication = null
-                )
+                modifier = if (hasText) Modifier.clickable { expanded = !expanded }
                            else Modifier,
             ) {
                 Icon(
