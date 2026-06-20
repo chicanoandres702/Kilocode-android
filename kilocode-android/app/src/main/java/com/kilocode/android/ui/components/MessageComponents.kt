@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.model.Part
 import com.kilocode.android.ui.theme.*
 
@@ -72,22 +73,22 @@ fun MessageBubble(
                                 text = part.text.orEmpty(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurface,
-                                lineHeight = 22.dp,
+                                lineHeight = 22.sp,
                             )
                         }
                         "tool" -> {
                             ToolPartView(part = part)
                         }
-                    "reasoning" -> {
-                        ReasoningPartView(part = part)
-                    }
-                    else -> {
-                        Text(
-                            text = part.text.orEmpty(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
+                        "reasoning" -> {
+                            ReasoningPartView(part = part)
+                        }
+                        else -> {
+                            Text(
+                                text = part.text.orEmpty(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                 }
             }
         }
