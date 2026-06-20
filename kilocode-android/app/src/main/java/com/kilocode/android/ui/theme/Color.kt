@@ -32,7 +32,3 @@ val BubbleAssistant = Color(0xFF1C1C26)   // dark neutral for assistant
 val ToolRunning   = Color(0xFF1A1E30)
 val ToolSuccess   = Color(0xFF122818)
 val ToolError     = Color(0xFF2A1820)
-
-val SuccessGreen = Color(0xFF00E676)
-val WarningYellow = Color(0xFFFFD740)
-val InfoBlue = Color(0xFF2979FF)
