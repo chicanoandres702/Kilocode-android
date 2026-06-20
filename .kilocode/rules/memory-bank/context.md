@@ -30,6 +30,7 @@
 - [x] Updated Android session API handling to match current Kilo server `/session/{id}/message` and `/event` payloads
 - [x] Added persisted server URL preferences and wired Settings/MainActivity to save and restore it
 - [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
+- [x] Added remote Kilo agent listing and chat-side agent selection
 
 ## APK Output
 
@@ -64,3 +65,4 @@
 | 2026-06-20 | Added `18.227.97.23` to Android network security cleartext domain allowlist and base cleartext config |
 | 2026-06-20 | Fixed Android session opening against current Kilo server message/event API and added server URL persistence |
 | 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
+| 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |

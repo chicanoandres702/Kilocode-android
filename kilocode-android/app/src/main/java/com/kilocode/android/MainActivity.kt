@@ -16,6 +16,8 @@ import com.kilocode.android.ui.theme.KiloCodeTheme
 
 import androidx.compose.runtime.collectAsState
 import com.kilocode.android.data.repository.AuthPreferencesRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,12 @@ class MainActivity : ComponentActivity() {
                         onServerUrlChanged = { newUrl ->
                             val normalizedUrl = newUrl.trim().ifBlank { BuildConfig.DEFAULT_SERVER_URL }
                             serverUrl = normalizedUrl
+
+                            // Persist the new URL
+                            kotlinx.coroutines.GlobalScope.launch {
+                                authRepo.saveServerUrl(normalizedUrl)
+                            }
+
                             // ApiClient update will be handled by the screens when they recompose due to serverUrl/sharedSecret change
                             com.kilocode.android.data.BinaryManager.stopServer()
                             com.kilocode.android.data.BinaryManager.startServer(context, normalizedUrl, autonomousMode)
