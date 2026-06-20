@@ -10,9 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.kilocode.android.BuildConfig
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.ui.navigation.KiloCodeNavHost
 import com.kilocode.android.ui.theme.KiloCodeTheme
+
+import androidx.compose.runtime.collectAsState
+import com.kilocode.android.data.repository.AuthPreferencesRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +30,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     val navController = rememberNavController()
-                    var serverUrl by remember { mutableStateOf(BuildConfig.DEFAULT_SERVER_URL) }
                     val context = LocalContext.current
+                    val authRepo = remember { AuthPreferencesRepository(context) }
+                    val sharedSecret by authRepo.sharedSecretFlow.collectAsState(initial = BuildConfig.KILO_SHARED_SECRET)
+                    var serverUrl by remember { mutableStateOf(BuildConfig.DEFAULT_SERVER_URL) }
 
                     LaunchedEffect(Unit) {
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrl)
@@ -36,9 +42,10 @@ class MainActivity : ComponentActivity() {
                     KiloCodeNavHost(
                         navController = navController,
                         serverUrl = serverUrl,
+                        sharedSecret = sharedSecret,
                         onServerUrlChanged = { newUrl ->
                             serverUrl = newUrl
-                            ApiClient.updateBaseUrl(newUrl)
+                            // ApiClient update will be handled by the screens when they recompose due to serverUrl/sharedSecret change
                             com.kilocode.android.data.BinaryManager.stopServer()
                             com.kilocode.android.data.BinaryManager.startServer(context, newUrl)
                         },

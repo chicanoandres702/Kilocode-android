@@ -9,11 +9,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class ApiClient(baseUrl: String) {
+class ApiClient(baseUrl: String, sharedSecret: String) {
 
     val baseUrl: String = baseUrl.removeSuffix("/") + "/"
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(AuthInterceptor(sharedSecret))
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
@@ -41,16 +42,37 @@ class ApiClient(baseUrl: String) {
     companion object {
         @Volatile
         private var INSTANCE: ApiClient? = null
+        private var instanceBaseUrl: String? = null
+        private var instanceSharedSecret: String? = null
 
-        fun getInstance(baseUrl: String): ApiClient {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ApiClient(baseUrl).also { INSTANCE = it }
+        fun getInstance(baseUrl: String, sharedSecret: String): ApiClient {
+            val normalizedBaseUrl = baseUrl.removeSuffix("/") + "/"
+            return synchronized(this) {
+                if (
+                    INSTANCE == null ||
+                    instanceBaseUrl != normalizedBaseUrl ||
+                    instanceSharedSecret != sharedSecret
+                ) {
+                    INSTANCE = ApiClient(normalizedBaseUrl, sharedSecret)
+                    instanceBaseUrl = normalizedBaseUrl
+                    instanceSharedSecret = sharedSecret
+                }
+                INSTANCE!!
             }
         }
 
-        fun updateBaseUrl(baseUrl: String) {
+        fun updateBaseUrl(baseUrl: String, sharedSecret: String) {
             synchronized(this) {
-                INSTANCE = ApiClient(baseUrl)
+                val normalizedBaseUrl = baseUrl.removeSuffix("/") + "/"
+                if (
+                    INSTANCE == null ||
+                    instanceBaseUrl != normalizedBaseUrl ||
+                    instanceSharedSecret != sharedSecret
+                ) {
+                    INSTANCE = ApiClient(normalizedBaseUrl, sharedSecret)
+                    instanceBaseUrl = normalizedBaseUrl
+                    instanceSharedSecret = sharedSecret
+                }
             }
         }
     }

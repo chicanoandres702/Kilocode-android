@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint . --config eslint.config.mjs",
+    "test": "echo 'No tests defined' && exit 0",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

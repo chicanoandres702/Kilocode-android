@@ -22,6 +22,7 @@ sealed class Screen(val route: String) {
 fun KiloCodeNavHost(
     navController: NavHostController,
     serverUrl: String,
+    sharedSecret: String?,
     onServerUrlChanged: (String) -> Unit,
 ) {
     NavHost(
@@ -31,12 +32,13 @@ fun KiloCodeNavHost(
         composable(Screen.Home.route) {
             HomeScreen(
                 serverUrl = serverUrl,
-                onSessionClick = { sessionId ->
+                sharedSecret = sharedSecret,
+                onNavigateToSession = { sessionId ->
                     navController.navigate(Screen.Session.createRoute(sessionId)) {
                         launchSingleTop = true
                     }
                 },
-                onSettingsClick = {
+                onNavigateToSettings = {
                     navController.navigate(Screen.Settings.route) {
                         launchSingleTop = true
                     }
@@ -54,6 +56,7 @@ fun KiloCodeNavHost(
             if (sessionId != null) {
                 SessionScreen(
                     serverUrl = serverUrl,
+                    sharedSecret = sharedSecret,
                     sessionId = sessionId,
                     onBack = { navController.popBackStack() },
                 )

@@ -19,12 +19,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionScreen(
-    serverUrl: String,
     sessionId: String,
+    serverUrl: String,
+    sharedSecret: String?,
     onBack: () -> Unit,
 ) {
-    val apiClient = remember { ApiClient.getInstance(serverUrl) }
-    val repository = remember { SessionRepository(apiClient) }
+    val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
+
+    val repository = remember(apiClient) { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
 
     val currentSession by repository.currentSession.collectAsState()
@@ -121,9 +123,9 @@ fun SessionScreen(
             ) {
                 items(
                     items = messages,
-                    key = { it.id },
+                    key = { it.id ?: it.sessionID ?: "" },
                 ) { message ->
-                    val messageParts = parts[message.id] ?: emptyList()
+                    val messageParts = message.id?.let { parts[it] } ?: emptyList()
                     MessageBubble(
                         isUser = message.role == "user",
                         parts = messageParts,
