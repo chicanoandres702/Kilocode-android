@@ -75,6 +75,10 @@ interface KiloCodeApi {
     @GET("provider")
     suspend fun listProviders(): Response<List<Provider>>
 
+    // Agent endpoints
+    @GET("agent")
+    suspend fun listAgents(): Response<List<Agent>>
+
     // Config endpoints
     @GET("config")
     suspend fun getConfig(): Response<Config>
