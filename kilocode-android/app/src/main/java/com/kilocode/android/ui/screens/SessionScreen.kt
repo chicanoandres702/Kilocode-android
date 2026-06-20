@@ -123,9 +123,9 @@ fun SessionScreen(
             ) {
                 items(
                     items = messages,
-                    key = { it.id },
+                    key = { it.id ?: it.sessionID ?: "" },
                 ) { message ->
-                    val messageParts = parts[message.id] ?: emptyList()
+                    val messageParts = message.id?.let { parts[it] } ?: emptyList()
                     MessageBubble(
                         isUser = message.role == "user",
                         parts = messageParts,

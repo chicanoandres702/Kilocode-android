@@ -111,7 +111,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 _messages.value = msgs
                 withContext(Dispatchers.IO) {
                     msgs.map { message ->
-                        async { loadParts(sessionId, message.id) }
+                        async {
+                            message.id?.let { loadParts(sessionId, it) }
+                        }
                     }.awaitAll()
                 }
             } else {
@@ -233,8 +235,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
                     val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
+                    val messageId = message.id ?: return
                     val current = _messages.value.toMutableList()
-                    val index = current.indexOfFirst { it.id == message.id }
+                    val index = current.indexOfFirst { it.id == messageId }
                     if (index >= 0) {
                         current[index] = message
                     } else {
@@ -249,15 +252,17 @@ class SessionRepository(private val apiClient: ApiClient) {
                 "part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: return
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
+                    val messageId = part.messageID ?: return
+                    val partId = part.id ?: return
                     val currentParts = _parts.value.toMutableMap()
-                    val messageParts = currentParts[part.messageID]?.toMutableList() ?: mutableListOf()
-                    val index = messageParts.indexOfFirst { it.id == part.id }
+                    val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+                    val index = messageParts.indexOfFirst { it.id == partId }
                     if (index >= 0) {
                         messageParts[index] = part
                     } else {
                         messageParts.add(part)
                     }
-                    currentParts[part.messageID] = messageParts
+                    currentParts[messageId] = messageParts
                     _parts.value = currentParts
                 }
             }
