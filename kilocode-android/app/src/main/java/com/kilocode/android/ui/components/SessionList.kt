@@ -4,18 +4,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.model.Session
 import java.text.SimpleDateFormat
 import java.util.*
 
+// ── Session list ──────────────────────────────────────────────────────────────
 @Composable
 fun SessionList(
     sessions: List<Session>,
@@ -25,29 +30,27 @@ fun SessionList(
     modifier: Modifier = Modifier,
 ) {
     if (sessions.isEmpty()) {
-        EmptySessionList(
-            onNewSession = onNewSession,
-            modifier = modifier,
-        )
+        EmptySessionList(onNewSession = onNewSession, modifier = modifier)
     } else {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(top = 8.dp, bottom = 24.dp),
         ) {
             items(
                 items = sessions,
-                key = { session -> session.id?.takeIf { it.isNotEmpty() } ?: sessions.indexOf(session) },
+                key   = { it.id?.takeIf(String::isNotEmpty) ?: sessions.indexOf(it) },
             ) { session ->
                 SessionListItem(
-                    session = session,
-                    onClick = { session.id?.let { onSessionClick(it) } },
-                    onDelete = { session.id?.let { onDeleteSession(it) } },
+                    session  = session,
+                    onClick  = { session.id?.let(onSessionClick) },
+                    onDelete = { session.id?.let(onDeleteSession) },
                 )
             }
         }
     }
 }
 
+// ── Session item ──────────────────────────────────────────────────────────────
 @Composable
 fun SessionListItem(
     session: Session,
@@ -55,84 +58,96 @@ fun SessionListItem(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val dateFormat = remember { SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()) }
+    val dateFormat by remember { mutableStateOf(SimpleDateFormat("MMM d · HH:mm", Locale.getDefault())) }
     val date = Date(session.time?.updated ?: 0)
-    var showDeleteConfirmation by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
-    Card(
+    Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp)
-            .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 2.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        // Leading icon
+        Surface(
+            shape  = RoundedCornerShape(12.dp),
+            color  = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f),
+            modifier = Modifier.size(40.dp),
         ) {
-            Icon(
-                imageVector = Icons.Default.Chat,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp),
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = session.title.orEmpty().ifEmpty { "New Session" },
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = dateFormat.format(date),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            IconButton(onClick = { showDeleteConfirmation = true }) {
+            Box(contentAlignment = Alignment.Center) {
                 Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.error,
+                    imageVector        = Icons.Rounded.ChatBubbleOutline,
+                    contentDescription = null,
+                    tint               = MaterialTheme.colorScheme.primary,
+                    modifier           = Modifier.size(18.dp),
                 )
             }
         }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        // Text
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text      = session.title.orEmpty().ifEmpty { "New session" },
+                style     = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color     = MaterialTheme.colorScheme.onSurface,
+                maxLines  = 1,
+                overflow  = TextOverflow.Ellipsis,
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text  = dateFormat.format(date),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+                fontSize = 11.sp,
+            )
+        }
+
+        // Delete
+        IconButton(
+            onClick  = { showDeleteDialog = true },
+            modifier = Modifier.size(36.dp),
+        ) {
+            Icon(
+                imageVector        = Icons.Rounded.DeleteOutline,
+                contentDescription = "Delete session",
+                tint               = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                modifier           = Modifier.size(18.dp),
+            )
+        }
     }
 
-    if (showDeleteConfirmation) {
+    // Subtle row divider
+    HorizontalDivider(
+        modifier  = Modifier.padding(start = 68.dp, end = 16.dp),
+        thickness = 0.5.dp,
+        color     = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+    )
+
+    // Delete confirmation dialog
+    if (showDeleteDialog) {
         AlertDialog(
-            onDismissRequest = { showDeleteConfirmation = false },
-            title = { Text("Delete Session") },
-            text = { Text("Are you sure you want to delete this session? This action cannot be undone.") },
+            onDismissRequest = { showDeleteDialog = false },
+            title  = { Text("Delete session?") },
+            text   = { Text("This session and all its messages will be permanently removed.") },
             confirmButton = {
                 TextButton(
-                    onClick = {
-                        showDeleteConfirmation = false
-                        onDelete()
-                    },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error,
-                    ),
-                ) {
-                    Text("Delete")
-                }
+                    onClick = { showDeleteDialog = false; onDelete() },
+                    colors  = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                ) { Text("Delete") }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirmation = false }) {
-                    Text("Cancel")
-                }
+                TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") }
             },
+            shape = RoundedCornerShape(20.dp),
         )
     }
 }
 
+// ── Empty state ───────────────────────────────────────────────────────────────
 @Composable
 fun EmptySessionList(
     onNewSession: () -> Unit,
@@ -143,32 +158,45 @@ fun EmptySessionList(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Icon(
-            imageVector = Icons.Default.Chat,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(64.dp),
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        Surface(
+            shape  = RoundedCornerShape(24.dp),
+            color  = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f),
+            modifier = Modifier.size(80.dp),
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector        = Icons.Rounded.ChatBubbleOutline,
+                    contentDescription = null,
+                    tint               = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                    modifier           = Modifier.size(36.dp),
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "No sessions yet",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text   = "No sessions yet",
+            style  = MaterialTheme.typography.titleMedium,
+            color  = MaterialTheme.colorScheme.onSurface,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = "Create a new session to start coding with AI",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text   = "Start a new session to code with AI",
+            style  = MaterialTheme.typography.bodyMedium,
+            color  = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onNewSession) {
+        Spacer(modifier = Modifier.height(28.dp))
+        Button(
+            onClick = onNewSession,
+            shape   = RoundedCornerShape(14.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+        ) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector        = Icons.Rounded.Add,
                 contentDescription = null,
+                modifier           = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("New Session")
+            Text("New session", fontWeight = FontWeight.SemiBold)
         }
     }
 }
