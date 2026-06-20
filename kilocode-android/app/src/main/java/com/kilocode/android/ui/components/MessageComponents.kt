@@ -213,9 +213,9 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = if (hasText) Modifier.clickable(
+                    onClick = { expanded = !expanded },
                     interactionSource = interactionSource,
-                    indication = null,
-                    onClick = { expanded = !expanded }
+                    indication = null
                 )
                            else Modifier,
             ) {
