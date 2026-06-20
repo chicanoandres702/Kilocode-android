@@ -263,7 +263,12 @@ private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
         )
     )
 
+@Composable
 private fun Modifier.clickable(onClick: () -> Unit): Modifier =
     this.then(
-        androidx.compose.foundation.clickable(onClick = onClick)
+        androidx.compose.foundation.clickable(
+            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+            indication = androidx.compose.material.ripple.rememberRipple(),
+            onClick = onClick
+        )
     )
