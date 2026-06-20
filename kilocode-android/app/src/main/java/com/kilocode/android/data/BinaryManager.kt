@@ -42,13 +42,18 @@ object BinaryManager {
         return binaryFile
     }
 
-    fun startServer(context: Context, serverUrl: String) {
+    fun startServer(context: Context, serverUrl: String, autonomousMode: Boolean = false) {
         if (isServerRunning.value) return
         try {
             addLog("Preparing binary...")
             val file = prepareBinary(context)
-            addLog("Starting server at $serverUrl...")
-            val processBuilder = ProcessBuilder(file.absolutePath, "serve", "--url", serverUrl)
+            val modeLabel = if (autonomousMode) "autonomous mode" else "interactive mode"
+            addLog("Starting server at $serverUrl ($modeLabel)...")
+            val arguments = mutableListOf(file.absolutePath, "serve", "--url", serverUrl)
+            if (autonomousMode) {
+                arguments += "--auto"
+            }
+            val processBuilder = ProcessBuilder(arguments)
             
             val env = processBuilder.environment()
             env["HOME"] = context.filesDir.absolutePath

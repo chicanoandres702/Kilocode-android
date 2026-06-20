@@ -27,6 +27,9 @@
 - [x] Implemented `BinaryManager` for running `kilo serve` binary
 - [x] Added Kilo Server management UI to `SettingsScreen`
 - [x] Implemented auto-start for Kilo server in `MainActivity`
+- [x] Updated Android session API handling to match current Kilo server `/session/{id}/message` and `/event` payloads
+- [x] Added persisted server URL preferences and wired Settings/MainActivity to save and restore it
+- [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
 
 ## APK Output
 
@@ -59,3 +62,5 @@
 | 2026-03-30 | Code review round 2 - fixed 32 issues, APK release build |
 | 2026-06-18 | Updated Android CI workflow and committed the workflow file; push is blocked by missing GitHub HTTPS credentials |
 | 2026-06-20 | Added `18.227.97.23` to Android network security cleartext domain allowlist and base cleartext config |
+| 2026-06-20 | Fixed Android session opening against current Kilo server message/event API and added server URL persistence |
+| 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |

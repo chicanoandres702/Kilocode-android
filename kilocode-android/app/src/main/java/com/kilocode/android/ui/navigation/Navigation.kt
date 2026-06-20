@@ -24,6 +24,7 @@ fun KiloCodeNavHost(
     serverUrl: String,
     sharedSecret: String?,
     onServerUrlChanged: (String) -> Unit,
+    onAutonomousModeChanged: (Boolean) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -67,9 +68,10 @@ fun KiloCodeNavHost(
 
         composable(Screen.Settings.route) {
             SettingsScreen(
-                serverUrl = serverUrl,
+                defaultServerUrl = serverUrl,
                 onBack = { navController.popBackStack() },
                 onServerUrlChanged = onServerUrlChanged,
+                onAutonomousModeChanged = onAutonomousModeChanged,
             )
         }
     }

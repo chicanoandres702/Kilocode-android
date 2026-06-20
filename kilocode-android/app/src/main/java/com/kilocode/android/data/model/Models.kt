@@ -31,6 +31,11 @@ data class Message(
     val tokens: TokenUsage? = null,
 )
 
+data class MessageWithParts(
+    val info: Message? = null,
+    val parts: List<Part> = emptyList(),
+)
+
 data class MessageTime(
     val created: Long,
     val completed: Long? = null,
