@@ -60,6 +60,7 @@ fun SessionScreen(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
+        modifier = Modifier.imePadding(),
         topBar = {
             // ── Single-line top bar ───────────────────────────────────────────
             // Title only + status chip + back. Agent lives in the prompt field.
