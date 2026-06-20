@@ -23,8 +23,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
-    // Pass your actual state / callbacks here
-    serverUrl: String          = "http://localhost:3000",
+    defaultServerUrl: String,
+    onServerUrlChanged: (String) -> Unit,
+    onAutonomousModeChanged: (Boolean) -> Unit,
+    serverUrl: String          = defaultServerUrl,
     sharedSecret: String       = "",
     onSave: (url: String, secret: String) -> Unit = { _, _ -> },
 ) {

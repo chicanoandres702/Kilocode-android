@@ -253,6 +253,7 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+@Composable
 private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
     this.then(
         androidx.compose.foundation.clickable(
@@ -260,4 +261,9 @@ private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
             interactionSource  = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
             onClick            = onClick,
         )
+    )
+
+private fun Modifier.clickable(onClick: () -> Unit): Modifier =
+    this.then(
+        androidx.compose.foundation.clickable(onClick = onClick)
     )
