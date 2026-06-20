@@ -35,4 +35,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          kilo run security-reviewer --input "Review the PR changes for security risks."
+          kilo run "Review the PR changes for security risks." --agent security-reviewer --auto
