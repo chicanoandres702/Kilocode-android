@@ -12,12 +12,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.withContext
 import okhttp3.sse.EventSource
 import java.util.UUID
 
@@ -46,7 +42,7 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private var eventSource: EventSource? = null
 
-    suspend fun listSessions() = withContext(Dispatchers.IO) {
+    suspend fun listSessions() {
         _isLoading.value = true
         try {
             val response = apiClient.api.listSessions()
@@ -90,6 +86,9 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun selectSession(sessionId: String) {
         try {
+            _messages.value = emptyList()
+            _parts.value = emptyMap()
+            _error.value = null
             val response = apiClient.api.getSession(sessionId)
             if (response.isSuccessful) {
                 _currentSession.value = response.body()
@@ -107,33 +106,19 @@ class SessionRepository(private val apiClient: ApiClient) {
         try {
             val response = apiClient.api.listMessages(sessionId)
             if (response.isSuccessful) {
-                val msgs = response.body() ?: emptyList()
-                _messages.value = msgs
-                withContext(Dispatchers.IO) {
-                    msgs.map { message ->
-                        async {
-                            message.id?.let { loadParts(sessionId, it) }
-                        }
-                    }.awaitAll()
-                }
+                val messagesWithParts = response.body() ?: emptyList()
+                _messages.value = messagesWithParts.mapNotNull { it.info }
+                _parts.value = messagesWithParts
+                    .mapNotNull { messageWithParts ->
+                        messageWithParts.info?.id?.let { it to messageWithParts.parts }
+                    }
+                    .toMap()
             } else {
                 _error.value = "Failed to load messages: ${response.code()}"
             }
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading messages", e)
             _error.value = "Connection error: ${e.message}"
-        }
-    }
-
-    private suspend fun loadParts(sessionId: String, messageId: String) {
-        try {
-            val response = apiClient.api.listParts(sessionId, messageId)
-            if (response.isSuccessful) {
-                val messageParts: List<Part> = response.body() ?: emptyList()
-                _parts.value = _parts.value + (messageId to messageParts)
-            }
-        } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading parts", e)
         }
     }
 
@@ -146,6 +131,14 @@ class SessionRepository(private val apiClient: ApiClient) {
             )
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
+                response.body()?.let { messageWithParts ->
+                    messageWithParts.info?.let { message ->
+                        upsertMessage(message)
+                        message.id?.let {
+                            _parts.value = _parts.value + (it to messageWithParts.parts)
+                        }
+                    }
+                }
                 loadMessages(sessionId)
                 true
             } else {
@@ -193,9 +186,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     fun connectSse(sessionId: String) {
         disconnectSse()
-        val baseUrl = apiClient.baseUrl.removeSuffix("/")
         eventSource = apiClient.createEventSource(
-            "session/$sessionId/events",
+            "event",
             object : okhttp3.sse.EventSourceListener() {
                 override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                     _isConnected.value = true
@@ -235,40 +227,73 @@ class SessionRepository(private val apiClient: ApiClient) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
                     val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
-                    val messageId = message.id ?: return
-                    val current = _messages.value.toMutableList()
-                    val index = current.indexOfFirst { it.id == messageId }
-                    if (index >= 0) {
-                        current[index] = message
-                    } else {
-                        current.add(message)
-                    }
-                    _messages.value = current
+                    upsertMessage(message)
                 }
                 "message.removed" -> {
                     val messageID = properties["messageID"] as? String ?: return
                     _messages.value = _messages.value.filter { it.id != messageID }
                 }
-                "part.updated" -> {
+                "message.part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: return
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
                     val messageId = part.messageID ?: return
                     val partId = part.id ?: return
-                    val currentParts = _parts.value.toMutableMap()
-                    val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
-                    val index = messageParts.indexOfFirst { it.id == partId }
-                    if (index >= 0) {
-                        messageParts[index] = part
-                    } else {
-                        messageParts.add(part)
+                    upsertPart(messageId, partId, part)
+                }
+                "message.part.removed" -> {
+                    val messageId = properties["messageID"] as? String ?: return
+                    val partId = properties["partID"] as? String ?: return
+                    removePart(messageId, partId)
+                }
+                "session.status" -> {
+                    val status = properties["status"] as? Map<String, Any>
+                    _isConnected.value = status?.get("type") != "idle"
+                }
+                "session.error" -> {
+                    val error = properties["error"] as? Map<String, Any>
+                    _error.value = error?.let {
+                        val name = it["name"] as? String ?: "Session error"
+                        val data = it["data"] as? Map<String, Any>
+                        val message = data?.get("message") as? String
+                        "$name${message?.let { ": $it" }.orEmpty()}"
                     }
-                    currentParts[messageId] = messageParts
-                    _parts.value = currentParts
                 }
             }
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error handling SSE event", e)
         }
+    }
+
+    private fun upsertMessage(message: Message) {
+        val messageId = message.id ?: return
+        val current = _messages.value.toMutableList()
+        val index = current.indexOfFirst { it.id == messageId }
+        if (index >= 0) {
+            current[index] = message
+        } else {
+            current.add(message)
+        }
+        _messages.value = current
+    }
+
+    private fun upsertPart(messageId: String, partId: String, part: Part) {
+        val currentParts = _parts.value.toMutableMap()
+        val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+        val index = messageParts.indexOfFirst { it.id == partId }
+        if (index >= 0) {
+            messageParts[index] = part
+        } else {
+            messageParts.add(part)
+        }
+        currentParts[messageId] = messageParts
+        _parts.value = currentParts
+    }
+
+    private fun removePart(messageId: String, partId: String) {
+        val currentParts = _parts.value.toMutableMap()
+        val messageParts = currentParts[messageId]?.filter { it.id != partId }.orEmpty()
+        currentParts[messageId] = messageParts
+        _parts.value = currentParts
     }
 
     fun disconnectSse() {

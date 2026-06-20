@@ -15,18 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kilocode.android.BuildConfig
 import com.kilocode.android.ui.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    serverUrl: String,
+    defaultServerUrl: String,
     onBack: () -> Unit,
     onServerUrlChanged: (String) -> Unit,
+    onAutonomousModeChanged: (Boolean) -> Unit,
     viewModel: SettingsViewModel = viewModel()
 ) {
-    var serverUrlText by remember { mutableStateOf(serverUrl) }
+    val storedServerUrl by viewModel.serverUrl.collectAsState(initial = defaultServerUrl)
+    var serverUrlText by remember(storedServerUrl) { mutableStateOf(storedServerUrl ?: defaultServerUrl) }
+    val autonomousMode by viewModel.autonomousMode.collectAsState(initial = false)
+    var autonomousModeEnabled by remember(autonomousMode) { mutableStateOf(autonomousMode) }
     val sharedSecret by viewModel.sharedSecret.collectAsState(initial = "")
     var sharedSecretText by remember(sharedSecret) { mutableStateOf(sharedSecret ?: "") }
     val connectionStatus by viewModel.connectionStatus.collectAsState()
@@ -93,7 +96,7 @@ fun SettingsScreen(
                 val isRunning = com.kilocode.android.data.BinaryManager.isServerRunning.value
                 Button(
                     onClick = {
-                        com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText)
+                        com.kilocode.android.data.BinaryManager.startServer(context, serverUrlText, autonomousModeEnabled)
                     },
                     modifier = Modifier.weight(1f),
                     enabled = !isRunning
@@ -168,6 +171,34 @@ fun SettingsScreen(
                 },
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column {
+                    Text(
+                        text = "Autonomous Mode",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                    Text(
+                        text = "Start the Kilo server with --auto when enabled.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = autonomousModeEnabled,
+                    onCheckedChange = { enabled ->
+                        autonomousModeEnabled = enabled
+                        viewModel.saveAutonomousMode(enabled)
+                        onAutonomousModeChanged(enabled)
+                    },
+                )
+            }
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Enter the URL of your running Kilo Code server. Default is http://localhost:4096",
@@ -178,7 +209,9 @@ fun SettingsScreen(
 
             Button(
                 onClick = {
-                    onServerUrlChanged(serverUrlText)
+                    val normalizedServerUrl = serverUrlText.trim().ifBlank { defaultServerUrl }
+                    onServerUrlChanged(normalizedServerUrl)
+                    viewModel.saveServerUrl(normalizedServerUrl)
                     viewModel.saveSharedSecret(sharedSecretText)
                     showSaveConfirmation = true
                 },
@@ -196,7 +229,7 @@ fun SettingsScreen(
 
             OutlinedButton(
                 onClick = {
-                    viewModel.testConnection(serverUrlText, sharedSecretText.ifEmpty { sharedSecret ?: "" })
+                    viewModel.testConnection(serverUrlText.trim().ifBlank { defaultServerUrl }, sharedSecretText.ifEmpty { sharedSecret ?: "" })
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
