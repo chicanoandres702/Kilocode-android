@@ -198,6 +198,7 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
 fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     val hasText  = !part.text.isNullOrBlank()
+    val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
 
     Surface(
         modifier = modifier
@@ -209,7 +210,11 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = if (hasText) Modifier.noRippleClickable { expanded = !expanded }
+                modifier = if (hasText) Modifier.clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = { expanded = !expanded }
+                )
                            else Modifier,
             ) {
                 Icon(
@@ -252,23 +257,3 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
     }
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-@Composable
-private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
-    this.then(
-        androidx.compose.foundation.clickable(
-            indication         = null,
-            interactionSource  = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-            onClick            = onClick,
-        )
-    )
-
-@Composable
-private fun Modifier.clickable(onClick: () -> Unit): Modifier =
-    this.then(
-        androidx.compose.foundation.clickable(
-            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-            indication = androidx.compose.material.ripple.rememberRipple(),
-            onClick = onClick
-        )
-    )
