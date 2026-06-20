@@ -158,31 +158,29 @@ fun PromptInput(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 // ── Send / loading button ─────────────────────────────────────
-                AnimatedContent(
-                    targetState  = isLoading,
-                    transitionSpec = { fadeIn() togetherWith fadeOut() },
-                    label        = "send",
-                ) { loading ->
-                    if (loading) {
-                        Box(modifier = Modifier.size(44.dp), contentAlignment = Alignment.Center) {
+                IconButton(
+                    onClick  = { if (canSend) { onSend(text.trim()); text = "" } },
+                    enabled  = canSend,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(
+                            if (canSend) MaterialTheme.colorScheme.primary
+                            else         MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
+                        ),
+                ) {
+                    AnimatedContent(
+                        targetState  = isLoading,
+                        transitionSpec = { fadeIn() togetherWith fadeOut() },
+                        label        = "send",
+                    ) { loading ->
+                        if (loading) {
                             CircularProgressIndicator(
                                 modifier    = Modifier.size(20.dp),
                                 strokeWidth = 2.dp,
-                                color       = MaterialTheme.colorScheme.primary,
+                                color       = MaterialTheme.colorScheme.onPrimary,
                             )
-                        }
-                    } else {
-                        IconButton(
-                            onClick  = { if (canSend) { onSend(text.trim()); text = "" } },
-                            enabled  = canSend,
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    if (canSend) MaterialTheme.colorScheme.primary
-                                    else         MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-                                ),
-                        ) {
+                        } else {
                             Icon(
                                 imageVector        = Icons.Rounded.ArrowUpward,
                                 contentDescription = "Send",
