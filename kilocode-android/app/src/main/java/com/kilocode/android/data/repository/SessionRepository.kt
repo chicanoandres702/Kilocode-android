@@ -166,14 +166,14 @@ class SessionRepository(private val apiClient: ApiClient) {
     ): Boolean {
         return try {
             _isLoading.value = true
-            val request = mutableMapOf<String, Any>(
-                "messageID" to generateMessageId(),
-                "parts" to listOf(mapOf("type" to "text", "text" to text))
+            val request = PromptRequest(
+                messageID = generateMessageId(),
+                parts = listOf(PartRequest(type = "text", text = text)),
+                agent = agent,
+                model = model?.let { ModelInfo(it.providerID, it.modelID) },
+                providerID = model?.providerID,
+                modelID = model?.modelID
             )
-            agent?.let { request["agent"] = it }
-            model?.let {
-                request["model"] = mapOf("providerID" to it.providerID, "modelID" to it.modelID)
-            }
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
