@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.*
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withTimeoutOrNull
@@ -55,6 +56,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     private var eventSource: EventSource? = null
     private var expectedResponseId: String? = null
     private var sseConnected = false
+    private var sseOpening: CompletableDeferred<Boolean>? = null
 
     suspend fun listSessions() {
         _isLoading.value = true
@@ -229,6 +231,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
             val response = apiClient.api.sendPrompt(sessionId, request, directory)
             if (response.isSuccessful) {
+                _error.value = null
+                delay(1000)
                 loadMessages(sessionId)
                 true
             } else {
@@ -274,10 +278,18 @@ class SessionRepository(private val apiClient: ApiClient) {
         directory: String? = null,
         timeoutMillis: Long = 1500L,
     ): Boolean {
-        disconnectSse()
-        val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
+        if (sseConnected) return true
+
+        val existingOpening = sseOpening
+        if (existingOpening != null) {
+            return withTimeoutOrNull(timeoutMillis) { existingOpening.await() } == true
+        }
+
         val opened = CompletableDeferred<Boolean>()
+        sseOpening = opened
         try {
+            closeEventSource()
+            val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
             eventSource = apiClient.createEventSource(
                 "global/event?directory=$encodedDirectory",
                 object : EventSourceListener() {
@@ -314,13 +326,15 @@ class SessionRepository(private val apiClient: ApiClient) {
             Log.e("SessionRepo", "Error connecting SSE", e)
             _error.value = "SSE Connection failed: ${e.message}"
             return false
+        } finally {
+            if (sseOpening === opened) sseOpening = null
         }
 
         val openedWithinTimeout = withTimeoutOrNull(timeoutMillis) { opened.await() } == true
         if (!openedWithinTimeout) {
             Log.w("SessionRepo", "Timed out waiting for SSE to open")
             _error.value = "SSE Connection timed out"
-            disconnectSse()
+            closeEventSource()
             return false
         }
         return true
@@ -339,7 +353,15 @@ class SessionRepository(private val apiClient: ApiClient) {
                     val info = properties["info"] as? Map<String, Any> ?: return
                     Log.d("SessionRepo", "Processing message.updated: $info")
                     val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
+                    val messageId = message.id ?: return
                     upsertMessage(message.copy(sessionID = message.sessionID ?: sessionId))
+
+                    val parts = properties["parts"] as? List<*>
+                    parts?.forEach { rawPart ->
+                        val part = GSON.fromJson(GSON.toJsonTree(rawPart), Part::class.java)
+                        val partId = part.id ?: return@forEach
+                        upsertPart(sessionId, messageId, partId, part)
+                    }
                 }
                 "message.removed" -> {
                     val messageID = properties["messageID"] as? String ?: return
@@ -408,11 +430,17 @@ class SessionRepository(private val apiClient: ApiClient) {
         _parts.value = currentParts
     }
 
-    fun disconnectSse() {
+    private fun closeEventSource() {
         eventSource?.cancel()
         eventSource = null
         sseConnected = false
         _isConnected.value = false
+    }
+
+    fun disconnectSse() {
+        closeEventSource()
+        sseOpening?.complete(false)
+        sseOpening = null
     }
 
     fun clearError() {
