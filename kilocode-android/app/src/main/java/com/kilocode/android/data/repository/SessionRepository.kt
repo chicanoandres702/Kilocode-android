@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.UUID
 
 class SessionRepository(private val apiClient: ApiClient) {
@@ -126,21 +128,30 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun listModels() {
         try {
-            val providers = apiClient.api.listProviders()
-            val config = apiClient.api.getConfig()
+            val response = apiClient.api.listProviders()
+            val providerResponse = response.takeIf { it.isSuccessful }?.body()
+            val providers = providerResponse?.all.orEmpty().entries
+                .filter { providerResponse.connected.isEmpty() || it.key in providerResponse.connected }
             val options = buildList {
-                providers.takeIf { it.isSuccessful }?.body().orEmpty().forEach { provider ->
+                providers.forEach { (providerID, provider) ->
                     provider.models.values.forEach { model ->
-                        add(ModelOption(provider.id, model.id, "${provider.name} · ${model.name}"))
+                        add(
+                            ModelOption(
+                                providerID = providerID,
+                                modelID = model.id,
+                                displayName = model.name.ifBlank { model.id },
+                                category = provider.name.ifBlank { providerID },
+                            )
+                        )
                     }
                 }
                 if (isEmpty()) {
-                    config.takeIf { it.isSuccessful }?.body()?.models.orEmpty().forEach { id ->
-                        add(ModelOption("default", id, id))
+                    apiClient.api.getConfig().takeIf { it.isSuccessful }?.body()?.models.orEmpty().forEach { id ->
+                        add(ModelOption("default", id, id, "Default"))
                     }
                 }
             }
-            _models.value = options
+            _models.value = options.sortedWith(compareBy<ModelOption> { it.category }.thenBy { it.displayName })
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading models", e)
         }
@@ -215,10 +226,11 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    fun connectSse(sessionId: String) {
+    fun connectSse(sessionId: String, directory: String? = null) {
         disconnectSse()
+        val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
         eventSource = apiClient.createEventSource(
-            "event",
+            "global/event?directory=$encodedDirectory",
             object : EventSourceListener() {
                 override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                     _isConnected.value = true
