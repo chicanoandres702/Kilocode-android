@@ -170,9 +170,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 messageID = generateMessageId(),
                 parts = listOf(PartRequest(type = "text", text = text)),
                 agent = agent,
-                model = model?.let { ModelInfo(it.providerID, it.modelID) },
-                providerID = model?.providerID,
-                modelID = model?.modelID
+                model = model?.let { ModelInfo(it.providerID, it.modelID) }
             )
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {

@@ -186,12 +186,10 @@ data class McpServer(
 )
 
 data class PromptRequest(
-    val messageID: String,
-    val parts: List<PartRequest>,
+    val messageID: String? = null,
+    val parts: List<PartRequest>? = null,
     val agent: String? = null,
     val model: ModelInfo? = null,
-    val providerID: String? = null,
-    val modelID: String? = null,
 )
 
 data class PartRequest(
