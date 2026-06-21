@@ -47,6 +47,9 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _debugLogs = MutableStateFlow<List<String>>(emptyList())
+    val debugLogs: StateFlow<List<String>> = _debugLogs
+
     private var eventSource: EventSource? = null
     private var expectedResponseId: String? = null
 
@@ -201,7 +204,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     ): Boolean {
         return try {
             val messageID = generateMessageId()
-            expectedResponseId = messageID // Track for timeout detection
+            expectedResponseId = messageID
+            addDebugLog("sendPrompt started: messageID=$messageID")
 
             val request = PromptRequest(
                 messageID = messageID,
@@ -215,7 +219,8 @@ class SessionRepository(private val apiClient: ApiClient) {
             upsertMessage(optimisticMessage)
             _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
 
-            val response = apiClient.api.sendPrompt(sessionId, request)
+            val directory = _currentSession.value?.directory ?: return false
+            val response = apiClient.api.sendPrompt(sessionId, request, directory)
             if (response.isSuccessful) {
                 // SSE will update the state
                 true
@@ -369,6 +374,15 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     fun clearError() {
         _error.value = null
+    }
+
+    fun addDebugLog(message: String) {
+        val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        _debugLogs.value = listOf("[$timestamp] $message") + _debugLogs.value.take(49)
+    }
+
+    fun clearDebugLogs() {
+        _debugLogs.value = emptyList()
     }
 
     private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"

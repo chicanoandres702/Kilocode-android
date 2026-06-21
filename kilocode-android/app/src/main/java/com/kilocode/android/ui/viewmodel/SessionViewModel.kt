@@ -57,4 +57,16 @@ class SessionViewModel(private val repository: SessionRepository) : ViewModel() 
             loadSessions()
         }
     }
+
+    private val _debugLogs = MutableStateFlow<List<String>>(emptyList())
+    val debugLogs: StateFlow<List<String>> = _debugLogs
+
+    fun addDebugLog(message: String) {
+        val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        _debugLogs.value = listOf("[$timestamp] $message") + _debugLogs.value.take(49)
+    }
+
+    fun clearDebugLogs() {
+        _debugLogs.value = emptyList()
+    }
 }
