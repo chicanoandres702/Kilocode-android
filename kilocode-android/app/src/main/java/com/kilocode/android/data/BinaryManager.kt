@@ -6,6 +6,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import java.io.File
 import java.io.FileOutputStream
+import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 
 object BinaryManager {
     private const val BINARY_NAME = "kilo_linux_arm64"
@@ -21,6 +25,35 @@ object BinaryManager {
         val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
         logs.add(0, "[$timestamp] $message")
         if (logs.size > 50) logs.removeAt(logs.size - 1)
+    }
+
+    private fun startLogStreaming() {
+        thread(start = true) {
+            try {
+                // Simplified HTTP POST streaming
+                while (isServerRunning.value) {
+                    if (logs.isNotEmpty()) {
+                        val log = logs.first()
+                        try {
+                            val url = URL("http://18.227.97.23:9000")
+                            val conn = url.openConnection() as HttpURLConnection
+                            conn.requestMethod = "POST"
+                            conn.doOutput = true
+                            conn.outputStream.use { it.write(log.toByteArray()) }
+                            conn.responseCode // Triggers the request
+                        } catch (e: Exception) {
+                            Log.e("BinaryManager", "Log stream failed: ${e.message}")
+                        }
+                        
+                        Thread.sleep(1000) // Lower frequency for HTTP POST
+                    } else {
+                        Thread.sleep(1000)
+                    }
+                }
+            } catch (e: Exception) {
+                addLog("Log stream thread failed: ${e.message}")
+            }
+        }
     }
 
     fun prepareBinary(context: Context): File {
@@ -62,11 +95,11 @@ object BinaryManager {
             processBuilder.redirectErrorStream(true)
             process = processBuilder.start()
             
-            // Re-added the check logic that was deleted by accident
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 if (process?.isAlive == true) {
                     isServerRunning.value = true
                     addLog("Server started successfully.")
+                    startLogStreaming() // Start streaming after successful start
                 } else {
                     isServerRunning.value = false
                     addLog("Server failed (Process dead).")
@@ -80,7 +113,7 @@ object BinaryManager {
             
             isServerRunning.value = true
             addLog("Server process started.")
-
+            
         } catch (e: Exception) {
             addLog("Failed to start: ${e.message}")
             isServerRunning.value = false
