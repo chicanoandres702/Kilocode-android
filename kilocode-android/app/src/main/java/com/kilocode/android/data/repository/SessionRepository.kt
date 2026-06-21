@@ -289,13 +289,16 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     private fun handleSseEvent(type: String?, data: String) {
+        Log.d("SessionRepo", "SSE event received: type=$type, data=$data")
         try {
             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
             val properties = event["properties"] as? Map<String, Any> ?: return
+            Log.d("SessionRepo", "SSE event properties: $properties")
 
             when (type) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
+                    Log.d("SessionRepo", "Processing message.updated: $info")
                     upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
                 }
                 "message.removed" -> {
@@ -304,6 +307,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
                 "message.part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: return
+                    Log.d("SessionRepo", "Processing message.part.updated: $partData")
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
                     val messageId = part.messageID ?: return
                     val partId = part.id ?: return
