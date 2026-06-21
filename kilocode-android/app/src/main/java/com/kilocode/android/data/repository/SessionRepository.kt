@@ -173,8 +173,6 @@ class SessionRepository(private val apiClient: ApiClient) {
             agent?.let { request["agent"] = it }
             model?.let {
                 request["model"] = mapOf("providerID" to it.providerID, "modelID" to it.modelID)
-                request["providerID"] = it.providerID
-                request["modelID"] = it.modelID
             }
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
