@@ -206,7 +206,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 agent = agent,
                 model = model?.let { ModelInfo(it.providerID, it.modelID) }
             )
+            Log.d("SessionRepo", "Sending prompt: $text")
             val response = apiClient.api.sendPrompt(sessionId, request)
+            Log.d("SessionRepo", "Send prompt response: ${response.code()}")
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
                     messageWithParts.info?.let { message ->
@@ -214,7 +216,6 @@ class SessionRepository(private val apiClient: ApiClient) {
                         message.id?.let { _parts.value = _parts.value + (it to messageWithParts.parts) }
                     }
                 }
-                loadMessages(sessionId)
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
