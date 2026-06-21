@@ -73,6 +73,16 @@ data class ProviderModel(
     val limit: ModelLimit? = null,
 )
 
+data class SlashCommand(
+    val command: String,
+    val alias: String? = null,
+    val label: String,
+    val description: String,
+    val category: String,
+) {
+    val trigger: String = if (command.startsWith("/")) command else "/$command"
+}
+
 data class TokenUsage(
     val input: Long = 0,
     val output: Long = 0,
@@ -192,4 +202,16 @@ data class Agent(
     val mode: String? = null,
     val builtIn: Boolean = false,
     val color: String? = null,
+)
+
+data class PromptRequest(
+    val messageID: String? = null,
+    val parts: List<PartRequest>? = null,
+    val agent: String? = null,
+    val model: ModelInfo? = null,
+)
+
+data class PartRequest(
+    val type: String,
+    val text: String,
 )
