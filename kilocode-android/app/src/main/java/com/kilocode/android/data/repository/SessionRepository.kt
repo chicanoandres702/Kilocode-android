@@ -281,7 +281,9 @@ class SessionRepository(private val apiClient: ApiClient) {
 
                 override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
                     _isConnected.value = false
-                    Log.e("SessionRepo", "SSE failed: ${t?.message}")
+                    val errorMessage = t?.message ?: "Unknown SSE failure"
+                    Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
+                    _error.value = "SSE Connection failed: $errorMessage"
                 }
             }
         )
