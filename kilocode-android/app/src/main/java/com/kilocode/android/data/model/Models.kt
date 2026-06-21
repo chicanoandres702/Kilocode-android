@@ -45,13 +45,32 @@ data class ModelOption(
     val providerID: String,
     val modelID: String,
     val displayName: String,
+    val category: String = "Models",
 ) {
     val key: String = "$providerID/$modelID"
 }
 
+data class ProviderListResponse(
+    val all: Map<String, Provider> = emptyMap(),
+    val connected: List<String> = emptyList(),
+    val default: Map<String, String> = emptyMap(),
+)
+
 data class ModelInfo(
     val providerID: String,
     val modelID: String,
+)
+
+data class ProviderModel(
+    val id: String,
+    val name: String,
+    val releaseDate: String? = null,
+    val attachment: Boolean = false,
+    val reasoning: Boolean = false,
+    val temperature: Boolean = true,
+    val toolCall: Boolean = true,
+    val cost: ModelCost? = null,
+    val limit: ModelLimit? = null,
 )
 
 data class TokenUsage(
