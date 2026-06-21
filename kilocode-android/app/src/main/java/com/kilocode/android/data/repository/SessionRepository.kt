@@ -48,6 +48,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     val error: StateFlow<String?> = _error
 
     private var eventSource: EventSource? = null
+    private var expectedResponseId: String? = null
 
     suspend fun listSessions() {
         _isLoading.value = true
@@ -200,6 +201,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     ): Boolean {
         return try {
             val messageID = generateMessageId()
+            expectedResponseId = messageID // Track for timeout detection
+
             val request = PromptRequest(
                 messageID = messageID,
                 parts = listOf(PartRequest(type = "text", text = text)),
@@ -210,16 +213,11 @@ class SessionRepository(private val apiClient: ApiClient) {
             // Optimistic update
             val optimisticMessage = Message(id = messageID, sessionID = sessionId, role = "user")
             upsertMessage(optimisticMessage)
-            // Add initial part for the user prompt text so it displays immediately
             _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
-            
-            // Note: We do NOT set isLoading here because SSE will manage the loading state.
-            // isLoading should be tied to `hasPendingWork` or SSE connection status.
 
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
-                // Do NOT call loadMessages(sessionId) here, trust the SSE stream to update the state.
-                // We have already upserted the user message optimistically.
+                // SSE will update the state
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
@@ -268,14 +266,17 @@ class SessionRepository(private val apiClient: ApiClient) {
             object : EventSourceListener() {
                 override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                     _isConnected.value = true
+                    Log.d("SessionRepo", "SSE opened")
                 }
 
                 override fun onEvent(eventSource: EventSource, id: String?, type: String?, data: String) {
+                    Log.d("SessionRepo", "SSE event received: type=$type")
                     handleSseEvent(type, data)
                 }
 
                 override fun onClosed(eventSource: EventSource) {
                     _isConnected.value = false
+                    Log.d("SessionRepo", "SSE closed")
                 }
 
                 override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
@@ -324,8 +325,8 @@ class SessionRepository(private val apiClient: ApiClient) {
                     val error = properties["error"] as? Map<String, Any>
                     _error.value = error?.let {
                         val name = it["name"] as? String ?: "Session error"
-                        val data = it["data"] as? Map<String, Any>
-                        val message = data?.get("message") as? String
+                        val dataMap = it["data"] as? Map<String, Any>
+                        val message = dataMap?.get("message") as? String
                         "$name${message?.let { ": $it" }.orEmpty()}"
                     }
                 }
@@ -370,10 +371,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"
 
-    // Add to companion object or as private constants
     companion object {
         private val GSON = Gson()
         private val MAP_TYPE = object : TypeToken<Map<String, Any>>() {}.type
-        private const val SSE_TIMEOUT_MS = 30000 // 30 seconds
     }
 }
