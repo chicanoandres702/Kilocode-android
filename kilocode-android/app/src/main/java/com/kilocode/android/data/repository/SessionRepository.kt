@@ -199,16 +199,18 @@ class SessionRepository(private val apiClient: ApiClient) {
         model: ModelOption? = null,
     ): Boolean {
         return try {
-            _isLoading.value = true
+            val messageID = generateMessageId()
             val request = PromptRequest(
-                messageID = generateMessageId(),
+                messageID = messageID,
                 parts = listOf(PartRequest(type = "text", text = text)),
                 agent = agent,
                 model = model?.let { ModelInfo(it.providerID, it.modelID) }
             )
-            Log.d("SessionRepo", "Sending prompt: $text")
+            
+            // Optimistic update
+            upsertMessage(Message(id = messageID, sessionID = sessionId, role = "user"))
+            
             val response = apiClient.api.sendPrompt(sessionId, request)
-            Log.d("SessionRepo", "Send prompt response: ${response.code()}")
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
                     messageWithParts.info?.let { message ->
@@ -225,8 +227,6 @@ class SessionRepository(private val apiClient: ApiClient) {
             Log.e("SessionRepo", "Error sending prompt", e)
             _error.value = "Connection error: ${e.message}"
             false
-        } finally {
-            _isLoading.value = false
         }
     }
 
