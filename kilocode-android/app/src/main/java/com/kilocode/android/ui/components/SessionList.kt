@@ -53,7 +53,7 @@ fun SessionList(
         ) {
             itemsIndexed(
                 items = sessions,
-                key   = { _, s -> s.id?.takeIf(String::isNotEmpty) ?: s.hashCode() },
+                key   = { index, s -> s.id?.takeIf(String::isNotEmpty) ?: "temp_$index" },
             ) { index, session ->
                 SessionListItem(
                     session  = session,

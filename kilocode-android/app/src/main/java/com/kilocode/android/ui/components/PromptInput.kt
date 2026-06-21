@@ -139,7 +139,7 @@ fun PromptInput(
                             Box(modifier = Modifier.weight(1f)) {
                                 BasicTextField(
                                     value = text,
-                                    onValueChange = { if (it.length <= MAX_CHARS) text = it },
+                                    onValueChange = { text = it.take(MAX_CHARS) },
                                     enabled = !isLoading,
                                     maxLines = 6,
                                     modifier = Modifier.fillMaxWidth(),
