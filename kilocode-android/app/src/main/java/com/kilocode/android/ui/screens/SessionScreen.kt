@@ -92,7 +92,7 @@ fun SessionScreen(
     }
     LaunchedEffect(sessionId) {
         repository.selectSession(sessionId)
-        repository.connectSse(sessionId, repository.currentSession.value?.directory)
+        repository.connectSse(repository.currentSession.value?.directory)
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
