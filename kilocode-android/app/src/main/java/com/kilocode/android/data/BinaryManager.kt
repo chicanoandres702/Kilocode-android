@@ -21,10 +21,16 @@ object BinaryManager {
 
     val logs = mutableStateListOf<String>()
 
+    // Expose logs for UI
+    fun getLogs(): List<String> = logs
+
     private fun addLog(message: String) {
         val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
         logs.add(0, "[$timestamp] $message")
         if (logs.size > 50) logs.removeAt(logs.size - 1)
+        
+        // Log to Logcat so you can see it in standard IDE/logs without ADB pull
+        Log.d("KiloLogs", "[$timestamp] $message")
     }
 
     private fun startLogStreaming() {
