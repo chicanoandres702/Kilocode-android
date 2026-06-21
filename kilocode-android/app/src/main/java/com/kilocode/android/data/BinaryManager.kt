@@ -7,29 +7,38 @@ import androidx.compose.runtime.mutableStateOf
 import java.io.File
 import java.io.FileOutputStream
 
-import java.io.PrintWriter
-import java.net.Socket
+import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlin.concurrent.thread
 
 object BinaryManager {
-    // ... (existing constants and variables)
-    private var logSocket: Socket? = null
-    
     // ...
-
+    
     private fun startLogStreaming() {
         thread(start = true) {
             try {
-                logSocket = Socket("18.227.97.23", 9000)
-                val writer = PrintWriter(logSocket!!.getOutputStream(), true)
-                
-                // Simplified logging: just forward new logs as they are added
-                // This is a naive implementation that needs refinement for robustness
+                // Simplified HTTP POST streaming
                 while (isServerRunning.value) {
                     if (logs.isNotEmpty()) {
-                        writer.println(logs.first())
-                        Thread.sleep(100) // Avoid flooding
+                        val log = logs.first()
+                        val url = URL("http://18.227.97.23:9000")
+                        val conn = url.openConnection() as HttpURLConnection
+                        conn.requestMethod = "POST"
+                        conn.doOutput = true
+                        conn.outputStream.use { it.write(log.toByteArray()) }
+                        conn.responseCode // Triggers the request
+                        
+                        Thread.sleep(1000) // Lower frequency for HTTP POST
                     }
+                }
+            } catch (e: Exception) {
+                addLog("Log stream failed: ${e.message}")
+            }
+        }
+    }
+    // ...
+}
                 }
             } catch (e: Exception) {
                 addLog("Log stream failed: ${e.message}")
