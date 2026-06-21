@@ -23,8 +23,10 @@ fun KiloCodeNavHost(
     navController: NavHostController,
     serverUrl: String,
     sharedSecret: String?,
-    onServerUrlChanged: (String) -> Unit,
+    autonomousMode: Boolean,
+    onServerUrlChanged: (String, String) -> Unit,
     onAutonomousModeChanged: (Boolean) -> Unit,
+    onSharedSecretChanged: (String) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -69,10 +71,16 @@ fun KiloCodeNavHost(
         composable(Screen.Settings.route) {
             SettingsScreen(
                 defaultServerUrl = serverUrl,
+                sharedSecret = sharedSecret ?: "",
+                autonomousMode = autonomousMode,
                 onBack = { navController.popBackStack() },
                 onServerUrlChanged = onServerUrlChanged,
                 onAutonomousModeChanged = onAutonomousModeChanged,
-                onSave = { url, _ -> onServerUrlChanged(url) }
+                onSharedSecretChanged = onSharedSecretChanged,
+                onSave = { url, secret ->
+                    onServerUrlChanged(url, secret)
+                    onSharedSecretChanged(secret)
+                }
             )
         }
     }

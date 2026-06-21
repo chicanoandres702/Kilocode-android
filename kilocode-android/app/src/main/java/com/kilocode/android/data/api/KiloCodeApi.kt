@@ -1,5 +1,6 @@
 package com.kilocode.android.data.api
 
+import com.google.gson.JsonObject
 import com.kilocode.android.data.model.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -23,6 +24,7 @@ interface KiloCodeApi {
     @GET("session/{sessionID}")
     suspend fun getSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<Session>
 
     @POST("session")
@@ -49,7 +51,7 @@ interface KiloCodeApi {
     @POST("session/{sessionID}/message")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
-        @Body request: Map<String, Any>,
+        @Body request: PromptRequest,
     ): Response<MessageWithParts>
 
     @POST("session/{sessionID}/abort")

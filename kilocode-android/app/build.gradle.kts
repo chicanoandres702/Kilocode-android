@@ -102,6 +102,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 
-    // Tests
+    // Markdown
+    implementation("com.github.jeziellago:compose-markdown:0.5.0")
     testImplementation("junit:junit:4.13.2")
 }

@@ -52,13 +52,15 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         serverUrl = serverUrl,
                         sharedSecret = sharedSecret,
-                        onServerUrlChanged = { newUrl ->
+                        autonomousMode = autonomousMode,
+                        onServerUrlChanged = { newUrl, newSecret ->
                             val normalizedUrl = newUrl.trim().ifBlank { BuildConfig.DEFAULT_SERVER_URL }
                             serverUrl = normalizedUrl
 
-                            // Persist the new URL
+                            // Persist the new URL and shared secret together.
                             kotlinx.coroutines.GlobalScope.launch {
                                 authRepo.saveServerUrl(normalizedUrl)
+                                authRepo.saveSharedSecret(newSecret)
                             }
 
                             // ApiClient update will be handled by the screens when they recompose due to serverUrl/sharedSecret change
@@ -66,9 +68,17 @@ class MainActivity : ComponentActivity() {
                             com.kilocode.android.data.BinaryManager.startServer(context, normalizedUrl, autonomousMode)
                         },
                         onAutonomousModeChanged = { enabled ->
+                            kotlinx.coroutines.GlobalScope.launch {
+                                authRepo.saveAutonomousMode(enabled)
+                            }
                             if (com.kilocode.android.data.BinaryManager.isServerRunning.value) {
                                 com.kilocode.android.data.BinaryManager.stopServer()
                                 com.kilocode.android.data.BinaryManager.startServer(context, serverUrl, enabled)
+                            }
+                        },
+                        onSharedSecretChanged = { newSecret ->
+                            kotlinx.coroutines.GlobalScope.launch {
+                                authRepo.saveSharedSecret(newSecret)
                             }
                         },
                     )

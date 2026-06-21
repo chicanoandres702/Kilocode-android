@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kilocode.android.ui.viewmodel.SettingsViewModel
 
 // ── Settings Screen ───────────────────────────────────────────────────────────
 // NOTE: This screen replaces your existing SettingsScreen.kt.
@@ -24,15 +26,39 @@ import androidx.compose.ui.unit.sp
 fun SettingsScreen(
     onBack: () -> Unit,
     defaultServerUrl: String,
-    onServerUrlChanged: (String) -> Unit,
+    sharedSecret: String = "",
+    autonomousMode: Boolean = false,
+    onServerUrlChanged: (String, String) -> Unit,
     onAutonomousModeChanged: (Boolean) -> Unit,
-    serverUrl: String          = defaultServerUrl,
-    sharedSecret: String       = "",
-    onSave: (url: String, secret: String) -> Unit = { url, _ -> onServerUrlChanged(url) },
+    onSharedSecretChanged: (String) -> Unit,
+    onSave: (url: String, secret: String) -> Unit = { url, secret ->
+        onServerUrlChanged(url, secret)
+        onSharedSecretChanged(secret)
+    },
+    viewModel: SettingsViewModel = viewModel(),
 ) {
-    var urlInput    by remember { mutableStateOf(serverUrl) }
-    var secretInput by remember { mutableStateOf(sharedSecret) }
+    val serverUrlState by viewModel.serverUrl.collectAsState(initial = defaultServerUrl)
+    val secretState by viewModel.sharedSecret.collectAsState(initial = null)
+    val autonomousState by viewModel.autonomousMode.collectAsState(initial = autonomousMode)
+    val connectionStatus by viewModel.connectionStatus.collectAsState(initial = null)
+
+    var urlInput by remember(serverUrlState) { mutableStateOf(serverUrlState ?: defaultServerUrl) }
+    var secretInput by remember { mutableStateOf(secretState ?: sharedSecret) }
     var secretVisible by remember { mutableStateOf(false) }
+    var autonomousInput by remember(autonomousState) { mutableStateOf(autonomousState) }
+
+    LaunchedEffect(secretState) {
+        secretInput = secretState ?: sharedSecret
+    }
+
+    fun saveSettings() {
+        val normalizedUrl = urlInput.trim().ifBlank { defaultServerUrl }
+        viewModel.saveServerUrl(normalizedUrl)
+        viewModel.saveSharedSecret(secretInput)
+        viewModel.saveAutonomousMode(autonomousInput)
+        onSave(normalizedUrl, secretInput)
+        onAutonomousModeChanged(autonomousInput)
+    }
 
     Scaffold(
         topBar = {
@@ -55,7 +81,7 @@ fun SettingsScreen(
                 },
                 actions = {
                     TextButton(
-                        onClick = { onSave(urlInput, secretInput) },
+                        onClick = ::saveSettings,
                     ) {
                         Text("Save", fontWeight = FontWeight.SemiBold)
                     }
@@ -76,24 +102,75 @@ fun SettingsScreen(
         ) {
             // ── Server section ─────────────────────────────────────────────
             SettingsSection(title = "Server") {
-                SettingsTextField(
-                    label        = "Server URL",
-                    value        = urlInput,
+                OutlinedTextField(
+                    value = urlInput,
                     onValueChange = { urlInput = it },
-                    placeholder  = "http://localhost:3000",
-                    leadingIcon  = Icons.Rounded.Language,
+                    label = { Text("Server URL") },
+                    placeholder = { Text("http://localhost:3000") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                SettingsTextField(
-                    label         = "Shared secret",
-                    value         = secretInput,
+                OutlinedTextField(
+                    value = secretInput,
                     onValueChange = { secretInput = it },
-                    placeholder   = "Optional authentication token",
-                    leadingIcon   = Icons.Rounded.Lock,
-                    isPassword    = true,
-                    passwordVisible = secretVisible,
-                    onTogglePassword = { secretVisible = !secretVisible },
+                    label = { Text("Shared secret") },
+                    placeholder = { Text("Optional authentication token") },
+                    singleLine = true,
+                    visualTransformation = if (secretVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { secretVisible = !secretVisible }) {
+                            Icon(
+                                imageVector = if (secretVisible) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
+                                contentDescription = if (secretVisible) "Hide secret" else "Show secret",
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                SwitchSetting(
+                    title = "Autonomous mode",
+                    description = "Start the binary with --auto and ask the agent to continue without waiting for confirmation.",
+                    icon = Icons.Rounded.AutoAwesome,
+                    checked = autonomousInput,
+                    onCheckedChange = { autonomousInput = it },
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Button(
+                        onClick = { viewModel.testConnection(urlInput, secretInput) },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Icon(Icons.Rounded.Sync, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Test")
+                    }
+                    Button(
+                        onClick = ::saveSettings,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Icon(Icons.Rounded.Save, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Save")
+                    }
+                }
+                connectionStatus?.let {
+                    val color = when (it) {
+                        "Connected" -> MaterialTheme.colorScheme.primary
+                        "Failed" -> MaterialTheme.colorScheme.error
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                    Text(
+                        text = it,
+                        color = color,
+                        fontSize = 13.sp,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
             }
 
             // ── About section ──────────────────────────────────────────────
@@ -119,6 +196,28 @@ fun SettingsScreen(
 }
 
 // ── Section wrapper ───────────────────────────────────────────────────────────
+@Composable
+private fun SwitchSetting(
+    title: String,
+    description: String,
+    icon: ImageVector,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
+        Spacer(Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.titleSmall)
+            Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
 @Composable
 private fun SettingsSection(
     title: String,
