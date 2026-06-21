@@ -130,8 +130,9 @@ class SessionRepository(private val apiClient: ApiClient) {
         try {
             val response = apiClient.api.listProviders()
             val providerResponse = response.takeIf { it.isSuccessful }?.body()
+            val connectedProviders = providerResponse?.connected.orEmpty()
             val providers = providerResponse?.all.orEmpty().entries
-                .filter { providerResponse.connected.isEmpty() || it.key in providerResponse.connected }
+                .filter { connectedProviders.isEmpty() || it.key in connectedProviders }
             val options = buildList {
                 providers.forEach { (providerID, provider) ->
                     provider.models.values.forEach { model ->
