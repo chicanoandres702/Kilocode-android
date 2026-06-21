@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kilocode.android.data.model.Agent
 import com.kilocode.android.data.model.Message
 import com.kilocode.android.data.model.ModelOption
 
@@ -32,6 +33,9 @@ fun PromptInput(
     onSend: (String) -> Unit,
     onContinue: () -> Unit = {},
     isLoading: Boolean,
+    agents: List<Agent> = emptyList(),
+    selectedAgent: Agent? = null,
+    onAgentSelected: (Agent?) -> Unit = {},
     models: List<ModelOption> = emptyList(),
     selectedModel: ModelOption? = null,
     onModelSelected: (ModelOption?) -> Unit = {},
@@ -41,11 +45,14 @@ fun PromptInput(
     modifier: Modifier = Modifier,
 ) {
     var text by remember { mutableStateOf("") }
+    var agentMenuExpanded by remember { mutableStateOf(false) }
     var modelMenuExpanded by remember { mutableStateOf(false) }
     val canSend = text.isNotBlank() && !isLoading
+    val showAgentChip = agents.isNotEmpty()
     val showModelChip = models.isNotEmpty()
     val charCount = text.length
     val nearLimit = charCount > MAX_CHARS * 0.85f
+    val modelGroups = models.groupBy { it.category.ifBlank { "Models" } }
 
     val sendScale by animateFloatAsState(
         targetValue = if (canSend || autonomousMode) 1f else 0.88f,
@@ -87,61 +94,44 @@ fun PromptInput(
                         modifier = Modifier.weight(1f),
                     ) {
                         Row(
-                            modifier = Modifier.padding(start = if (showModelChip) 6.dp else 14.dp, end = 10.dp, top = 9.dp, bottom = 9.dp),
+                            modifier = Modifier.padding(
+                                start = if (showAgentChip || showModelChip) 6.dp else 14.dp,
+                                end = 10.dp,
+                                top = 9.dp,
+                                bottom = 9.dp,
+                            ),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
+                            if (showAgentChip) {
+                                Box {
+                                    AgentChip(
+                                        agent = selectedAgent,
+                                        expanded = agentMenuExpanded,
+                                        onExpand = { agentMenuExpanded = true },
+                                        onDismiss = { agentMenuExpanded = false },
+                                        agents = agents,
+                                        onAgentSelected = {
+                                            onAgentSelected(it)
+                                            agentMenuExpanded = false
+                                        },
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(6.dp))
+                            }
+
                             if (showModelChip) {
                                 Box {
-                                    Surface(
-                                        onClick = { modelMenuExpanded = true },
-                                        shape = RoundedCornerShape(16.dp),
-                                        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
-                                        modifier = Modifier.height(26.dp),
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.padding(horizontal = 7.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                        ) {
-                                            Icon(
-                                                Icons.Rounded.ModelTraining,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.secondary,
-                                                modifier = Modifier.size(11.dp),
-                                            )
-                                            Text(
-                                                text = selectedModel?.displayName?.take(18) ?: "Model",
-                                                style = MaterialTheme.typography.labelSmall,
-                                                color = MaterialTheme.colorScheme.secondary,
-                                                fontWeight = FontWeight.SemiBold,
-                                                maxLines = 1,
-                                                fontSize = 10.sp,
-                                            )
-                                            Icon(
-                                                Icons.Rounded.KeyboardArrowDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f),
-                                                modifier = Modifier.size(11.dp),
-                                            )
-                                        }
-                                    }
-                                    DropdownMenu(
+                                    ModelChip(
+                                        model = selectedModel,
                                         expanded = modelMenuExpanded,
-                                        onDismissRequest = { modelMenuExpanded = false },
-                                    ) {
-                                        DropdownMenuItem(
-                                            text = { Text("Default model") },
-                                            onClick = { onModelSelected(null); modelMenuExpanded = false },
-                                            leadingIcon = { Icon(Icons.Rounded.AutoFixHigh, null, Modifier.size(15.dp)) },
-                                        )
-                                        models.forEach { model ->
-                                            DropdownMenuItem(
-                                                text = { Text(model.displayName) },
-                                                onClick = { onModelSelected(model); modelMenuExpanded = false },
-                                                leadingIcon = { Icon(Icons.Rounded.ModelTraining, null, Modifier.size(15.dp)) },
-                                            )
-                                        }
-                                    }
+                                        onExpand = { modelMenuExpanded = true },
+                                        onDismiss = { modelMenuExpanded = false },
+                                        modelGroups = modelGroups,
+                                        onModelSelected = {
+                                            onModelSelected(it)
+                                            modelMenuExpanded = false
+                                        },
+                                    )
                                 }
                                 Spacer(modifier = Modifier.width(6.dp))
                             }
@@ -263,6 +253,111 @@ fun PromptInput(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun AgentChip(
+    agent: Agent?,
+    expanded: Boolean,
+    onExpand: () -> Unit,
+    onDismiss: () -> Unit,
+    agents: List<Agent>,
+    onAgentSelected: (Agent?) -> Unit,
+) {
+    Surface(
+        onClick = onExpand,
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
+        modifier = Modifier.height(26.dp),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 7.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            Icon(Icons.Rounded.SmartToy, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(11.dp))
+            Text(
+                text = agent?.name?.take(16) ?: "Agent",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                fontSize = 10.sp,
+            )
+            Icon(Icons.Rounded.KeyboardArrowDown, null, tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f), modifier = Modifier.size(11.dp))
+        }
+    }
+    DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
+        DropdownMenuItem(
+            text = { Text("Default agent") },
+            onClick = { onAgentSelected(null) },
+            leadingIcon = { Icon(Icons.Rounded.AutoAwesome, null, Modifier.size(15.dp)) },
+        )
+        agents.forEach { item ->
+            DropdownMenuItem(
+                text = { Text(item.name) },
+                onClick = { onAgentSelected(item) },
+                leadingIcon = { Icon(Icons.Rounded.SmartToy, null, Modifier.size(15.dp)) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModelChip(
+    model: ModelOption?,
+    expanded: Boolean,
+    onExpand: () -> Unit,
+    onDismiss: () -> Unit,
+    modelGroups: Map<String, List<ModelOption>>,
+    onModelSelected: (ModelOption?) -> Unit,
+) {
+    Surface(
+        onClick = onExpand,
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
+        modifier = Modifier.height(26.dp),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 7.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            Icon(Icons.Rounded.ModelTraining, null, tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(11.dp))
+            Text(
+                text = model?.displayName?.take(18) ?: "Model",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                fontSize = 10.sp,
+            )
+            Icon(Icons.Rounded.KeyboardArrowDown, null, tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f), modifier = Modifier.size(11.dp))
+        }
+    }
+    DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
+        DropdownMenuItem(
+            text = { Text("Default model") },
+            onClick = { onModelSelected(null) },
+            leadingIcon = { Icon(Icons.Rounded.AutoFixHigh, null, Modifier.size(15.dp)) },
+        )
+        modelGroups.forEach { (category, models) ->
+            DropdownMenuItem(
+                text = { Text(category) },
+                onClick = {},
+                enabled = false,
+                leadingIcon = { Icon(Icons.Rounded.Category, null, Modifier.size(15.dp)) },
+            )
+            models.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item.displayName) },
+                    onClick = { onModelSelected(item) },
+                    leadingIcon = { Icon(Icons.Rounded.ModelTraining, null, Modifier.size(15.dp)) },
+                )
+            }
+            HorizontalDivider()
         }
     }
 }
