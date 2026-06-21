@@ -210,6 +210,9 @@ class SessionRepository(private val apiClient: ApiClient) {
             // Optimistic update
             upsertMessage(Message(id = messageID, sessionID = sessionId, role = "user"))
             
+            // Explicitly set isLoading to true for the UI to show activity
+            _isLoading.value = true
+
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
                 response.body()?.let { messageWithParts ->
@@ -227,6 +230,8 @@ class SessionRepository(private val apiClient: ApiClient) {
             Log.e("SessionRepo", "Error sending prompt", e)
             _error.value = "Connection error: ${e.message}"
             false
+        } finally {
+            _isLoading.value = false
         }
     }
 
