@@ -73,6 +73,16 @@ data class ProviderModel(
     val limit: ModelLimit? = null,
 )
 
+data class SlashCommand(
+    val command: String,
+    val alias: String? = null,
+    val label: String,
+    val description: String,
+    val category: String,
+) {
+    val trigger: String = if (command.startsWith("/")) command else "/$command"
+}
+
 data class TokenUsage(
     val input: Long = 0,
     val output: Long = 0,

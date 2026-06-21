@@ -32,6 +32,12 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _models = MutableStateFlow<List<ModelOption>>(emptyList())
     val models: StateFlow<List<ModelOption>> = _models
 
+    private val _project = MutableStateFlow<Project?>(null)
+    val project: StateFlow<Project?> = _project
+
+    private val _files = MutableStateFlow<List<FileNode>>(emptyList())
+    val files: StateFlow<List<FileNode>> = _files
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -155,6 +161,34 @@ class SessionRepository(private val apiClient: ApiClient) {
             _models.value = options.sortedWith(compareBy<ModelOption> { it.category }.thenBy { it.displayName })
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading models", e)
+        }
+    }
+
+    suspend fun loadProject() {
+        try {
+            val response = apiClient.api.getProject()
+            _project.value = response.takeIf { it.isSuccessful }?.body()
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading project", e)
+        }
+    }
+
+    suspend fun listFiles(directory: String? = null) {
+        try {
+            val response = apiClient.api.listFiles(directory)
+            _files.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading files", e)
+        }
+    }
+
+    suspend fun readFile(path: String): String? {
+        return try {
+            val body = apiClient.api.readFile(path).takeIf { it.isSuccessful }?.body()
+            body?.get("content") ?: body?.get("text")
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error reading file", e)
+            null
         }
     }
 
