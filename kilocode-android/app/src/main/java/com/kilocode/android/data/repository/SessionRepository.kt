@@ -218,15 +218,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
-                response.body()?.let { messageWithParts ->
-                    messageWithParts.info?.let { message ->
-                        upsertMessage(message)
-                        message.id?.let { _parts.value = _parts.value + (it to messageWithParts.parts) }
-                    }
-                }
-                // Stop loading before fetching full list to improve responsiveness
-                _isLoading.value = false
-                loadMessages(sessionId)
+                // Do NOT call loadMessages(sessionId) here, trust the SSE stream to update the state.
+                // We have already upserted the user message optimistically.
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
