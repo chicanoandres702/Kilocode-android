@@ -30,29 +30,18 @@ object BinaryManager {
     private fun startLogStreaming() {
         thread(start = true) {
             try {
-                // Simplified HTTP POST streaming
+                // Write logs to a local file instead of network
+                val logFile = File(context.filesDir, "app_logs.txt")
                 while (isServerRunning.value) {
                     if (logs.isNotEmpty()) {
-                        // Take all logs to avoid re-sending the same ones
                         val logsToSend = ArrayList(logs)
-                        logs.clear() // Clear local to prevent infinite looping or sending duplicates
-
-                        for (log in logsToSend) {
-                            try {
-                                val url = URL("http://18.227.97.23:9000")
-                                val conn = url.openConnection() as HttpURLConnection
-                                conn.requestMethod = "POST"
-                                conn.doOutput = true
-                                conn.connectTimeout = 5000 // Add timeout
-                                conn.readTimeout = 5000
-                                conn.outputStream.use { it.write(log.toByteArray()) }
-                                conn.responseCode // Triggers the request
-                            } catch (e: Exception) {
-                                Log.e("BinaryManager", "Log stream failed for log: $log, error: ${e.message}")
-                            }
-                        }
+                        logs.clear()
+                        
+                        logFile.appendText(logsToSend.joinToString("\n") + "\n")
+                        Thread.sleep(1000)
+                    } else {
+                        Thread.sleep(1000)
                     }
-                    Thread.sleep(1000)
                 }
             } catch (e: Exception) {
                 Log.e("BinaryManager", "Log stream thread failed: ${e.message}")
