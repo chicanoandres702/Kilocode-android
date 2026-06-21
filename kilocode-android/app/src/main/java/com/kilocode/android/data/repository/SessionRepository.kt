@@ -8,6 +8,7 @@ import com.kilocode.android.data.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.sse.EventSource
+import okhttp3.sse.EventSourceListener
 import java.util.UUID
 
 class SessionRepository(private val apiClient: ApiClient) {
@@ -116,13 +117,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun listAgents() {
         try {
-            val response = apiClient.api.getConfig()
-            if (response.isSuccessful) {
-                val config = response.body()
-                val agentNames = config?.models.orEmpty()
-                    .mapNotNull { name -> Agent(id = name, name = name, mode = "model") }
-                _agents.value = agentNames.ifEmpty { emptyList() }
-            }
+            val response = apiClient.api.listAgents()
+            _agents.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error loading agents", e)
         }

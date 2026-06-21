@@ -41,13 +41,6 @@ data class MessageTime(
     val completed: Long? = null,
 )
 
-data class Agent(
-    val id: String? = null,
-    val name: String,
-    val mode: String? = null,
-    val description: String? = null,
-)
-
 data class ModelOption(
     val providerID: String,
     val modelID: String,
@@ -174,6 +167,7 @@ data class McpServer(
 )
 
 data class Agent(
+    val id: String? = null,
     val name: String,
     val description: String? = null,
     val mode: String? = null,

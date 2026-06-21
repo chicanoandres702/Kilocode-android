@@ -55,22 +55,14 @@ fun SessionList(
                 items = sessions,
                 key   = { _, s -> s.id?.takeIf(String::isNotEmpty) ?: s.hashCode() },
             ) { index, session ->
-                // Staggered slide-in on first composition
-                val delayMs = staggerDelay(index)
-                AnimatedVisibility(
-                    visible = true,
-                    enter   = fadeIn(tween(200, delayMs)) +
-                              slideInVertically(tween(260, delayMs, FastOutSlowInEasing)) { it / 3 },
+                SessionListItem(
+                    session  = session,
+                    onClick  = { session.id?.let(onSessionClick) },
+                    onDelete = { session.id?.let(onDeleteSession) },
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow)
                     ),
-                ) {
-                    SessionListItem(
-                        session  = session,
-                        onClick  = { session.id?.let(onSessionClick) },
-                        onDelete = { session.id?.let(onDeleteSession) },
-                    )
-                }
+                )
             }
         }
 
