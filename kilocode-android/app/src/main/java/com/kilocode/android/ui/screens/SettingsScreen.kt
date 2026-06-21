@@ -28,7 +28,7 @@ fun SettingsScreen(
     onAutonomousModeChanged: (Boolean) -> Unit,
     serverUrl: String          = defaultServerUrl,
     sharedSecret: String       = "",
-    onSave: (url: String, secret: String) -> Unit = { _, _ -> },
+    onSave: (url: String, secret: String) -> Unit = { url, _ -> onServerUrlChanged(url) },
 ) {
     var urlInput    by remember { mutableStateOf(serverUrl) }
     var secretInput by remember { mutableStateOf(sharedSecret) }
