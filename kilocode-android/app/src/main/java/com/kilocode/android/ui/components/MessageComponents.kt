@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.model.Part
 import com.kilocode.android.ui.theme.*
 import com.kilocode.android.ui.util.pressScale
+import com.jeziellago.compose.markdown.Markdown
 
 // ── Message bubble ─────────────────────────────────────────────────────────────
 @OptIn(ExperimentalFoundationApi::class)
