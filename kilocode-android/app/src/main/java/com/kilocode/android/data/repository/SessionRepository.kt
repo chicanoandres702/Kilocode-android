@@ -5,8 +5,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.*
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import java.net.URLEncoder
@@ -52,6 +54,7 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private var eventSource: EventSource? = null
     private var expectedResponseId: String? = null
+    private var sseConnected = false
 
     suspend fun listSessions() {
         _isLoading.value = true
@@ -220,9 +223,13 @@ class SessionRepository(private val apiClient: ApiClient) {
             _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
 
             val directory = _currentSession.value?.directory ?: return false
+            if (!sseConnected && !connectSse(directory)) {
+                return false
+            }
+
             val response = apiClient.api.sendPrompt(sessionId, request, directory)
             if (response.isSuccessful) {
-                // SSE will update the state
+                loadMessages(sessionId)
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
@@ -263,35 +270,60 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    fun connectSse(sessionId: String, directory: String? = null) {
+    suspend fun connectSse(
+        directory: String? = null,
+        timeoutMillis: Long = 1500L,
+    ): Boolean {
         disconnectSse()
         val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
-        eventSource = apiClient.createEventSource(
-            "global/event?directory=$encodedDirectory",
-            object : EventSourceListener() {
-                override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
-                    _isConnected.value = true
-                    Log.d("SessionRepo", "SSE opened")
-                }
+        val opened = CompletableDeferred<Boolean>()
+        try {
+            eventSource = apiClient.createEventSource(
+                "global/event?directory=$encodedDirectory",
+                object : EventSourceListener() {
+                    override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
+                        _isConnected.value = true
+                        sseConnected = true
+                        if (!opened.isCompleted) opened.complete(true)
+                        Log.d("SessionRepo", "SSE opened")
+                    }
 
-                override fun onEvent(eventSource: EventSource, id: String?, type: String?, data: String) {
-                    Log.d("SessionRepo", "SSE event received: type=$type")
-                    handleSseEvent(type, data)
-                }
+                    override fun onEvent(eventSource: EventSource, id: String?, type: String?, data: String) {
+                        Log.d("SessionRepo", "SSE event received: id=$id type=$type")
+                        handleSseEvent(type, data)
+                    }
 
-                override fun onClosed(eventSource: EventSource) {
-                    _isConnected.value = false
-                    Log.d("SessionRepo", "SSE closed")
-                }
+                    override fun onClosed(eventSource: EventSource) {
+                        _isConnected.value = false
+                        sseConnected = false
+                        if (!opened.isCompleted) opened.complete(false)
+                        Log.d("SessionRepo", "SSE closed")
+                    }
 
-                override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
-                    _isConnected.value = false
-                    val errorMessage = t?.message ?: "Unknown SSE failure"
-                    Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
-                    _error.value = "SSE Connection failed: $errorMessage"
+                    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
+                        _isConnected.value = false
+                        sseConnected = false
+                        if (!opened.isCompleted) opened.complete(false)
+                        val errorMessage = t?.message ?: "Unknown SSE failure"
+                        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
+                        _error.value = "SSE Connection failed: $errorMessage"
+                    }
                 }
-            }
-        )
+            )
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error connecting SSE", e)
+            _error.value = "SSE Connection failed: ${e.message}"
+            return false
+        }
+
+        val openedWithinTimeout = withTimeoutOrNull(timeoutMillis) { opened.await() } == true
+        if (!openedWithinTimeout) {
+            Log.w("SessionRepo", "Timed out waiting for SSE to open")
+            _error.value = "SSE Connection timed out"
+            disconnectSse()
+            return false
+        }
+        return true
     }
 
     private fun handleSseEvent(type: String?, data: String) {
@@ -299,13 +331,15 @@ class SessionRepository(private val apiClient: ApiClient) {
         try {
             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
             val properties = event["properties"] as? Map<String, Any> ?: return
+            val sessionId = _currentSession.value?.id
             Log.d("SessionRepo", "SSE event properties: $properties")
 
             when (type) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
                     Log.d("SessionRepo", "Processing message.updated: $info")
-                    upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
+                    val message = GSON.fromJson(GSON.toJsonTree(info), Message::class.java)
+                    upsertMessage(message.copy(sessionID = message.sessionID ?: sessionId))
                 }
                 "message.removed" -> {
                     val messageID = properties["messageID"] as? String ?: return
@@ -317,7 +351,10 @@ class SessionRepository(private val apiClient: ApiClient) {
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
                     val messageId = part.messageID ?: return
                     val partId = part.id ?: return
-                    upsertPart(messageId, partId, part)
+                    if (!_messages.value.any { it.id == messageId }) {
+                        upsertMessage(Message(id = messageId, sessionID = sessionId, role = "assistant"))
+                    }
+                    upsertPart(sessionId, messageId, partId, part)
                 }
                 "message.part.removed" -> {
                     val messageId = properties["messageID"] as? String ?: return
@@ -345,17 +382,22 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private fun upsertMessage(message: Message) {
         val messageId = message.id ?: return
+        val updatedMessage = message.copy(sessionID = message.sessionID ?: _currentSession.value?.id)
         val current = _messages.value.toMutableList()
         val index = current.indexOfFirst { it.id == messageId }
-        if (index >= 0) current[index] = message else current.add(message)
+        if (index >= 0) current[index] = updatedMessage else current.add(updatedMessage)
         _messages.value = current
     }
 
-    private fun upsertPart(messageId: String, partId: String, part: Part) {
+    private fun upsertPart(sessionId: String?, messageId: String, partId: String, part: Part) {
+        val updatedPart = part.copy(
+            sessionID = part.sessionID ?: sessionId,
+            messageID = part.messageID ?: messageId,
+        )
         val currentParts = _parts.value.toMutableMap()
         val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
         val index = messageParts.indexOfFirst { it.id == partId }
-        if (index >= 0) messageParts[index] = part else messageParts.add(part)
+        if (index >= 0) messageParts[index] = updatedPart else messageParts.add(updatedPart)
         currentParts[messageId] = messageParts
         _parts.value = currentParts
     }
@@ -369,6 +411,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     fun disconnectSse() {
         eventSource?.cancel()
         eventSource = null
+        sseConnected = false
         _isConnected.value = false
     }
 
