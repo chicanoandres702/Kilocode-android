@@ -6,9 +6,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlin.concurrent.thread
 
 object BinaryManager {
@@ -33,7 +30,7 @@ object BinaryManager {
         Log.d("KiloLogs", "[$timestamp] $message")
     }
 
-    private fun startLogStreaming() {
+    private fun startLogStreaming(context: Context) {
         thread(start = true) {
             try {
                 // Write logs to a local file instead of network
@@ -98,7 +95,7 @@ object BinaryManager {
                 if (process?.isAlive == true) {
                     isServerRunning.value = true
                     addLog("Server started successfully.")
-                    startLogStreaming() // Start streaming after successful start
+                    startLogStreaming(context) // Start streaming after successful start
                 } else {
                     isServerRunning.value = false
                     addLog("Server failed (Process dead).")
