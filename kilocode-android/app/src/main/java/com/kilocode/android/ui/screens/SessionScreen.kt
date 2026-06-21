@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.api.ApiClient
+import com.kilocode.android.data.model.Agent
 import com.kilocode.android.data.model.ModelOption
 import com.kilocode.android.data.model.Part
 import com.kilocode.android.data.repository.SessionRepository
@@ -41,12 +42,14 @@ fun SessionScreen(
     val currentSession by repository.currentSession.collectAsState()
     val messages by repository.messages.collectAsState()
     val parts by repository.parts.collectAsState()
+    val agents by repository.agents.collectAsState()
     val models by repository.models.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
     val isConnected by repository.isConnected.collectAsState()
     val error by repository.error.collectAsState()
 
     val listState = rememberLazyListState()
+    var selectedAgent by remember { mutableStateOf<Agent?>(null) }
     var selectedModel by remember { mutableStateOf<ModelOption?>(null) }
     var autonomousMode by remember { mutableStateOf(false) }
     var continueGeneration by remember { mutableStateOf(0) }
@@ -77,6 +80,11 @@ fun SessionScreen(
         repository.listAgents()
         repository.listModels()
     }
+    LaunchedEffect(agents) {
+        selectedAgent = agents.firstOrNull { it.name == selectedAgent?.name }
+            ?: agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
+            ?: agents.firstOrNull()
+    }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
             selectedModel = models.firstOrNull { it.modelID == "kilo/nex-agi/nex-n2-pro:free" } ?: models.first()
@@ -84,7 +92,7 @@ fun SessionScreen(
     }
     LaunchedEffect(sessionId) {
         repository.selectSession(sessionId)
-        repository.connectSse(sessionId)
+        repository.connectSse(sessionId, repository.currentSession.value?.directory)
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
@@ -101,14 +109,14 @@ fun SessionScreen(
         if (!autonomousMode || isLoading || hasPendingWork || messages.isEmpty()) return@LaunchedEffect
         delay(900)
         if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty()) {
-            repository.sendPrompt(sessionId, "continue", null, selectedModel)
+            repository.sendPrompt(sessionId, "continue", selectedAgent?.name, selectedModel)
             continueGeneration++
         }
     }
 
     fun sendPrompt(text: String) {
         scope.launch {
-            repository.sendPrompt(sessionId, text, null, selectedModel)
+            repository.sendPrompt(sessionId, text, selectedAgent?.name, selectedModel)
         }
     }
 
@@ -168,6 +176,9 @@ fun SessionScreen(
                 models = models,
                 selectedModel = selectedModel,
                 onModelSelected = { selectedModel = it },
+                agents = agents,
+                selectedAgent = selectedAgent,
+                onAgentSelected = { selectedAgent = it },
                 autonomousMode = autonomousMode,
                 onAutonomousModeChanged = { autonomousMode = it },
                 messages = messages,
