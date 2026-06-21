@@ -208,7 +208,10 @@ class SessionRepository(private val apiClient: ApiClient) {
             )
             
             // Optimistic update
-            upsertMessage(Message(id = messageID, sessionID = sessionId, role = "user"))
+            val optimisticMessage = Message(id = messageID, sessionID = sessionId, role = "user")
+            upsertMessage(optimisticMessage)
+            // Add initial part for the user prompt text so it displays immediately
+            _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
             
             // Explicitly set isLoading to true for the UI to show activity
             _isLoading.value = true
