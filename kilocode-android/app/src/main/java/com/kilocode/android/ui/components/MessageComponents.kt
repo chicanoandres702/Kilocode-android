@@ -41,6 +41,7 @@ fun MessageBubble(
     agent: String? = null,
     modifier: Modifier = Modifier,
 ) {
+    android.util.Log.d("MessageBubble", "Rendering bubble, isUser: $isUser, parts size: ${parts.size}")
     val bubbleBg    = if (isUser) BubbleUser else BubbleAssistant
     val alignment   = if (isUser) Alignment.End else Alignment.Start
     val displayName = if (isUser) "You" else agent ?: "Kilo"

@@ -199,22 +199,27 @@ class SessionRepository(private val apiClient: ApiClient) {
         model: ModelOption? = null,
     ): Boolean {
         return try {
-            _isLoading.value = true
+            val messageID = generateMessageId()
             val request = PromptRequest(
-                messageID = generateMessageId(),
+                messageID = messageID,
                 parts = listOf(PartRequest(type = "text", text = text)),
                 agent = agent,
                 model = model?.let { ModelInfo(it.providerID, it.modelID) }
             )
+            
+            // Optimistic update
+            val optimisticMessage = Message(id = messageID, sessionID = sessionId, role = "user")
+            upsertMessage(optimisticMessage)
+            // Add initial part for the user prompt text so it displays immediately
+            _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
+            
+            // Explicitly set isLoading to true for the UI to show activity
+            _isLoading.value = true
+
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
-                response.body()?.let { messageWithParts ->
-                    messageWithParts.info?.let { message ->
-                        upsertMessage(message)
-                        message.id?.let { _parts.value = _parts.value + (it to messageWithParts.parts) }
-                    }
-                }
-                loadMessages(sessionId)
+                // Do NOT call loadMessages(sessionId) here, trust the SSE stream to update the state.
+                // We have already upserted the user message optimistically.
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
@@ -284,13 +289,16 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     private fun handleSseEvent(type: String?, data: String) {
+        Log.d("SessionRepo", "SSE event received: type=$type, data=$data")
         try {
             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
             val properties = event["properties"] as? Map<String, Any> ?: return
+            Log.d("SessionRepo", "SSE event properties: $properties")
 
             when (type) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
+                    Log.d("SessionRepo", "Processing message.updated: $info")
                     upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
                 }
                 "message.removed" -> {
@@ -299,6 +307,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
                 "message.part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: return
+                    Log.d("SessionRepo", "Processing message.part.updated: $partData")
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
                     val messageId = part.messageID ?: return
                     val partId = part.id ?: return
