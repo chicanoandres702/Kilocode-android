@@ -101,14 +101,14 @@ fun SessionScreen(
         if (!autonomousMode || isLoading || hasPendingWork || messages.isEmpty()) return@LaunchedEffect
         delay(900)
         if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty()) {
-            repository.sendPrompt(sessionId, "continue", selectedModel = selectedModel)
+            repository.sendPrompt(sessionId, "continue", null, selectedModel)
             continueGeneration++
         }
     }
 
     fun sendPrompt(text: String) {
         scope.launch {
-            repository.sendPrompt(sessionId, text, selectedModel = selectedModel)
+            repository.sendPrompt(sessionId, text, null, selectedModel)
         }
     }
 
@@ -256,43 +256,30 @@ fun SessionScreen(
                         key = { it.id ?: it.sessionID ?: messages.indexOf(it).toString() },
                     ) { message ->
                         val msgParts = message.id?.let { parts[it] } ?: emptyList()
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = if (message.role == "user")
-                                fadeIn(tween(180)) + slideInHorizontally(tween(240)) { it / 4 }
-                            else
-                                fadeIn(tween(180)) + slideInHorizontally(tween(240)) { -it / 4 },
-                        ) {
-                            MessageBubble(
-                                isUser = message.role == "user",
-                                parts = msgParts,
-                                agent = message.agent,
-                            )
-                        }
+                        MessageBubble(
+                            isUser = message.role == "user",
+                            parts = msgParts,
+                            agent = message.agent,
+                        )
                     }
 
                     if (isLoading && messages.isNotEmpty()) {
                         item {
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = fadeIn(tween(200)) + slideInHorizontally(tween(240)) { -it / 4 },
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 18.dp, top = 2.dp, bottom = 4.dp),
+                        ) {
+                            Surface(
+                                shape = RoundedCornerShape(
+                                    topStart = 4.dp, topEnd = 16.dp,
+                                    bottomStart = 16.dp, bottomEnd = 16.dp,
+                                ),
+                                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 18.dp, top = 2.dp, bottom = 4.dp),
-                                ) {
-                                    Surface(
-                                        shape = RoundedCornerShape(
-                                            topStart = 4.dp, topEnd = 16.dp,
-                                            bottomStart = 16.dp, bottomEnd = 16.dp,
-                                        ),
-                                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-                                    ) {
-                                        TypingIndicator()
-                                    }
-                                }
+                                TypingIndicator()
                             }
+                        }
                         }
                     }
                 }
@@ -306,23 +293,16 @@ fun SessionScreen(
                         .width(4.dp),
                 )
 
-                AnimatedVisibility(
-                    visible = !isAtBottom && messages.isNotEmpty(),
-                    enter = fadeIn(tween(180)) + scaleIn(
-                        spring(dampingRatio = 0.5f, stiffness = Spring.StiffnessMedium),
-                        initialScale = 0.6f,
-                    ),
-                    exit = fadeOut(tween(120)) + scaleOut(tween(120), targetScale = 0.7f),
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 14.dp, bottom = 12.dp),
-                ) {
+                if (!isAtBottom && messages.isNotEmpty()) {
                     SmallFloatingActionButton(
                         onClick = { scope.launch { listState.animateScrollToItem(messages.size - 1) } },
                         shape = RoundedCornerShape(12.dp),
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         elevation = FloatingActionButtonDefaults.elevation(2.dp, 2.dp),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(end = 14.dp, bottom = 12.dp),
                     ) {
                         Icon(Icons.Rounded.KeyboardArrowDown, "Scroll to latest", modifier = Modifier.size(18.dp))
                     }

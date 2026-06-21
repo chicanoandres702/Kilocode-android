@@ -135,17 +135,13 @@ fun HomeScreen(
                 }
             }
 
-            // Error banner — slides up from bottom
-            AnimatedVisibility(
-                visible  = error != null,
-                enter    = slideInVertically(tween(280)) { it } + fadeIn(tween(200)),
-                exit     = slideOutVertically(tween(220)) { it } + fadeOut(tween(160)),
-                modifier = Modifier.align(Alignment.BottomCenter),
-            ) {
+            if (error != null) {
                 error?.let { msg ->
-                    ErrorCard(message = msg, onRetry = {
-                        scope.launch { viewModel.clearError(); viewModel.loadSessions() }
-                    })
+                    ErrorCard(
+                        message = msg,
+                        onRetry = { scope.launch { viewModel.clearError(); viewModel.loadSessions() } },
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                    )
                 }
             }
         }

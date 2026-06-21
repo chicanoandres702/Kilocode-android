@@ -133,39 +133,35 @@ fun MessageBubble(
                 }
 
                 // Copy button — appears on long-press, floats above bubble
-                AnimatedVisibility(
-                    visible  = showCopyButton,
-                    enter    = fadeIn(tween(120)) + scaleIn(tween(120), initialScale = 0.8f),
-                    exit     = fadeOut(tween(100)) + scaleOut(tween(100)),
-                    modifier = Modifier
-                        .align(if (isUser) Alignment.TopStart else Alignment.TopEnd)
-                        .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
-                ) {
+                if (showCopyButton) {
                     val allText = parts.mapNotNull { it.text }.joinToString("\n")
                     Surface(
                         onClick = {
                             clipboard.setText(AnnotatedString(allText))
                             showCopyButton = false
                         },
-                        shape          = RoundedCornerShape(8.dp),
-                        color          = MaterialTheme.colorScheme.inverseSurface,
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.inverseSurface,
                         shadowElevation = 4.dp,
+                        modifier = Modifier
+                            .align(if (isUser) Alignment.TopStart else Alignment.TopEnd)
+                            .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
                     ) {
                         Row(
-                            modifier          = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             Icon(
                                 Icons.Rounded.ContentCopy,
                                 contentDescription = "Copy",
-                                tint     = MaterialTheme.colorScheme.inverseOnSurface,
+                                tint = MaterialTheme.colorScheme.inverseOnSurface,
                                 modifier = Modifier.size(12.dp),
                             )
                             Text(
                                 "Copy",
-                                style  = MaterialTheme.typography.labelSmall,
-                                color  = MaterialTheme.colorScheme.inverseOnSurface,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.inverseOnSurface,
                                 fontSize = 11.sp,
                             )
                         }
@@ -271,11 +267,7 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
                 }
             }
 
-            AnimatedVisibility(
-                visible = expanded && hasDetail,
-                enter   = expandVertically(spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow)) + fadeIn(tween(160)),
-                exit    = shrinkVertically(tween(140)) + fadeOut(tween(100)),
-            ) {
+            if (expanded && hasDetail) {
                 val detail = when {
                     state.status == "completed" && !state.output.isNullOrBlank() -> state.output!!.trim().take(500)
                     state.status == "error"     && !state.error.isNullOrBlank()  -> state.error!!
@@ -347,11 +339,7 @@ fun ReasoningPartView(part: Part, modifier: Modifier = Modifier) {
                 }
             }
 
-            AnimatedVisibility(
-                visible = expanded && hasText,
-                enter   = expandVertically(spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow)) + fadeIn(tween(160)),
-                exit    = shrinkVertically(tween(140)) + fadeOut(tween(100)),
-            ) {
+            if (expanded && hasText) {
                 Column {
                     Spacer(modifier = Modifier.height(6.dp))
                     HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))

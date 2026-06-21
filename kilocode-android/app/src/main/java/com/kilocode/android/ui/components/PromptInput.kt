@@ -176,11 +176,7 @@ fun PromptInput(
                                 )
                             }
 
-                            AnimatedVisibility(
-                                visible = nearLimit,
-                                enter = fadeIn(tween(150)) + expandHorizontally(),
-                                exit = fadeOut(tween(150)) + shrinkHorizontally(),
-                            ) {
+                            if (nearLimit) {
                                 Text(
                                     text = "${MAX_CHARS - charCount}",
                                     style = MaterialTheme.typography.labelSmall,
