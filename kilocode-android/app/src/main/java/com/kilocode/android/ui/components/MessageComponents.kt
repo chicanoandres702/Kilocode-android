@@ -29,9 +29,10 @@ import androidx.compose.ui.unit.sp
 import com.kilocode.android.data.model.Part
 import com.kilocode.android.ui.theme.*
 import com.kilocode.android.ui.util.pressScale
-import com.jeziellago.compose.markdown.Markdown
+// import com.jeziellago.compose.markdown.Markdown
 
 // ── Message bubble ─────────────────────────────────────────────────────────────
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MessageBubble(
@@ -173,13 +174,14 @@ fun MessageBubble(
     }
 }
 
-import com.jeziellago.compose.markdown.Markdown
-
 // ── Plain text ─────────────────────────────────────────────────────────────────
 @Composable
 private fun TextPartView(text: String) {
-    Markdown(
-        content = text,
+    Text(
+        text       = text,
+        style      = MaterialTheme.typography.bodyMedium,
+        color      = MaterialTheme.colorScheme.onSurface,
+        lineHeight = 22.sp,
     )
 }
 
