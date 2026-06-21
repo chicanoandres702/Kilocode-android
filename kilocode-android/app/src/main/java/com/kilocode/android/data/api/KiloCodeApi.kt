@@ -48,10 +48,11 @@ interface KiloCodeApi {
         @Path("messageID") messageID: String,
     ): Response<MessageWithParts>
 
-    @POST("session/{sessionID}/message")
+    @POST("session/{sessionID}/prompt_async")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
         @Body request: PromptRequest,
+        @Query("directory") directory: String? = null,
     ): Response<MessageWithParts>
 
     @POST("session/{sessionID}/abort")
