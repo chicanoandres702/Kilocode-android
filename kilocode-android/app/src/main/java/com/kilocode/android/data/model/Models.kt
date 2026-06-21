@@ -185,11 +185,16 @@ data class McpServer(
     val enabled: Boolean = true,
 )
 
-data class Agent(
-    val id: String? = null,
-    val name: String,
-    val description: String? = null,
-    val mode: String? = null,
-    val builtIn: Boolean = false,
-    val color: String? = null,
+data class PromptRequest(
+    val messageID: String,
+    val parts: List<PartRequest>,
+    val agent: String? = null,
+    val model: ModelInfo? = null,
+    val providerID: String? = null,
+    val modelID: String? = null,
+)
+
+data class PartRequest(
+    val type: String,
+    val text: String,
 )
