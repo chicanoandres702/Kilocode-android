@@ -172,14 +172,13 @@ fun MessageBubble(
     }
 }
 
+import com.jeziellago.compose.markdown.Markdown
+
 // ── Plain text ─────────────────────────────────────────────────────────────────
 @Composable
 private fun TextPartView(text: String) {
-    Text(
-        text       = text,
-        style      = MaterialTheme.typography.bodyMedium,
-        color      = MaterialTheme.colorScheme.onSurface,
-        lineHeight = 22.sp,
+    Markdown(
+        content = text,
     )
 }
 
