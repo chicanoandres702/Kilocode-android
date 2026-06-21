@@ -224,6 +224,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                         message.id?.let { _parts.value = _parts.value + (it to messageWithParts.parts) }
                     }
                 }
+                // Stop loading before fetching full list to improve responsiveness
+                _isLoading.value = false
+                loadMessages(sessionId)
                 true
             } else {
                 _error.value = "Failed to send prompt: ${response.code()}"
