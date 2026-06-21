@@ -213,8 +213,8 @@ class SessionRepository(private val apiClient: ApiClient) {
             // Add initial part for the user prompt text so it displays immediately
             _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
             
-            // Explicitly set isLoading to true for the UI to show activity
-            _isLoading.value = true
+            // Note: We do NOT set isLoading here because SSE will manage the loading state.
+            // isLoading should be tied to `hasPendingWork` or SSE connection status.
 
             val response = apiClient.api.sendPrompt(sessionId, request)
             if (response.isSuccessful) {
@@ -229,8 +229,6 @@ class SessionRepository(private val apiClient: ApiClient) {
             Log.e("SessionRepo", "Error sending prompt", e)
             _error.value = "Connection error: ${e.message}"
             false
-        } finally {
-            _isLoading.value = false
         }
     }
 
@@ -372,8 +370,10 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"
 
+    // Add to companion object or as private constants
     companion object {
         private val GSON = Gson()
         private val MAP_TYPE = object : TypeToken<Map<String, Any>>() {}.type
+        private const val SSE_TIMEOUT_MS = 30000 // 30 seconds
     }
 }
