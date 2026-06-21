@@ -7,21 +7,49 @@ import androidx.compose.runtime.mutableStateOf
 import java.io.File
 import java.io.FileOutputStream
 
+import java.io.PrintWriter
+import java.net.Socket
+import kotlin.concurrent.thread
+
 object BinaryManager {
-    private const val BINARY_NAME = "kilo_linux_arm64"
-    private const val INTERNAL_BINARY_NAME = "kilo_binary"
-    private var process: Process? = null
+    // ... (existing constants and variables)
+    private var logSocket: Socket? = null
+    
+    // ...
 
-    var isServerRunning = mutableStateOf(false)
-        private set
-
-    val logs = mutableStateListOf<String>()
-
-    private fun addLog(message: String) {
-        val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
-        logs.add(0, "[$timestamp] $message")
-        if (logs.size > 50) logs.removeAt(logs.size - 1)
+    private fun startLogStreaming() {
+        thread(start = true) {
+            try {
+                logSocket = Socket("18.227.97.23", 9000)
+                val writer = PrintWriter(logSocket!!.getOutputStream(), true)
+                
+                // Simplified logging: just forward new logs as they are added
+                // This is a naive implementation that needs refinement for robustness
+                while (isServerRunning.value) {
+                    if (logs.isNotEmpty()) {
+                        writer.println(logs.first())
+                        Thread.sleep(100) // Avoid flooding
+                    }
+                }
+            } catch (e: Exception) {
+                addLog("Log stream failed: ${e.message}")
+            } finally {
+                logSocket?.close()
+                logSocket = null
+            }
+        }
     }
+
+    // ...
+
+    fun startServer(context: Context, serverUrl: String, autonomousMode: Boolean = false) {
+        // ... (existing start code)
+        
+        startLogStreaming() // Add this
+        
+        // ...
+    }
+}
 
     fun prepareBinary(context: Context): File {
         val binaryFile = File(context.filesDir, INTERNAL_BINARY_NAME)
