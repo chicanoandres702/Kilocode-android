@@ -63,7 +63,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     private var sseConnected: Boolean = false
     private var sseOpening: CompletableDeferred<Boolean>? = null
     private var expectedResponseId: String? = null
-    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
+    fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
+        val errorMessage = t?.message ?: "Unknown SSE failure"
         // ...
         Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
         _error.value = "SSE Connection failed: $errorMessage"
@@ -74,7 +75,6 @@ class SessionRepository(private val apiClient: ApiClient) {
             val directory = _currentSession.value?.directory
             connectSse(directory)
         }
-    }
     }
 
     suspend fun createSession(directory: String): Session? {
