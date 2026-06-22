@@ -147,6 +147,15 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
+    suspend fun listSessions() {
+        try {
+            val response = apiClient.api.listSessions()
+            _sessions.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Error loading sessions", e)
+        }
+    }
+
     suspend fun listModels() {
         try {
             val response = apiClient.api.listProviders()
