@@ -378,6 +378,24 @@ class SessionRepository(private val apiClient: ApiClient) {
                     }
                     upsertPart(sessionId, messageId, partId, part)
                 }
+                "message.part.delta" -> {
+                    val messageId = properties["messageID"] as? String ?: return
+                    val partId = properties["partID"] as? String ?: return
+                    val field = properties["field"] as? String ?: return
+                    val delta = properties["delta"] as? String ?: return
+                    
+                    if (field == "text") {
+                        val currentParts = _parts.value.toMutableMap()
+                        val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+                        val index = messageParts.indexOfFirst { it.id == partId }
+                        if (index >= 0) {
+                            val part = messageParts[index]
+                            messageParts[index] = part.copy(text = (part.text ?: "") + delta)
+                            currentParts[messageId] = messageParts
+                            _parts.value = currentParts
+                        }
+                    }
+                }
                 "message.part.removed" -> {
                     val messageId = properties["messageID"] as? String ?: return
                     val partId = properties["partID"] as? String ?: return

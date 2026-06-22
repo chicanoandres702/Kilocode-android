@@ -62,6 +62,14 @@ fun SessionScreen(
         }
     }
 
+    val renderedMessages by remember(messages, parts) {
+        derivedStateOf {
+            messages.filter { message ->
+                message.role == "user" || message.id?.let { parts[it]?.isNotEmpty() } == true
+            }
+        }
+    }
+
     val isAtBottom by remember {
         derivedStateOf {
             val info = listState.layoutInfo
@@ -96,19 +104,19 @@ fun SessionScreen(
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
-    val messageCount = messages.size
+    val messageCount = renderedMessages.size
     LaunchedEffect(messageCount) {
         if (messageCount > 0 && (isAtBottom || messageCount <= 2)) listState.animateScrollToItem(messageCount - 1)
     }
-    val lastPartCount = messages.lastOrNull()?.id?.let { parts[it]?.size } ?: 0
+    val lastPartCount = renderedMessages.lastOrNull()?.id?.let { parts[it]?.size } ?: 0
     LaunchedEffect(lastPartCount) {
         if (isAtBottom && messageCount > 0) listState.animateScrollToItem(messageCount - 1)
     }
 
-    LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size) {
-        if (!autonomousMode || isLoading || hasPendingWork || messages.isEmpty()) return@LaunchedEffect
+    LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, renderedMessages.size) {
+        if (!autonomousMode || isLoading || hasPendingWork || renderedMessages.isEmpty()) return@LaunchedEffect
         delay(900)
-        if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty()) {
+        if (autonomousMode && !isLoading && !hasPendingWork && renderedMessages.isNotEmpty()) {
             repository.sendPrompt(sessionId, "continue", selectedAgent?.name, selectedModel)
             continueGeneration++
         }
@@ -181,7 +189,7 @@ fun SessionScreen(
                 onAgentSelected = { selectedAgent = it },
                 autonomousMode = autonomousMode,
                 onAutonomousModeChanged = { autonomousMode = it },
-                messages = messages,
+                messages = renderedMessages,
             )
         },
     ) { padding ->
@@ -213,7 +221,7 @@ fun SessionScreen(
                     state = listState,
                     contentPadding = PaddingValues(top = 12.dp, bottom = 16.dp),
                 ) {
-                    if (messages.isEmpty()) {
+                    if (renderedMessages.isEmpty()) {
                         item {
                             Column(
                                 modifier = Modifier
@@ -263,8 +271,8 @@ fun SessionScreen(
                     }
 
                     items(
-                        items = messages,
-                        key = { it.id ?: it.sessionID ?: messages.indexOf(it).toString() },
+                        items = renderedMessages,
+                        key = { it.id ?: it.sessionID ?: renderedMessages.indexOf(it).toString() },
                     ) { message ->
                         val msgParts = message.id?.let { parts[it] } ?: emptyList()
                         MessageBubble(
@@ -274,7 +282,7 @@ fun SessionScreen(
                         )
                     }
 
-                    if (isLoading && messages.isNotEmpty()) {
+                    if (isLoading && renderedMessages.isNotEmpty()) {
                         item {
                         Box(
                             modifier = Modifier
@@ -304,7 +312,7 @@ fun SessionScreen(
                         .width(4.dp),
                 )
 
-                if (!isAtBottom && messages.isNotEmpty()) {
+                if (!isAtBottom && renderedMessages.isNotEmpty()) {
                     SmallFloatingActionButton(
                         onClick = { scope.launch { listState.animateScrollToItem(messages.size - 1) } },
                         shape = RoundedCornerShape(12.dp),
