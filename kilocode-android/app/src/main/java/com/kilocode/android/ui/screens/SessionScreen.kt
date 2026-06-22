@@ -25,6 +25,7 @@ import com.kilocode.android.data.model.Part
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,6 +101,8 @@ fun SessionScreen(
     }
     LaunchedEffect(sessionId) {
         repository.selectSession(sessionId)
+        // Wait for session details to be loaded before connecting
+        repository.currentSession.firstOrNull { it?.id == sessionId }
         repository.connectSse(repository.currentSession.value?.directory)
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
