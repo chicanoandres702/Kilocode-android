@@ -330,21 +330,21 @@ class SessionRepository(private val apiClient: ApiClient) {
                         Log.d("SessionRepo", "SSE closed")
                     }
 
-                    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
-                        _isConnected.value = false
-                        sseConnected = false
-                        if (!opened.isCompleted) opened.complete(false)
-                        val errorMessage = t?.message ?: "Unknown SSE failure"
-                        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
-                        _error.value = "SSE Connection failed: $errorMessage"
-                        
-                        // Auto-reconnect
-                        scope.launch {
-                            delay(5000)
-                            val directory = directory
-                            connectSse(directory)
-                        }
-                    }
+    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
+        _isConnected.value = false
+        sseConnected = false
+        if (!opened.isCompleted) opened.complete(false)
+        val errorMessage = t?.message ?: "Unknown SSE failure"
+        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
+        _error.value = "SSE Connection failed: $errorMessage"
+        
+        // Auto-reconnect
+        scope.launch {
+            delay(5000)
+            val directory = directory
+            connectSse(directory)
+        }
+    }
                 }
             )
         } catch (e: Exception) {
