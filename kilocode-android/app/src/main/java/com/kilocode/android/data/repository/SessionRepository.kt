@@ -425,7 +425,14 @@ class SessionRepository(private val apiClient: ApiClient) {
         val updatedMessage = message.copy(sessionID = message.sessionID ?: _currentSession.value?.id)
         val current = _messages.value.toMutableList()
         val index = current.indexOfFirst { it.id == messageId }
-        if (index >= 0) current[index] = updatedMessage else current.add(updatedMessage)
+        
+        if (index >= 0) {
+            current[index] = updatedMessage
+            Log.d("SessionRepo", "Message updated: $messageId, role: ${updatedMessage.role}")
+        } else {
+            current.add(updatedMessage)
+            Log.d("SessionRepo", "Message added: $messageId, role: ${updatedMessage.role}")
+        }
         _messages.value = current
     }
 
@@ -437,7 +444,14 @@ class SessionRepository(private val apiClient: ApiClient) {
         val currentParts = _parts.value.toMutableMap()
         val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
         val index = messageParts.indexOfFirst { it.id == partId }
-        if (index >= 0) messageParts[index] = updatedPart else messageParts.add(updatedPart)
+        
+        if (index >= 0) {
+            messageParts[index] = updatedPart
+            Log.d("SessionRepo", "Part updated: $partId in $messageId")
+        } else {
+            messageParts.add(updatedPart)
+            Log.d("SessionRepo", "Part added: $partId in $messageId")
+        }
         currentParts[messageId] = messageParts
         _parts.value = currentParts
     }
