@@ -314,7 +314,7 @@ fun SessionScreen(
 
                 if (!isAtBottom && renderedMessages.isNotEmpty()) {
                     SmallFloatingActionButton(
-                        onClick = { scope.launch { listState.animateScrollToItem(messages.size - 1) } },
+                        onClick = { scope.launch { listState.animateScrollToItem(renderedMessages.size - 1) } },
                         shape = RoundedCornerShape(12.dp),
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
