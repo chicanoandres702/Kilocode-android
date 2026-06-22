@@ -337,6 +337,13 @@ class SessionRepository(private val apiClient: ApiClient) {
                         val errorMessage = t?.message ?: "Unknown SSE failure"
                         Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
                         _error.value = "SSE Connection failed: $errorMessage"
+                        
+                        // Auto-reconnect
+                        scope.launch {
+                            delay(5000)
+                            val directory = directory
+                            connectSse(directory)
+                        }
                     }
                 }
             )
