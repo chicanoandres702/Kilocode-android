@@ -236,7 +236,11 @@ class SessionRepository(private val apiClient: ApiClient) {
         directory: String? = null,
         timeoutMillis: Long = 1500L,
     ): Boolean {
-        if (sseConnected) return true
+        Log.d("SessionRepo", "Connecting SSE to directory: $directory")
+        if (sseConnected) {
+            Log.d("SessionRepo", "SSE already connected")
+            return true
+        }
 
         val existingOpening = sseOpening
         if (existingOpening != null) {
