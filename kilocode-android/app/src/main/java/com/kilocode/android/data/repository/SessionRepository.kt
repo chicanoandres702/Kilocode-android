@@ -4,54 +4,11 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kilocode.android.data.api.ApiClient
+import com.kilocode.android.data.DebugRepository
 import com.kilocode.android.data.model.*
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.withTimeoutOrNull
-import okhttp3.sse.EventSource
-import okhttp3.sse.EventSourceListener
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
-import java.util.UUID
-
-class SessionRepository(private val apiClient: ApiClient) {
-    private val _sessions = MutableStateFlow<List<Session>>(emptyList())
-    val sessions: StateFlow<List<Session>> = _sessions
-
-    private val _currentSession = MutableStateFlow<Session?>(null)
-    val currentSession: StateFlow<Session?> = _currentSession
-
-    private val _messages = MutableStateFlow<List<Message>>(emptyList())
-    val messages: StateFlow<List<Message>> = _messages
-
-    private val _parts = MutableStateFlow<Map<String, List<Part>>>(emptyMap())
-    val parts: StateFlow<Map<String, List<Part>>> = _parts
-
-    private val _agents = MutableStateFlow<List<Agent>>(emptyList())
-    val agents: StateFlow<List<Agent>> = _agents
-
-    private val _models = MutableStateFlow<List<ModelOption>>(emptyList())
-    val models: StateFlow<List<ModelOption>> = _models
-
-    private val _project = MutableStateFlow<Project?>(null)
-    val project: StateFlow<Project?> = _project
-
-    private val _files = MutableStateFlow<List<FileNode>>(emptyList())
-    val files: StateFlow<List<FileNode>> = _files
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val _isConnected = MutableStateFlow(false)
-    val isConnected: StateFlow<Boolean> = _isConnected
-
+// ...
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
-
-    private val _debugLogs = MutableStateFlow<List<String>>(emptyList())
-    val debugLogs: StateFlow<List<String>> = _debugLogs
 
     private var eventSource: EventSource? = null
     private var expectedResponseId: String? = null
@@ -480,12 +437,11 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     fun addDebugLog(message: String) {
-        val timestamp = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
-        _debugLogs.value = listOf("[$timestamp] $message") + _debugLogs.value.take(49)
+        DebugRepository.addLog(message)
     }
 
     fun clearDebugLogs() {
-        _debugLogs.value = emptyList()
+        DebugRepository.clearLogs()
     }
 
     private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"
