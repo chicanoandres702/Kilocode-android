@@ -234,7 +234,7 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun connectSse(
         directory: String? = null,
-        timeoutMillis: Long = 1500L,
+        timeoutMillis: Long = 10000L,
     ): Boolean {
         if (sseConnected) return true
 
