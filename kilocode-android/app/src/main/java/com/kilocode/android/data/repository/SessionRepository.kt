@@ -58,23 +58,10 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private var eventSource: EventSource? = null
+    private var sseTransport: com.kilocode.android.data.api.SseTransport? = null
     private var sseConnected: Boolean = false
     private var sseOpening: CompletableDeferred<Boolean>? = null
     private var expectedResponseId: String? = null
-    fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
-        val errorMessage = t?.message ?: "Unknown SSE failure"
-        // ...
-        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
-        _error.value = "SSE Connection failed: $errorMessage"
-        
-        // Auto-reconnect
-        scope.launch {
-            delay(5000)
-            val directory = _currentSession.value?.directory
-            connectSse(directory)
-        }
-    }
 
     suspend fun createSession(directory: String): Session? {
         return try {
@@ -308,8 +295,10 @@ class SessionRepository(private val apiClient: ApiClient) {
         try {
             closeEventSource()
             val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
-            eventSource = apiClient.createEventSource(
-                "global/event?directory=$encodedDirectory",
+            
+            sseTransport = com.kilocode.android.data.api.SseTransport(
+                apiClient.okHttpClient,
+                apiClient.baseUrl,
                 object : EventSourceListener() {
                     override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
                         _isConnected.value = true
@@ -330,23 +319,23 @@ class SessionRepository(private val apiClient: ApiClient) {
                         Log.d("SessionRepo", "SSE closed")
                     }
 
-    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
-        _isConnected.value = false
-        sseConnected = false
-        if (!opened.isCompleted) opened.complete(false)
-        val errorMessage = t?.message ?: "Unknown SSE failure"
-        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
-        _error.value = "SSE Connection failed: $errorMessage"
-        
-        // Auto-reconnect
-        scope.launch {
-            delay(5000)
-            val directory = directory
-            connectSse(directory)
-        }
-    }
+                    override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
+                        _isConnected.value = false
+                        sseConnected = false
+                        if (!opened.isCompleted) opened.complete(false)
+                        val errorMessage = t?.message ?: "Unknown SSE failure"
+                        Log.e("SessionRepo", "SSE failed: $errorMessage, response: $response")
+                        _error.value = "SSE Connection failed: $errorMessage"
+                        
+                        // Auto-reconnect
+                        scope.launch {
+                            delay(5000)
+                            connectSse(directory)
+                        }
+                    }
                 }
             )
+            sseTransport?.connect("global/event?directory=$encodedDirectory")
         } catch (e: Exception) {
             Log.e("SessionRepo", "Error connecting SSE", e)
             _error.value = "SSE Connection failed: ${e.message}"
@@ -488,8 +477,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     private fun closeEventSource() {
-        eventSource?.cancel()
-        eventSource = null
+        sseTransport?.cancel()
+        sseTransport = null
         sseConnected = false
         _isConnected.value = false
     }
