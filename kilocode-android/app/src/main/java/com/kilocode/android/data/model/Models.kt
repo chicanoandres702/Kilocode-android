@@ -51,7 +51,7 @@ data class ModelOption(
 }
 
 data class ProviderListResponse(
-    val all: Map<String, Provider> = emptyMap(),
+    val all: List<Provider> = emptyList(),
     val connected: List<String> = emptyList(),
     val default: Map<String, String> = emptyMap(),
 )

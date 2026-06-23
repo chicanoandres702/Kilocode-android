@@ -28,6 +28,14 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
 
     val api: KiloCodeApi = retrofit.create(KiloCodeApi::class.java)
 
+    fun createStreamCall(path: String): okhttp3.Call {
+        val request = Request.Builder()
+            .url("${baseUrl}${path}")
+            .header("Accept", "text/event-stream")
+            .build()
+        return okHttpClient.newCall(request)
+    }
+
     fun createEventSource(
         path: String,
         listener: EventSourceListener,
