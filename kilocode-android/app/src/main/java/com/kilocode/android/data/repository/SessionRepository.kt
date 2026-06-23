@@ -330,7 +330,10 @@ class SessionRepository(private val apiClient: ApiClient) {
                         // Auto-reconnect
                         scope.launch {
                             delay(5000)
-                            connectSse(directory)
+                            // Only reconnect if the session is still active
+                            if (_currentSession.value?.directory != null) {
+                                connectSse(_currentSession.value?.directory)
+                            }
                         }
                     }
                 }
