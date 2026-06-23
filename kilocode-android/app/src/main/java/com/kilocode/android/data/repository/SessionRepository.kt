@@ -5,13 +5,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.*
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import okhttp3.sse.EventSource
-import okhttp3.sse.EventSourceListener
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.util.UUID
+import okio.BufferedSource
 
 class SessionRepository(private val apiClient: ApiClient) {
     private val _sessions = MutableStateFlow<List<Session>>(emptyList())
@@ -47,7 +47,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private var eventSource: EventSource? = null
+    private var sseJob: Job? = null
+    private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     suspend fun listSessions() {
         _isLoading.value = true
@@ -137,17 +138,17 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.listProviders()
             val providerResponse = response.takeIf { it.isSuccessful }?.body()
             val connectedProviders = providerResponse?.connected.orEmpty()
-            val providers = providerResponse?.all.orEmpty().entries
-                .filter { connectedProviders.isEmpty() || it.key in connectedProviders }
+            val providers = providerResponse?.all.orEmpty()
+                .filter { connectedProviders.isEmpty() || it.id in connectedProviders }
             val options = buildList {
-                providers.forEach { (providerID, provider) ->
+                providers.forEach { provider ->
                     provider.models.values.forEach { model ->
                         add(
                             ModelOption(
-                                providerID = providerID,
+                                providerID = provider.id,
                                 modelID = model.id,
                                 displayName = model.name.ifBlank { model.id },
-                                category = provider.name.ifBlank { providerID },
+                                category = provider.name.ifBlank { provider.id },
                             )
                         )
                     }
@@ -265,27 +266,40 @@ class SessionRepository(private val apiClient: ApiClient) {
     fun connectSse(sessionId: String, directory: String? = null) {
         disconnectSse()
         val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
-        eventSource = apiClient.createEventSource(
-            "global/event?directory=$encodedDirectory",
-            object : EventSourceListener() {
-                override fun onOpen(eventSource: EventSource, response: okhttp3.Response) {
+        
+        sseJob = repositoryScope.launch {
+            try {
+                val call = apiClient.createStreamCall("global/event?directory=$encodedDirectory")
+                call.execute().use { response ->
+                    if (!response.isSuccessful) {
+                        Log.e("SessionRepo", "SSE connection failed: ${response.code}")
+                        return@launch
+                    }
+
                     _isConnected.value = true
+                    val source = response.body?.source() ?: return@launch
+                    var currentType = "message"
+                    
+                    while (isActive && !source.exhausted()) {
+                        val line = source.readUtf8Line() ?: break
+                        if (line.isEmpty()) continue
+                        
+                        if (line.startsWith("event:")) {
+                            currentType = line.substringAfter("event:").trim()
+                        } else if (line.startsWith("data:")) {
+                            val data = line.substringAfter("data:").trim()
+                            handleSseEvent(currentType, data)
+                        }
+                    }
                 }
-
-                override fun onEvent(eventSource: EventSource, id: String?, type: String?, data: String) {
-                    handleSseEvent(type, data)
+            } catch (e: Exception) {
+                if (isActive) {
+                    Log.e("SessionRepo", "SSE failed", e)
                 }
-
-                override fun onClosed(eventSource: EventSource) {
-                    _isConnected.value = false
-                }
-
-                override fun onFailure(eventSource: EventSource, t: Throwable?, response: okhttp3.Response?) {
-                    _isConnected.value = false
-                    Log.e("SessionRepo", "SSE failed: ${t?.message}")
-                }
+            } finally {
+                _isConnected.value = false
             }
-        )
+        }
     }
 
     private fun handleSseEvent(type: String?, data: String) {
@@ -361,8 +375,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     fun disconnectSse() {
-        eventSource?.cancel()
-        eventSource = null
+        sseJob?.cancel()
+        sseJob = null
         _isConnected.value = false
     }
 
