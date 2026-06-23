@@ -507,7 +507,42 @@ class SessionRepository(private val apiClient: ApiClient) {
         DebugRepository.clearLogs()
     }
 
-    private fun generateMessageId(): String = "msg_${UUID.randomUUID()}"
+    suspend fun manualSseFlow(sessionId: String, prompts: List<String>) {
+        Log.d("SessionRepo", "Starting manual SSE flow for session: $sessionId")
+        
+        // Ensure SSE is connected
+        val directory = _currentSession.value?.directory
+        if (!connectSse(directory)) {
+            Log.e("SessionRepo", "Failed to connect SSE for manual flow")
+            return
+        }
+
+        for (prompt in prompts) {
+            Log.d("SessionRepo", "Sending manual prompt: $prompt")
+            
+            // Re-use logic from sendPrompt but simplified for manual testing
+            val messageID = generateMessageId()
+            val request = PromptRequest(
+                messageID = messageID,
+                parts = listOf(PartRequest(type = "text", text = prompt)),
+            )
+
+            try {
+                val response = apiClient.api.sendPrompt(sessionId, request, directory)
+                if (response.isSuccessful) {
+                    Log.d("SessionRepo", "Manual prompt sent successfully. Awaiting SSE response.")
+                    // In a real flow, we'd await a specific SSE event.
+                    // Here, we just wait for the next events to be processed in handleSseEvent.
+                    delay(2000) 
+                } else {
+                    Log.e("SessionRepo", "Manual prompt failed with code: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("SessionRepo", "Error sending manual prompt", e)
+            }
+        }
+        Log.d("SessionRepo", "Manual SSE flow completed")
+    }
 
     companion object {
         private val GSON = Gson()
