@@ -220,6 +220,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 model = model?.let { ModelInfo(it.providerID, it.modelID) }
             )
             
+            // Add detailed logging
+            Log.d("SessionRepo", "Sending prompt: sessionId=$sessionId, request=$request")
+            
             // Optimistic update
             val optimisticMessage = Message(id = messageID, sessionID = sessionId, role = "user")
             upsertMessage(optimisticMessage)
