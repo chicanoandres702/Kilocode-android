@@ -41,7 +41,7 @@ fun MessageBubble(
     agent: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    android.util.Log.d("MessageBubble", "Rendering bubble, isUser: $isUser, parts size: ${parts.size}")
+    android.util.Log.d("MessageBubble", "Rendering bubble, isUser: $isUser, parts size: ${parts.size}, parts: $parts")
     val bubbleBg    = if (isUser) BubbleUser else BubbleAssistant
     val alignment   = if (isUser) Alignment.End else Alignment.Start
     val displayName = if (isUser) "You" else agent ?: "Kilo"
@@ -129,6 +129,7 @@ fun MessageBubble(
                                 "text"      -> TextPartView(text = part.text.orEmpty())
                                 "tool"      -> ToolPartView(part = part)
                                 "reasoning" -> ReasoningPartView(part = part)
+                                "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
                                 else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
                             }
                         }

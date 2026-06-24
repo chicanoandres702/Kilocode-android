@@ -1,5 +1,7 @@
 package com.kilocode.android.data.api
 
+import android.util.Log
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.sse.EventSource
@@ -54,15 +56,23 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         private var instanceSharedSecret: String? = null
 
         fun getInstance(baseUrl: String, sharedSecret: String): ApiClient {
-            val normalizedBaseUrl = baseUrl.removeSuffix("/") + "/"
+            // Trim and sanitize URL
+            val sanitizedBaseUrl = baseUrl.trim().removeSuffix("/") + "/"
+            
+            // Check for invalid URL format
+            if (sanitizedBaseUrl.toHttpUrlOrNull() == null) {
+                Log.e("ApiClient", "Invalid base URL: $sanitizedBaseUrl")
+                return INSTANCE ?: ApiClient("http://localhost/", "") // Fallback
+            }
+
             return synchronized(this) {
                 if (
                     INSTANCE == null ||
-                    instanceBaseUrl != normalizedBaseUrl ||
+                    instanceBaseUrl != sanitizedBaseUrl ||
                     instanceSharedSecret != sharedSecret
                 ) {
-                    INSTANCE = ApiClient(normalizedBaseUrl, sharedSecret)
-                    instanceBaseUrl = normalizedBaseUrl
+                    INSTANCE = ApiClient(sanitizedBaseUrl, sharedSecret)
+                    instanceBaseUrl = sanitizedBaseUrl
                     instanceSharedSecret = sharedSecret
                 }
                 INSTANCE!!
