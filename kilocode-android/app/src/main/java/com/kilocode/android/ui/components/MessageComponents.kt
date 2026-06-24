@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -127,7 +128,7 @@ fun MessageBubble(
                         parts.forEach { part ->
                             when (part.type) {
                                 "text"      -> TextPartView(text = part.text.orEmpty())
-                                "tool"      -> ToolPartView(part = part)
+                                "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onCompact = { /* TODO: Implement onCompact */ })
                                 "reasoning" -> ReasoningPartView(part = part)
                                 "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
                                 else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
@@ -189,7 +190,11 @@ private fun TextPartView(text: String) {
 
 // ── Tool pill — single-line, taps to expand with spring ──────────────────────
 @Composable
-fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
+fun ToolPartView(part: Part, sessionId: String, modifier: Modifier = Modifier, onCompact: () -> Unit) {
+    if (part.tool == "question") {
+        QuestionToolView(part, sessionId, modifier, onCompact)
+        return
+    }
     val state = part.state ?: return
     var expanded by remember { mutableStateOf(false) }
 
@@ -290,6 +295,55 @@ fun ToolPartView(part: Part, modifier: Modifier = Modifier) {
                                          else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f),
                             lineHeight = 16.sp,
                         )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun QuestionToolView(part: Part, sessionId: String, modifier: Modifier = Modifier, onCompact: () -> Unit) {
+    val input = part.state?.input as? Map<String, Any> ?: return
+    val questions = input["questions"] as? List<Map<String, Any>> ?: return
+    
+    Column(modifier = modifier.fillMaxWidth().padding(vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        questions.forEach { questionMap ->
+            val header = questionMap["header"] as? String ?: "Question"
+            val question = questionMap["question"] as? String ?: ""
+            val options = questionMap["options"] as? List<Map<String, String>> ?: emptyList()
+            
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(header, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                        IconButton(onClick = onCompact) {
+                            Icon(Icons.Rounded.Compress, contentDescription = "Compact")
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(question, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    options.forEach { option ->
+                        val label = option["label"] ?: ""
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable { /* TODO: Send response */ },
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                        ) {
+                            Text(label, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
+                        }
                     }
                 }
             }

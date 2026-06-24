@@ -31,6 +31,7 @@
 - [x] Added persisted server URL preferences and wired Settings/MainActivity to save and restore it
 - [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
 - [x] Added remote Kilo agent listing and chat-side agent selection
+- [x] Implemented `QuestionToolView` in `MessageComponents.kt` with compaction button to handle AI-driven "question" tool prompts.
 
 ## APK Output
 
