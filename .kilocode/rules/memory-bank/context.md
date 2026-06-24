@@ -6,6 +6,9 @@
 
 ## Recently Completed
 
+- Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
+- Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
+
 - [x] Cloned Kilo Code repository from GitHub (https://github.com/Kilo-Org/kilocode)
 - [x] Created Android project structure (`kilocode-android/`)
 - [x] Implemented data models matching Kilo Code server API
