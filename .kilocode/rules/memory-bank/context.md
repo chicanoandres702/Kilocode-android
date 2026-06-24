@@ -33,30 +33,13 @@
 - [x] Added remote Kilo agent listing and chat-side agent selection
 - [x] Implemented `QuestionToolView` in `MessageComponents.kt` with compaction button to handle AI-driven "question" tool prompts.
 - [x] Created GitHub release `1.0.4`.
+- [x] Fixed message bubble rendering issue in `SessionRepository` (Issue #25).
 
-## APK Output
+### Current State
 
-| Property | Value |
-|----------|-------|
-| File | `kilocode-android/app/build/outputs/apk/release/app-release.apk` |
-| Size | 8.0 MB |
-| Package | `com.kilocode.android` |
-| Version | 1.0.4 (versionCode 1) |
-| Min SDK | 26 (Android 8.0) |
-| Target SDK | 35 (Android 15) |
-| Signing | APK Signature Scheme v2 |
-| Minification | R8 enabled, resources shrunk |
+**Status**: Android client fully reviewed, fixed, and APK exported. Message bubble rendering issue resolved.
 
-## Project Structure
-
-| Directory | Purpose | Status |
-|-----------|---------|--------|
-| `kilocode-android/` | Native Android client app | Complete |
-| `kilocode-android/app/src/main/java/com/kilocode/android/` | Kotlin source code | Complete |
-| `kilocode-android/keystore/` | Release signing keystore | Complete |
-| `src/` | Next.js web template | Complete |
-
-## Session History
+### Session History
 
 | Date | Changes |
 |------|---------|
@@ -69,3 +52,5 @@
 | 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
 | 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |
 | 2026-06-24 | Created release 1.0.4 |
+| 2026-06-24 | Fixed message bubble rendering issue (Issue #25) |
+
