@@ -59,6 +59,11 @@ interface KiloCodeApi {
         @Path("sessionID") sessionID: String,
     ): Response<Unit>
 
+    @POST("session/{sessionID}/compact")
+    suspend fun compactSession(
+        @Path("sessionID") sessionID: String,
+    ): Response<Unit>
+
     @GET("session/status")
     suspend fun getSessionStatus(): Response<Map<String, SessionStatus>>
 
