@@ -32,6 +32,7 @@
 - [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
 - [x] Added remote Kilo agent listing and chat-side agent selection
 - [x] Implemented `QuestionToolView` in `MessageComponents.kt` with compaction button to handle AI-driven "question" tool prompts.
+- [x] Created GitHub release `1.0.4`.
 
 ## APK Output
 
@@ -40,7 +41,7 @@
 | File | `kilocode-android/app/build/outputs/apk/release/app-release.apk` |
 | Size | 8.0 MB |
 | Package | `com.kilocode.android` |
-| Version | 1.0.0 (versionCode 1) |
+| Version | 1.0.4 (versionCode 1) |
 | Min SDK | 26 (Android 8.0) |
 | Target SDK | 35 (Android 15) |
 | Signing | APK Signature Scheme v2 |
@@ -67,3 +68,4 @@
 | 2026-06-20 | Fixed Android session opening against current Kilo server message/event API and added server URL persistence |
 | 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
 | 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |
+| 2026-06-24 | Created release 1.0.4 |
