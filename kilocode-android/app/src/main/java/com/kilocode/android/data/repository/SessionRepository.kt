@@ -254,6 +254,15 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
+    suspend fun compactSession(sessionId: String) {
+        try {
+            val response = apiClient.api.compactSession(sessionId)
+            if (!response.isSuccessful) logE("SessionRepo", "Failed to compact session: ${response.code()}")
+        } catch (e: Exception) {
+            logE("SessionRepo", "Error compacting session", e)
+        }
+    }
+
     suspend fun deleteSession(sessionId: String) {
         try {
             val response = apiClient.api.deleteSession(sessionId)
