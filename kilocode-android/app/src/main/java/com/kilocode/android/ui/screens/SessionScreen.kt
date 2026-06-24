@@ -36,12 +36,19 @@ fun SessionScreen(
     onBack: () -> Unit,
 ) {
     val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
+    // Use a singleton/shared repository instance managed via dependency injection or a provider to ensure consistency.
+    // For now, reuse the instance if possible or lift it to a higher level in Navigation.
+    // Assuming simple singleton access for the prototype:
     val repository = remember(apiClient) { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
-
+    
+    // Debugging state flow collection
+    val messagesState = repository.messages.collectAsState()
+    val partsState = repository.parts.collectAsState()
+    
     val currentSession by repository.currentSession.collectAsState()
-    val messages by repository.messages.collectAsState()
-    val parts by repository.parts.collectAsState()
+    val messages = messagesState.value
+    val parts = partsState.value
     val agents by repository.agents.collectAsState()
     val models by repository.models.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
@@ -100,9 +107,11 @@ fun SessionScreen(
     LaunchedEffect(messageCount) {
         if (messageCount > 0 && (isAtBottom || messageCount <= 2)) listState.animateScrollToItem(messageCount - 1)
     }
-    val lastPartCount = messages.lastOrNull()?.id?.let { parts[it]?.size } ?: 0
-    LaunchedEffect(lastPartCount) {
-        if (isAtBottom && messageCount > 0) listState.animateScrollToItem(messageCount - 1)
+    // Observe parts updates to trigger scroll to bottom
+    LaunchedEffect(parts) {
+        if (isAtBottom && messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
     }
 
     LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size) {

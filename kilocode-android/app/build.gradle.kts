@@ -15,9 +15,9 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://127.0.0.1:4096"
+        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://10.0.2.2:4097"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
-        val serverUrlDomain = System.getenv("SERVER_URL_DOMAIN") ?: "127.0.0.1"
+        val serverUrlDomain = System.getenv("SERVER_URL_DOMAIN") ?: "10.0.2.2"
         manifestPlaceholders["serverUrlDomain"] = serverUrlDomain
 
         buildConfigField("String", "DEFAULT_SERVER_URL", "\"$defaultServerUrl\"")
@@ -105,4 +105,5 @@ dependencies {
     // Markdown
     implementation("com.github.jeziellago:compose-markdown:0.5.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.12.0")
 }

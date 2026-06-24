@@ -8,6 +8,7 @@ import com.kilocode.android.data.model.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.util.UUID
@@ -306,13 +307,31 @@ class SessionRepository(private val apiClient: ApiClient) {
         Log.d("SessionRepo", "SSE event received: type=$type, data=$data")
         try {
             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
-            val properties = event["properties"] as? Map<String, Any> ?: return
-            Log.d("SessionRepo", "SSE event properties: $properties")
+            
+            // Extract the actual event type from the payload if it's a generic "message" event
+            val payload = event["payload"] as? Map<String, Any>
+            val actualType = if (type == "message") {
+                payload?.get("type") as? String
+            } else {
+                type
+            }
+            
+            val properties = if (type == "message") {
+                payload?.get("properties") as? Map<String, Any>
+            } else {
+                event["properties"] as? Map<String, Any>
+            }
+            
+            if (actualType == null || properties == null) {
+                Log.w("SessionRepo", "Skipping event: actualType=$actualType, properties=$properties")
+                return
+            }
+            
+            Log.d("SessionRepo", "Processing event: actualType=$actualType")
 
-            when (type) {
+            when (actualType) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return
-                    Log.d("SessionRepo", "Processing message.updated: $info")
                     upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
                 }
                 "message.removed" -> {
@@ -320,11 +339,20 @@ class SessionRepository(private val apiClient: ApiClient) {
                     _messages.value = _messages.value.filter { it.id != messageID }
                 }
                 "message.part.updated" -> {
-                    val partData = properties["part"] as? Map<String, Any> ?: return
-                    Log.d("SessionRepo", "Processing message.part.updated: $partData")
+                    val partData = properties["part"] as? Map<String, Any> ?: run {
+                        Log.w("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
+                        return
+                    }
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
-                    val messageId = part.messageID ?: return
-                    val partId = part.id ?: return
+                    val messageId = part.messageID ?: properties["messageID"] as? String
+                    if (messageId == null) {
+                        Log.w("SessionRepo", "Skipping part update: messageID missing.")
+                        return
+                    }
+                    val partId = part.id ?: run {
+                        Log.w("SessionRepo", "Skipping part update: partID missing.")
+                        return
+                    }
                     upsertPart(messageId, partId, part)
                 }
                 "message.part.removed" -> {
@@ -334,7 +362,9 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
                 "session.status" -> {
                     val status = properties["status"] as? Map<String, Any>
-                    _isConnected.value = status?.get("type") != "idle"
+                    val isIdle = status?.get("type") == "idle"
+                    _isConnected.value = !isIdle
+                    _isLoading.value = !isIdle
                 }
                 "session.error" -> {
                     val error = properties["error"] as? Map<String, Any>
@@ -352,20 +382,26 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     private fun upsertMessage(message: Message) {
+        Log.d("SessionRepo", "upsertMessage: $message")
         val messageId = message.id ?: return
-        val current = _messages.value.toMutableList()
-        val index = current.indexOfFirst { it.id == messageId }
-        if (index >= 0) current[index] = message else current.add(message)
-        _messages.value = current
+        _messages.update { current ->
+            val mutableList = current.toMutableList()
+            val index = mutableList.indexOfFirst { it.id == messageId }
+            if (index >= 0) mutableList[index] = message else mutableList.add(message)
+            mutableList
+        }
+        Log.d("SessionRepo", "messages updated: ${_messages.value.size}")
     }
 
     private fun upsertPart(messageId: String, partId: String, part: Part) {
-        val currentParts = _parts.value.toMutableMap()
-        val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
-        val index = messageParts.indexOfFirst { it.id == partId }
-        if (index >= 0) messageParts[index] = part else messageParts.add(part)
-        currentParts[messageId] = messageParts
-        _parts.value = currentParts
+        Log.d("SessionRepo", "upsertPart: messageId=$messageId, partId=$partId, part=$part")
+        _parts.update { currentParts ->
+            val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+            val index = messageParts.indexOfFirst { it.id == partId }
+            if (index >= 0) messageParts[index] = part else messageParts.add(part)
+            currentParts + (messageId to messageParts)
+        }
+        Log.d("SessionRepo", "parts updated for $messageId: ${_parts.value[messageId]?.size}")
     }
 
     private fun removePart(messageId: String, partId: String) {

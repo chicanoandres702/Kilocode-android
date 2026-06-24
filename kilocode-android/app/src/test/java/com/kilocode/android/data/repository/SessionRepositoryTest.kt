@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
 class SessionRepositoryTest {
@@ -15,7 +16,12 @@ class SessionRepositoryTest {
     @Test
     fun testHandleSseEventMessageUpdated() = runBlocking {
         // Create a mock ApiClient
+        // For unit tests, we need to mock the ApiClient structure
         val apiClient = mock(ApiClient::class.java)
+        // We also need to mock the Retrofit service it contains
+        val apiService = mock(com.kilocode.android.data.api.KiloCodeApi::class.java)
+        `when`(apiClient.api).thenReturn(apiService)
+        
         val repository = SessionRepository(apiClient)
 
         // Simulate an SSE "message.updated" event

@@ -105,8 +105,8 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = urlInput,
                     onValueChange = { urlInput = it },
-                    label = { Text("Server URL") },
-                    placeholder = { Text("http://localhost:3000") },
+                    label = { Text("Server URL (e.g., http://18.191.142.105:4096)") },
+                    placeholder = { Text("http://18.191.142.105:4096") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
