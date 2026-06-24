@@ -128,7 +128,7 @@ fun MessageBubble(
                         parts.forEach { part ->
                             when (part.type) {
                                 "text"      -> TextPartView(text = part.text.orEmpty())
-                                "tool"      -> ToolPartView(part = part)
+                                "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onCompact = { /* TODO: Implement onCompact */ })
                                 "reasoning" -> ReasoningPartView(part = part)
                                 "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
                                 else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
