@@ -44,13 +44,13 @@ fun PromptInput(
     messages: List<Message> = emptyList(),
     modifier: Modifier = Modifier,
 ) {
-    var text by remember { mutableStateOf("") }
+    var textFieldValue by remember { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue("")) }
     var agentMenuExpanded by remember { mutableStateOf(false) }
     var modelMenuExpanded by remember { mutableStateOf(false) }
-    val canSend = text.isNotBlank() && !isLoading
+    val canSend = textFieldValue.text.isNotBlank() && !isLoading
     val showAgentChip = agents.isNotEmpty()
     val showModelChip = models.isNotEmpty()
-    val charCount = text.length
+    val charCount = textFieldValue.text.length
     val nearLimit = charCount > MAX_CHARS * 0.85f
     val modelGroups = models.groupBy { it.category.ifBlank { "Models" } }
 
@@ -61,7 +61,7 @@ fun PromptInput(
     )
 
     val fieldElevation by animateDpAsState(
-        targetValue = if (text.isNotEmpty() || autonomousMode) 2.dp else 0.dp,
+        targetValue = if (textFieldValue.text.isNotEmpty() || autonomousMode) 2.dp else 0.dp,
         animationSpec = tween(200),
         label = "fieldElevation",
     )
@@ -143,8 +143,8 @@ fun PromptInput(
                             
                             Box(modifier = Modifier.fillMaxWidth()) {
                                 BasicTextField(
-                                    value = text,
-                                    onValueChange = { text = it.take(MAX_CHARS) },
+                                    value = textFieldValue,
+                                    onValueChange = { if (it.text.length <= MAX_CHARS) textFieldValue = it },
                                     enabled = !isLoading,
                                     minLines = 1, // Set minimum height
                                     maxLines = 4, // Limit maximum expansion
@@ -155,12 +155,12 @@ fun PromptInput(
                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                                     keyboardActions = KeyboardActions(onSend = {
                                         if (canSend) {
-                                            onSend(text.trim())
-                                            text = ""
+                                            onSend(textFieldValue.text.trim())
+                                            textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
                                         }
                                     }),
                                     decorationBox = { inner ->
-                                        if (text.isEmpty()) {
+                                        if (textFieldValue.text.isEmpty()) {
                                             Text(
                                                 text = if (autonomousMode) "Autonomous mode is sending continue…" else "Ask Kilo anything…",
                                                 style = MaterialTheme.typography.bodyMedium,
@@ -240,8 +240,8 @@ fun PromptInput(
                                         if (autonomousMode) {
                                             onContinue()
                                         } else if (canSend) {
-                                            onSend(text.trim())
-                                            text = ""
+                                            onSend(textFieldValue.text.trim())
+                                            textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
                                         }
                                     },
                                     enabled = canSend || autonomousMode,

@@ -367,11 +367,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                         logW("SessionRepo", "Skipping part update: messageID missing.")
                         return
                     }
-                    val partId = part.id ?: run {
-                        logW("SessionRepo", "Skipping part update: partID missing.")
-                        return
-                    }
-                    upsertPart(messageId, partId, part)
+                    upsertPart(messageId, part)
                 }
                 "message.part.removed" -> {
                     val messageId = properties["messageID"] as? String ?: return
@@ -411,11 +407,16 @@ class SessionRepository(private val apiClient: ApiClient) {
         logD("SessionRepo", "messages updated: ${_messages.value.size}")
     }
 
-    private fun upsertPart(messageId: String, partId: String, part: Part) {
-        logD("SessionRepo", "upsertPart: messageId=$messageId, partId=$partId, part=$part")
+    private fun upsertPart(messageId: String, part: Part) {
+        logD("SessionRepo", "upsertPart: messageId=$messageId, part=$part")
         _parts.update { currentParts ->
             val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
-            val index = messageParts.indexOfFirst { it.id == partId }
+            // Find existing part by id, or by other criteria if id is null
+            val index = if (part.id != null) {
+                messageParts.indexOfFirst { it.id == part.id }
+            } else {
+                messageParts.indexOfFirst { it.type == part.type && it.text == part.text }
+            }
             if (index >= 0) messageParts[index] = part else messageParts.add(part)
             currentParts + (messageId to messageParts)
         }

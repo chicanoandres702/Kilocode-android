@@ -107,6 +107,16 @@ fun SessionScreen(
     LaunchedEffect(messageCount) {
         if (messageCount > 0 && (isAtBottom || messageCount <= 2)) listState.animateScrollToItem(messageCount - 1)
     }
+    var isFirstLoad by remember { mutableStateOf(true) }
+    
+    // Observe parts updates to trigger scroll to bottom
+    LaunchedEffect(messages) {
+        if (isFirstLoad && messages.isNotEmpty()) {
+            listState.scrollToItem(messages.size - 1)
+            isFirstLoad = false
+        }
+    }
+    
     // Observe parts updates to trigger scroll to bottom
     LaunchedEffect(parts) {
         if (isAtBottom && messages.isNotEmpty()) {
