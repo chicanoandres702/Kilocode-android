@@ -15,6 +15,15 @@ import java.util.UUID
 import okio.BufferedSource
 
 class SessionRepository(private val apiClient: ApiClient) {
+    private fun logD(tag: String, msg: String) {
+        if (System.getProperty("java.vm.name")?.contains("Android") == true) Log.d(tag, msg) else println("D/$tag: $msg")
+    }
+    private fun logE(tag: String, msg: String, e: Throwable? = null) {
+        if (System.getProperty("java.vm.name")?.contains("Android") == true) Log.e(tag, msg, e) else System.err.println("E/$tag: $msg ${e?.message ?: ""}")
+    }
+    private fun logW(tag: String, msg: String) {
+        if (System.getProperty("java.vm.name")?.contains("Android") == true) Log.w(tag, msg) else println("W/$tag: $msg")
+    }
     private val _sessions = MutableStateFlow<List<Session>>(emptyList())
     val sessions: StateFlow<List<Session>> = _sessions
 
@@ -57,7 +66,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.listSessions()
             _sessions.value = response.body() ?: emptyList()
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading sessions", e)
+            logE("SessionRepo", "Error loading sessions", e)
             _error.value = "Connection error: ${e.message}"
         } finally {
             _isLoading.value = false
@@ -81,7 +90,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 null
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error creating session", e)
+            logE("SessionRepo", "Error creating session", e)
             _error.value = "Connection error: ${e.message}"
             null
         } finally {
@@ -102,7 +111,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 _error.value = "Failed to load session: ${response.code()}"
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error selecting session", e)
+            logE("SessionRepo", "Error selecting session", e)
             _error.value = "Connection error: ${e.message}"
         }
     }
@@ -120,7 +129,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 _error.value = "Failed to load messages: ${response.code()}"
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading messages", e)
+            logE("SessionRepo", "Error loading messages", e)
             _error.value = "Connection error: ${e.message}"
         }
     }
@@ -130,7 +139,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.listAgents()
             _agents.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading agents", e)
+            logE("SessionRepo", "Error loading agents", e)
         }
     }
 
@@ -162,7 +171,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             }
             _models.value = options.sortedWith(compareBy<ModelOption> { it.category }.thenBy { it.displayName })
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading models", e)
+            logE("SessionRepo", "Error loading models", e)
         }
     }
 
@@ -171,7 +180,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.getProject()
             _project.value = response.takeIf { it.isSuccessful }?.body()
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading project", e)
+            logE("SessionRepo", "Error loading project", e)
         }
     }
 
@@ -180,7 +189,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.listFiles(directory)
             _files.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error loading files", e)
+            logE("SessionRepo", "Error loading files", e)
         }
     }
 
@@ -189,7 +198,7 @@ class SessionRepository(private val apiClient: ApiClient) {
             val body = apiClient.api.readFile(path).takeIf { it.isSuccessful }?.body()
             body?.get("content") ?: body?.get("text")
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error reading file", e)
+            logE("SessionRepo", "Error reading file", e)
             null
         }
     }
@@ -228,7 +237,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 false
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error sending prompt", e)
+            logE("SessionRepo", "Error sending prompt", e)
             _error.value = "Connection error: ${e.message}"
             false
         } finally {
@@ -239,9 +248,9 @@ class SessionRepository(private val apiClient: ApiClient) {
     suspend fun abortSession(sessionId: String) {
         try {
             val response = apiClient.api.abortSession(sessionId)
-            if (!response.isSuccessful) Log.e("SessionRepo", "Failed to abort session: ${response.code()}")
+            if (!response.isSuccessful) logE("SessionRepo", "Failed to abort session: ${response.code()}")
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error aborting session", e)
+            logE("SessionRepo", "Error aborting session", e)
         }
     }
 
@@ -259,7 +268,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 _error.value = "Failed to delete session: ${response.code()}"
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error deleting session", e)
+            logE("SessionRepo", "Error deleting session", e)
             _error.value = "Connection error: ${e.message}"
         }
     }
@@ -273,7 +282,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 val call = apiClient.createStreamCall("global/event?directory=$encodedDirectory")
                 call.execute().use { response ->
                     if (!response.isSuccessful) {
-                        Log.e("SessionRepo", "SSE connection failed: ${response.code}")
+                        logE("SessionRepo", "SSE connection failed: ${response.code}")
                         return@launch
                     }
 
@@ -295,7 +304,7 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
             } catch (e: Exception) {
                 if (isActive) {
-                    Log.e("SessionRepo", "SSE failed", e)
+                    logE("SessionRepo", "SSE failed", e)
                 }
             } finally {
                 _isConnected.value = false
@@ -304,7 +313,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     private fun handleSseEvent(type: String?, data: String) {
-        Log.d("SessionRepo", "SSE event received: type=$type, data=$data")
+        logD("SessionRepo", "SSE event received: type=$type, data=$data")
         try {
             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
             
@@ -323,11 +332,11 @@ class SessionRepository(private val apiClient: ApiClient) {
             }
             
             if (actualType == null || properties == null) {
-                Log.w("SessionRepo", "Skipping event: actualType=$actualType, properties=$properties")
+                logW("SessionRepo", "Skipping event: actualType=$actualType, properties=$properties")
                 return
             }
             
-            Log.d("SessionRepo", "Processing event: actualType=$actualType")
+            logD("SessionRepo", "Processing event: actualType=$actualType")
 
             when (actualType) {
                 "message.updated" -> {
@@ -340,17 +349,17 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
                 "message.part.updated" -> {
                     val partData = properties["part"] as? Map<String, Any> ?: run {
-                        Log.w("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
+                        logW("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
                         return
                     }
                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
                     val messageId = part.messageID ?: properties["messageID"] as? String
                     if (messageId == null) {
-                        Log.w("SessionRepo", "Skipping part update: messageID missing.")
+                        logW("SessionRepo", "Skipping part update: messageID missing.")
                         return
                     }
                     val partId = part.id ?: run {
-                        Log.w("SessionRepo", "Skipping part update: partID missing.")
+                        logW("SessionRepo", "Skipping part update: partID missing.")
                         return
                     }
                     upsertPart(messageId, partId, part)
@@ -377,12 +386,12 @@ class SessionRepository(private val apiClient: ApiClient) {
                 }
             }
         } catch (e: Exception) {
-            Log.e("SessionRepo", "Error handling SSE event", e)
+            logE("SessionRepo", "Error handling SSE event", e)
         }
     }
 
     private fun upsertMessage(message: Message) {
-        Log.d("SessionRepo", "upsertMessage: $message")
+        logD("SessionRepo", "upsertMessage: $message")
         val messageId = message.id ?: return
         _messages.update { current ->
             val mutableList = current.toMutableList()
@@ -390,18 +399,18 @@ class SessionRepository(private val apiClient: ApiClient) {
             if (index >= 0) mutableList[index] = message else mutableList.add(message)
             mutableList
         }
-        Log.d("SessionRepo", "messages updated: ${_messages.value.size}")
+        logD("SessionRepo", "messages updated: ${_messages.value.size}")
     }
 
     private fun upsertPart(messageId: String, partId: String, part: Part) {
-        Log.d("SessionRepo", "upsertPart: messageId=$messageId, partId=$partId, part=$part")
+        logD("SessionRepo", "upsertPart: messageId=$messageId, partId=$partId, part=$part")
         _parts.update { currentParts ->
             val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
             val index = messageParts.indexOfFirst { it.id == partId }
             if (index >= 0) messageParts[index] = part else messageParts.add(part)
             currentParts + (messageId to messageParts)
         }
-        Log.d("SessionRepo", "parts updated for $messageId: ${_parts.value[messageId]?.size}")
+        logD("SessionRepo", "parts updated for $messageId: ${_parts.value[messageId]?.size}")
     }
 
     private fun removePart(messageId: String, partId: String) {
