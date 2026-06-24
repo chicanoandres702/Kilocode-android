@@ -93,55 +93,61 @@ fun PromptInput(
                         tonalElevation = fieldElevation,
                         modifier = Modifier.weight(1f),
                     ) {
-                        Row(
+                        Column( // Use Column to handle multiline inputs properly
                             modifier = Modifier.padding(
                                 start = if (showAgentChip || showModelChip) 6.dp else 14.dp,
                                 end = 10.dp,
                                 top = 9.dp,
                                 bottom = 9.dp,
                             ),
-                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            if (showAgentChip) {
-                                Box {
-                                    AgentChip(
-                                        agent = selectedAgent,
-                                        expanded = agentMenuExpanded,
-                                        onExpand = { agentMenuExpanded = true },
-                                        onDismiss = { agentMenuExpanded = false },
-                                        agents = agents,
-                                        onAgentSelected = {
-                                            onAgentSelected(it)
-                                            agentMenuExpanded = false
-                                        },
-                                    )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                if (showAgentChip) {
+                                    Box {
+                                        AgentChip(
+                                            agent = selectedAgent,
+                                            expanded = agentMenuExpanded,
+                                            onExpand = { agentMenuExpanded = true },
+                                            onDismiss = { agentMenuExpanded = false },
+                                            agents = agents,
+                                            onAgentSelected = {
+                                                onAgentSelected(it)
+                                                agentMenuExpanded = false
+                                            },
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(6.dp))
                                 }
-                                Spacer(modifier = Modifier.width(6.dp))
-                            }
 
-                            if (showModelChip) {
-                                Box {
-                                    ModelChip(
-                                        model = selectedModel,
-                                        expanded = modelMenuExpanded,
-                                        onExpand = { modelMenuExpanded = true },
-                                        onDismiss = { modelMenuExpanded = false },
-                                        modelGroups = modelGroups,
-                                        onModelSelected = {
-                                            onModelSelected(it)
-                                            modelMenuExpanded = false
-                                        },
-                                    )
+                                if (showModelChip) {
+                                    Box {
+                                        ModelChip(
+                                            model = selectedModel,
+                                            expanded = modelMenuExpanded,
+                                            onExpand = { modelMenuExpanded = true },
+                                            onDismiss = { modelMenuExpanded = false },
+                                            modelGroups = modelGroups,
+                                            onModelSelected = {
+                                                onModelSelected(it)
+                                                modelMenuExpanded = false
+                                            },
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(6.dp))
                                 }
-                                Spacer(modifier = Modifier.width(6.dp))
                             }
-
-                            Box(modifier = Modifier.weight(1f)) {
+                            
+                            Spacer(modifier = Modifier.height(4.dp))
+                            
+                            Box(modifier = Modifier.fillMaxWidth()) {
                                 BasicTextField(
                                     value = text,
                                     onValueChange = { text = it.take(MAX_CHARS) },
                                     enabled = !isLoading,
-                                    maxLines = 6,
+                                    minLines = 1, // Set minimum height
+                                    maxLines = 4, // Limit maximum expansion
                                     modifier = Modifier.fillMaxWidth(),
                                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                                         color = MaterialTheme.colorScheme.onSurface,
