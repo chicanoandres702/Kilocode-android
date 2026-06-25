@@ -36,4 +36,5 @@
 | 2026-06-25 | Pivoted to SDK-based server interaction in Android |
 | 2026-06-25 | Redesigned Android launcher icon to modern Kilo Code style |
 | 2026-06-25 | Refactored `ApiClient` to SDK-like interface; implemented `onOptionSelected` callback in UI |
+| 2026-06-25 | Updated default server URL to `http://18.191.142.105:4096` to resolve connection issues. |
 | 2026-06-25 | Implemented `onOptionSelected` to send prompts in `QuestionToolView` |

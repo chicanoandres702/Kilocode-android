@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://10.0.2.2:4097"
+        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:4096"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
         val serverUrlDomain = System.getenv("SERVER_URL_DOMAIN") ?: "10.0.2.2"
         manifestPlaceholders["serverUrlDomain"] = serverUrlDomain
