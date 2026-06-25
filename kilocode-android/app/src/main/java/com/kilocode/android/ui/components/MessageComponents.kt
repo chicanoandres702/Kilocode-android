@@ -84,43 +84,45 @@ fun MessageBubble(
                                 "reasoning" -> ReasoningPartView(part = part)
                                 "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
                                 else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
-                            }
-                        }
-                    }
+}
+
                 }
 
                 // Copy button — appears on long-press, floats above bubble
                 if (showCopyButton) {
                     val allText = parts.mapNotNull { it.text }.joinToString("\n")
-                    Surface(
-                        onClick = {
-                            clipboard.setText(AnnotatedString(allText))
-                            showCopyButton = false
-                        },
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.inverseSurface,
-                        shadowElevation = 4.dp,
-                        modifier = Modifier
-                            .align(if (isUser) Alignment.TopStart else Alignment.TopEnd)
-                            .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
+                    Box(
+                        modifier = Modifier.fillMaxSize().wrapContentSize(if (isUser) Alignment.TopStart else Alignment.TopEnd)
                     ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        Surface(
+                            onClick = {
+                                clipboard.setText(AnnotatedString(allText))
+                                showCopyButton = false
+                            },
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.inverseSurface,
+                            shadowElevation = 4.dp,
+                            modifier = Modifier
+                                .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
                         ) {
-                            Icon(
-                                Icons.Rounded.ContentCopy,
-                                contentDescription = "Copy",
-                                tint = MaterialTheme.colorScheme.inverseOnSurface,
-                                modifier = Modifier.size(12.dp),
-                            )
-                            Text(
-                                "Copy",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.inverseOnSurface,
-                                fontSize = 11.sp,
-                            )
+                            Row(
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            ) {
+                                Icon(
+                                    Icons.Rounded.ContentCopy,
+                                    contentDescription = "Copy",
+                                    tint = MaterialTheme.colorScheme.inverseOnSurface,
+                                    modifier = Modifier.size(12.dp),
+                                )
+                                Text(
+                                    "Copy",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                                    fontSize = 11.sp,
+                                )
+                            }
                         }
                     }
                 }
