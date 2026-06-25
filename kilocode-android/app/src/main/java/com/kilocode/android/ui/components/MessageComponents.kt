@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -204,7 +205,7 @@ fun ToolPartView(part: Part, sessionId: String, modifier: Modifier = Modifier, o
         "running"   -> Spec(Icons.Rounded.PlayArrow,      MaterialTheme.colorScheme.primary, ToolRunning, "Running")
         "completed" -> Spec(Icons.Rounded.CheckCircle,    SemanticSuccess,                   ToolSuccess, "Done")
         "error"     -> Spec(Icons.Rounded.ErrorOutline,   SemanticError,                     ToolError,   "Failed")
-        else        -> Spec(Icons.Rounded.HelpOutline,    MaterialTheme.colorScheme.onSurfaceVariant, ToolRunning, "?")
+        else        -> Spec(Icons.AutoMirrored.Rounded.HelpOutline,    MaterialTheme.colorScheme.onSurfaceVariant, ToolRunning, "?")
     }
 
     // Spin animation for "running" tools

@@ -72,11 +72,12 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector        = Icons.Rounded.ArrowBack,
-                            contentDescription = "Back",
-                            modifier           = Modifier.size(22.dp),
-                        )
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = "Back",
+                    modifier = Modifier.size(24.dp),
+                )
+
                     }
                 },
                 actions = {
