@@ -129,9 +129,14 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.listMessages(sessionId)
             if (response.isSuccessful) {
                 val messagesWithParts = response.body() ?: emptyList()
-                _messages.value = messagesWithParts.mapNotNull { it.info }
+                _messages.value = messagesWithParts.map { 
+                    it.info?.copy(id = it.info.id ?: generateMessageId()) ?: Message(id = generateMessageId()) 
+                }
                 _parts.value = messagesWithParts
-                    .mapNotNull { messageWithParts -> messageWithParts.info?.id?.let { it to messageWithParts.parts } }
+                    .map { messageWithParts -> 
+                        val id = messageWithParts.info?.id ?: generateMessageId()
+                        id to messageWithParts.parts 
+                    }
                     .toMap()
             } else {
                 _error.value = "Failed to load messages: ${response.code()}"
@@ -414,11 +419,12 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     private fun upsertMessage(message: Message) {
         logD("SessionRepo", "upsertMessage: $message")
-        val messageId = message.id ?: return
+        val messageId = message.id ?: generateMessageId()
+        val messageWithId = message.copy(id = messageId)
         _messages.update { current ->
             val mutableList = current.toMutableList()
             val index = mutableList.indexOfFirst { it.id == messageId }
-            if (index >= 0) mutableList[index] = message else mutableList.add(message)
+            if (index >= 0) mutableList[index] = messageWithId else mutableList.add(messageWithId)
             mutableList
         }
         logD("SessionRepo", "messages updated: ${_messages.value.size}")
