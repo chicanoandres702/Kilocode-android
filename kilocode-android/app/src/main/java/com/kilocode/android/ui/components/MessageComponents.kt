@@ -45,66 +45,12 @@ fun MessageBubble(
     onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    android.util.Log.d("MessageBubble", "Rendering bubble, isUser: $isUser, parts size: ${parts.size}, parts: $parts")
-    if (parts.isEmpty()) {
-        android.util.Log.d("MessageBubble", "Parts list is EMPTY")
-    }
-    val bubbleBg    = if (isUser) BubbleUser else BubbleAssistant
-    val alignment   = if (isUser) Alignment.End else Alignment.Start
-    val displayName = if (isUser) "You" else agent ?: "Kilo"
-    val clipboard   = LocalClipboardManager.current
+    val bubbleBg = if (isUser) BubbleUser else BubbleAssistant
+    val clipboard = LocalClipboardManager.current
     var showCopyButton by remember { mutableStateOf(false) }
 
-    // Slide in from the correct side
-    val enterAnim = if (isUser)
-        fadeIn(tween(180)) + slideInHorizontally(tween(240, easing = FastOutSlowInEasing)) { it / 4 }
-    else
-        fadeIn(tween(180)) + slideInHorizontally(tween(240, easing = FastOutSlowInEasing)) { -it / 4 }
+    // Bubble — long-press reveals copy button
 
-    AnimatedVisibility(
-        visible = true,
-        enter   = enterAnim,
-    ) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 3.dp),
-            horizontalAlignment = alignment,
-        ) {
-            // Sender label
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier          = Modifier.padding(horizontal = 6.dp),
-            ) {
-                if (!isUser) {
-                    Box(
-                        modifier = Modifier
-                            .size(15.dp)
-                            .clip(CircleShape)
-                            .background(Brand.copy(alpha = 0.22f)),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text       = displayName.take(1).uppercase(),
-                            fontSize   = 7.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color      = Brand,
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                }
-                Text(
-                    text          = displayName,
-                    style         = MaterialTheme.typography.labelSmall,
-                    color         = MaterialTheme.colorScheme.primary.copy(alpha = if (isUser) 0.65f else 0.9f),
-                    fontWeight    = FontWeight.SemiBold,
-                    letterSpacing = 0.2.sp,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(3.dp))
-
-            // Bubble — long-press reveals copy button
             Box {
                 Surface(
                     modifier = Modifier
