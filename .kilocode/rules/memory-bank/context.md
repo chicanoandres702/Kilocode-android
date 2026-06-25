@@ -11,6 +11,7 @@
 - [x] Fixed `Icons.Rounded.ArrowBack` deprecation in `SettingsScreen.kt` and `SessionScreen.kt` by using `Icons.AutoMirrored.Rounded.ArrowBack` and importing `androidx.compose.material.icons.automirrored.rounded.*`.
 - [x] Verified build success with `./gradlew assembleDebug`.
 - [x] Implemented `onOptionSelected` to send prompts in `QuestionToolView` via `SessionScreen`.
+- [x] Implemented Stop button and reset autonomous mode on session switch.
 - Confirmed user intent to use Android SDK for server interaction.
 
 ### Current State
