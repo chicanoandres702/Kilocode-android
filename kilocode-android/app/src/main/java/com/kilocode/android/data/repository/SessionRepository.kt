@@ -321,6 +321,7 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun handleSseEvent(type: String?, data: String) {
         logD("SessionRepo", "SSE event received: type=$type, data=$data")
         try {

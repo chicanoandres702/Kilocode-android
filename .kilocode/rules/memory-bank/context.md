@@ -8,39 +8,12 @@
 
 - Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
 - Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
-
-- [x] Cloned Kilo Code repository from GitHub (https://github.com/Kilo-Org/kilocode)
-- [x] Created Android project structure (`kilocode-android/`)
-- [x] Implemented data models matching Kilo Code server API
-- [x] Created Retrofit API client with SSE support
-- [x] Built SessionRepository for session management
-- [x] Created Jetpack Compose UI screens (Home, Session, Settings)
-- [x] Implemented Material 3 dark theme
-- [x] Added navigation between screens
-- [x] **Code Review Round 1**: Fixed 18 issues (security, thread safety, performance, UX)
-- [x] **Code Review Round 2**: Fixed 32 additional issues (race conditions, dead code, ProGuard)
-- [x] **Release Build**: Generated signed APK (8.0MB) with R8 minification
-- [x] **Network Security**: Added network security config for localhost HTTP
-- [x] **Launcher Icons**: Created adaptive icon resources
-- [x] **Gradle Wrapper**: Generated gradlew scripts and wrapper jar
-- [x] **Signing**: Configured release keystore and signing
-- [x] **ProGuard**: Comprehensive rules for Gson, Retrofit, OkHttp, Coroutines, Compose
-- [x] **Next.js**: All typecheck and lint checks pass
-- [x] Updated Android GitHub Actions workflow to use JDK 17, Gradle cache, tests, lint, and debug APK build
-- [x] Implemented `BinaryManager` for running `kilo serve` binary
-- [x] Added Kilo Server management UI to `SettingsScreen`
-- [x] Implemented auto-start for Kilo server in `MainActivity`
-- [x] Updated Android session API handling to match current Kilo server `/session/{id}/message` and `/event` payloads
-- [x] Added persisted server URL preferences and wired Settings/MainActivity to save and restore it
-- [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
-- [x] Added remote Kilo agent listing and chat-side agent selection
-- [x] Implemented `QuestionToolView` in `MessageComponents.kt` with compaction button to handle AI-driven "question" tool prompts.
-- [x] Created GitHub release `1.0.4`.
-- [x] Fixed message bubble rendering issue in `SessionRepository` (Issue #25).
+- [x] Fixed `Icons.Rounded.ArrowBack` deprecation in `SettingsScreen.kt` and `SessionScreen.kt` by using `Icons.AutoMirrored.Rounded.ArrowBack` and importing `androidx.compose.material.icons.automirrored.rounded.*`.
+- [x] Verified build success with `./gradlew assembleDebug`.
 
 ### Current State
 
-**Status**: Android client fully reviewed, fixed, and APK exported. Message bubble rendering issue resolved.
+**Status**: Android client fully reviewed, fixed, and APK exported. Message rendering, animation, and lint deprecations resolved.
 
 ### Session History
 
@@ -55,5 +28,5 @@
 | 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
 | 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |
 | 2026-06-24 | Created release 1.0.4 |
-| 2026-06-24 | Fixed message bubble rendering issue (Issue #25) |
+| 2026-06-25 | Fixed `Icons.Rounded.ArrowBack` deprecation and verified build |
 

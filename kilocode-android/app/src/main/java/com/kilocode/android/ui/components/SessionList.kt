@@ -59,8 +59,10 @@ fun SessionList(
                     session  = session,
                     onClick  = { session.id?.let(onSessionClick) },
                     onDelete = { session.id?.let(onDeleteSession) },
-                    modifier = Modifier.animateItemPlacement(
-                        animationSpec = spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow)
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                        placementSpec = spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow)
                     ),
                 )
             }
