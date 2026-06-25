@@ -21,9 +21,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          node-version: 22
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          node-version: 22
 
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
@@ -102,9 +106,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          node-version: 22
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          node-version: 22
 
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
