@@ -287,7 +287,7 @@ fun SessionScreen(
                             parts = msgParts,
                             agent = message.agent,
                             sessionId = message.sessionID ?: "",
-                            onOptionSelected = { /* TODO: Handle option selection */ }
+                            onOptionSelected = { option -> sendPrompt(option) }
                         )
                     }
 
