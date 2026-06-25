@@ -47,6 +47,10 @@ fun SessionScreen(
     val messagesState = repository.messages.collectAsState()
     val partsState = repository.parts.collectAsState()
     
+    LaunchedEffect(messagesState.value) {
+        android.util.Log.d("SessionScreen", "Messages updated: ${messagesState.value.size}")
+    }
+    
     val currentSession by repository.currentSession.collectAsState()
     val messages = messagesState.value
     val parts = partsState.value
@@ -108,24 +112,11 @@ fun SessionScreen(
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
-    val messageCount = messages.size
-    LaunchedEffect(messageCount) {
-        if (messageCount > 0 && (isAtBottom || messageCount <= 2)) listState.animateScrollToItem(messageCount - 1)
-    }
-    var isFirstLoad by remember { mutableStateOf(true) }
-    
-    // Observe parts updates to trigger scroll to bottom
-    LaunchedEffect(messages) {
-        if (isFirstLoad && messages.isNotEmpty()) {
-            listState.scrollToItem(messages.size - 1)
-            isFirstLoad = false
-        }
-    }
-    
-    // Observe parts updates to trigger scroll to bottom
-    LaunchedEffect(parts) {
-        if (isAtBottom && messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
+    // Improved scroll-to-bottom logic
+    LaunchedEffect(messages.size, parts) {
+        // If it's a new message, or we are currently near the bottom (typing), scroll to bottom.
+        if (messages.isNotEmpty()) {
+             listState.animateScrollToItem(messages.size - 1)
         }
     }
 
