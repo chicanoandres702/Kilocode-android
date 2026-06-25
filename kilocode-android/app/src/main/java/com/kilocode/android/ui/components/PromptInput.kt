@@ -45,9 +45,10 @@ fun PromptInput(
     modifier: Modifier = Modifier,
 ) {
     var textFieldValue by remember { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue("")) }
+    var isSending by remember { mutableStateOf(false) }
     var agentMenuExpanded by remember { mutableStateOf(false) }
     var modelMenuExpanded by remember { mutableStateOf(false) }
-    val canSend = textFieldValue.text.isNotBlank() && !isLoading
+    val canSend = textFieldValue.text.isNotBlank() && !isLoading && !isSending
     val showAgentChip = agents.isNotEmpty()
     val showModelChip = models.isNotEmpty()
     val charCount = textFieldValue.text.length
@@ -65,6 +66,16 @@ fun PromptInput(
         animationSpec = tween(200),
         label = "fieldElevation",
     )
+    
+    // Reset isSending when loading state changes or timeout
+    LaunchedEffect(isLoading, isSending) {
+        if (isSending) {
+            kotlinx.coroutines.delay(10000) // 10 second timeout
+            isSending = false
+        } else if (!isLoading) {
+            isSending = false
+        }
+    }
 
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -145,7 +156,7 @@ fun PromptInput(
                                 BasicTextField(
                                     value = textFieldValue,
                                     onValueChange = { if (it.text.length <= MAX_CHARS) textFieldValue = it },
-                                    enabled = !isLoading,
+                                    enabled = !isLoading && !isSending,
                                     minLines = 1, // Set minimum height
                                     maxLines = 4, // Limit maximum expansion
                                     modifier = Modifier.fillMaxWidth(),
@@ -155,6 +166,7 @@ fun PromptInput(
                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                                     keyboardActions = KeyboardActions(onSend = {
                                         if (canSend) {
+                                            isSending = true
                                             onSend(textFieldValue.text.trim())
                                             textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
                                         }
@@ -240,7 +252,9 @@ fun PromptInput(
                                         if (autonomousMode) {
                                             onContinue()
                                         } else if (canSend) {
-                                            onSend(textFieldValue.text.trim())
+                                            isSending = true
+                                            val text = textFieldValue.text.trim()
+                                            onSend(text)
                                             textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
                                         }
                                     },
