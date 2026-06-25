@@ -10,6 +10,7 @@
 - Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
 - [x] Fixed `Icons.Rounded.ArrowBack` deprecation in `SettingsScreen.kt` and `SessionScreen.kt` by using `Icons.AutoMirrored.Rounded.ArrowBack` and importing `androidx.compose.material.icons.automirrored.rounded.*`.
 - [x] Verified build success with `./gradlew assembleDebug`.
+- [x] Implemented `onOptionSelected` to send prompts in `QuestionToolView` via `SessionScreen`.
 - Confirmed user intent to use Android SDK for server interaction.
 
 ### Current State
@@ -33,3 +34,4 @@
 | 2026-06-25 | Pivoted to SDK-based server interaction in Android |
 | 2026-06-25 | Redesigned Android launcher icon to modern Kilo Code style |
 | 2026-06-25 | Refactored `ApiClient` to SDK-like interface; implemented `onOptionSelected` callback in UI |
+| 2026-06-25 | Implemented `onOptionSelected` to send prompts in `QuestionToolView` |
