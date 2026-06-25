@@ -42,6 +42,14 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _models = MutableStateFlow<List<ModelOption>>(emptyList())
     val models: StateFlow<List<ModelOption>> = _models
 
+    private val _selectedAgent = MutableStateFlow<Agent?>(null)
+    val selectedAgent: StateFlow<Agent?> = _selectedAgent
+    fun setSelectedAgent(agent: Agent?) { _selectedAgent.value = agent }
+
+    private val _selectedModel = MutableStateFlow<ModelOption?>(null)
+    val selectedModel: StateFlow<ModelOption?> = _selectedModel
+    fun setSelectedModel(model: ModelOption?) { _selectedModel.value = model }
+
     private val _project = MutableStateFlow<Project?>(null)
     val project: StateFlow<Project?> = _project
 
@@ -209,6 +217,14 @@ class SessionRepository(private val apiClient: ApiClient) {
         agent: String? = null,
         model: ModelOption? = null,
     ): Boolean {
+        // Prevent duplicate prompts
+        val lastMessage = _messages.value.lastOrNull { it.role == "user" }
+        val lastPart = lastMessage?.id?.let { _parts.value[it]?.lastOrNull() }
+        if (lastPart?.text == text) {
+            logW("SessionRepo", "Duplicate prompt detected, ignoring: $text")
+            return false
+        }
+
         return try {
             val messageID = generateMessageId()
             val request = PromptRequest(

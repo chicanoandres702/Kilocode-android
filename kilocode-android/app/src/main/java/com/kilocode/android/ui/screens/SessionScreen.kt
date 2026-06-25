@@ -52,13 +52,13 @@ fun SessionScreen(
     val parts = partsState.value
     val agents by repository.agents.collectAsState()
     val models by repository.models.collectAsState()
+    val selectedAgent by repository.selectedAgent.collectAsState()
+    val selectedModel by repository.selectedModel.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
     val isConnected by repository.isConnected.collectAsState()
     val error by repository.error.collectAsState()
 
     val listState = rememberLazyListState()
-    var selectedAgent by remember { mutableStateOf<Agent?>(null) }
-    var selectedModel by remember { mutableStateOf<ModelOption?>(null) }
     var autonomousMode by remember { mutableStateOf(false) }
     var continueGeneration by remember { mutableStateOf(0) }
 
@@ -89,13 +89,16 @@ fun SessionScreen(
         repository.listModels()
     }
     LaunchedEffect(agents) {
-        selectedAgent = agents.firstOrNull { it.name == selectedAgent?.name }
-            ?: agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
-            ?: agents.firstOrNull()
+        if (selectedAgent == null) {
+            val agent = agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
+                ?: agents.firstOrNull()
+            repository.setSelectedAgent(agent)
+        }
     }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
-            selectedModel = models.firstOrNull { it.modelID == "kilo/nex-agi/nex-n2-pro:free" } ?: models.first()
+            val model = models.firstOrNull { it.modelID == "kilo/nex-agi/nex-n2-pro:free" } ?: models.first()
+            repository.setSelectedModel(model)
         }
     }
     LaunchedEffect(sessionId) {
@@ -202,10 +205,10 @@ fun SessionScreen(
                 isLoading = isLoading,
                 models = models,
                 selectedModel = selectedModel,
-                onModelSelected = { selectedModel = it },
+                onModelSelected = { repository.setSelectedModel(it) },
                 agents = agents,
                 selectedAgent = selectedAgent,
-                onAgentSelected = { selectedAgent = it },
+                onAgentSelected = { repository.setSelectedAgent(it) },
                 autonomousMode = autonomousMode,
                 onAutonomousModeChanged = { autonomousMode = it },
                 messages = messages,
