@@ -32,3 +32,4 @@
 | 2026-06-25 | Fixed `Icons.Rounded.ArrowBack` deprecation and verified build/typecheck/lint |
 | 2026-06-25 | Pivoted to SDK-based server interaction in Android |
 | 2026-06-25 | Redesigned Android launcher icon to modern Kilo Code style |
+| 2026-06-25 | Refactored `ApiClient` to SDK-like interface; implemented `onOptionSelected` callback in UI |

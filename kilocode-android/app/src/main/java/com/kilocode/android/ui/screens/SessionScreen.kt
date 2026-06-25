@@ -286,6 +286,8 @@ fun SessionScreen(
                             isUser = message.role == "user",
                             parts = msgParts,
                             agent = message.agent,
+                            sessionId = message.sessionID ?: "",
+                            onOptionSelected = { /* TODO: Handle option selection */ }
                         )
                     }
 

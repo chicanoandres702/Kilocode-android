@@ -41,6 +41,8 @@ fun MessageBubble(
     isUser: Boolean,
     parts: List<Part>,
     agent: String? = null,
+    sessionId: String,
+    onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     android.util.Log.d("MessageBubble", "Rendering bubble, isUser: $isUser, parts size: ${parts.size}, parts: $parts")
@@ -129,7 +131,7 @@ fun MessageBubble(
                         parts.forEach { part ->
                             when (part.type) {
                                 "text"      -> TextPartView(text = part.text.orEmpty())
-                                "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onCompact = { /* TODO: Implement onCompact */ })
+                                "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onOptionSelected = onOptionSelected, onCompact = { /* TODO: Implement onCompact */ })
                                 "reasoning" -> ReasoningPartView(part = part)
                                 "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
                                 else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
@@ -191,9 +193,9 @@ private fun TextPartView(text: String) {
 
 // ── Tool pill — single-line, taps to expand with spring ──────────────────────
 @Composable
-fun ToolPartView(part: Part, sessionId: String, modifier: Modifier = Modifier, onCompact: () -> Unit) {
+fun ToolPartView(part: Part, sessionId: String, onOptionSelected: (String) -> Unit, modifier: Modifier = Modifier, onCompact: () -> Unit) {
     if (part.tool == "question") {
-        QuestionToolView(part, sessionId, modifier, onCompact)
+        QuestionToolView(part, sessionId, onOptionSelected, modifier, onCompact)
         return
     }
     val state = part.state ?: return
@@ -304,7 +306,13 @@ fun ToolPartView(part: Part, sessionId: String, modifier: Modifier = Modifier, o
 }
 
 @Composable
-fun QuestionToolView(part: Part, sessionId: String, modifier: Modifier = Modifier, onCompact: () -> Unit) {
+fun QuestionToolView(
+    part: Part, 
+    sessionId: String, 
+    onOptionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier, 
+    onCompact: () -> Unit
+) {
     val input = part.state?.input as? Map<String, Any> ?: return
     val questions = input["questions"] as? List<Map<String, Any>> ?: return
     
@@ -340,7 +348,7 @@ fun QuestionToolView(part: Part, sessionId: String, modifier: Modifier = Modifie
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                                 .clip(RoundedCornerShape(8.dp))
-                                .clickable { /* TODO: Send response */ },
+                                .clickable { onOptionSelected(label) },
                             color = MaterialTheme.colorScheme.primaryContainer,
                         ) {
                             Text(label, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
