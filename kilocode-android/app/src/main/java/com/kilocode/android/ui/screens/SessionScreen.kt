@@ -49,6 +49,9 @@ fun SessionScreen(
     
     LaunchedEffect(messagesState.value) {
         android.util.Log.d("SessionScreen", "Messages updated: ${messagesState.value.size}")
+        if (messagesState.value.isNotEmpty()) {
+            android.util.Log.d("SessionScreen", "First message: ${messagesState.value[0]}")
+        }
     }
     
     val currentSession by repository.currentSession.collectAsState()
