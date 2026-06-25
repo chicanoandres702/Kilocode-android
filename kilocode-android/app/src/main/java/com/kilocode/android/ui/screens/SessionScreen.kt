@@ -99,6 +99,7 @@ fun SessionScreen(
         }
     }
     LaunchedEffect(sessionId) {
+        autonomousMode = false
         repository.selectSession(sessionId)
         repository.connectSse(sessionId, repository.currentSession.value?.directory)
     }
@@ -192,6 +193,12 @@ fun SessionScreen(
             PromptInput(
                 onSend = { sendPrompt(it) },
                 onContinue = { autonomousMode = !autonomousMode },
+                onStop = {
+                    scope.launch {
+                        repository.abortSession(sessionId)
+                        autonomousMode = false
+                    }
+                },
                 isLoading = isLoading,
                 models = models,
                 selectedModel = selectedModel,

@@ -32,6 +32,7 @@ private const val MAX_CHARS = 4000
 fun PromptInput(
     onSend: (String) -> Unit,
     onContinue: () -> Unit = {},
+    onStop: () -> Unit = {},
     isLoading: Boolean,
     agents: List<Agent> = emptyList(),
     selectedAgent: Agent? = null,
@@ -249,22 +250,32 @@ fun PromptInput(
                             ) {
                                 IconButton(
                                     onClick = {
-                                        if (autonomousMode) {
-                                            onContinue()
-                                        } else if (canSend) {
-                                            isSending = true
-                                            val text = textFieldValue.text.trim()
-                                            onSend(text)
-                                            textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
+                                        when {
+                                            isLoading -> onStop()
+                                            autonomousMode -> onContinue()
+                                            canSend -> {
+                                                isSending = true
+                                                val text = textFieldValue.text.trim()
+                                                onSend(text)
+                                                textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
+                                            }
                                         }
                                     },
-                                    enabled = canSend || autonomousMode,
+                                    enabled = canSend || autonomousMode || isLoading,
                                     modifier = Modifier.fillMaxSize(),
                                 ) {
                                     Icon(
-                                        imageVector = if (autonomousMode) Icons.Rounded.Pause else Icons.Rounded.ArrowUpward,
-                                        contentDescription = if (autonomousMode) "Pause autonomous" else "Send",
-                                        tint = if (canSend || autonomousMode) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                                        imageVector = when {
+                                            isLoading -> Icons.Rounded.Stop
+                                            autonomousMode -> Icons.Rounded.Pause
+                                            else -> Icons.Rounded.ArrowUpward
+                                        },
+                                        contentDescription = when {
+                                            isLoading -> "Stop"
+                                            autonomousMode -> "Pause autonomous"
+                                            else -> "Send"
+                                        },
+                                        tint = MaterialTheme.colorScheme.onPrimary,
                                         modifier = Modifier.size(18.dp),
                                     )
                                 }
