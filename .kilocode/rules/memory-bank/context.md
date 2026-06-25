@@ -28,5 +28,5 @@
 | 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
 | 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |
 | 2026-06-24 | Created release 1.0.4 |
-| 2026-06-25 | Fixed `Icons.Rounded.ArrowBack` deprecation and verified build |
+| 2026-06-25 | Fixed `Icons.Rounded.ArrowBack` deprecation and verified build/typecheck/lint |
 
