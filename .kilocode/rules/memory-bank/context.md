@@ -6,8 +6,8 @@
 
 ## Recently Completed
 
-- Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
-- Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
+- [x] Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
+- [x] Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
 - [x] Fixed `MessageBubble` visibility issue by correctly defining `bubbleBg` in `MessageComponents.kt`
 - [x] Fixed `Icons.Rounded.ArrowBack` deprecation in `SettingsScreen.kt` and `SessionScreen.kt` by using `Icons.AutoMirrored.Rounded.ArrowBack` and importing `androidx.compose.material.icons.automirrored.rounded.*`.
 - [x] Verified build success with `./gradlew assembleDebug`.
@@ -15,7 +15,8 @@
 - [x] Implemented Stop button and reset autonomous mode on session switch.
 - [x] Fixed message rendering issue in `SessionRepository.kt` by ensuring unique ID generation.
 - [x] Fixed Android build syntax errors in `MessageComponents.kt` (extra braces and `BoxScope` issue).
-- Confirmed user intent to use Android SDK for server interaction.
+- [x] Confirmed user intent to use Android SDK for server interaction.
+- [x] Added folder browser with directory check and session scoping to HomeScreen. FolderBrowser composable navigates directories, DirectoryCheckingIndicator shows loading state, DirectoryNotFound shows error with retry/go-root options. SessionRepository.checkDirectoryExists() verifies directory before loading sessions. SessionViewModel.loadAndCheckDirectory() orchestrates the flow. SessionList scoped to currentDirectory with DirectoryHeader.
 
 ### Current State
 
@@ -43,3 +44,4 @@
 | 2026-06-25 | Fixed `SessionRepository.kt` by removing duplicate `connectSse` implementation and cleaning up broken code block. |
 | 2026-06-26 | Fixed SSE implementation to align with documented API: changed endpoint from `global/event` to `/event` (session-scoped), added `workspace` query param support, replaced non-existent `server.heartbeat` with `server.connected`, separated session busy state from connection state (`_sessionBusy`), added 30+ missing event handlers (session.idle, session.turn.*, session.diff, session.compacted, question.*, suggestion.*, todo.*, workspace.*, worktree.*, file.edited, provider.updated, lsp.*, mcp.*, background_process.*, indexing.*, command.executed, project.updated, kilocode.agent_manager.start, tui.*), and fixed event envelope parsing for both `/event` ({id, type, properties}) and `global/event` ({directory, project, workspace, payload}) formats. |
 | 2026-06-26 | Investigated model availability: server only supports `kilo-auto/free`. All other models from `/api/model` return `ProviderModelNotFoundError` due to unconfigured provider API keys server-side. Free Models UI section is purely cosmetic and not the cause. Confirmed `prompt_async` endpoint works correctly with `kilo/kilo-auto/free`. |
+| 2026-06-26 | Added folder browser with directory check and session scoping: FolderBrowser composable in HomeScreen, DirectoryCheckingIndicator, DirectoryNotFound with retry/go-root, checkDirectoryExists() in SessionRepository, loadAndCheckDirectory() in SessionViewModel, SessionList scoped to currentDirectory with DirectoryHeader. Verified on emulator — folder navigation, directory checking, up navigation, and session scoping all work correctly. |
