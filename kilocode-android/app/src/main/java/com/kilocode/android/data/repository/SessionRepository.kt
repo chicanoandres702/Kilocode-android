@@ -152,11 +152,14 @@ class SessionRepository(private val apiClient: ApiClient) {
             val models = raw.map { m ->
                 val free = m.modelID.endsWith(":free") || m.modelID.endsWith("/free")
                 val cat = if (free) "Free Models" else (m.category ?: "Models")
-                m.copy(isFree = free, category = cat)
+                // Strip :free suffix from display name for cleaner UI
+                val cleanName = m.displayName.removeSuffix(":free").removeSuffix("/free")
+                m.copy(isFree = free, category = cat, displayName = cleanName)
             }
-            // Sort: free models first, then by category/name
+            // Sort: kilo-auto/free first (only working model), then other free, then by name
             val sorted = models.sortedWith(
-                compareByDescending<ModelOption> { it.isFree }
+                compareByDescending<ModelOption> { it.modelID == "kilo-auto/free" }
+                    .thenByDescending<ModelOption> { it.isFree }
                     .thenBy { it.category }
                     .thenBy { it.displayName }
             )
