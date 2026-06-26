@@ -12,8 +12,8 @@ android {
         applicationId = "com.kilocode.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
         val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:4096"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
@@ -26,10 +26,13 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("../keystore/release.keystore")
-            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "kilocode123"
-            keyAlias = System.getenv("KEY_ALIAS") ?: "kilocode"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "kilocode123"
+            val keystoreFile = file("../keystore/release.keystore")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "kilocode123"
+                keyAlias = System.getenv("KEY_ALIAS") ?: "kilocode"
+                keyPassword = System.getenv("KEY_PASSWORD") ?: "kilocode123"
+            }
         }
     }
 
@@ -41,7 +44,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            val keystoreFile = file("../keystore/release.keystore")
+            signingConfig = if (keystoreFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }
 
