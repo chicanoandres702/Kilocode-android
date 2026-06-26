@@ -48,11 +48,11 @@ interface KiloCodeApi {
         @Path("messageID") messageID: String,
     ): Response<MessageWithParts>
 
-    @POST("session/{sessionID}/message")
+    @POST("session/{sessionID}/prompt_async")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
         @Body request: PromptRequest,
-    ): Response<MessageWithParts>
+    ): Response<Unit>
 
     @POST("session/{sessionID}/abort")
     suspend fun abortSession(
@@ -62,7 +62,7 @@ interface KiloCodeApi {
     @POST("session/{sessionID}/compact")
     suspend fun compactSession(
         @Path("sessionID") sessionID: String,
-    ): Response<Unit>
+    ): Response<JsonObject>
 
     @GET("session/status")
     suspend fun getSessionStatus(): Response<Map<String, SessionStatus>>
@@ -70,7 +70,7 @@ interface KiloCodeApi {
     // File endpoints
     @GET("file")
     suspend fun listFiles(
-        @Query("directory") directory: String? = null,
+        @Query("path") path: String? = null,
     ): Response<List<FileNode>>
 
     @GET("file/read")
@@ -81,6 +81,9 @@ interface KiloCodeApi {
     // Provider endpoints
     @GET("provider")
     suspend fun listProviders(): Response<ProviderListResponse>
+
+    @GET("api/model")
+    suspend fun listModels(): Response<List<ModelOption>>
 
     // Agent endpoints
     @GET("agent")

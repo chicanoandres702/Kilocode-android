@@ -3,13 +3,25 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    
+    <!-- Stylized Modern K/Code-Bracket Logo -->
+    <!-- Left vertical bar of K (representing terminal / structure) with soft purple/indigo -->
     <path
         android:fillColor="#6C63FF"
-        android:pathData="M54,30C40.745,30 30,40.745 30,54s10.745,24 24,24 24,-10.745 24,-24S67.255,30 54,30zM54,72c-9.941,0 -18,-8.059 -18,-18s8.059,-18 18,-18 18,8.059 18,18 -8.059,18 -18,18z" />
+        android:pathData="M34,28 h8 v52 h-8 z" />
+        
+    <!-- Top diagonal of K (stylized code brace/bracket pointing out) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M50,48h8v16h-8z" />
+        android:fillColor="#8F85FF"
+        android:pathData="M42,50 L66,28 H78 L50,54 Z" />
+        
+    <!-- Bottom diagonal of K -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M48,50h16v8h-16z" />
+        android:fillColor="#6C63FF"
+        android:pathData="M48,52 L76,80 H64 L42,58 Z" />
+
+    <!-- Sleek coding/AI dot node reflecting automated intelligence -->
+    <path
+        android:fillColor="#34D399"
+        android:pathData="M72,50 A6,6 0 1,1 72,50.01" />
 </vector>

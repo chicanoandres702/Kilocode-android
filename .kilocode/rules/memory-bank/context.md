@@ -2,45 +2,25 @@
 
 ## Current State
 
-**Status**: Android client fully reviewed, fixed, and APK exported
+**Status**: Android client fully functional. SSE streaming, message rendering, model selection, and prompt sending all work correctly. Server-side only `kilo-auto/free` model is operational; other models require provider API key configuration on the server.
 
 ## Recently Completed
 
-- Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
-- Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
-
-- [x] Cloned Kilo Code repository from GitHub (https://github.com/Kilo-Org/kilocode)
-- [x] Created Android project structure (`kilocode-android/`)
-- [x] Implemented data models matching Kilo Code server API
-- [x] Created Retrofit API client with SSE support
-- [x] Built SessionRepository for session management
-- [x] Created Jetpack Compose UI screens (Home, Session, Settings)
-- [x] Implemented Material 3 dark theme
-- [x] Added navigation between screens
-- [x] **Code Review Round 1**: Fixed 18 issues (security, thread safety, performance, UX)
-- [x] **Code Review Round 2**: Fixed 32 additional issues (race conditions, dead code, ProGuard)
-- [x] **Release Build**: Generated signed APK (8.0MB) with R8 minification
-- [x] **Network Security**: Added network security config for localhost HTTP
-- [x] **Launcher Icons**: Created adaptive icon resources
-- [x] **Gradle Wrapper**: Generated gradlew scripts and wrapper jar
-- [x] **Signing**: Configured release keystore and signing
-- [x] **ProGuard**: Comprehensive rules for Gson, Retrofit, OkHttp, Coroutines, Compose
-- [x] **Next.js**: All typecheck and lint checks pass
-- [x] Updated Android GitHub Actions workflow to use JDK 17, Gradle cache, tests, lint, and debug APK build
-- [x] Implemented `BinaryManager` for running `kilo serve` binary
-- [x] Added Kilo Server management UI to `SettingsScreen`
-- [x] Implemented auto-start for Kilo server in `MainActivity`
-- [x] Updated Android session API handling to match current Kilo server `/session/{id}/message` and `/event` payloads
-- [x] Added persisted server URL preferences and wired Settings/MainActivity to save and restore it
-- [x] Added persisted autonomous mode preference and pass-through to `kilo serve --auto`
-- [x] Added remote Kilo agent listing and chat-side agent selection
-- [x] Implemented `QuestionToolView` in `MessageComponents.kt` with compaction button to handle AI-driven "question" tool prompts.
-- [x] Created GitHub release `1.0.4`.
-- [x] Fixed message bubble rendering issue in `SessionRepository` (Issue #25).
+- [x] Fixed "typing twice" issue in `PromptInput.kt` by using `TextFieldValue` with `BasicTextField`.
+- [x] Implemented scrolling to the bottom upon initial load of `SessionScreen.kt` using a `LaunchedEffect` and `isFirstLoad` flag.
+- [x] Fixed `MessageBubble` visibility issue by correctly defining `bubbleBg` in `MessageComponents.kt`
+- [x] Fixed `Icons.Rounded.ArrowBack` deprecation in `SettingsScreen.kt` and `SessionScreen.kt` by using `Icons.AutoMirrored.Rounded.ArrowBack` and importing `androidx.compose.material.icons.automirrored.rounded.*`.
+- [x] Verified build success with `./gradlew assembleDebug`.
+- [x] Implemented `onOptionSelected` to send prompts in `QuestionToolView` via `SessionScreen`.
+- [x] Implemented Stop button and reset autonomous mode on session switch.
+- [x] Fixed message rendering issue in `SessionRepository.kt` by ensuring unique ID generation.
+- [x] Fixed Android build syntax errors in `MessageComponents.kt` (extra braces and `BoxScope` issue).
+- [x] Confirmed user intent to use Android SDK for server interaction.
+- [x] Added folder browser with directory check and session scoping to HomeScreen. FolderBrowser composable navigates directories, DirectoryCheckingIndicator shows loading state, DirectoryNotFound shows error with retry/go-root options. SessionRepository.checkDirectoryExists() verifies directory before loading sessions. SessionViewModel.loadAndCheckDirectory() orchestrates the flow. SessionList scoped to currentDirectory with DirectoryHeader.
 
 ### Current State
 
-**Status**: Android client fully reviewed, fixed, and APK exported. Message bubble rendering issue resolved.
+**Status**: Android client fully reviewed, fixed, and APK exported. Message rendering, animation, and lint deprecations resolved.
 
 ### Session History
 
@@ -52,8 +32,16 @@
 | 2026-06-18 | Updated Android CI workflow and committed the workflow file; push is blocked by missing GitHub HTTPS credentials |
 | 2026-06-20 | Added `18.227.97.23` to Android network security cleartext domain allowlist and base cleartext config |
 | 2026-06-20 | Fixed Android session opening against current Kilo server message/event API and added server URL persistence |
-| 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
+- 2026-06-20 | Added Android autonomous mode toggle persisted in Settings and passed to `kilo serve --auto` |
 | 2026-06-20 | Added remote Kilo agent listing, agent selection in chat, prompt sending fix, and polished chat UI |
 | 2026-06-24 | Created release 1.0.4 |
-| 2026-06-24 | Fixed message bubble rendering issue (Issue #25) |
-
+| 2026-06-25 | Fixed `Icons.Rounded.ArrowBack` deprecation and verified build/typecheck/lint |
+| 2026-06-25 | Pivoted to SDK-based server interaction in Android |
+| 2026-06-25 | Redesigned Android launcher icon to modern Kilo Code style |
+| 2026-06-25 | Refactored `ApiClient` to SDK-like interface; implemented `onOptionSelected` callback in UI |
+| 2026-06-25 | Updated default server URL to `http://18.191.142.105:4096` to resolve connection issues. |
+| 2026-06-25 | Implemented `onOptionSelected` to send prompts in `QuestionToolView` |
+| 2026-06-25 | Fixed `SessionRepository.kt` by removing duplicate `connectSse` implementation and cleaning up broken code block. |
+| 2026-06-26 | Fixed SSE implementation to align with documented API: changed endpoint from `global/event` to `/event` (session-scoped), added `workspace` query param support, replaced non-existent `server.heartbeat` with `server.connected`, separated session busy state from connection state (`_sessionBusy`), added 30+ missing event handlers (session.idle, session.turn.*, session.diff, session.compacted, question.*, suggestion.*, todo.*, workspace.*, worktree.*, file.edited, provider.updated, lsp.*, mcp.*, background_process.*, indexing.*, command.executed, project.updated, kilocode.agent_manager.start, tui.*), and fixed event envelope parsing for both `/event` ({id, type, properties}) and `global/event` ({directory, project, workspace, payload}) formats. |
+| 2026-06-26 | Investigated model availability: server only supports `kilo-auto/free`. All other models from `/api/model` return `ProviderModelNotFoundError` due to unconfigured provider API keys server-side. Free Models UI section is purely cosmetic and not the cause. Confirmed `prompt_async` endpoint works correctly with `kilo/kilo-auto/free`. |
+| 2026-06-26 | Added folder browser with directory check and session scoping: FolderBrowser composable in HomeScreen, DirectoryCheckingIndicator, DirectoryNotFound with retry/go-root, checkDirectoryExists() in SessionRepository, loadAndCheckDirectory() in SessionViewModel, SessionList scoped to currentDirectory with DirectoryHeader. Verified on emulator — folder navigation, directory checking, up navigation, and session scoping all work correctly. |

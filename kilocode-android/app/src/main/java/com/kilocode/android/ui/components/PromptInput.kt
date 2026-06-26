@@ -32,6 +32,7 @@ private const val MAX_CHARS = 4000
 fun PromptInput(
     onSend: (String) -> Unit,
     onContinue: () -> Unit = {},
+    onStop: () -> Unit = {},
     isLoading: Boolean,
     agents: List<Agent> = emptyList(),
     selectedAgent: Agent? = null,
@@ -39,20 +40,22 @@ fun PromptInput(
     models: List<ModelOption> = emptyList(),
     selectedModel: ModelOption? = null,
     onModelSelected: (ModelOption?) -> Unit = {},
+    recentModels: List<ModelOption> = emptyList(),
     autonomousMode: Boolean = false,
     onAutonomousModeChanged: (Boolean) -> Unit = {},
     messages: List<Message> = emptyList(),
     modifier: Modifier = Modifier,
 ) {
     var textFieldValue by remember { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue("")) }
+    var isSending by remember { mutableStateOf(false) }
     var agentMenuExpanded by remember { mutableStateOf(false) }
     var modelMenuExpanded by remember { mutableStateOf(false) }
-    val canSend = textFieldValue.text.isNotBlank() && !isLoading
+    val canSend = textFieldValue.text.isNotBlank() && !isLoading && !isSending
     val showAgentChip = agents.isNotEmpty()
     val showModelChip = models.isNotEmpty()
     val charCount = textFieldValue.text.length
     val nearLimit = charCount > MAX_CHARS * 0.85f
-    val modelGroups = models.groupBy { it.category.ifBlank { "Models" } }
+    val modelGroups = models.groupBy { it.category?.ifBlank { "Models" } ?: "Models" }
 
     val sendScale by animateFloatAsState(
         targetValue = if (canSend || autonomousMode) 1f else 0.88f,
@@ -65,6 +68,16 @@ fun PromptInput(
         animationSpec = tween(200),
         label = "fieldElevation",
     )
+    
+    // Reset isSending when loading state changes or timeout
+    LaunchedEffect(isLoading, isSending) {
+        if (isSending) {
+            kotlinx.coroutines.delay(10000) // 10 second timeout
+            isSending = false
+        } else if (!isLoading) {
+            isSending = false
+        }
+    }
 
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -133,6 +146,7 @@ fun PromptInput(
                                                 onModelSelected(it)
                                                 modelMenuExpanded = false
                                             },
+                                            recentModels = recentModels,
                                         )
                                     }
                                     Spacer(modifier = Modifier.width(6.dp))
@@ -145,7 +159,7 @@ fun PromptInput(
                                 BasicTextField(
                                     value = textFieldValue,
                                     onValueChange = { if (it.text.length <= MAX_CHARS) textFieldValue = it },
-                                    enabled = !isLoading,
+                                    enabled = !isLoading && !isSending,
                                     minLines = 1, // Set minimum height
                                     maxLines = 4, // Limit maximum expansion
                                     modifier = Modifier.fillMaxWidth(),
@@ -155,6 +169,7 @@ fun PromptInput(
                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                                     keyboardActions = KeyboardActions(onSend = {
                                         if (canSend) {
+                                            isSending = true
                                             onSend(textFieldValue.text.trim())
                                             textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
                                         }
@@ -237,20 +252,32 @@ fun PromptInput(
                             ) {
                                 IconButton(
                                     onClick = {
-                                        if (autonomousMode) {
-                                            onContinue()
-                                        } else if (canSend) {
-                                            onSend(textFieldValue.text.trim())
-                                            textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
+                                        when {
+                                            isLoading -> onStop()
+                                            autonomousMode -> onContinue()
+                                            canSend -> {
+                                                isSending = true
+                                                val text = textFieldValue.text.trim()
+                                                onSend(text)
+                                                textFieldValue = androidx.compose.ui.text.input.TextFieldValue("")
+                                            }
                                         }
                                     },
-                                    enabled = canSend || autonomousMode,
+                                    enabled = canSend || autonomousMode || isLoading,
                                     modifier = Modifier.fillMaxSize(),
                                 ) {
                                     Icon(
-                                        imageVector = if (autonomousMode) Icons.Rounded.Pause else Icons.Rounded.ArrowUpward,
-                                        contentDescription = if (autonomousMode) "Pause autonomous" else "Send",
-                                        tint = if (canSend || autonomousMode) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                                        imageVector = when {
+                                            isLoading -> Icons.Rounded.Stop
+                                            autonomousMode -> Icons.Rounded.Pause
+                                            else -> Icons.Rounded.ArrowUpward
+                                        },
+                                        contentDescription = when {
+                                            isLoading -> "Stop"
+                                            autonomousMode -> "Pause autonomous"
+                                            else -> "Send"
+                                        },
+                                        tint = MaterialTheme.colorScheme.onPrimary,
                                         modifier = Modifier.size(18.dp),
                                     )
                                 }
@@ -319,6 +346,7 @@ private fun ModelChip(
     onDismiss: () -> Unit,
     modelGroups: Map<String, List<ModelOption>>,
     onModelSelected: (ModelOption?) -> Unit,
+    recentModels: List<ModelOption> = emptyList(),
 ) {
     Surface(
         onClick = onExpand,
@@ -343,15 +371,51 @@ private fun ModelChip(
             Icon(Icons.Rounded.KeyboardArrowDown, null, tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f), modifier = Modifier.size(11.dp))
         }
     }
+    val freeModels = modelGroups["Free Models"] ?: emptyList()
+    val paidGroups = modelGroups.filterKeys { it != "Free Models" }
+
     DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
         DropdownMenuItem(
             text = { Text("Default model") },
             onClick = { onModelSelected(null) },
             leadingIcon = { Icon(Icons.Rounded.AutoFixHigh, null, Modifier.size(15.dp)) },
         )
-        modelGroups.forEach { (category, models) ->
+        if (recentModels.isNotEmpty()) {
             DropdownMenuItem(
-                text = { Text(category) },
+                text = { Text("Recently Used", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary) },
+                onClick = {},
+                enabled = false,
+                leadingIcon = { Icon(Icons.Rounded.History, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.primary) },
+            )
+            recentModels.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item.displayName) },
+                    onClick = { onModelSelected(item) },
+                    leadingIcon = { Icon(Icons.Rounded.ModelTraining, null, Modifier.size(15.dp)) },
+                )
+            }
+            HorizontalDivider()
+        }
+        // Free Models section — highlighted at top
+        if (freeModels.isNotEmpty()) {
+            DropdownMenuItem(
+                text = { Text("Free Models", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary) },
+                onClick = {},
+                enabled = false,
+                leadingIcon = { Icon(Icons.Rounded.CheckCircle, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.tertiary) },
+            )
+            freeModels.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item.displayName) },
+                    onClick = { onModelSelected(item) },
+                    leadingIcon = { Icon(Icons.Rounded.Star, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.tertiary) },
+                )
+            }
+            HorizontalDivider()
+        }
+        paidGroups.forEach { (category, models) ->
+            DropdownMenuItem(
+                text = { Text(category, fontWeight = FontWeight.Bold) },
                 onClick = {},
                 enabled = false,
                 leadingIcon = { Icon(Icons.Rounded.Category, null, Modifier.size(15.dp)) },

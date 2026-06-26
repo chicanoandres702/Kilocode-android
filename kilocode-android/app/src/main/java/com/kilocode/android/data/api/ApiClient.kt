@@ -1,6 +1,7 @@
 package com.kilocode.android.data.api
 
 import android.util.Log
+import com.kilocode.android.data.model.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -29,6 +30,42 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         .build()
 
     val api: KiloCodeApi = retrofit.create(KiloCodeApi::class.java)
+
+    suspend fun getSessions(directory: String? = null): List<Session> {
+        val response = api.listSessions(directory = directory)
+        if (response.isSuccessful) {
+            return response.body() ?: emptyList()
+        }
+        throw Exception("Failed to list sessions: ${response.code()} ${response.message()}")
+    }
+
+    suspend fun getMessages(sessionId: String): List<MessageWithParts> {
+        val response = api.listMessages(sessionId)
+        if (response.isSuccessful) {
+            return response.body() ?: emptyList()
+        }
+        throw Exception("Failed to list messages: ${response.code()}")
+    }
+
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null) {
+        val request = PromptRequest(
+            parts = listOf(PartRequest(type = "text", text = prompt)),
+            agent = agent,
+            model = model
+        )
+        val response = api.sendPrompt(sessionId, request)
+        if (!response.isSuccessful) {
+            throw Exception("Failed to send prompt: ${response.code()}")
+        }
+    }
+
+    suspend fun listAgents(): List<Agent> {
+        val response = api.listAgents()
+        if (response.isSuccessful) {
+            return response.body() ?: emptyList()
+        }
+        throw Exception("Failed to list agents: ${response.code()}")
+    }
 
     fun createStreamCall(path: String): okhttp3.Call {
         val request = Request.Builder()

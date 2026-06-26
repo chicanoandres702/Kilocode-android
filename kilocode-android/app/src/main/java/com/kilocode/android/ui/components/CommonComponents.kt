@@ -210,8 +210,8 @@ fun TypingIndicator(modifier: Modifier = Modifier) {
                 animationSpec = infiniteRepeatable(
                     animation = keyframes {
                         durationMillis = 900
-                        0f  at 0   with FastOutSlowInEasing
-                        -6f at 200 with FastOutSlowInEasing
+                            0f  at 0   using FastOutSlowInEasing
+                            -6f at 200 using FastOutSlowInEasing
                         0f  at 400
                         0f  at 900
                     },

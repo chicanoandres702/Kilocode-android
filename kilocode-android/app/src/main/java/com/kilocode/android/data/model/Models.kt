@@ -43,9 +43,12 @@ data class MessageTime(
 
 data class ModelOption(
     val providerID: String,
+    @com.google.gson.annotations.SerializedName("id")
     val modelID: String,
+    @com.google.gson.annotations.SerializedName("name")
     val displayName: String,
-    val category: String = "Models",
+    val category: String? = "Models",
+    val isFree: Boolean = false,
 ) {
     val key: String = "$providerID/$modelID"
 }
@@ -58,6 +61,7 @@ data class ProviderListResponse(
 
 data class ModelInfo(
     val providerID: String,
+    @com.google.gson.annotations.SerializedName(value = "modelID", alternate = ["id"])
     val modelID: String,
 )
 
@@ -167,9 +171,15 @@ data class Project(
 data class FileNode(
     val name: String,
     val path: String,
-    val isDirectory: Boolean,
-    val children: List<FileNode>? = null,
-)
+    val absolute: String? = null,
+    val type: String? = null,
+    val ignored: Boolean = false,
+) {
+    val isDirectory: Boolean
+        get() = type == "directory"
+    val isFile: Boolean
+        get() = type == "file"
+}
 
 data class Config(
     val providers: Map<String, ConfigProvider> = emptyMap(),

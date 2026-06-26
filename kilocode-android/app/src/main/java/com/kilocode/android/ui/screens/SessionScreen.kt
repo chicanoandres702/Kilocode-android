@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +23,7 @@ import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.Agent
 import com.kilocode.android.data.model.ModelOption
 import com.kilocode.android.data.model.Part
+import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
 import kotlinx.coroutines.delay
@@ -33,6 +35,7 @@ fun SessionScreen(
     sessionId: String,
     serverUrl: String,
     sharedSecret: String?,
+    authPreferencesRepository: AuthPreferencesRepository,
     onBack: () -> Unit,
 ) {
     val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
@@ -46,18 +49,25 @@ fun SessionScreen(
     val messagesState = repository.messages.collectAsState()
     val partsState = repository.parts.collectAsState()
     
+    LaunchedEffect(messagesState.value) {
+        println("D/SessionScreen: Messages updated: ${messagesState.value.size}")
+        if (messagesState.value.isNotEmpty()) {
+            println("D/SessionScreen: First message: ${messagesState.value[0]}")
+        }
+    }
+    
     val currentSession by repository.currentSession.collectAsState()
     val messages = messagesState.value
     val parts = partsState.value
     val agents by repository.agents.collectAsState()
     val models by repository.models.collectAsState()
+    val selectedAgent by repository.selectedAgent.collectAsState()
+    val selectedModel by repository.selectedModel.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
     val isConnected by repository.isConnected.collectAsState()
     val error by repository.error.collectAsState()
 
     val listState = rememberLazyListState()
-    var selectedAgent by remember { mutableStateOf<Agent?>(null) }
-    var selectedModel by remember { mutableStateOf<ModelOption?>(null) }
     var autonomousMode by remember { mutableStateOf(false) }
     var continueGeneration by remember { mutableStateOf(0) }
 
@@ -83,44 +93,52 @@ fun SessionScreen(
         label = "topBarAlpha",
     )
 
+    val persistedAgentName by authPreferencesRepository.selectedAgentNameFlow.collectAsState(initial = null)
+
     LaunchedEffect(Unit) {
         repository.listAgents()
         repository.listModels()
     }
     LaunchedEffect(agents) {
-        selectedAgent = agents.firstOrNull { it.name == selectedAgent?.name }
-            ?: agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
-            ?: agents.firstOrNull()
+        if (selectedAgent == null) {
+            val agent = if (persistedAgentName != null) {
+                agents.firstOrNull { it.name == persistedAgentName }
+            } else null
+            val fallback = agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
+                ?: agents.firstOrNull()
+            val chosen = agent ?: fallback
+            repository.setSelectedAgent(chosen)
+        }
+    }
+    LaunchedEffect(selectedAgent) {
+        selectedAgent?.let { agent ->
+            authPreferencesRepository.saveSelectedAgentName(agent.name)
+        }
     }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
-            selectedModel = models.firstOrNull { it.modelID == "kilo/nex-agi/nex-n2-pro:free" } ?: models.first()
+            // Prefer kilo-auto/free (the only working model), fall back to first
+            val preferred = models.firstOrNull { it.modelID == "kilo-auto/free" }
+                ?: models.firstOrNull { it.isFree }
+                ?: models.first()
+            repository.setSelectedModel(preferred)
         }
     }
-    LaunchedEffect(sessionId) {
-        repository.selectSession(sessionId)
-        repository.connectSse(sessionId, repository.currentSession.value?.directory)
-    }
+     LaunchedEffect(sessionId) {
+         autonomousMode = false
+         repository.selectSession(sessionId)
+         repository.connectSse(
+             sessionId,
+             directory = repository.currentSession.value?.directory
+         )
+     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
-    val messageCount = messages.size
-    LaunchedEffect(messageCount) {
-        if (messageCount > 0 && (isAtBottom || messageCount <= 2)) listState.animateScrollToItem(messageCount - 1)
-    }
-    var isFirstLoad by remember { mutableStateOf(true) }
-    
-    // Observe parts updates to trigger scroll to bottom
-    LaunchedEffect(messages) {
-        if (isFirstLoad && messages.isNotEmpty()) {
-            listState.scrollToItem(messages.size - 1)
-            isFirstLoad = false
-        }
-    }
-    
-    // Observe parts updates to trigger scroll to bottom
-    LaunchedEffect(parts) {
-        if (isAtBottom && messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
+    // Improved scroll-to-bottom logic
+    LaunchedEffect(messages.size, parts) {
+        // If it's a new message, or we are currently near the bottom (typing), scroll to bottom.
+        if (messages.isNotEmpty()) {
+             listState.animateScrollToItem(messages.size - 1)
         }
     }
 
@@ -169,21 +187,27 @@ fun SessionScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Rounded.ArrowBack, "Back", modifier = Modifier.size(22.dp))
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", modifier = Modifier.size(22.dp))
                     }
                 },
-                actions = {
-                    AnimatedVisibility(
-                        visible = isLoading,
-                        enter = fadeIn(tween(150)),
-                        exit = fadeOut(tween(300)),
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(end = 14.dp).size(16.dp),
-                            strokeWidth = 2.dp,
-                        )
-                    }
-                },
+                 actions = {
+                     IconButton(
+                         onClick = { repository.compactSession(sessionId) },
+                         enabled = messages.isNotEmpty() && !isLoading,
+                     ) {
+                         Icon(Icons.Rounded.Compress, "Compact session", Modifier.size(20.dp))
+                     }
+                     AnimatedVisibility(
+                         visible = isLoading,
+                         enter = fadeIn(tween(150)),
+                         exit = fadeOut(tween(300)),
+                     ) {
+                         CircularProgressIndicator(
+                             modifier = Modifier.padding(end = 14.dp).size(16.dp),
+                             strokeWidth = 2.dp,
+                         )
+                     }
+                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
             )
         },
@@ -191,13 +215,24 @@ fun SessionScreen(
             PromptInput(
                 onSend = { sendPrompt(it) },
                 onContinue = { autonomousMode = !autonomousMode },
+                onStop = {
+                    scope.launch {
+                        repository.abortSession(sessionId)
+                        autonomousMode = false
+                    }
+                },
                 isLoading = isLoading,
                 models = models,
                 selectedModel = selectedModel,
-                onModelSelected = { selectedModel = it },
+                onModelSelected = { repository.setSelectedModel(it) },
                 agents = agents,
                 selectedAgent = selectedAgent,
-                onAgentSelected = { selectedAgent = it },
+                onAgentSelected = { agent ->
+                    repository.setSelectedAgent(agent)
+                    scope.launch {
+                        agent?.let { authPreferencesRepository.saveSelectedAgentName(it.name) }
+                    }
+                },
                 autonomousMode = autonomousMode,
                 onAutonomousModeChanged = { autonomousMode = it },
                 messages = messages,
@@ -257,12 +292,7 @@ fun SessionScreen(
                                     modifier = Modifier.size(64.dp).graphicsLayer { translationY = floatY },
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.AutoAwesome,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(28.dp),
-                                            tint = MaterialTheme.colorScheme.primary,
-                                        )
+                                        // TODO: Add app icon placeholder
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -290,6 +320,8 @@ fun SessionScreen(
                             isUser = message.role == "user",
                             parts = msgParts,
                             agent = message.agent,
+                            sessionId = message.sessionID ?: "",
+                            onOptionSelected = { option -> sendPrompt(option) }
                         )
                     }
 

@@ -23,6 +23,7 @@ class AuthPreferencesRepository(private val context: Context) {
         val SHARED_SECRET_KEY = stringPreferencesKey("shared_secret")
         val SERVER_URL_KEY = stringPreferencesKey("server_url")
         val AUTONOMOUS_MODE_KEY = booleanPreferencesKey("autonomous_mode")
+        val SELECTED_AGENT_NAME_KEY = stringPreferencesKey("selected_agent_name")
     }
 
     val sharedSecretFlow: Flow<String?> = context.dataStore.data
@@ -40,6 +41,11 @@ class AuthPreferencesRepository(private val context: Context) {
             preferences[AUTONOMOUS_MODE_KEY] ?: false
         }
 
+    val selectedAgentNameFlow: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[SELECTED_AGENT_NAME_KEY]
+        }
+
     suspend fun saveSharedSecret(secret: String) {
         context.dataStore.edit { preferences ->
             preferences[SHARED_SECRET_KEY] = secret
@@ -55,6 +61,18 @@ class AuthPreferencesRepository(private val context: Context) {
     suspend fun saveAutonomousMode(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[AUTONOMOUS_MODE_KEY] = enabled
+        }
+    }
+
+    suspend fun saveSelectedAgentName(name: String) {
+        context.dataStore.edit { preferences ->
+            preferences[SELECTED_AGENT_NAME_KEY] = name
+        }
+    }
+
+    suspend fun clearSelectedAgentName() {
+        context.dataStore.edit { preferences ->
+            preferences.remove(SELECTED_AGENT_NAME_KEY)
         }
     }
 }
