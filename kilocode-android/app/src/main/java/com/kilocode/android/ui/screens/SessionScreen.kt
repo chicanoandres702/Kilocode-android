@@ -117,9 +117,7 @@ fun SessionScreen(
     }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
-            val model = models.firstOrNull { it.providerID == "kilo-auto" && it.modelID == "free" }
-                ?: models.first()
-            repository.setSelectedModel(model)
+            repository.setSelectedModel(models.first())
         }
     }
      LaunchedEffect(sessionId) {

@@ -43,9 +43,12 @@ data class MessageTime(
 
 data class ModelOption(
     val providerID: String,
+    @com.google.gson.annotations.SerializedName("id")
     val modelID: String,
+    @com.google.gson.annotations.SerializedName("name")
     val displayName: String,
-    val category: String = "Models",
+    val category: String? = "Models",
+    val isFree: Boolean = false,
 ) {
     val key: String = "$providerID/$modelID"
 }
@@ -58,6 +61,7 @@ data class ProviderListResponse(
 
 data class ModelInfo(
     val providerID: String,
+    @com.google.gson.annotations.SerializedName(value = "modelID", alternate = ["id"])
     val modelID: String,
 )
 
