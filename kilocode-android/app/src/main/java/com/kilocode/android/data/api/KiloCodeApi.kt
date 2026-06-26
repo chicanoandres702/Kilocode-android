@@ -54,6 +54,12 @@ interface KiloCodeApi {
         @Body request: PromptRequest,
     ): Response<Unit>
 
+    @POST("session/{sessionID}/message")
+    suspend fun sendMessage(
+        @Path("sessionID") sessionID: String,
+        @Body request: PromptRequest,
+    ): Response<MessageWithParts>
+
     @POST("session/{sessionID}/abort")
     suspend fun abortSession(
         @Path("sessionID") sessionID: String,

@@ -71,10 +71,12 @@ fun PromptInput(
     
     // Reset isSending when loading state changes or timeout
     LaunchedEffect(isLoading, isSending) {
-        if (isSending) {
-            kotlinx.coroutines.delay(10000) // 10 second timeout
+        if (isSending && !isLoading) {
+            // If we were sending but loading is now false (success or error), reset immediately
             isSending = false
-        } else if (!isLoading) {
+        } else if (isSending) {
+            // Safety timeout: reset after 15 seconds even if still loading
+            kotlinx.coroutines.delay(15000)
             isSending = false
         }
     }
