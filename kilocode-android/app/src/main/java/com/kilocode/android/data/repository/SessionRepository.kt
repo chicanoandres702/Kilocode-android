@@ -463,20 +463,30 @@ class SessionRepository(private val apiClient: ApiClient) {
                      val messageID = properties["messageID"] as? String ?: return
                      _messages.value = _messages.value.filter { it.id != messageID }
                  }
-                 "message.part.updated" -> {
-                     if (properties == null) return
-                     val partData = properties["part"] as? Map<String, Any> ?: run {
-                         logW("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
-                         return
-                     }
-                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
-                     val messageId = part.messageID ?: properties["messageID"] as? String
-                     if (messageId == null) {
-                         logW("SessionRepo", "Skipping part update: messageID missing.")
-                         return
-                     }
-                     upsertPart(messageId, part)
-                 }
+                  "message.part.updated" -> {
+                      if (properties == null) return
+                      val partData = properties["part"] as? Map<String, Any> ?: run {
+                          logW("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
+                          return
+                      }
+                      val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
+                      val messageId = part.messageID ?: properties["messageID"] as? String
+                      if (messageId == null) {
+                          logW("SessionRepo", "Skipping part update: messageID missing.")
+                          return
+                      }
+                      upsertPart(messageId, part)
+                  }
+                  "message.part.delta" -> {
+                      // Server streams text via delta events — append incremental text to the part
+                      if (properties == null) return
+                      val messageId = properties["messageID"] as? String ?: return
+                      val partId = properties["partID"] as? String ?: return
+                      val field = properties["field"] as? String
+                      val delta = properties["delta"] as? String
+                      if (delta == null) return
+                      appendPartDelta(messageId, partId, field, delta)
+                  }
                  "message.part.removed" -> {
                      if (properties == null) return
                      val messageId = properties["messageID"] as? String ?: return
@@ -691,6 +701,44 @@ class SessionRepository(private val apiClient: ApiClient) {
         val currentParts = _parts.value.toMutableMap()
         currentParts[messageId] = currentParts[messageId]?.filter { it.id != partId }.orEmpty()
         _parts.value = currentParts
+    }
+
+    /**
+     * Append a text delta from SSE `message.part.delta` events.
+     * This is the primary streaming mechanism — the server sends incremental text fragments
+     * as the model generates tokens.
+     */
+    private fun appendPartDelta(messageId: String, partId: String, field: String?, delta: String) {
+        _parts.update { currentParts ->
+            val messageParts = currentParts[messageId]?.toMutableList() ?: mutableListOf()
+            val existingIndex = messageParts.indexOfFirst { it.id == partId }
+
+            if (existingIndex >= 0) {
+                // Append delta to existing part
+                val existing = messageParts[existingIndex]
+                val updated = when (field) {
+                    "text" -> existing.copy(text = (existing.text ?: "") + delta)
+                    else -> existing // Ignore unknown field deltas
+                }
+                messageParts[existingIndex] = updated
+            } else {
+                // Part doesn't exist yet — create a placeholder part.
+                // The full part will arrive later via message.part.updated.
+                val newPart = when (field) {
+                    "text" -> Part(id = partId, messageID = messageId, type = "text", text = delta)
+                    else -> Part(id = partId, messageID = messageId, type = field)
+                }
+                messageParts.add(newPart)
+            }
+
+            currentParts + (messageId to messageParts)
+        }
+
+        // Ensure a message entry exists for this messageId so the UI can render the parts.
+        // Delta events may arrive before the message.updated event creates the message entry.
+        if (_messages.value.none { it.id == messageId }) {
+            upsertMessage(Message(id = messageId, role = "assistant"))
+        }
     }
 
      fun disconnectSse() {
