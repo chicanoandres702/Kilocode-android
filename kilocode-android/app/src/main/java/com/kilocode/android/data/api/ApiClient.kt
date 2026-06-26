@@ -1,10 +1,12 @@
 package com.kilocode.android.data.api
 
 import android.util.Log
+import com.kilocode.android.BuildConfig
 import com.kilocode.android.data.model.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
@@ -18,8 +20,30 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor(sharedSecret))
+        .apply {
+            if (BuildConfig.DEBUG) {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+            }
+        }
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
+        .writeTimeout(120, TimeUnit.SECONDS)
+        .build()
+
+    // Separate client for SSE that doesn't buffer the body via logging
+    private val sseClient = OkHttpClient.Builder()
+        .addInterceptor(AuthInterceptor(sharedSecret))
+        .apply {
+            if (BuildConfig.DEBUG) {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.HEADERS
+                })
+            }
+        }
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(0, TimeUnit.SECONDS) // No read timeout for streaming
         .writeTimeout(120, TimeUnit.SECONDS)
         .build()
 
@@ -55,7 +79,7 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         )
         val response = api.sendPrompt(sessionId, request)
         if (!response.isSuccessful) {
-            throw Exception("Failed to send prompt: ${response.code()}")
+            throw Exception("Failed to send prompt: ${response.code()} ${response.message()}")
         }
     }
 
@@ -72,7 +96,7 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
             .url("${baseUrl}${path}")
             .header("Accept", "text/event-stream")
             .build()
-        return okHttpClient.newCall(request)
+        return sseClient.newCall(request)
     }
 
     fun createEventSource(

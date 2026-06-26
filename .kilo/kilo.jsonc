@@ -6,7 +6,7 @@
     "auto": true,
     "prune": true
   },
-  "snapshot": true,
+  "snapshot": false,
   "permission": {
     "bash": "allow",
     "edit": {
