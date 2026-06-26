@@ -169,7 +169,7 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null): MessageWithParts? {
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null) {
         val messageId = generateMessageId()
         // Optimistic update
         val optimisticMessage = Message(id = messageId, sessionID = sessionId, role = "user", agent = agent)
@@ -178,16 +178,23 @@ class SessionRepository(private val apiClient: ApiClient) {
             current + (messageId to listOf(Part(id = "part_${UUID.randomUUID()}", text = prompt, type = "text", messageID = messageId)))
         }
         _isLoading.value = true
-        return try {
-            val modelInfo = model?.let { ModelInfo(it.providerID, it.modelID) }
-            val result = apiClient.sendPrompt(sessionId, prompt, agent, modelInfo)
-            result
+        _sessionBusy.value = true
+        try {
+            val modelInfo = model?.let {
+                // The API returns providerID="kilo" for all models.
+                // The server's getModel looks up by providerID + "/" + modelID.
+                // For kilo-auto/free, the server expects providerID="kilo", modelID="kilo-auto/free".
+                // So always use the API's providerID and pass modelID unchanged.
+                ModelInfo(it.providerID, it.modelID)
+            }
+            apiClient.sendPrompt(sessionId, prompt, agent, modelInfo)
+            // Do NOT reset _isLoading here — prompt_async returns immediately.
+            // Loading state is cleared by session.turn.close / session.idle SSE events.
         } catch (e: Exception) {
             logE("SessionRepo", "Error sending prompt", e)
             _error.value = "Failed to send prompt: ${e.message}"
-            null
-        } finally {
             _isLoading.value = false
+            _sessionBusy.value = false
         }
     }
 
@@ -352,14 +359,18 @@ class SessionRepository(private val apiClient: ApiClient) {
                      logD("SessionRepo", "Server connected")
                      _isConnected.value = true
                  }
-                 "server.instance.disposed" -> {
-                     logD("SessionRepo", "Server instance disposed")
-                     _isConnected.value = false
-                 }
-                 "global.disposed" -> {
-                     logD("SessionRepo", "Global disposed")
-                     _isConnected.value = false
-                 }
+                  "server.heartbeat" -> {
+                      logD("SessionRepo", "Heartbeat received — connection alive")
+                      _isConnected.value = true
+                  }
+                  "server.instance.disposed" -> {
+                      logD("SessionRepo", "Server instance disposed")
+                      _isConnected.value = false
+                  }
+                  "global.disposed" -> {
+                      logD("SessionRepo", "Global disposed")
+                      _isConnected.value = false
+                  }
                  "message.updated" -> {
                      if (properties == null) return
                      val info = properties["info"] as? Map<String, Any> ?: return
@@ -451,11 +462,16 @@ class SessionRepository(private val apiClient: ApiClient) {
                      logD("SessionRepo", "Session diff received: $properties")
                      // Diff events carry incremental updates; handled by message.part events
                  }
-                 "session.compacted" -> {
-                     logD("SessionRepo", "Session compacted")
-                     // Compaction complete — messages list may have changed
-                 }
-                 "permission.asked" -> {
+                  "session.compacted" -> {
+                      logD("SessionRepo", "Session compacted")
+                      // Compaction complete — messages list may have changed
+                  }
+                  "session.next.model.switched" -> {
+                      if (properties == null) return
+                      val model = properties["model"] as? String
+                      logD("SessionRepo", "Session model switched to: $model")
+                  }
+                  "permission.asked" -> {
                      logD("SessionRepo", "Permission asked: $properties")
                  }
                  "permission.replied" -> {

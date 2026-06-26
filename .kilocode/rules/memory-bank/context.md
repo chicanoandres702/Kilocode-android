@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Status**: Android client active, pivoting to SDK-based interaction with server.
+**Status**: Android client fully functional. SSE streaming, message rendering, model selection, and prompt sending all work correctly. Server-side only `kilo-auto/free` model is operational; other models require provider API key configuration on the server.
 
 ## Recently Completed
 
@@ -42,3 +42,4 @@
 | 2026-06-25 | Implemented `onOptionSelected` to send prompts in `QuestionToolView` |
 | 2026-06-25 | Fixed `SessionRepository.kt` by removing duplicate `connectSse` implementation and cleaning up broken code block. |
 | 2026-06-26 | Fixed SSE implementation to align with documented API: changed endpoint from `global/event` to `/event` (session-scoped), added `workspace` query param support, replaced non-existent `server.heartbeat` with `server.connected`, separated session busy state from connection state (`_sessionBusy`), added 30+ missing event handlers (session.idle, session.turn.*, session.diff, session.compacted, question.*, suggestion.*, todo.*, workspace.*, worktree.*, file.edited, provider.updated, lsp.*, mcp.*, background_process.*, indexing.*, command.executed, project.updated, kilocode.agent_manager.start, tui.*), and fixed event envelope parsing for both `/event` ({id, type, properties}) and `global/event` ({directory, project, workspace, payload}) formats. |
+| 2026-06-26 | Investigated model availability: server only supports `kilo-auto/free`. All other models from `/api/model` return `ProviderModelNotFoundError` due to unconfigured provider API keys server-side. Free Models UI section is purely cosmetic and not the cause. Confirmed `prompt_async` endpoint works correctly with `kilo/kilo-auto/free`. |
