@@ -56,11 +56,14 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _files = MutableStateFlow<List<FileNode>>(emptyList())
     val files: StateFlow<List<FileNode>> = _files
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
+     private val _isLoading = MutableStateFlow(false)
+     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _isConnected = MutableStateFlow(false)
-    val isConnected: StateFlow<Boolean> = _isConnected
+     private val _isConnected = MutableStateFlow(false)
+     val isConnected: StateFlow<Boolean> = _isConnected
+
+     private val _sessionBusy = MutableStateFlow(false)
+     val sessionBusy: StateFlow<Boolean> = _sessionBusy
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
@@ -199,8 +202,13 @@ class SessionRepository(private val apiClient: ApiClient) {
          repositoryScope.launch {
              try {
                  logD("SessionRepo", "Compacting session: $sessionId")
-                 apiClient.api.compactSession(sessionId)
-                 logD("SessionRepo", "Session compacted: $sessionId")
+                 val response = apiClient.api.compactSession(sessionId)
+                 if (response.isSuccessful) {
+                     logD("SessionRepo", "Session compacted: $sessionId, result=${response.body()}")
+                 } else {
+                     logE("SessionRepo", "Compact failed: ${response.code()}")
+                     _error.value = "Failed to compact: ${response.code()}"
+                 }
              } catch (e: Exception) {
                  logE("SessionRepo", "Error compacting session", e)
                  _error.value = "Failed to compact: ${e.message}"
@@ -240,18 +248,20 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-     fun connectSse(sessionId: String, directory: String? = null) {
-         logD("SessionRepo", "connectSse called for: $sessionId, directory: $directory")
+     fun connectSse(sessionId: String, directory: String? = null, workspace: String? = null) {
+         logD("SessionRepo", "connectSse called for: $sessionId, directory: $directory, workspace: $workspace")
          disconnectSse()
          val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
+         val encodedWorkspace = URLEncoder.encode(workspace ?: "", StandardCharsets.UTF_8.toString())
          
-         logD("SessionRepo", "Connecting SSE to: ${apiClient.baseUrl}global/event?directory=$encodedDirectory")
+         val path = "event?directory=$encodedDirectory&workspace=$encodedWorkspace"
+         logD("SessionRepo", "Connecting SSE to: ${apiClient.baseUrl}$path")
          sseJob = repositoryScope.launch {
              var retryDelay = 1000L
              val maxRetryDelay = 30000L
              while (isActive) {
                  try {
-                     val call = apiClient.createStreamCall("global/event?directory=$encodedDirectory")
+                     val call = apiClient.createStreamCall(path)
                      logD("SessionRepo", "SSE call created: ${call.request().url}")
                      call.execute().use { response ->
                          if (!response.isSuccessful) {
@@ -298,85 +308,254 @@ class SessionRepository(private val apiClient: ApiClient) {
      }
 
 
-    @Suppress("UNCHECKED_CAST")
-    private fun handleSseEvent(type: String?, data: String) {
-        logD("SessionRepo", "SSE event received: type=$type, data=$data")
-        try {
-            val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
-            
-            // Extract the actual event type from the payload if it's a generic "message" event
-            val payload = event["payload"] as? Map<String, Any>
-            val actualType = if (type == "message") {
-                payload?.get("type") as? String
-            } else {
-                type
-            }
-            
-            val properties = if (type == "message") {
-                payload?.get("properties") as? Map<String, Any>
-            } else {
-                event["properties"] as? Map<String, Any>
-            }
-            
-            if (actualType == null || properties == null) {
-                logW("SessionRepo", "Skipping event: actualType=$actualType, properties=$properties")
-                return
-            }
-            
-            logD("SessionRepo", "Processing event: actualType=$actualType")
-            
-            // ADDED LOGGING
-            if (actualType !in listOf("message.updated", "message.removed", "message.part.updated", "message.part.removed", "session.status", "session.error")) {
-                logD("SessionRepo", "Unknown event type: $actualType")
-            }
-            
-            when (actualType) {
-                "message.updated" -> {
-                    val info = properties["info"] as? Map<String, Any> ?: return
-                    upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
-                }
-                "message.removed" -> {
-                    val messageID = properties["messageID"] as? String ?: return
-                    _messages.value = _messages.value.filter { it.id != messageID }
-                }
-                "message.part.updated" -> {
-                    val partData = properties["part"] as? Map<String, Any> ?: run {
-                        logW("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
-                        return
-                    }
-                    val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
-                    val messageId = part.messageID ?: properties["messageID"] as? String
-                    if (messageId == null) {
-                        logW("SessionRepo", "Skipping part update: messageID missing.")
-                        return
-                    }
-                    upsertPart(messageId, part)
-                }
-                "message.part.removed" -> {
-                    val messageId = properties["messageID"] as? String ?: return
-                    val partId = properties["partID"] as? String ?: return
-                    removePart(messageId, partId)
-                }
-                "session.status" -> {
-                    val status = properties["status"] as? Map<String, Any>
-                    val isIdle = status?.get("type") == "idle"
-                    _isConnected.value = !isIdle
-                    _isLoading.value = !isIdle
-                }
-                "session.error" -> {
-                    val error = properties["error"] as? Map<String, Any>
-                    _error.value = error?.let {
-                        val name = it["name"] as? String ?: "Session error"
-                        val data = it["data"] as? Map<String, Any>
-                        val message = data?.get("message") as? String
-                        "$name${message?.let { ": $it" }.orEmpty()}"
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error handling SSE event", e)
-        }
-    }
+     @Suppress("UNCHECKED_CAST")
+     private fun handleSseEvent(type: String?, data: String) {
+         logD("SessionRepo", "SSE event received: type=$type, data=$data")
+         try {
+             val event: Map<String, Any> = GSON.fromJson(data, MAP_TYPE)
+             
+             // The /event endpoint sends Event objects: { id, type, properties }
+             // The /global/event endpoint sends GlobalEvent: { directory, project, workspace, payload: { id, type, properties } }
+             // Determine which envelope we're dealing with.
+             val hasDirectType = event.containsKey("type") && event["type"] is String
+             val hasPayload = event.containsKey("payload") && event["payload"] is Map<*, *>
+             
+             val actualType: String?
+             val properties: Map<String, Any>?
+             
+             if (hasDirectType) {
+                 // Direct Event envelope { id, type, properties }
+                 actualType = event["type"] as? String
+                 properties = event["properties"] as? Map<String, Any>
+             } else if (hasPayload) {
+                 // GlobalEvent envelope { directory, project, workspace, payload: { ... } }
+                 val payload = event["payload"] as? Map<String, Any>
+                 actualType = payload?.get("type") as? String
+                 properties = payload?.get("properties") as? Map<String, Any>
+             } else {
+                 actualType = type
+                 properties = event["properties"] as? Map<String, Any>
+             }
+             
+             if (actualType == null) {
+                 logW("SessionRepo", "Skipping event: actualType=null")
+                 return
+             }
+             
+             logD("SessionRepo", "Processing event: actualType=$actualType")
+             
+             when (actualType) {
+                 "server.connected" -> {
+                     logD("SessionRepo", "Server connected")
+                     _isConnected.value = true
+                 }
+                 "server.instance.disposed" -> {
+                     logD("SessionRepo", "Server instance disposed")
+                     _isConnected.value = false
+                 }
+                 "global.disposed" -> {
+                     logD("SessionRepo", "Global disposed")
+                     _isConnected.value = false
+                 }
+                 "message.updated" -> {
+                     if (properties == null) return
+                     val info = properties["info"] as? Map<String, Any> ?: return
+                     upsertMessage(GSON.fromJson(GSON.toJsonTree(info), Message::class.java))
+                 }
+                 "message.removed" -> {
+                     if (properties == null) return
+                     val messageID = properties["messageID"] as? String ?: return
+                     _messages.value = _messages.value.filter { it.id != messageID }
+                 }
+                 "message.part.updated" -> {
+                     if (properties == null) return
+                     val partData = properties["part"] as? Map<String, Any> ?: run {
+                         logW("SessionRepo", "Skipping message.part.updated: 'part' property missing. properties=$properties")
+                         return
+                     }
+                     val part = GSON.fromJson(GSON.toJsonTree(partData), Part::class.java)
+                     val messageId = part.messageID ?: properties["messageID"] as? String
+                     if (messageId == null) {
+                         logW("SessionRepo", "Skipping part update: messageID missing.")
+                         return
+                     }
+                     upsertPart(messageId, part)
+                 }
+                 "message.part.removed" -> {
+                     if (properties == null) return
+                     val messageId = properties["messageID"] as? String ?: return
+                     val partId = properties["partID"] as? String ?: return
+                     removePart(messageId, partId)
+                 }
+                 "session.updated" -> {
+                     if (properties == null) return
+                     val session = properties["session"] as? Map<String, Any> ?: return
+                     val updated = GSON.fromJson(GSON.toJsonTree(session), Session::class.java)
+                     _currentSession.value = updated
+                     _sessions.value = _sessions.value.map {
+                         if (it.id == updated.id) updated else it
+                     }
+                 }
+                 "session.created" -> {
+                     if (properties == null) return
+                     val session = properties["session"] as? Map<String, Any> ?: return
+                     val created = GSON.fromJson(GSON.toJsonTree(session), Session::class.java)
+                     if (_sessions.value.none { it.id == created.id }) {
+                         _sessions.value = _sessions.value + created
+                     }
+                 }
+                 "session.deleted" -> {
+                     if (properties == null) return
+                     val sessionID = properties["sessionID"] as? String ?: return
+                     _sessions.value = _sessions.value.filter { it.id != sessionID }
+                     if (_currentSession.value?.id == sessionID) {
+                         _currentSession.value = null
+                         _messages.value = emptyList()
+                     }
+                 }
+                 "session.status" -> {
+                     if (properties == null) return
+                     val status = properties["status"] as? Map<String, Any>
+                     val statusType = status?.get("type") as? String
+                     // Only track session busy/idle state, NOT connection state
+                     _sessionBusy.value = statusType != "idle"
+                 }
+                 "session.idle" -> {
+                     logD("SessionRepo", "Session idle")
+                     _sessionBusy.value = false
+                     _isLoading.value = false
+                 }
+                 "session.error" -> {
+                     if (properties == null) return
+                     val error = properties["error"] as? Map<String, Any>
+                     _error.value = error?.let {
+                         val name = it["name"] as? String ?: "Session error"
+                         val errorData = it["data"] as? Map<String, Any>
+                         val message = errorData?.get("message") as? String
+                         "$name${message?.let { m -> ": $m" }.orEmpty()}"
+                     }
+                 }
+                 "session.turn.open" -> {
+                     logD("SessionRepo", "Session turn started")
+                     _sessionBusy.value = true
+                 }
+                 "session.turn.close" -> {
+                     logD("SessionRepo", "Session turn ended")
+                     _sessionBusy.value = false
+                     _isLoading.value = false
+                 }
+                 "session.diff" -> {
+                     logD("SessionRepo", "Session diff received: $properties")
+                     // Diff events carry incremental updates; handled by message.part events
+                 }
+                 "session.compacted" -> {
+                     logD("SessionRepo", "Session compacted")
+                     // Compaction complete — messages list may have changed
+                 }
+                 "permission.asked" -> {
+                     logD("SessionRepo", "Permission asked: $properties")
+                 }
+                 "permission.replied" -> {
+                     logD("SessionRepo", "Permission replied: $properties")
+                 }
+                 "question.asked" -> {
+                     logD("SessionRepo", "Question asked: $properties")
+                 }
+                 "question.replied" -> {
+                     logD("SessionRepo", "Question replied: $properties")
+                 }
+                 "question.rejected" -> {
+                     logD("SessionRepo", "Question rejected: $properties")
+                 }
+                 "suggestion.shown" -> {
+                     logD("SessionRepo", "Suggestion shown: $properties")
+                 }
+                 "suggestion.accepted" -> {
+                     logD("SessionRepo", "Suggestion accepted: $properties")
+                 }
+                 "suggestion.dismissed" -> {
+                     logD("SessionRepo", "Suggestion dismissed: $properties")
+                 }
+                 "todo.updated" -> {
+                     logD("SessionRepo", "Todo updated: $properties")
+                 }
+                 "workspace.status" -> {
+                     logD("SessionRepo", "Workspace status: $properties")
+                 }
+                 "workspace.ready" -> {
+                     logD("SessionRepo", "Workspace ready")
+                 }
+                 "workspace.failed" -> {
+                     logD("SessionRepo", "Workspace failed: $properties")
+                 }
+                 "worktree.ready" -> {
+                     logD("SessionRepo", "Worktree ready")
+                 }
+                 "worktree.failed" -> {
+                     logD("SessionRepo", "Worktree failed: $properties")
+                 }
+                 "file.edited" -> {
+                     logD("SessionRepo", "File edited: $properties")
+                 }
+                 "provider.updated" -> {
+                     logD("SessionRepo", "Provider updated")
+                 }
+                 "installation.updated" -> {
+                     logD("SessionRepo", "Installation updated")
+                 }
+                 "lsp.client.diagnostics" -> {
+                     logD("SessionRepo", "LSP diagnostics: $properties")
+                 }
+                 "lsp.updated" -> {
+                     logD("SessionRepo", "LSP updated")
+                 }
+                 "mcp.tools.changed" -> {
+                     logD("SessionRepo", "MCP tools changed")
+                 }
+                 "mcp.browser.open.failed" -> {
+                     logD("SessionRepo", "MCP browser open failed: $properties")
+                 }
+                 "background_process.updated" -> {
+                     logD("SessionRepo", "Background process updated: $properties")
+                 }
+                 "background_process.deleted" -> {
+                     logD("SessionRepo", "Background process deleted: $properties")
+                 }
+                 "indexing.status" -> {
+                     logD("SessionRepo", "Indexing status: $properties")
+                 }
+                 "indexing.warning" -> {
+                     logD("SessionRepo", "Indexing warning: $properties")
+                 }
+                 "command.executed" -> {
+                     logD("SessionRepo", "Command executed: $properties")
+                 }
+                 "project.updated" -> {
+                     logD("SessionRepo", "Project updated")
+                 }
+                 "kilocode.agent_manager.start" -> {
+                     logD("SessionRepo", "Agent manager started")
+                 }
+                 "tui.prompt.append" -> {
+                     logD("SessionRepo", "TUI prompt append: $properties")
+                 }
+                 "tui.command.execute" -> {
+                     logD("SessionRepo", "TUI command execute: $properties")
+                 }
+                 "tui.toast.show" -> {
+                     logD("SessionRepo", "TUI toast show: $properties")
+                 }
+                 "tui.session.select" -> {
+                     logD("SessionRepo", "TUI session select: $properties")
+                 }
+                 else -> {
+                     logD("SessionRepo", "Unknown event type: $actualType")
+                 }
+             }
+         } catch (e: Exception) {
+             logE("SessionRepo", "Error handling SSE event", e)
+         }
+     }
 
     private fun upsertMessage(message: Message) {
         logD("SessionRepo", "upsertMessage: $message")
@@ -413,11 +592,12 @@ class SessionRepository(private val apiClient: ApiClient) {
         _parts.value = currentParts
     }
 
-    fun disconnectSse() {
-        sseJob?.cancel()
-        sseJob = null
-        _isConnected.value = false
-    }
+     fun disconnectSse() {
+         sseJob?.cancel()
+         sseJob = null
+         _isConnected.value = false
+         _sessionBusy.value = false
+     }
 
     fun clearError() {
         _error.value = null

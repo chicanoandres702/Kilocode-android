@@ -122,11 +122,14 @@ fun SessionScreen(
             repository.setSelectedModel(model)
         }
     }
-    LaunchedEffect(sessionId) {
-        autonomousMode = false
-        repository.selectSession(sessionId)
-        repository.connectSse(sessionId, repository.currentSession.value?.directory)
-    }
+     LaunchedEffect(sessionId) {
+         autonomousMode = false
+         repository.selectSession(sessionId)
+         repository.connectSse(
+             sessionId,
+             directory = repository.currentSession.value?.directory
+         )
+     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
     // Improved scroll-to-bottom logic
