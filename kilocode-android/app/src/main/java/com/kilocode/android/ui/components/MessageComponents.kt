@@ -50,79 +50,88 @@ fun MessageBubble(
     var showCopyButton by remember { mutableStateOf(false) }
 
     // Bubble — long-press reveals copy button
-
-            Box {
-                Surface(
-                    modifier = Modifier
-                        .widthIn(max = 296.dp)
-                        .clip(
-                            RoundedCornerShape(
-                                topStart    = if (isUser) 18.dp else 4.dp,
-                                topEnd      = if (isUser) 4.dp else 18.dp,
-                                bottomStart = 18.dp,
-                                bottomEnd   = 18.dp,
-                            )
-                        )
-                        .combinedClickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication        = null,
-                            onClick           = { showCopyButton = false },
-                            onLongClick       = { showCopyButton = !showCopyButton },
-                        ),
-                    color           = bubbleBg,
-                    tonalElevation  = 0.dp,
-                    shadowElevation = 0.dp,
-                ) {
-                    Column(
-                        modifier            = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
-                    ) {
-                        parts.forEach { part ->
-                            when (part.type) {
-                                "text"      -> TextPartView(text = part.text.orEmpty())
-                                "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onOptionSelected = onOptionSelected, onCompact = { /* TODO: Implement onCompact */ })
-                                "reasoning" -> ReasoningPartView(part = part)
-                                "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
-                                else        -> if (!part.text.isNullOrBlank()) TextPartView(text = part.text)
-}
-
-                }
-
-                // Copy button — appears on long-press, floats above bubble
-                if (showCopyButton) {
-                    val allText = parts.mapNotNull { it.text }.joinToString("\n")
-                    Box(
-                        modifier = Modifier.fillMaxSize().wrapContentSize(if (isUser) Alignment.TopStart else Alignment.TopEnd)
-                    ) {
-                        Surface(
-                            onClick = {
-                                clipboard.setText(AnnotatedString(allText))
-                                showCopyButton = false
-                            },
-                            shape = RoundedCornerShape(8.dp),
-                            color = MaterialTheme.colorScheme.inverseSurface,
-                            shadowElevation = 4.dp,
-                            modifier = Modifier
-                                .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            ) {
-                                Icon(
-                                    Icons.Rounded.ContentCopy,
-                                    contentDescription = "Copy",
-                                    tint = MaterialTheme.colorScheme.inverseOnSurface,
-                                    modifier = Modifier.size(12.dp),
-                                )
-                                Text(
-                                    "Copy",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.inverseOnSurface,
-                                    fontSize = 11.sp,
-                                )
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
+    ) {
+        Surface(
+            modifier = Modifier
+                .widthIn(max = 296.dp)
+                .clip(
+                    RoundedCornerShape(
+                        topStart    = if (isUser) 18.dp else 4.dp,
+                        topEnd      = if (isUser) 4.dp else 18.dp,
+                        bottomStart = 18.dp,
+                        bottomEnd   = 18.dp,
+                    )
+                )
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication        = null,
+                    onClick           = { showCopyButton = false },
+                    onLongClick       = { showCopyButton = !showCopyButton },
+                ),
+            color           = bubbleBg,
+            tonalElevation  = 0.dp,
+            shadowElevation = 0.dp,
+        ) {
+            Column(
+                modifier            = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
+                parts.forEach { part ->
+                    android.util.Log.d("MessageBubble", "Rendering part: type=${part.type}, text=${part.text}, tool=${part.tool}")
+                    when (part.type) {
+                        "text"      -> TextPartView(text = part.text.orEmpty())
+                        "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onOptionSelected = onOptionSelected)
+                        "reasoning" -> ReasoningPartView(part = part)
+                        "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
+                        else        -> {
+                            if (!part.text.isNullOrBlank()) {
+                                TextPartView(text = part.text)
+                            } else {
+                                // Render something visible for debugging if the part has no content but is present
+                                TextPartView(text = "[Empty Part: type=${part.type}]")
                             }
+                        }
+                    }
+                }
+            }
+
+            // Copy button — appears on long-press, floats above bubble
+            if (showCopyButton) {
+                val allText = parts.mapNotNull { it.text }.joinToString("\n")
+                Box(
+                    modifier = Modifier.fillMaxSize().wrapContentSize(if (isUser) Alignment.TopStart else Alignment.TopEnd)
+                ) {
+                    Surface(
+                        onClick = {
+                            clipboard.setText(AnnotatedString(allText))
+                            showCopyButton = false
+                        },
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        shadowElevation = 4.dp,
+                        modifier = Modifier
+                            .offset(x = if (isUser) (-6).dp else 6.dp, y = (-10).dp),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            Icon(
+                                Icons.Rounded.ContentCopy,
+                                contentDescription = "Copy",
+                                tint = MaterialTheme.colorScheme.inverseOnSurface,
+                                modifier = Modifier.size(12.dp),
+                            )
+                            Text(
+                                "Copy",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.inverseOnSurface,
+                                fontSize = 11.sp,
+                            )
                         }
                     }
                 }
@@ -144,9 +153,9 @@ private fun TextPartView(text: String) {
 
 // ── Tool pill — single-line, taps to expand with spring ──────────────────────
 @Composable
-fun ToolPartView(part: Part, sessionId: String, onOptionSelected: (String) -> Unit, modifier: Modifier = Modifier, onCompact: () -> Unit) {
+fun ToolPartView(part: Part, sessionId: String, onOptionSelected: (String) -> Unit, modifier: Modifier = Modifier) {
     if (part.tool == "question") {
-        QuestionToolView(part, sessionId, onOptionSelected, modifier, onCompact)
+        QuestionToolView(part, sessionId, onOptionSelected, modifier)
         return
     }
     val state = part.state ?: return
@@ -262,49 +271,63 @@ fun QuestionToolView(
     sessionId: String, 
     onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier, 
-    onCompact: () -> Unit
 ) {
     val input = part.state?.input as? Map<String, Any> ?: return
     val questions = input["questions"] as? List<Map<String, Any>> ?: return
+    var expanded by remember { mutableStateOf(true) }
     
     Column(modifier = modifier.fillMaxWidth().padding(vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        questions.forEach { questionMap ->
-            val header = questionMap["header"] as? String ?: "Question"
-            val question = questionMap["question"] as? String ?: ""
-            val options = questionMap["options"] as? List<Map<String, String>> ?: emptyList()
-            
+        if (expanded) {
+            questions.forEach { questionMap ->
+                val header = questionMap["header"] as? String ?: "Question"
+                val question = questionMap["question"] as? String ?: ""
+                val options = questionMap["options"] as? List<Map<String, String>> ?: emptyList()
+                
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(header, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                            IconButton(onClick = { expanded = false }) {
+                                Icon(Icons.Rounded.Compress, contentDescription = "Compact")
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(question, style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        options.forEach { option ->
+                            val label = option["label"] ?: ""
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable { onOptionSelected(label) },
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                            ) {
+                                Text(label, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
             Surface(
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clickable { expanded = true }
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(header, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                        IconButton(onClick = onCompact) {
-                            Icon(Icons.Rounded.Compress, contentDescription = "Compact")
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(question, style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    options.forEach { option ->
-                        val label = option["label"] ?: ""
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .clickable { onOptionSelected(label) },
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                        ) {
-                            Text(label, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
+                Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Expand, contentDescription = "Expand")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("View Question", style = MaterialTheme.typography.titleSmall)
                 }
             }
         }

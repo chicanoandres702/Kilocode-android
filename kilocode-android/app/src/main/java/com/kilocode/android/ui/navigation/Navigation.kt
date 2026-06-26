@@ -1,11 +1,14 @@
 package com.kilocode.android.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.ui.screens.HomeScreen
 import com.kilocode.android.ui.screens.SessionScreen
 import com.kilocode.android.ui.screens.SettingsScreen
@@ -28,6 +31,8 @@ fun KiloCodeNavHost(
     onAutonomousModeChanged: (Boolean) -> Unit,
     onSharedSecretChanged: (String) -> Unit,
 ) {
+    val context = LocalContext.current
+    val authPreferencesRepository = remember { AuthPreferencesRepository(context) }
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route,
@@ -57,12 +62,13 @@ fun KiloCodeNavHost(
         ) { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getString("sessionId")
             if (sessionId != null) {
-                SessionScreen(
-                    serverUrl = serverUrl,
-                    sharedSecret = sharedSecret,
-                    sessionId = sessionId,
-                    onBack = { navController.popBackStack() },
-                )
+                 SessionScreen(
+                     serverUrl = serverUrl,
+                     sharedSecret = sharedSecret,
+                     sessionId = sessionId,
+                     authPreferencesRepository = authPreferencesRepository,
+                     onBack = { navController.popBackStack() },
+                 )
             } else {
                 navController.popBackStack()
             }
