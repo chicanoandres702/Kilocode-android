@@ -171,9 +171,15 @@ data class Project(
 data class FileNode(
     val name: String,
     val path: String,
-    val isDirectory: Boolean,
-    val children: List<FileNode>? = null,
-)
+    val absolute: String? = null,
+    val type: String? = null,
+    val ignored: Boolean = false,
+) {
+    val isDirectory: Boolean
+        get() = type == "directory"
+    val isFile: Boolean
+        get() = type == "file"
+}
 
 data class Config(
     val providers: Map<String, ConfigProvider> = emptyMap(),

@@ -56,6 +56,21 @@ class SessionRepository(private val apiClient: ApiClient) {
     private val _files = MutableStateFlow<List<FileNode>>(emptyList())
     val files: StateFlow<List<FileNode>> = _files
 
+    private val _folders = MutableStateFlow<List<FileNode>>(emptyList())
+    val folders: StateFlow<List<FileNode>> = _folders
+
+    private val _currentDirectory = MutableStateFlow("/")
+    val currentDirectory: StateFlow<String> = _currentDirectory
+
+    private val _isLoadingFolders = MutableStateFlow(false)
+    val isLoadingFolders: StateFlow<Boolean> = _isLoadingFolders
+
+    private val _directoryExists = MutableStateFlow<Boolean?>(null)
+    val directoryExists: StateFlow<Boolean?> = _directoryExists
+
+    private val _isCheckingDirectory = MutableStateFlow(false)
+    val isCheckingDirectory: StateFlow<Boolean> = _isCheckingDirectory
+
      private val _isLoading = MutableStateFlow(false)
      val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -71,10 +86,11 @@ class SessionRepository(private val apiClient: ApiClient) {
     private var sseJob: Job? = null
     private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    suspend fun listSessions() {
+    suspend fun listSessions(directory: String? = null) {
         _isLoading.value = true
         try {
-            val response = apiClient.api.listSessions()
+            val dir = directory ?: _currentDirectory.value
+            val response = apiClient.api.listSessions(directory = dir)
             _sessions.value = response.body() ?: emptyList()
         } catch (e: Exception) {
             logE("SessionRepo", "Error loading sessions", e)
@@ -82,6 +98,69 @@ class SessionRepository(private val apiClient: ApiClient) {
         } finally {
             _isLoading.value = false
         }
+    }
+
+    /**
+     * Check if a directory exists on the server by attempting to list files.
+     * Sets _directoryExists to true/false based on the result.
+     */
+    suspend fun checkDirectoryExists(path: String) {
+        _isCheckingDirectory.value = true
+        _directoryExists.value = null
+        try {
+            val response = apiClient.api.listFiles(path = path)
+            if (response.isSuccessful) {
+                // Directory exists — also update folders state
+                val files = response.body() ?: emptyList()
+                _folders.value = files
+                _currentDirectory.value = path
+                _directoryExists.value = true
+                logD("SessionRepo", "Directory exists: $path (${files.size} entries)")
+            } else {
+                logE("SessionRepo", "Directory check failed: ${response.code()} for $path")
+                _directoryExists.value = false
+                _error.value = "Directory not found: $path"
+            }
+        } catch (e: Exception) {
+            logE("SessionRepo", "Error checking directory: $path", e)
+            _directoryExists.value = false
+            _error.value = "Connection error: ${e.message}"
+        } finally {
+            _isCheckingDirectory.value = false
+        }
+    }
+
+    suspend fun loadFolders(path: String) {
+        _isLoadingFolders.value = true
+        try {
+            val response = apiClient.api.listFiles(path = path)
+            if (response.isSuccessful) {
+                _folders.value = response.body() ?: emptyList()
+                _currentDirectory.value = path
+                logD("SessionRepo", "Folders loaded: ${_folders.value.size} at $path")
+            } else {
+                logE("SessionRepo", "Failed to load folders: ${response.code()}")
+                _error.value = "Failed to load folders: ${response.code()}"
+            }
+        } catch (e: Exception) {
+            logE("SessionRepo", "Error loading folders", e)
+            _error.value = "Connection error: ${e.message}"
+        } finally {
+            _isLoadingFolders.value = false
+        }
+    }
+
+    fun navigateToFolder(path: String) {
+        _currentDirectory.value = path
+    }
+
+    fun navigateUp(): String? {
+        val current = _currentDirectory.value
+        if (current == "/" || current.isBlank()) return null
+        val parent = current.trimEnd('/').substringBeforeLast('/')
+        val parentPath = if (parent.isBlank()) "/" else parent
+        _currentDirectory.value = parentPath
+        return parentPath
     }
 
     suspend fun createSession(directory: String): Session? {
