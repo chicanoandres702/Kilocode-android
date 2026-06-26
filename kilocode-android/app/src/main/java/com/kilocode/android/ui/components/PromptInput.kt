@@ -55,7 +55,7 @@ fun PromptInput(
     val showModelChip = models.isNotEmpty()
     val charCount = textFieldValue.text.length
     val nearLimit = charCount > MAX_CHARS * 0.85f
-    val modelGroups = models.groupBy { it.category.ifBlank { "Models" } }
+    val modelGroups = models.groupBy { it.category?.ifBlank { "Models" } ?: "Models" }
 
     val sendScale by animateFloatAsState(
         targetValue = if (canSend || autonomousMode) 1f else 0.88f,
@@ -371,6 +371,9 @@ private fun ModelChip(
             Icon(Icons.Rounded.KeyboardArrowDown, null, tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f), modifier = Modifier.size(11.dp))
         }
     }
+    val freeModels = modelGroups["Free Models"] ?: emptyList()
+    val paidGroups = modelGroups.filterKeys { it != "Free Models" }
+
     DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
         DropdownMenuItem(
             text = { Text("Default model") },
@@ -393,7 +396,24 @@ private fun ModelChip(
             }
             HorizontalDivider()
         }
-        modelGroups.forEach { (category, models) ->
+        // Free Models section — highlighted at top
+        if (freeModels.isNotEmpty()) {
+            DropdownMenuItem(
+                text = { Text("Free Models", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary) },
+                onClick = {},
+                enabled = false,
+                leadingIcon = { Icon(Icons.Rounded.CheckCircle, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.tertiary) },
+            )
+            freeModels.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item.displayName) },
+                    onClick = { onModelSelected(item) },
+                    leadingIcon = { Icon(Icons.Rounded.Star, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.tertiary) },
+                )
+            }
+            HorizontalDivider()
+        }
+        paidGroups.forEach { (category, models) ->
             DropdownMenuItem(
                 text = { Text(category, fontWeight = FontWeight.Bold) },
                 onClick = {},

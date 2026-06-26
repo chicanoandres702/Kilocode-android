@@ -148,18 +148,21 @@ class SessionRepository(private val apiClient: ApiClient) {
     suspend fun listModels(): List<ModelOption> {
         return try {
             val response = apiClient.api.listModels()
-            val apiModels = if (response.isSuccessful) response.body() ?: emptyList() else emptyList()
-            val injected = ModelOption(
-                providerID = "kilo-auto",
-                modelID = "free",
-                displayName = "Kilo Auto (Free)",
-                category = "local"
+            val raw = if (response.isSuccessful) response.body() ?: emptyList() else emptyList()
+            val models = raw.map { m ->
+                val free = m.modelID.endsWith(":free") || m.modelID.endsWith("/free")
+                val cat = if (free) "Free Models" else (m.category ?: "Models")
+                m.copy(isFree = free, category = cat)
+            }
+            // Sort: free models first, then by category/name
+            val sorted = models.sortedWith(
+                compareByDescending<ModelOption> { it.isFree }
+                    .thenBy { it.category }
+                    .thenBy { it.displayName }
             )
-            val models = if (apiModels.any { it.providerID == "kilo-auto" && it.modelID == "free" }) apiModels
-            else apiModels + injected
-            _models.value = models
-            logD("SessionRepo", "Models loaded: ${models.size}")
-            models
+            _models.value = sorted
+            logD("SessionRepo", "Models loaded: ${sorted.size}, free: ${sorted.count { it.isFree }}")
+            sorted
         } catch (e: Exception) {
             logE("SessionRepo", "Error listing models", e)
             emptyList()
