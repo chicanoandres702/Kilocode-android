@@ -40,6 +40,7 @@ fun PromptInput(
     models: List<ModelOption> = emptyList(),
     selectedModel: ModelOption? = null,
     onModelSelected: (ModelOption?) -> Unit = {},
+    recentModels: List<ModelOption> = emptyList(),
     autonomousMode: Boolean = false,
     onAutonomousModeChanged: (Boolean) -> Unit = {},
     messages: List<Message> = emptyList(),
@@ -145,6 +146,7 @@ fun PromptInput(
                                                 onModelSelected(it)
                                                 modelMenuExpanded = false
                                             },
+                                            recentModels = recentModels,
                                         )
                                     }
                                     Spacer(modifier = Modifier.width(6.dp))
@@ -344,6 +346,7 @@ private fun ModelChip(
     onDismiss: () -> Unit,
     modelGroups: Map<String, List<ModelOption>>,
     onModelSelected: (ModelOption?) -> Unit,
+    recentModels: List<ModelOption> = emptyList(),
 ) {
     Surface(
         onClick = onExpand,
@@ -374,9 +377,25 @@ private fun ModelChip(
             onClick = { onModelSelected(null) },
             leadingIcon = { Icon(Icons.Rounded.AutoFixHigh, null, Modifier.size(15.dp)) },
         )
+        if (recentModels.isNotEmpty()) {
+            DropdownMenuItem(
+                text = { Text("Recently Used", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary) },
+                onClick = {},
+                enabled = false,
+                leadingIcon = { Icon(Icons.Rounded.History, null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.primary) },
+            )
+            recentModels.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item.displayName) },
+                    onClick = { onModelSelected(item) },
+                    leadingIcon = { Icon(Icons.Rounded.ModelTraining, null, Modifier.size(15.dp)) },
+                )
+            }
+            HorizontalDivider()
+        }
         modelGroups.forEach { (category, models) ->
             DropdownMenuItem(
-                text = { Text(category) },
+                text = { Text(category, fontWeight = FontWeight.Bold) },
                 onClick = {},
                 enabled = false,
                 leadingIcon = { Icon(Icons.Rounded.Category, null, Modifier.size(15.dp)) },

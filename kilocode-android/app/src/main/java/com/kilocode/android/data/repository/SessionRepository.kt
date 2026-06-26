@@ -107,6 +107,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     suspend fun selectSession(sessionId: String) {
+        logD("SessionRepo", "Selecting session: $sessionId")
+        _isLoading.value = true
         try {
             _messages.value = emptyList()
             _parts.value = emptyMap()
@@ -114,233 +116,187 @@ class SessionRepository(private val apiClient: ApiClient) {
             val response = apiClient.api.getSession(sessionId)
             if (response.isSuccessful) {
                 _currentSession.value = response.body()
+                logD("SessionRepo", "Session selected, loading messages: $sessionId")
                 loadMessages(sessionId)
             } else {
+                logE("SessionRepo", "Failed to load session: ${response.code()}")
                 _error.value = "Failed to load session: ${response.code()}"
             }
         } catch (e: Exception) {
             logE("SessionRepo", "Error selecting session", e)
             _error.value = "Connection error: ${e.message}"
-        }
-    }
-
-    suspend fun loadMessages(sessionId: String) {
-        try {
-            val response = apiClient.api.listMessages(sessionId)
-            if (response.isSuccessful) {
-                val messagesWithParts = response.body() ?: emptyList()
-                _messages.value = messagesWithParts.map { 
-                    it.info?.copy(id = it.info.id ?: generateMessageId()) ?: Message(id = generateMessageId()) 
-                }
-                _parts.value = messagesWithParts
-                    .map { messageWithParts -> 
-                        val id = messageWithParts.info?.id ?: generateMessageId()
-                        id to messageWithParts.parts 
-                    }
-                    .toMap()
-            } else {
-                _error.value = "Failed to load messages: ${response.code()}"
-            }
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error loading messages", e)
-            _error.value = "Connection error: ${e.message}"
-        }
-    }
-
-    suspend fun listAgents() {
-        try {
-            val response = apiClient.api.listAgents()
-            _agents.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error loading agents", e)
-        }
-    }
-
-    suspend fun listModels() {
-        try {
-            val response = apiClient.api.listProviders()
-            val providerResponse = response.takeIf { it.isSuccessful }?.body()
-            val connectedProviders = providerResponse?.connected.orEmpty()
-            val providers = providerResponse?.all.orEmpty()
-                .filter { connectedProviders.isEmpty() || it.id in connectedProviders }
-            val options = buildList {
-                providers.forEach { provider ->
-                    provider.models.values.forEach { model ->
-                        add(
-                            ModelOption(
-                                providerID = provider.id,
-                                modelID = model.id,
-                                displayName = model.name.ifBlank { model.id },
-                                category = provider.name.ifBlank { provider.id },
-                            )
-                        )
-                    }
-                }
-                if (isEmpty()) {
-                    apiClient.api.getConfig().takeIf { it.isSuccessful }?.body()?.models.orEmpty().forEach { id ->
-                        add(ModelOption("default", id, id, "Default"))
-                    }
-                }
-            }
-            _models.value = options.sortedWith(compareBy<ModelOption> { it.category }.thenBy { it.displayName })
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error loading models", e)
-        }
-    }
-
-    suspend fun loadProject() {
-        try {
-            val response = apiClient.api.getProject()
-            _project.value = response.takeIf { it.isSuccessful }?.body()
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error loading project", e)
-        }
-    }
-
-    suspend fun listFiles(directory: String? = null) {
-        try {
-            val response = apiClient.api.listFiles(directory)
-            _files.value = response.takeIf { it.isSuccessful }?.body().orEmpty()
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error loading files", e)
-        }
-    }
-
-    suspend fun readFile(path: String): String? {
-        return try {
-            val body = apiClient.api.readFile(path).takeIf { it.isSuccessful }?.body()
-            body?.get("content") ?: body?.get("text")
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error reading file", e)
-            null
-        }
-    }
-
-    suspend fun sendPrompt(
-        sessionId: String,
-        text: String,
-        agent: String? = null,
-        model: ModelOption? = null,
-    ): Boolean {
-        // Prevent duplicate prompts
-        val lastMessage = _messages.value.lastOrNull { it.role == "user" }
-        val lastPart = lastMessage?.id?.let { _parts.value[it]?.lastOrNull() }
-        if (lastPart?.text == text) {
-            logW("SessionRepo", "Duplicate prompt detected, ignoring: $text")
-            return false
-        }
-
-        return try {
-            val messageID = generateMessageId()
-            val request = PromptRequest(
-                messageID = messageID,
-                parts = listOf(PartRequest(type = "text", text = text)),
-                agent = agent,
-                model = model?.let { ModelInfo(it.providerID, it.modelID) }
-            )
-            
-            // Optimistic update
-            val optimisticMessage = Message(id = messageID, sessionID = sessionId, role = "user")
-            upsertMessage(optimisticMessage)
-            // Add initial part for the user prompt text so it displays immediately
-            _parts.value = _parts.value + (messageID to listOf(Part(text = text, type = "text", messageID = messageID)))
-            
-            // Explicitly set isLoading to true for the UI to show activity
-            _isLoading.value = true
-
-            val response = apiClient.api.sendPrompt(sessionId, request)
-            if (response.isSuccessful) {
-                // Do NOT call loadMessages(sessionId) here, trust the SSE stream to update the state.
-                // We have already upserted the user message optimistically.
-                true
-            } else {
-                _error.value = "Failed to send prompt: ${response.code()}"
-                false
-            }
-        } catch (e: Exception) {
-            logE("SessionRepo", "Error sending prompt", e)
-            _error.value = "Connection error: ${e.message}"
-            false
         } finally {
             _isLoading.value = false
         }
     }
 
-    suspend fun abortSession(sessionId: String) {
-        try {
-            val response = apiClient.api.abortSession(sessionId)
-            if (!response.isSuccessful) logE("SessionRepo", "Failed to abort session: ${response.code()}")
+    suspend fun listAgents(): List<Agent> {
+        return try {
+            val agents = apiClient.listAgents()
+            _agents.value = agents
+            logD("SessionRepo", "Agents loaded: ${agents.size}")
+            agents
         } catch (e: Exception) {
-            logE("SessionRepo", "Error aborting session", e)
+            logE("SessionRepo", "Error listing agents", e)
+            emptyList()
         }
     }
 
-    suspend fun compactSession(sessionId: String) {
-        try {
-            val response = apiClient.api.compactSession(sessionId)
-            if (!response.isSuccessful) logE("SessionRepo", "Failed to compact session: ${response.code()}")
+    suspend fun listModels(): List<ModelOption> {
+        return try {
+            val response = apiClient.api.listModels()
+            val apiModels = if (response.isSuccessful) response.body() ?: emptyList() else emptyList()
+            val injected = ModelOption(
+                providerID = "kilo-auto",
+                modelID = "free",
+                displayName = "Kilo Auto (Free)",
+                category = "local"
+            )
+            val models = if (apiModels.any { it.providerID == "kilo-auto" && it.modelID == "free" }) apiModels
+            else apiModels + injected
+            _models.value = models
+            logD("SessionRepo", "Models loaded: ${models.size}")
+            models
         } catch (e: Exception) {
-            logE("SessionRepo", "Error compacting session", e)
+            logE("SessionRepo", "Error listing models", e)
+            emptyList()
         }
     }
+
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null): MessageWithParts? {
+        val messageId = generateMessageId()
+        // Optimistic update
+        val optimisticMessage = Message(id = messageId, sessionID = sessionId, role = "user", agent = agent)
+        upsertMessage(optimisticMessage)
+        _parts.update { current ->
+            current + (messageId to listOf(Part(id = "part_${UUID.randomUUID()}", text = prompt, type = "text", messageID = messageId)))
+        }
+        _isLoading.value = true
+        return try {
+            val modelInfo = model?.let { ModelInfo(it.providerID, it.modelID) }
+            val result = apiClient.sendPrompt(sessionId, prompt, agent, modelInfo)
+            result
+        } catch (e: Exception) {
+            logE("SessionRepo", "Error sending prompt", e)
+            _error.value = "Failed to send prompt: ${e.message}"
+            null
+        } finally {
+            _isLoading.value = false
+        }
+    }
+
+     fun abortSession(sessionId: String) {
+         repositoryScope.launch {
+             try {
+                 apiClient.api.abortSession(sessionId)
+             } catch (e: Exception) {
+                 logE("SessionRepo", "Error aborting session", e)
+             }
+         }
+     }
+
+     fun compactSession(sessionId: String) {
+         repositoryScope.launch {
+             try {
+                 logD("SessionRepo", "Compacting session: $sessionId")
+                 apiClient.api.compactSession(sessionId)
+                 logD("SessionRepo", "Session compacted: $sessionId")
+             } catch (e: Exception) {
+                 logE("SessionRepo", "Error compacting session", e)
+                 _error.value = "Failed to compact: ${e.message}"
+             }
+         }
+     }
 
     suspend fun deleteSession(sessionId: String) {
         try {
-            val response = apiClient.api.deleteSession(sessionId)
-            if (response.isSuccessful) {
-                _sessions.value = _sessions.value.filter { it.id != sessionId }
-                if (_currentSession.value?.id == sessionId) {
-                    _currentSession.value = null
-                    _messages.value = emptyList()
-                    _parts.value = emptyMap()
-                }
-            } else {
-                _error.value = "Failed to delete session: ${response.code()}"
+            apiClient.api.deleteSession(sessionId)
+            _sessions.value = _sessions.value.filter { it.id != sessionId }
+            if (_currentSession.value?.id == sessionId) {
+                _currentSession.value = null
+                _messages.value = emptyList()
             }
         } catch (e: Exception) {
             logE("SessionRepo", "Error deleting session", e)
-            _error.value = "Connection error: ${e.message}"
+            _error.value = "Failed to delete session: ${e.message}"
         }
     }
 
-    fun connectSse(sessionId: String, directory: String? = null) {
-        disconnectSse()
-        val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
-        
-        sseJob = repositoryScope.launch {
+    private fun loadMessages(sessionId: String) {
+        repositoryScope.launch {
             try {
-                val call = apiClient.createStreamCall("global/event?directory=$encodedDirectory")
-                call.execute().use { response ->
-                    if (!response.isSuccessful) {
-                        logE("SessionRepo", "SSE connection failed: ${response.code}")
-                        return@launch
+                val messagesWithParts = apiClient.getMessages(sessionId)
+                _messages.value = messagesWithParts.mapNotNull { it.info }
+                _parts.value = messagesWithParts
+                    .mapNotNull { messageWithParts ->
+                        val id = messageWithParts.info?.id ?: return@mapNotNull null
+                        id to messageWithParts.parts
                     }
-
-                    _isConnected.value = true
-                    val source = response.body?.source() ?: return@launch
-                    var currentType = "message"
-                    
-                    while (isActive && !source.exhausted()) {
-                        val line = source.readUtf8Line() ?: break
-                        if (line.isEmpty()) continue
-                        
-                        if (line.startsWith("event:")) {
-                            currentType = line.substringAfter("event:").trim()
-                        } else if (line.startsWith("data:")) {
-                            val data = line.substringAfter("data:").trim()
-                            handleSseEvent(currentType, data)
-                        }
-                    }
-                }
+                    .toMap()
             } catch (e: Exception) {
-                if (isActive) {
-                    logE("SessionRepo", "SSE failed", e)
-                }
-            } finally {
-                _isConnected.value = false
+                logE("SessionRepo", "Error loading messages", e)
+                _error.value = "Connection error: ${e.message}"
             }
         }
     }
+
+     fun connectSse(sessionId: String, directory: String? = null) {
+         logD("SessionRepo", "connectSse called for: $sessionId, directory: $directory")
+         disconnectSse()
+         val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
+         
+         logD("SessionRepo", "Connecting SSE to: ${apiClient.baseUrl}global/event?directory=$encodedDirectory")
+         sseJob = repositoryScope.launch {
+             var retryDelay = 1000L
+             val maxRetryDelay = 30000L
+             while (isActive) {
+                 try {
+                     val call = apiClient.createStreamCall("global/event?directory=$encodedDirectory")
+                     logD("SessionRepo", "SSE call created: ${call.request().url}")
+                     call.execute().use { response ->
+                         if (!response.isSuccessful) {
+                             logE("SessionRepo", "SSE connection failed: ${response.code}")
+                             if (response.code == 401 || response.code == 403) {
+                                 // Auth errors — don't retry
+                                 return@launch
+                             }
+                         } else {
+                             _isConnected.value = true
+                             retryDelay = 1000L // Reset on success
+                             logD("SessionRepo", "SSE connected")
+                             val source = response.body?.source() ?: return@launch
+                             var currentType = "message"
+                             
+                             while (isActive && !source.exhausted()) {
+                                 val line = source.readUtf8Line() ?: break
+                                 if (line.isEmpty()) continue
+                                 
+                                 if (line.startsWith("event:")) {
+                                     currentType = line.substringAfter("event:").trim()
+                                 } else if (line.startsWith("data:")) {
+                                     val data = line.substringAfter("data:").trim()
+                                     handleSseEvent(currentType, data)
+                                 }
+                             }
+                         }
+                     }
+                 } catch (e: Exception) {
+                     if (isActive) {
+                         logE("SessionRepo", "SSE failed", e)
+                     }
+                 }
+                 
+                 // Reconnection delay with exponential backoff
+                 if (isActive) {
+                     logD("SessionRepo", "SSE reconnecting in ${retryDelay}ms")
+                     _isConnected.value = false
+                     delay(retryDelay)
+                     retryDelay = (retryDelay * 2).coerceAtMost(maxRetryDelay)
+                 }
+             }
+         }
+     }
+
 
     @Suppress("UNCHECKED_CAST")
     private fun handleSseEvent(type: String?, data: String) {
@@ -368,7 +324,12 @@ class SessionRepository(private val apiClient: ApiClient) {
             }
             
             logD("SessionRepo", "Processing event: actualType=$actualType")
-
+            
+            // ADDED LOGGING
+            if (actualType !in listOf("message.updated", "message.removed", "message.part.updated", "message.part.removed", "session.status", "session.error")) {
+                logD("SessionRepo", "Unknown event type: $actualType")
+            }
+            
             when (actualType) {
                 "message.updated" -> {
                     val info = properties["info"] as? Map<String, Any> ?: return

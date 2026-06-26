@@ -23,6 +23,7 @@ import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.Agent
 import com.kilocode.android.data.model.ModelOption
 import com.kilocode.android.data.model.Part
+import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
 import kotlinx.coroutines.delay
@@ -34,6 +35,7 @@ fun SessionScreen(
     sessionId: String,
     serverUrl: String,
     sharedSecret: String?,
+    authPreferencesRepository: AuthPreferencesRepository,
     onBack: () -> Unit,
 ) {
     val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
@@ -91,20 +93,32 @@ fun SessionScreen(
         label = "topBarAlpha",
     )
 
+    val persistedAgentName by authPreferencesRepository.selectedAgentNameFlow.collectAsState(initial = null)
+
     LaunchedEffect(Unit) {
         repository.listAgents()
         repository.listModels()
     }
     LaunchedEffect(agents) {
         if (selectedAgent == null) {
-            val agent = agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
+            val agent = if (persistedAgentName != null) {
+                agents.firstOrNull { it.name == persistedAgentName }
+            } else null
+            val fallback = agents.firstOrNull { it.mode == "primary" || it.mode == "all" }
                 ?: agents.firstOrNull()
-            repository.setSelectedAgent(agent)
+            val chosen = agent ?: fallback
+            repository.setSelectedAgent(chosen)
+        }
+    }
+    LaunchedEffect(selectedAgent) {
+        selectedAgent?.let { agent ->
+            authPreferencesRepository.saveSelectedAgentName(agent.name)
         }
     }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
-            val model = models.firstOrNull { it.modelID == "kilo/nex-agi/nex-n2-pro:free" } ?: models.first()
+            val model = models.firstOrNull { it.providerID == "kilo-auto" && it.modelID == "free" }
+                ?: models.first()
             repository.setSelectedModel(model)
         }
     }
@@ -171,18 +185,24 @@ fun SessionScreen(
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", modifier = Modifier.size(22.dp))
                     }
                 },
-                actions = {
-                    AnimatedVisibility(
-                        visible = isLoading,
-                        enter = fadeIn(tween(150)),
-                        exit = fadeOut(tween(300)),
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(end = 14.dp).size(16.dp),
-                            strokeWidth = 2.dp,
-                        )
-                    }
-                },
+                 actions = {
+                     IconButton(
+                         onClick = { repository.compactSession(sessionId) },
+                         enabled = messages.isNotEmpty() && !isLoading,
+                     ) {
+                         Icon(Icons.Rounded.Compress, "Compact session", Modifier.size(20.dp))
+                     }
+                     AnimatedVisibility(
+                         visible = isLoading,
+                         enter = fadeIn(tween(150)),
+                         exit = fadeOut(tween(300)),
+                     ) {
+                         CircularProgressIndicator(
+                             modifier = Modifier.padding(end = 14.dp).size(16.dp),
+                             strokeWidth = 2.dp,
+                         )
+                     }
+                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
             )
         },
@@ -202,7 +222,12 @@ fun SessionScreen(
                 onModelSelected = { repository.setSelectedModel(it) },
                 agents = agents,
                 selectedAgent = selectedAgent,
-                onAgentSelected = { repository.setSelectedAgent(it) },
+                onAgentSelected = { agent ->
+                    repository.setSelectedAgent(agent)
+                    scope.launch {
+                        agent?.let { authPreferencesRepository.saveSelectedAgentName(it.name) }
+                    }
+                },
                 autonomousMode = autonomousMode,
                 onAutonomousModeChanged = { autonomousMode = it },
                 messages = messages,

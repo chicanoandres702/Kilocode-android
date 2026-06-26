@@ -14,6 +14,7 @@
 - [x] Implemented `onOptionSelected` to send prompts in `QuestionToolView` via `SessionScreen`.
 - [x] Implemented Stop button and reset autonomous mode on session switch.
 - [x] Fixed message rendering issue in `SessionRepository.kt` by ensuring unique ID generation.
+- [x] Fixed Android build syntax errors in `MessageComponents.kt` (extra braces and `BoxScope` issue).
 - Confirmed user intent to use Android SDK for server interaction.
 
 ### Current State
@@ -39,4 +40,4 @@
 | 2026-06-25 | Refactored `ApiClient` to SDK-like interface; implemented `onOptionSelected` callback in UI |
 | 2026-06-25 | Updated default server URL to `http://18.191.142.105:4096` to resolve connection issues. |
 | 2026-06-25 | Implemented `onOptionSelected` to send prompts in `QuestionToolView` |
-| 2026-06-25 | Fixed message rendering issue in `SessionRepository.kt` by ensuring unique ID generation |
+| 2026-06-25 | Fixed `SessionRepository.kt` by removing duplicate `connectSse` implementation and cleaning up broken code block. |
