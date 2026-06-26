@@ -117,7 +117,11 @@ fun SessionScreen(
     }
     LaunchedEffect(models) {
         if (selectedModel == null && models.isNotEmpty()) {
-            repository.setSelectedModel(models.first())
+            // Prefer kilo-auto/free (the only working model), fall back to first
+            val preferred = models.firstOrNull { it.modelID == "kilo-auto/free" }
+                ?: models.firstOrNull { it.isFree }
+                ?: models.first()
+            repository.setSelectedModel(preferred)
         }
     }
      LaunchedEffect(sessionId) {
