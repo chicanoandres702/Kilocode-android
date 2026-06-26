@@ -70,7 +70,7 @@ interface KiloCodeApi {
     // File endpoints
     @GET("file")
     suspend fun listFiles(
-        @Query("directory") directory: String? = null,
+        @Query("path") path: String? = null,
     ): Response<List<FileNode>>
 
     @GET("file/read")

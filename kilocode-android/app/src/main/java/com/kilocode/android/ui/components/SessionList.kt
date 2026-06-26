@@ -34,10 +34,11 @@ fun SessionList(
     onSessionClick: (String) -> Unit,
     onNewSession: () -> Unit,
     onDeleteSession: (String) -> Unit,
+    currentDirectory: String = "/",
     modifier: Modifier = Modifier,
 ) {
     if (sessions.isEmpty()) {
-        EmptySessionList(onNewSession = onNewSession, modifier = modifier)
+        EmptySessionList(onNewSession = onNewSession, currentDirectory = currentDirectory, modifier = modifier)
         return
     }
 
@@ -51,6 +52,10 @@ fun SessionList(
             state          = listState,
             contentPadding = PaddingValues(top = 4.dp, bottom = 88.dp),
         ) {
+            // Directory scope header
+            item {
+                DirectoryHeader(directory = currentDirectory)
+            }
             itemsIndexed(
                 items = sessions,
                 key   = { index, s -> s.id?.takeIf(String::isNotEmpty) ?: "temp_$index" },
@@ -183,8 +188,34 @@ fun SessionListItem(
 }
 
 @Composable
+fun DirectoryHeader(directory: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 14.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.FolderOpen,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+            modifier = Modifier.size(14.dp),
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = directory,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+@Composable
 fun EmptySessionList(
     onNewSession: () -> Unit,
+    currentDirectory: String = "/",
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -210,9 +241,11 @@ fun EmptySessionList(
         Text("No sessions yet", style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            "Tap + to start coding with AI",
+            "in $currentDirectory",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Spacer(modifier = Modifier.height(22.dp))
         Button(
