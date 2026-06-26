@@ -12,8 +12,8 @@ android {
         applicationId = "com.kilocode.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 3
+        versionName = "1.1.1"
 
         val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:4096"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
