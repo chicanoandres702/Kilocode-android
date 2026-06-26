@@ -169,4 +169,4 @@ jobs:
           gh release create "$GITHUB_REF_NAME" "$APK_PATH" \
             --title "KiloCode Android $GITHUB_REF_NAME" \
             --notes "Android release $GITHUB_REF_NAME" \
-            --verify-tag --fail-on-exists
+            --verify-tag
