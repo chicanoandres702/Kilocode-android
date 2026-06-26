@@ -47,17 +47,16 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         throw Exception("Failed to list messages: ${response.code()}")
     }
 
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null): MessageWithParts {
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null) {
         val request = PromptRequest(
             parts = listOf(PartRequest(type = "text", text = prompt)),
             agent = agent,
             model = model
         )
         val response = api.sendPrompt(sessionId, request)
-        if (response.isSuccessful) {
-            return response.body() ?: throw Exception("Failed to send prompt")
+        if (!response.isSuccessful) {
+            throw Exception("Failed to send prompt: ${response.code()}")
         }
-        throw Exception("Failed to send prompt: ${response.code()}")
     }
 
     suspend fun listAgents(): List<Agent> {
