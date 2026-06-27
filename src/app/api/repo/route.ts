@@ -121,7 +121,8 @@ export async function GET(request: Request) {
     ensureReposDir();
     const { readdirSync, statSync } = require('fs');
 
-    const entries = readdirSync(REPOS_DIR)
+    // List local clones
+    const localRepos = readdirSync(REPOS_DIR)
       .filter((name: string) => !name.startsWith('.'))
       .map((name: string) => {
         const fullPath = join(REPOS_DIR, name);
@@ -139,7 +140,32 @@ export async function GET(request: Request) {
       })
       .filter(Boolean);
 
-    return NextResponse.json({ repos: entries, source: 'local' });
+    // List GitHub account repos via gh api
+    let githubRepos: any[] = [];
+    try {
+      const { stdout } = await execAsync(
+        `gh api user/repos --paginate -q '.[] | {name, full_name, description, stargazers_count, updated_at, html_url}'`,
+        { timeout: 60000, env: { ...process.env, HOME: '/home/ubuntu' } }
+      );
+      // gh api with -q outputs one JSON object per line
+      const lines = stdout.trim().split('\n').filter(Boolean);
+      githubRepos = lines.map((line: string) => {
+        try {
+          return { ...JSON.parse(line), source: 'github' };
+        } catch {
+          return null;
+        }
+      }).filter(Boolean);
+    } catch (ghError: any) {
+      console.error('GitHub repos fetch error:', ghError.message);
+    }
+
+    return NextResponse.json({
+      repos: [...localRepos, ...githubRepos],
+      source: 'combined',
+      localCount: localRepos.length,
+      githubCount: githubRepos.length,
+    });
   } catch (error: any) {
     console.error('List repos error:', error);
     return NextResponse.json(
