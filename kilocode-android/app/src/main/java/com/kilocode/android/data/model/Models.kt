@@ -225,3 +225,31 @@ data class PartRequest(
     val type: String,
     val text: String,
 )
+
+data class CloneRepoRequest(
+    val action: String,
+    val repo: String,
+)
+
+data class RepoOperationResponse(
+    val success: Boolean,
+    val path: String? = null,
+    val message: String? = null,
+    val alreadyCloned: Boolean = false,
+    val error: String? = null,
+    val details: String? = null,
+)
+
+data class RepoEntry(
+    val name: String,
+    val path: String? = null,
+    val modified: String? = null,
+    val description: String? = null,
+    val stars: Int = 0,
+    val source: String = "local",
+)
+
+data class RepoListResponse(
+    val repos: List<RepoEntry> = emptyList(),
+    val source: String = "local",
+)

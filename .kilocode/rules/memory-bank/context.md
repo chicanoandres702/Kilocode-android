@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Status**: Android client fully functional. SSE streaming, message rendering, model selection, and prompt sending all work correctly. Server-side only `kilo-auto/free` model is operational; other models require provider API key configuration on the server.
+**Status**: Android client fully functional. SSE streaming, message rendering, model selection, and prompt sending all work correctly. Server-side only `kilo-auto/free` model is operational; other models require provider API key configuration on the server. GitHub repo clone/reopen feature implemented in both Next.js backend and Android client.
 
 ## Recently Completed
 
@@ -45,3 +45,4 @@
 | 2026-06-26 | Fixed SSE implementation to align with documented API: changed endpoint from `global/event` to `/event` (session-scoped), added `workspace` query param support, replaced non-existent `server.heartbeat` with `server.connected`, separated session busy state from connection state (`_sessionBusy`), added 30+ missing event handlers (session.idle, session.turn.*, session.diff, session.compacted, question.*, suggestion.*, todo.*, workspace.*, worktree.*, file.edited, provider.updated, lsp.*, mcp.*, background_process.*, indexing.*, command.executed, project.updated, kilocode.agent_manager.start, tui.*), and fixed event envelope parsing for both `/event` ({id, type, properties}) and `global/event` ({directory, project, workspace, payload}) formats. |
 | 2026-06-26 | Investigated model availability: server only supports `kilo-auto/free`. All other models from `/api/model` return `ProviderModelNotFoundError` due to unconfigured provider API keys server-side. Free Models UI section is purely cosmetic and not the cause. Confirmed `prompt_async` endpoint works correctly with `kilo/kilo-auto/free`. |
 | 2026-06-26 | Added folder browser with directory check and session scoping: FolderBrowser composable in HomeScreen, DirectoryCheckingIndicator, DirectoryNotFound with retry/go-root, checkDirectoryExists() in SessionRepository, loadAndCheckDirectory() in SessionViewModel, SessionList scoped to currentDirectory with DirectoryHeader. Verified on emulator — folder navigation, directory checking, up navigation, and session scoping all work correctly. |
+| 2026-06-27 | Implemented GitHub repo clone/reopen feature: Next.js `POST /api/repo` route (clone/reopen actions via `gh` CLI), `GET /api/repo` for listing cloned repos, stored in `/tmp/kilo-repos`. Android: `RepoRepository`, `RepoScreen` with clone input + repo list UI, `cloneRepo`/`reopenRepo`/`listRepos` in `ApiClient`, new data models (`CloneRepoRequest`, `RepoOperationResponse`, `RepoEntry`, `RepoListResponse`). Added "Repositories" cloud icon to HomeScreen top bar navigating to RepoScreen. Build verified on emulator. |

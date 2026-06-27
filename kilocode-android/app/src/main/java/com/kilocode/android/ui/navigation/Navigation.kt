@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.ui.screens.HomeScreen
+import com.kilocode.android.ui.screens.RepoScreen
 import com.kilocode.android.ui.screens.SessionScreen
 import com.kilocode.android.ui.screens.SettingsScreen
 
@@ -19,6 +20,7 @@ sealed class Screen(val route: String) {
         fun createRoute(sessionId: String) = "session/$sessionId"
     }
     data object Settings : Screen("settings")
+    data object Repos : Screen("repos")
 }
 
 @Composable
@@ -48,6 +50,11 @@ fun KiloCodeNavHost(
                 },
                 onNavigateToSettings = {
                     navController.navigate(Screen.Settings.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToRepos = {
+                    navController.navigate(Screen.Repos.route) {
                         launchSingleTop = true
                     }
                 },
@@ -87,6 +94,18 @@ fun KiloCodeNavHost(
                     onServerUrlChanged(url, secret)
                     onSharedSecretChanged(secret)
                 }
+            )
+        }
+
+        composable(Screen.Repos.route) {
+            RepoScreen(
+                serverUrl = serverUrl,
+                sharedSecret = sharedSecret,
+                onBack = { navController.popBackStack() },
+                onRepoSelected = { repoName ->
+                    // Navigate to home with the selected repo as working directory
+                    navController.popBackStack()
+                },
             )
         }
     }

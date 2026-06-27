@@ -91,6 +91,31 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         throw Exception("Failed to list agents: ${response.code()}")
     }
 
+    suspend fun cloneRepo(action: String, repo: String): RepoOperationResponse {
+        val request = CloneRepoRequest(action = action, repo = repo)
+        val response = api.repoOperation(request)
+        if (response.isSuccessful) {
+            return response.body() ?: RepoOperationResponse(success = false, error = "Empty response")
+        }
+        throw Exception("Failed to $action repo: ${response.code()} ${response.message()}")
+    }
+
+    suspend fun listRepos(): List<RepoEntry> {
+        val response = api.listRepos()
+        if (response.isSuccessful) {
+            return response.body()?.repos ?: emptyList()
+        }
+        throw Exception("Failed to list repos: ${response.code()}")
+    }
+
+    suspend fun searchGitHubRepos(query: String): List<RepoEntry> {
+        val response = api.searchRepos(query)
+        if (response.isSuccessful) {
+            return response.body()?.repos ?: emptyList()
+        }
+        throw Exception("Failed to search GitHub repos: ${response.code()}")
+    }
+
     fun createStreamCall(path: String): okhttp3.Call {
         val request = Request.Builder()
             .url("${baseUrl}${path}")

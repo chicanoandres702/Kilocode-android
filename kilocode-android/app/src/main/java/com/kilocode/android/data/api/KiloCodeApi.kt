@@ -115,6 +115,16 @@ interface KiloCodeApi {
     @POST("api/auth/github")
     suspend fun authenticateGitHub(@Body body: Map<String, String>): Response<Unit>
 
+    // Repo endpoints
+    @POST("api/repo")
+    suspend fun repoOperation(@Body request: CloneRepoRequest): Response<RepoOperationResponse>
+
+    @GET("api/repo")
+    suspend fun listRepos(): Response<RepoListResponse>
+
+    @GET("api/repo/search")
+    suspend fun searchRepos(@Query("q") query: String): Response<RepoListResponse>
+
     @DELETE("mcp/{name}")
     suspend fun removeMcpServer(
         @Path("name") name: String,
