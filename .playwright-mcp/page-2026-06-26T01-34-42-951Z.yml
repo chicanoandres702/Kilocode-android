@@ -1,0 +1,485 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - generic [ref=e53]:
+              - link "Sign in" [ref=e54] [cursor=pointer]:
+                - /url: /login?return_to=https%3A%2F%2Fgithub.com%2FKilo-Org%2Fkilocode%2Fblob%2Fmain%2Fpackages%2Fplugin-sdk%2Fsrc%2Fmodel-picker.tsx
+              - generic [ref=e56]:
+                - heading "Sign in to GitHub" [level=4] [ref=e57]
+                - generic [ref=e58]:
+                  - text: Username or email address
+                  - textbox "Username or email address" [active] [ref=e59]
+                  - generic [ref=e60]:
+                    - text: Password
+                    - textbox "Password" [ref=e61]
+                    - link "Forgot password?" [ref=e62] [cursor=pointer]:
+                      - /url: /password_reset
+                    - button "Sign in" [ref=e63] [cursor=pointer]
+                - link "or continue with other methods" [ref=e66] [cursor=pointer]:
+                  - /url: /login?return_to=https%3A%2F%2Fgithub.com%2FKilo-Org%2Fkilocode%2Fblob%2Fmain%2Fpackages%2Fplugin-sdk%2Fsrc%2Fmodel-picker.tsx
+                  - generic [ref=e68]: or continue with other methods
+            - link "Sign up" [ref=e69] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Fblob%2Fshow&source=header-repo&source_repo=Kilo-Org%2Fkilocode
+            - button "Appearance settings" [ref=e72] [cursor=pointer]:
+              - img
+  - main [ref=e76]:
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e81]
+          - link "Kilo-Org" [ref=e84] [cursor=pointer]:
+            - /url: /Kilo-Org
+          - generic [ref=e85]: /
+          - strong [ref=e86]:
+            - link "kilocode" [ref=e87] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode
+          - generic [ref=e88]: Public
+        - generic [ref=e89]:
+          - list:
+            - listitem [ref=e90]:
+              - link "You must be signed in to change notification settings" [ref=e91] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e92]
+                - text: Notifications
+            - listitem [ref=e94]:
+              - link "Fork 2.8k" [ref=e95] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e96]
+                - text: Fork
+                - generic "2,796" [ref=e98]: 2.8k
+            - listitem [ref=e99]:
+              - link "You must be signed in to star a repository" [ref=e101] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e102]
+                - text: Star
+                - generic "24625 users starred this repository" [ref=e104]: 24.6k
+      - navigation "Repository" [ref=e105]:
+        - list [ref=e106]:
+          - listitem [ref=e107]:
+            - link "Code" [ref=e108] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode
+              - img [ref=e109]
+              - generic [ref=e111]: Code
+          - listitem [ref=e112]:
+            - link "Issues 666" [ref=e113] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/issues
+              - img [ref=e114]
+              - generic [ref=e117]: Issues
+              - generic "666" [ref=e118]
+          - listitem [ref=e119]:
+            - link "Pull requests 181" [ref=e120] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/pulls
+              - img [ref=e121]
+              - generic [ref=e123]: Pull requests
+              - generic "181" [ref=e124]
+          - listitem [ref=e125]:
+            - link "Discussions" [ref=e126] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/discussions
+              - img [ref=e127]
+              - generic [ref=e129]: Discussions
+          - listitem [ref=e130]:
+            - link "Actions" [ref=e131] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/actions
+              - img [ref=e132]
+              - generic [ref=e134]: Actions
+          - listitem [ref=e135]:
+            - link "Projects" [ref=e136] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/projects
+              - img [ref=e137]
+              - generic [ref=e139]: Projects
+          - listitem [ref=e140]:
+            - link "Security and quality" [ref=e141] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/security
+              - img [ref=e142]
+              - generic [ref=e144]: Security and quality
+          - listitem [ref=e145]:
+            - link "Insights" [ref=e146] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/pulse
+              - img [ref=e147]
+              - generic [ref=e149]: Insights
+    - generic [ref=e157]:
+      - generic [ref=e159]:
+        - generic [ref=e162]:
+          - generic [ref=e163]:
+            - generic [ref=e164]:
+              - heading "Collapse file tree" [level=2] [ref=e165]:
+                - button "Collapse file tree" [expanded] [ref=e166] [cursor=pointer]:
+                  - img [ref=e167]
+              - heading "Files" [level=2] [ref=e170]
+            - generic [ref=e171]:
+              - button "main branch" [ref=e173] [cursor=pointer]:
+                - generic [ref=e174]:
+                  - generic [ref=e176]:
+                    - img [ref=e178]
+                    - generic [ref=e181]: main
+                  - generic:
+                    - img
+              - button "Search this repository (forward slash)" [ref=e183] [cursor=pointer]:
+                - img [ref=e184]
+          - generic [ref=e187]:
+            - img [ref=e189]
+            - combobox "Go to file" [ref=e191]
+          - navigation "File Tree Navigation" [ref=e197]:
+            - tree "Files" [ref=e199]:
+              - treeitem ".changeset" [level=1] [ref=e200]:
+                - generic [ref=e201] [cursor=pointer]:
+                  - img [ref=e203]
+                  - generic [ref=e205]:
+                    - img [ref=e209]
+                    - generic [ref=e211]: .changeset
+              - treeitem ".github" [level=1] [ref=e212]:
+                - generic [ref=e213] [cursor=pointer]:
+                  - img [ref=e215]
+                  - generic [ref=e217]:
+                    - img [ref=e221]
+                    - generic [ref=e223]: .github
+              - treeitem ".husky" [level=1] [ref=e224]:
+                - generic [ref=e225] [cursor=pointer]:
+                  - img [ref=e227]
+                  - generic [ref=e229]:
+                    - img [ref=e233]
+                    - generic [ref=e235]: .husky
+              - treeitem ".idea" [level=1] [ref=e236]:
+                - generic [ref=e237] [cursor=pointer]:
+                  - img [ref=e239]
+                  - generic [ref=e241]:
+                    - img [ref=e245]
+                    - generic [ref=e247]: .idea
+              - treeitem ".kilo" [level=1] [ref=e248]:
+                - generic [ref=e249] [cursor=pointer]:
+                  - img [ref=e251]
+                  - generic [ref=e253]:
+                    - img [ref=e257]
+                    - generic [ref=e259]: .kilo
+              - treeitem ".kilocode" [level=1] [ref=e260]:
+                - generic [ref=e261] [cursor=pointer]:
+                  - img [ref=e263]
+                  - generic [ref=e265]:
+                    - img [ref=e269]
+                    - generic [ref=e271]: .kilocode
+              - treeitem ".opencode" [level=1] [ref=e272]:
+                - generic [ref=e273] [cursor=pointer]:
+                  - img [ref=e275]
+                  - generic [ref=e277]:
+                    - img [ref=e281]
+                    - generic [ref=e283]: .opencode
+              - treeitem ".vscode" [level=1] [ref=e284]:
+                - generic [ref=e285] [cursor=pointer]:
+                  - img [ref=e287]
+                  - generic [ref=e289]:
+                    - img [ref=e293]
+                    - generic [ref=e295]: .vscode
+              - treeitem ".zed" [level=1] [ref=e296]:
+                - generic [ref=e297] [cursor=pointer]:
+                  - img [ref=e299]
+                  - generic [ref=e301]:
+                    - img [ref=e305]
+                    - generic [ref=e307]: .zed
+              - treeitem "bin" [level=1] [ref=e308]:
+                - generic [ref=e309] [cursor=pointer]:
+                  - img [ref=e311]
+                  - generic [ref=e313]:
+                    - img [ref=e317]
+                    - generic [ref=e319]: bin
+              - treeitem "github" [level=1] [ref=e320]:
+                - generic [ref=e321] [cursor=pointer]:
+                  - img [ref=e323]
+                  - generic [ref=e325]:
+                    - img [ref=e329]
+                    - generic [ref=e331]: github
+              - treeitem "nix" [level=1] [ref=e332]:
+                - generic [ref=e333] [cursor=pointer]:
+                  - img [ref=e335]
+                  - generic [ref=e337]:
+                    - img [ref=e341]
+                    - generic [ref=e343]: nix
+              - treeitem "packages" [level=1] [ref=e344]:
+                - generic [ref=e345] [cursor=pointer]:
+                  - img [ref=e347]
+                  - generic [ref=e349]:
+                    - img [ref=e353]
+                    - generic [ref=e355]: packages
+              - treeitem "patches" [level=1] [ref=e356]:
+                - generic [ref=e357] [cursor=pointer]:
+                  - img [ref=e359]
+                  - generic [ref=e361]:
+                    - img [ref=e365]
+                    - generic [ref=e367]: patches
+              - treeitem "perf" [level=1] [ref=e368]:
+                - generic [ref=e369] [cursor=pointer]:
+                  - img [ref=e371]
+                  - generic [ref=e373]:
+                    - img [ref=e377]
+                    - generic [ref=e379]: perf
+              - treeitem "script" [level=1] [ref=e380]:
+                - generic [ref=e381] [cursor=pointer]:
+                  - img [ref=e383]
+                  - generic [ref=e385]:
+                    - img [ref=e389]
+                    - generic [ref=e391]: script
+              - treeitem "specs" [level=1] [ref=e392]:
+                - generic [ref=e393] [cursor=pointer]:
+                  - img [ref=e395]
+                  - generic [ref=e397]:
+                    - img [ref=e401]
+                    - generic [ref=e403]: specs
+              - treeitem ".dockerignore" [level=1] [ref=e404]:
+                - generic [ref=e406] [cursor=pointer]:
+                  - img [ref=e409]
+                  - generic [ref=e411]: .dockerignore
+              - treeitem ".editorconfig" [level=1] [ref=e412]:
+                - generic [ref=e414] [cursor=pointer]:
+                  - img [ref=e417]
+                  - generic [ref=e419]: .editorconfig
+              - treeitem ".envrc" [level=1] [ref=e420]:
+                - generic [ref=e422] [cursor=pointer]:
+                  - img [ref=e425]
+                  - generic [ref=e427]: .envrc
+              - treeitem ".gitattributes" [level=1] [ref=e428]:
+                - generic [ref=e430] [cursor=pointer]:
+                  - img [ref=e433]
+                  - generic [ref=e435]: .gitattributes
+              - treeitem ".gitignore" [level=1] [ref=e436]:
+                - generic [ref=e438] [cursor=pointer]:
+                  - img [ref=e441]
+                  - generic [ref=e443]: .gitignore
+              - treeitem ".gitleaksignore" [level=1] [ref=e444]:
+                - generic [ref=e446] [cursor=pointer]:
+                  - img [ref=e449]
+                  - generic [ref=e451]: .gitleaksignore
+              - treeitem ".opencode-version" [level=1] [ref=e452]:
+                - generic [ref=e454] [cursor=pointer]:
+                  - img [ref=e457]
+                  - generic [ref=e459]: .opencode-version
+              - treeitem ".oxlintrc.json" [level=1] [ref=e460]:
+                - generic [ref=e462] [cursor=pointer]:
+                  - img [ref=e465]
+                  - generic [ref=e467]: .oxlintrc.json
+              - treeitem ".prettierignore" [level=1] [ref=e468]:
+                - generic [ref=e470] [cursor=pointer]:
+                  - img [ref=e473]
+                  - generic [ref=e475]: .prettierignore
+              - treeitem "AGENTS.md" [level=1] [ref=e476]:
+                - generic [ref=e478] [cursor=pointer]:
+                  - img [ref=e481]
+                  - generic [ref=e483]: AGENTS.md
+              - treeitem "AgentManagerApp.tsx" [level=1] [ref=e484]:
+                - generic [ref=e486] [cursor=pointer]:
+                  - img [ref=e489]
+                  - generic [ref=e491]: AgentManagerApp.tsx
+              - treeitem "CODE_OF_CONDUCT.md" [level=1] [ref=e492]:
+                - generic [ref=e494] [cursor=pointer]:
+                  - img [ref=e497]
+                  - generic [ref=e499]: CODE_OF_CONDUCT.md
+              - treeitem "CONTRIBUTING.md" [level=1] [ref=e500]:
+                - generic [ref=e502] [cursor=pointer]:
+                  - img [ref=e505]
+                  - generic [ref=e507]: CONTRIBUTING.md
+              - treeitem "LICENSE" [level=1] [ref=e508]:
+                - generic [ref=e510] [cursor=pointer]:
+                  - img [ref=e513]
+                  - generic [ref=e515]: LICENSE
+              - treeitem "PRIVACY.md" [level=1] [ref=e516]:
+                - generic [ref=e518] [cursor=pointer]:
+                  - img [ref=e521]
+                  - generic [ref=e523]: PRIVACY.md
+              - treeitem "README.ar.md" [level=1] [ref=e524]:
+                - generic [ref=e526] [cursor=pointer]:
+                  - img [ref=e529]
+                  - generic [ref=e531]: README.ar.md
+              - treeitem "README.bn.md" [level=1] [ref=e532]:
+                - generic [ref=e534] [cursor=pointer]:
+                  - img [ref=e537]
+                  - generic [ref=e539]: README.bn.md
+              - treeitem "README.br.md" [level=1] [ref=e540]:
+                - generic [ref=e542] [cursor=pointer]:
+                  - img [ref=e545]
+                  - generic [ref=e547]: README.br.md
+              - treeitem "README.bs.md" [level=1] [ref=e548]:
+                - generic [ref=e550] [cursor=pointer]:
+                  - img [ref=e553]
+                  - generic [ref=e555]: README.bs.md
+              - treeitem "README.da.md" [level=1] [ref=e556]:
+                - generic [ref=e558] [cursor=pointer]:
+                  - img [ref=e561]
+                  - generic [ref=e563]: README.da.md
+              - treeitem "README.de.md" [level=1] [ref=e564]:
+                - generic [ref=e566] [cursor=pointer]:
+                  - img [ref=e569]
+                  - generic [ref=e571]: README.de.md
+              - treeitem "README.es.md" [level=1] [ref=e572]:
+                - generic [ref=e574] [cursor=pointer]:
+                  - img [ref=e577]
+                  - generic [ref=e579]: README.es.md
+              - treeitem "README.fr.md" [level=1] [ref=e580]:
+                - generic [ref=e582] [cursor=pointer]:
+                  - img [ref=e585]
+                  - generic [ref=e587]: README.fr.md
+              - treeitem "README.gr.md" [level=1] [ref=e588]:
+                - generic [ref=e590] [cursor=pointer]:
+                  - img [ref=e593]
+                  - generic [ref=e595]: README.gr.md
+              - treeitem "README.it.md" [level=1] [ref=e596]:
+                - generic [ref=e598] [cursor=pointer]:
+                  - img [ref=e601]
+                  - generic [ref=e603]: README.it.md
+              - treeitem "README.ja.md" [level=1] [ref=e604]:
+                - generic [ref=e606] [cursor=pointer]:
+                  - img [ref=e609]
+                  - generic [ref=e611]: README.ja.md
+              - treeitem "README.ko.md" [level=1] [ref=e612]:
+                - generic [ref=e614] [cursor=pointer]:
+                  - img [ref=e617]
+                  - generic [ref=e619]: README.ko.md
+              - treeitem "README.md" [level=1] [ref=e620]:
+                - generic [ref=e622] [cursor=pointer]:
+                  - img [ref=e625]
+                  - generic [ref=e627]: README.md
+              - treeitem "README.no.md" [level=1] [ref=e628]:
+                - generic [ref=e630] [cursor=pointer]:
+                  - img [ref=e633]
+                  - generic [ref=e635]: README.no.md
+              - treeitem "README.pl.md" [level=1] [ref=e636]:
+                - generic [ref=e638] [cursor=pointer]:
+                  - img [ref=e641]
+                  - generic [ref=e643]: README.pl.md
+              - treeitem "README.ru.md" [level=1] [ref=e644]:
+                - generic [ref=e646] [cursor=pointer]:
+                  - img [ref=e649]
+                  - generic [ref=e651]: README.ru.md
+              - treeitem "README.th.md" [level=1] [ref=e652]:
+                - generic [ref=e654] [cursor=pointer]:
+                  - img [ref=e657]
+                  - generic [ref=e659]: README.th.md
+              - treeitem "README.tr.md" [level=1] [ref=e660]:
+                - generic [ref=e662] [cursor=pointer]:
+                  - img [ref=e665]
+                  - generic [ref=e667]: README.tr.md
+              - treeitem "README.uk.md" [level=1] [ref=e668]:
+                - generic [ref=e670] [cursor=pointer]:
+                  - img [ref=e673]
+                  - generic [ref=e675]: README.uk.md
+              - treeitem "README.vi.md" [level=1] [ref=e676]:
+                - generic [ref=e678] [cursor=pointer]:
+                  - img [ref=e681]
+                  - generic [ref=e683]: README.vi.md
+              - treeitem "README.zh.md" [level=1] [ref=e684]:
+                - generic [ref=e686] [cursor=pointer]:
+                  - img [ref=e689]
+                  - generic [ref=e691]: README.zh.md
+              - treeitem "README.zht.md" [level=1] [ref=e692]:
+                - generic [ref=e694] [cursor=pointer]:
+                  - img [ref=e697]
+                  - generic [ref=e699]: README.zht.md
+              - treeitem "RELEASING.md" [level=1] [ref=e700]:
+                - generic [ref=e702] [cursor=pointer]:
+                  - img [ref=e705]
+                  - generic [ref=e707]: RELEASING.md
+              - treeitem "REVIEW.md" [level=1] [ref=e708]:
+                - generic [ref=e710] [cursor=pointer]:
+                  - img [ref=e713]
+                  - generic [ref=e715]: REVIEW.md
+              - treeitem "SECURITY.md" [level=1] [ref=e716]:
+                - generic [ref=e718] [cursor=pointer]:
+                  - img [ref=e721]
+                  - generic [ref=e723]: SECURITY.md
+              - treeitem "TESTING.md" [level=1] [ref=e724]:
+                - generic [ref=e726] [cursor=pointer]:
+                  - img [ref=e729]
+                  - generic [ref=e731]: TESTING.md
+              - treeitem "bun.lock" [level=1] [ref=e732]:
+                - generic [ref=e734] [cursor=pointer]:
+                  - img [ref=e737]
+                  - generic [ref=e739]: bun.lock
+              - treeitem "bunfig.toml" [level=1] [ref=e740]:
+                - generic [ref=e742] [cursor=pointer]:
+                  - img [ref=e745]
+                  - generic [ref=e747]: bunfig.toml
+              - treeitem "flake.lock" [level=1] [ref=e748]:
+                - generic [ref=e750] [cursor=pointer]:
+                  - img [ref=e753]
+                  - generic [ref=e755]: flake.lock
+              - treeitem "flake.nix" [level=1] [ref=e756]:
+                - generic [ref=e758] [cursor=pointer]:
+                  - img [ref=e761]
+                  - generic [ref=e763]: flake.nix
+              - treeitem "install" [level=1] [ref=e764]:
+                - generic [ref=e766] [cursor=pointer]:
+                  - img [ref=e769]
+                  - generic [ref=e771]: install
+              - treeitem "kilocode-2.code-workspace" [level=1] [ref=e772]:
+                - generic [ref=e774] [cursor=pointer]:
+                  - img [ref=e777]
+                  - generic [ref=e779]: kilocode-2.code-workspace
+              - treeitem "logo.png" [level=1] [ref=e780]:
+                - generic [ref=e782] [cursor=pointer]:
+                  - img [ref=e785]
+                  - generic [ref=e787]: logo.png
+              - treeitem "package.json" [level=1] [ref=e788]:
+                - generic [ref=e790] [cursor=pointer]:
+                  - img [ref=e793]
+                  - generic [ref=e795]: package.json
+              - treeitem "screenshot-uk.png" [level=1] [ref=e796]:
+                - generic [ref=e798] [cursor=pointer]:
+                  - img [ref=e801]
+                  - generic [ref=e803]: screenshot-uk.png
+              - treeitem "tsconfig.json" [level=1] [ref=e804]:
+                - generic [ref=e806] [cursor=pointer]:
+                  - img [ref=e809]
+                  - generic [ref=e811]: tsconfig.json
+              - treeitem "turbo.json" [level=1] [ref=e812]:
+                - generic [ref=e814] [cursor=pointer]:
+                  - img [ref=e817]
+                  - generic [ref=e819]: turbo.json
+        - slider "Draggable pane splitter" [ref=e821]
+      - generic [ref=e826]:
+        - img [ref=e827]
+        - generic [ref=e829]:
+          - generic [ref=e830]: 404 - page not found
+          - generic [ref=e831]:
+            - text: The
+            - generic [ref=e832]: main
+            - text: branch of
+            - paragraph [ref=e833]: kilocode
+            - text: does not contain the path
+            - paragraph [ref=e834]: packages/plugin-sdk/src/model-picker.tsx.
+        - link "go to Overview" [ref=e835] [cursor=pointer]:
+          - /url: /Kilo-Org/kilocode
+          - generic [ref=e837]: Return to the repository overview

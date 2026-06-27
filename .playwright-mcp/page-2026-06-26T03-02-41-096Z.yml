@@ -1,0 +1,477 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to content" [ref=e3] [cursor=pointer]:
+      - /url: main-content
+    - generic [ref=e4]:
+      - navigation "Nav bar" [ref=e5]:
+        - link "Fonts" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e9]: font_download
+          - generic [ref=e10]: Fonts
+        - link "Noto" [ref=e11] [cursor=pointer]:
+          - /url: /noto
+          - img [ref=e14]: language
+          - generic [ref=e15]: Noto
+        - link "Icons" [ref=e16] [cursor=pointer]:
+          - /url: /icons
+          - img [ref=e19]: interests
+          - generic [ref=e20]: Icons
+        - link "Knowledge" [ref=e21] [cursor=pointer]:
+          - /url: /knowledge
+          - img [ref=e24]: school
+          - generic [ref=e25]: Knowledge
+        - link "FAQ" [ref=e26] [cursor=pointer]:
+          - /url: /faq
+          - img [ref=e29]: help
+          - generic [ref=e30]: FAQ
+        - button "Switch to dark theme" [ref=e33] [cursor=pointer]:
+          - img [ref=e35]: dark_mode
+      - generic [ref=e38]:
+        - dialog "Left drawer" [ref=e40]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - button "Reset all filters" [disabled]:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img: refresh
+                    - generic: Reset all
+              - button "Close filters drawer" [ref=e45] [cursor=pointer]:
+                - img [ref=e47]: close
+            - heading "Customize" [level=2] [ref=e51]:
+              - img [ref=e53]: tune
+              - text: Customize
+            - generic [ref=e54]:
+              - generic [ref=e56]:
+                - generic [ref=e57]:
+                  - generic [ref=e58]: Fill
+                  - button "More information about the Fill axis" [ref=e59] [cursor=pointer]:
+                    - img [ref=e61]: info
+                - switch "Fill" [ref=e66] [cursor=pointer]:
+                  - generic [ref=e72]:
+                    - img [ref=e73]
+                    - img [ref=e75]
+              - generic [ref=e77]:
+                - generic [ref=e79]:
+                  - generic [ref=e80]: Weight
+                  - button "More information about the Weight axis" [ref=e81] [cursor=pointer]:
+                    - img [ref=e83]: info
+                - generic [ref=e86] [cursor=pointer]:
+                  - slider "Weight" [ref=e87]: "400"
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: "400"
+                - generic [ref=e88]:
+                  - generic [ref=e89]: "100"
+                  - generic [ref=e90]: "700"
+              - generic [ref=e91]:
+                - generic [ref=e93]:
+                  - generic [ref=e94]: Grade
+                  - button "More information about the Grade axis" [ref=e95] [cursor=pointer]:
+                    - img [ref=e97]: info
+                - generic [ref=e100] [cursor=pointer]:
+                  - slider "Grade" [ref=e101]: "1"
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: "0"
+                - generic [ref=e102]:
+                  - generic [ref=e103]: "-25 (low)"
+                  - generic [ref=e104]: 200 (high emphasis)
+              - generic [ref=e105]:
+                - generic [ref=e107]:
+                  - generic [ref=e108]: Optical Size
+                  - button "More information about the Optical Size axis" [ref=e109] [cursor=pointer]:
+                    - img [ref=e111]: info
+                - generic [ref=e114] [cursor=pointer]:
+                  - slider "Optical Size" [ref=e115]: "1"
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: "24"
+                - generic [ref=e116]:
+                  - generic [ref=e117]: 20px
+                  - generic [ref=e118]: 48px
+            - separator [ref=e119]
+            - heading "Filter" [level=2] [ref=e121]
+            - generic [ref=e123]:
+              - button "Style" [expanded] [ref=e124] [cursor=pointer]:
+                - generic [ref=e126]:
+                  - img [ref=e128]: apparel
+                  - text: Style
+                - img [ref=e130]
+              - region "Style" [ref=e133]:
+                - generic [ref=e134]:
+                  - combobox "Select an icon set" [ref=e140] [cursor=pointer]:
+                    - generic [ref=e141]:
+                      - generic [ref=e143]: Material Symbols (new)
+                      - img [ref=e146]
+                  - combobox "Select an icon style" [ref=e153] [cursor=pointer]:
+                    - generic [ref=e154]:
+                      - generic [ref=e156]: Outlined
+                      - img [ref=e159]
+            - generic [ref=e162]:
+              - button "Category" [expanded] [ref=e163] [cursor=pointer]:
+                - generic [ref=e165]:
+                  - img [ref=e167]: folder
+                  - text: Category
+                - img [ref=e169]
+              - region "Category" [ref=e172]:
+                - listbox "Filter content by tags" [ref=e175]:
+                  - option "Filter by Actions" [ref=e177] [cursor=pointer]:
+                    - generic [ref=e178]: Actions
+                  - option "Filter by Activities" [ref=e180] [cursor=pointer]:
+                    - generic [ref=e181]: Activities
+                  - option "Filter by Android" [ref=e183] [cursor=pointer]:
+                    - generic [ref=e184]: Android
+                  - option "Filter by Audio & Video" [ref=e186] [cursor=pointer]:
+                    - generic [ref=e187]: Audio & Video
+                  - option "Filter by Business" [ref=e189] [cursor=pointer]:
+                    - generic [ref=e190]: Business
+                  - option "Filter by Communicate" [ref=e192] [cursor=pointer]:
+                    - generic [ref=e193]: Communicate
+                  - option "Filter by Hardware" [ref=e195] [cursor=pointer]:
+                    - generic [ref=e196]: Hardware
+                  - option "Filter by Home" [ref=e198] [cursor=pointer]:
+                    - generic [ref=e199]: Home
+                  - option "Filter by Household" [ref=e201] [cursor=pointer]:
+                    - generic [ref=e202]: Household
+                  - option "Filter by Images" [ref=e204] [cursor=pointer]:
+                    - generic [ref=e205]: Images
+                  - option "Filter by Maps" [ref=e207] [cursor=pointer]:
+                    - generic [ref=e208]: Maps
+                  - option "Filter by Privacy" [ref=e210] [cursor=pointer]:
+                    - generic [ref=e211]: Privacy
+                  - option "Filter by Social" [ref=e213] [cursor=pointer]:
+                    - generic [ref=e214]: Social
+                  - option "Filter by Text" [ref=e216] [cursor=pointer]:
+                    - generic [ref=e217]: Text
+                  - option "Filter by Transit" [ref=e219] [cursor=pointer]:
+                    - generic [ref=e220]: Transit
+                  - option "Filter by Travel" [ref=e222] [cursor=pointer]:
+                    - generic [ref=e223]: Travel
+                  - option "Filter by UI actions" [ref=e225] [cursor=pointer]:
+                    - generic [ref=e226]: UI actions
+        - generic [ref=e228]:
+          - banner [ref=e231]:
+            - generic [ref=e232]:
+              - link "Google Fonts" [ref=e234] [cursor=pointer]:
+                - /url: https://fonts.google.com/
+                - img [ref=e236]
+              - generic [ref=e246]:
+                - generic [ref=e247]:
+                  - generic [ref=e252]:
+                    - img [ref=e255]: search
+                    - combobox "Search icons" [ref=e257]
+                  - separator [ref=e258]
+                  - generic [ref=e264] [cursor=pointer]:
+                    - generic [ref=e265]: Sort by
+                    - combobox "Select a sort order" [ref=e266]:
+                      - generic [ref=e267]:
+                        - generic [ref=e269]: Most popular
+                        - img [ref=e272]
+                - generic [ref=e275]:
+                  - generic [ref=e276]:
+                    - button "View selected families" [disabled]:
+                      - generic:
+                        - img: shopping_bag
+                  - generic:
+                    - dialog "View selected families.":
+                      - generic [ref=e277]: View selected families. Dismiss
+            - button "Close Filters panel" [expanded] [ref=e280]:
+              - generic [ref=e281]:
+                - img [ref=e283]: close
+                - text: Filters
+          - generic [ref=e286]:
+            - main [ref=e287]:
+              - generic [ref=e291]:
+                - generic [ref=e294]:
+                  - generic [ref=e295]:
+                    - link "Material Design icon guidelines Learn about the latest best practices for icons" [ref=e297] [cursor=pointer]:
+                      - /url: https://m3.material.io/styles/icons/overview
+                      - generic [ref=e298]:
+                        - generic [ref=e299]:
+                          - generic [ref=e300]: Material Design icon guidelines
+                          - generic [ref=e301]: Learn about the latest best practices for icons
+                        - generic [ref=e302]:
+                          - img [ref=e305]
+                          - img [ref=e308]: material_design
+                    - link "Figma plugin Use the Material Symbols plugin on Figma" [ref=e310] [cursor=pointer]:
+                      - /url: https://www.figma.com/community/plugin/1088610476491668236/material-symbols
+                      - generic [ref=e311]:
+                        - generic [ref=e312]:
+                          - generic [ref=e313]: Figma plugin
+                          - generic [ref=e314]: Use the Material Symbols plugin on Figma
+                        - generic [ref=e315]:
+                          - img [ref=e318]
+                          - img [ref=e322]
+                    - link "GitHub repo This repository contains the binary font file served by Google Fonts" [ref=e325] [cursor=pointer]:
+                      - /url: https://github.com/google/material-design-icons
+                      - generic [ref=e326]:
+                        - generic [ref=e327]:
+                          - generic [ref=e328]: GitHub repo
+                          - generic [ref=e329]: This repository contains the binary font file served by Google Fonts
+                        - generic [ref=e330]:
+                          - img [ref=e333]
+                          - img [ref=e336]: arrow_outward
+                    - link "Apache license Material Symbols are available under the Apache License Version 2.0" [ref=e338] [cursor=pointer]:
+                      - /url: https://www.apache.org/licenses/LICENSE-2.0.html
+                      - generic [ref=e339]:
+                        - generic [ref=e340]:
+                          - generic [ref=e341]: Apache license
+                          - generic [ref=e342]: Material Symbols are available under the Apache License Version 2.0
+                        - generic [ref=e343]:
+                          - img [ref=e346]
+                          - img [ref=e349]: arrow_outward
+                    - link "Developer guide How to use Material Symbols in your projects" [ref=e351] [cursor=pointer]:
+                      - /url: https://developers.google.com/fonts/docs/material_symbols
+                      - generic [ref=e352]:
+                        - generic [ref=e353]:
+                          - generic [ref=e354]: Developer guide
+                          - generic [ref=e355]: How to use Material Symbols in your projects
+                        - generic [ref=e356]:
+                          - img [ref=e359]
+                          - img [ref=e362]: code
+                    - link "Download Material Symbols Get all Material Symbols in a single variable font file" [ref=e364] [cursor=pointer]:
+                      - /url: /download?family=Material Symbols Outlined|Material Symbols Rounded|Material Symbols Sharp
+                      - generic [ref=e365]:
+                        - generic [ref=e366]:
+                          - generic [ref=e367]: Download Material Symbols
+                          - generic [ref=e368]: Get all Material Symbols in a single variable font file
+                        - generic [ref=e369]:
+                          - img [ref=e372]
+                          - img [ref=e375]: download
+                  - button [ref=e376] [cursor=pointer]:
+                    - img [ref=e379]: arrow_forward_ios
+                - generic [ref=e382]:
+                  - heading "Find the icons for your project" [level=1] [ref=e383]
+                  - generic [ref=e385]:
+                    - heading "UI actions icons" [level=2] [ref=e386]: UI actions
+                    - listbox "UI actions icons" [ref=e387]:
+                      - button [disabled] [ref=e388] [cursor=pointer]:
+                        - generic [ref=e390]: search
+                        - generic [ref=e391]: Search
+                      - option "Search Icon" [ref=e393] [cursor=pointer]:
+                        - generic [ref=e395]: search
+                        - generic [ref=e396]: Search
+                      - option "Home Icon" [ref=e398] [cursor=pointer]:
+                        - generic [ref=e400]: home
+                        - generic [ref=e401]: Home
+                      - option "Menu Icon" [ref=e403] [cursor=pointer]:
+                        - generic [ref=e405]: menu
+                        - generic [ref=e406]: Menu
+                      - option "Close Icon" [ref=e408] [cursor=pointer]:
+                        - generic [ref=e410]: close
+                        - generic [ref=e411]: Close
+                      - option "Settings Icon" [ref=e413] [cursor=pointer]:
+                        - generic [ref=e415]: settings
+                        - generic [ref=e416]: Settings
+                      - option "Check Circle Icon" [ref=e418] [cursor=pointer]:
+                        - generic [ref=e420]: check_circle
+                        - generic [ref=e421]: Check Circle
+                      - option "Favorite Icon" [ref=e423] [cursor=pointer]:
+                        - generic [ref=e425]: favorite
+                        - generic [ref=e426]: Favorite
+                      - option "Add Icon" [ref=e428] [cursor=pointer]:
+                        - generic [ref=e430]: add
+                        - generic [ref=e431]: Add
+                      - option "Delete Icon" [ref=e433] [cursor=pointer]:
+                        - generic [ref=e435]: delete
+                        - generic [ref=e436]: Delete
+                      - option "Arrow Back Icon" [ref=e438] [cursor=pointer]:
+                        - generic [ref=e440]: arrow_back
+                        - generic [ref=e441]: Arrow Back
+                      - option "Star Icon" [ref=e443] [cursor=pointer]:
+                        - generic [ref=e445]: star
+                        - generic [ref=e446]: Star
+                      - option "Chevron Right Icon" [ref=e448] [cursor=pointer]:
+                        - generic [ref=e450]: chevron_right
+                        - generic [ref=e451]: Chevron Right
+                      - option "Arrow Forward iOS Icon" [ref=e453] [cursor=pointer]:
+                        - generic [ref=e455]: arrow_forward_ios
+                        - generic [ref=e456]: Arrow Forward iOS
+                      - option "Logout Icon" [ref=e458] [cursor=pointer]:
+                        - generic [ref=e460]: logout
+                        - generic [ref=e461]: Logout
+                      - option "Cancel Icon" [ref=e463] [cursor=pointer]:
+                        - generic [ref=e465]: cancel
+                        - generic [ref=e466]: Cancel
+                      - option "Add Circle Icon" [ref=e468] [cursor=pointer]:
+                        - generic [ref=e470]: add_circle
+                        - generic [ref=e471]: Add Circle
+                      - option "Arrow Back iOS Icon" [ref=e473] [cursor=pointer]:
+                        - generic [ref=e475]: arrow_back_ios
+                        - generic [ref=e476]: Arrow Back iOS
+                      - option "Arrow Forward Icon" [ref=e478] [cursor=pointer]:
+                        - generic [ref=e480]: arrow_forward
+                        - generic [ref=e481]: Arrow Forward
+                      - option "Arrow Drop Down Icon" [ref=e483] [cursor=pointer]:
+                        - generic [ref=e485]: arrow_drop_down
+                        - generic [ref=e486]: Arrow Drop Down
+                      - option "Check Icon" [ref=e488] [cursor=pointer]:
+                        - generic [ref=e490]: check
+                        - generic [ref=e491]: Check
+                  - generic [ref=e492]:
+                    - heading "Social icons" [level=2] [ref=e493]: Social
+                    - listbox "Social icons" [ref=e494]:
+                      - button [disabled] [ref=e495] [cursor=pointer]:
+                        - generic [ref=e497]: person
+                        - generic [ref=e498]: Person
+                  - generic [ref=e499]:
+                    - heading "Actions icons" [level=2] [ref=e500]: Actions
+                    - listbox "Actions icons" [ref=e501]:
+                      - button [disabled] [ref=e502] [cursor=pointer]:
+                        - generic [ref=e504]: account_circle
+                        - generic [ref=e505]: Account Circle
+                  - generic [ref=e506]:
+                    - heading "Communicate icons" [level=2] [ref=e507]: Communicate
+                    - listbox "Communicate icons" [ref=e508]:
+                      - button [disabled] [ref=e509] [cursor=pointer]:
+                        - generic [ref=e511]: mail
+                        - generic [ref=e512]: Mail
+                  - generic [ref=e513]:
+                    - heading "Images icons" [level=2] [ref=e514]: Images
+                    - listbox "Images icons" [ref=e515]:
+                      - button [disabled] [ref=e516] [cursor=pointer]:
+                        - generic [ref=e518]: edit
+                        - generic [ref=e519]: Edit
+                  - generic [ref=e520]:
+                    - heading "Business icons" [level=2] [ref=e521]: Business
+                    - listbox "Business icons" [ref=e522]:
+                      - button [disabled] [ref=e523] [cursor=pointer]:
+                        - generic [ref=e525]: shopping_cart
+                        - generic [ref=e526]: Shopping Cart
+                  - generic [ref=e527]:
+                    - heading "Maps icons" [level=2] [ref=e528]: Maps
+                    - listbox "Maps icons" [ref=e529]:
+                      - button [disabled] [ref=e530] [cursor=pointer]:
+                        - generic [ref=e532]: pin_drop
+                        - generic [ref=e533]: Pin Drop
+                  - generic [ref=e534]:
+                    - heading "Text icons" [level=2] [ref=e535]: Text
+                    - listbox "Text icons" [ref=e536]:
+                      - button [disabled] [ref=e537] [cursor=pointer]:
+                        - generic [ref=e539]: description
+                        - generic [ref=e540]: Description
+                  - generic [ref=e541]:
+                    - heading "Audio & Video icons" [level=2] [ref=e542]: Audio & Video
+                    - listbox "Audio & Video icons" [ref=e543]:
+                      - button [disabled] [ref=e544] [cursor=pointer]:
+                        - generic [ref=e546]: play_arrow
+                        - generic [ref=e547]: Play Arrow
+                  - generic [ref=e548]:
+                    - heading "Transit icons" [level=2] [ref=e549]: Transit
+                    - listbox "Transit icons" [ref=e550]:
+                      - button [disabled] [ref=e551] [cursor=pointer]:
+                        - generic [ref=e553]: local_shipping
+                        - generic [ref=e554]: Local Shipping
+                  - generic [ref=e555]:
+                    - heading "Activities icons" [level=2] [ref=e556]: Activities
+                    - listbox "Activities icons" [ref=e557]:
+                      - button [disabled] [ref=e558] [cursor=pointer]:
+                        - generic [ref=e560]: school
+                        - generic [ref=e561]: School
+                  - generic [ref=e562]:
+                    - heading "Android icons" [level=2] [ref=e563]: Android
+                    - listbox "Android icons" [ref=e564]:
+                      - button [disabled] [ref=e565] [cursor=pointer]:
+                        - generic [ref=e567]: dark_mode
+                        - generic [ref=e568]: Dark Mode
+                  - generic [ref=e569]:
+                    - heading "Hardware icons" [level=2] [ref=e570]: Hardware
+                    - listbox "Hardware icons" [ref=e571]:
+                      - button [disabled] [ref=e572] [cursor=pointer]:
+                        - generic [ref=e574]: save
+                        - generic [ref=e575]: Save
+                  - generic [ref=e576]:
+                    - heading "Privacy icons" [level=2] [ref=e577]: Privacy
+                    - listbox "Privacy icons" [ref=e578]:
+                      - button [disabled] [ref=e579] [cursor=pointer]:
+                        - generic [ref=e581]: badge
+                        - generic [ref=e582]: Badge
+                  - generic [ref=e583]:
+                    - heading "Travel icons" [level=2] [ref=e584]: Travel
+                    - listbox "Travel icons" [ref=e585]:
+                      - button [disabled] [ref=e586] [cursor=pointer]:
+                        - generic [ref=e588]: apartment
+                        - generic [ref=e589]: Apartment
+                  - generic [ref=e590]:
+                    - heading "Household icons" [level=2] [ref=e591]: Household
+                    - listbox "Household icons" [ref=e592]:
+                      - button [disabled] [ref=e593] [cursor=pointer]:
+                        - generic [ref=e595]: house
+                        - generic [ref=e596]: House
+                  - generic [ref=e597]:
+                    - heading "Home icons" [level=2] [ref=e598]: Home
+                    - listbox "Home icons" [ref=e599]:
+                      - button [disabled] [ref=e600] [cursor=pointer]:
+                        - generic [ref=e602]: stadia_controller
+                        - generic [ref=e603]: Stadia Controller
+            - contentinfo [ref=e605]:
+              - generic [ref=e606]:
+                - generic [ref=e607]:
+                  - generic "Google Fonts" [ref=e608]:
+                    - img [ref=e610]
+                  - generic [ref=e613]: Google Fonts makes it easy to bring personality and performance to your websites and products. Our robust catalog of open-source fonts and icons makes it easy to integrate expressive type and icons seamlessly — no matter where you are in the world.
+                - generic [ref=e615]:
+                  - list [ref=e616]:
+                    - listitem [ref=e617]:
+                      - link "About us Making the web more beautiful, fast, and open through great typography & icons" [ref=e619] [cursor=pointer]:
+                        - /url: /about
+                        - generic [ref=e620]:
+                          - img [ref=e622]
+                          - generic [ref=e635]:
+                            - paragraph [ref=e636]: About us
+                            - paragraph [ref=e637]: Making the web more beautiful, fast, and open through great typography & icons
+                    - listitem [ref=e638]:
+                      - link "Fonts GitHub This repository contains the binary font files served by Google Fonts" [ref=e640] [cursor=pointer]:
+                        - /url: https://github.com/google/fonts
+                        - generic [ref=e641]:
+                          - img [ref=e644]
+                          - generic [ref=e648]:
+                            - paragraph [ref=e649]: Fonts GitHub
+                            - paragraph [ref=e650]: This repository contains the binary font files served by Google Fonts
+                    - listitem [ref=e651]:
+                      - link "Icons GitHub This repository contains the binary font files served by Google Icons" [ref=e653] [cursor=pointer]:
+                        - /url: https://github.com/google/material-design-icons
+                        - generic [ref=e654]:
+                          - img [ref=e657]
+                          - generic [ref=e661]:
+                            - paragraph [ref=e662]: Icons GitHub
+                            - paragraph [ref=e663]: This repository contains the binary font files served by Google Icons
+                  - list [ref=e664]:
+                    - listitem [ref=e665]:
+                      - link "Fonts blog This blog has stories about how different fonts were designed for various languages and scripts" [ref=e667] [cursor=pointer]:
+                        - /url: https://fonts.googleblog.com/
+                        - generic [ref=e668]:
+                          - img [ref=e670]
+                          - generic [ref=e673]:
+                            - paragraph [ref=e674]: Fonts blog
+                            - paragraph [ref=e675]: This blog has stories about how different fonts were designed for various languages and scripts
+                    - listitem [ref=e676]:
+                      - link "Material Design A cross-platform design system for creating high-quality digital experiences" [ref=e678] [cursor=pointer]:
+                        - /url: https://m3.material.io/styles/typography/overview
+                        - generic [ref=e679]:
+                          - img [ref=e681]
+                          - generic [ref=e686]:
+                            - paragraph [ref=e687]: Material Design
+                            - paragraph [ref=e688]: A cross-platform design system for creating high-quality digital experiences
+                    - listitem [ref=e689]:
+                      - link "Google Design Google Design highlights the breadth and craft of design and fonts from speculation, to work-in-progress, to finished product" [ref=e691] [cursor=pointer]:
+                        - /url: https://design.google/tags/typography
+                        - generic [ref=e692]:
+                          - img [ref=e694]
+                          - generic [ref=e697]:
+                            - paragraph [ref=e698]: Google Design
+                            - paragraph [ref=e699]: Google Design highlights the breadth and craft of design and fonts from speculation, to work-in-progress, to finished product
+              - generic [ref=e701]:
+                - img [ref=e703]
+                - generic [ref=e712]:
+                  - link "Privacy" [ref=e713] [cursor=pointer]:
+                    - /url: https://policies.google.com/privacy?hl=en
+                  - link "Terms of service" [ref=e714] [cursor=pointer]:
+                    - /url: https://policies.google.com/terms?hl=en
+            - button "Leave feedback" [ref=e715] [cursor=pointer]:
+              - img [ref=e717]: feedback
+  - generic [ref=e722]: Material Symbols & Icons - Google Fonts
