@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getGitHubMcpClient } from '@/lib/github-mcp';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 export async function GET(request: Request) {
   try {
@@ -7,9 +10,12 @@ export async function GET(request: Request) {
     const searchQuery = url.searchParams.get('q')?.trim();
 
     if (searchQuery) {
-      const client = getGitHubMcpClient();
-      const results = await client.searchRepositories(searchQuery, 30);
+      const { stdout } = await execAsync(
+        `gh search repos "${searchQuery}" --limit 30 --json name,owner,description,stargazersCount,updatedAt`,
+        { timeout: 30000 }
+      );
 
+      const results = JSON.parse(stdout);
       const repos = results.map((item: any) => ({
         name: item.owner?.login ? `${item.owner.login}/${item.name}` : item.name,
         description: item.description || '',
