@@ -38,6 +38,7 @@ fun HomeScreen(
     sharedSecret: String?,
     onNavigateToSession: (String) -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToRepos: () -> Unit,
     viewModel: SessionViewModel = viewModel(
         key     = "$serverUrl|$sharedSecret",
         factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")),
@@ -114,6 +115,9 @@ fun HomeScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToRepos) {
+                        Icon(Icons.Rounded.Cloud, "Repositories", modifier = Modifier.size(20.dp))
+                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Rounded.Settings, "Settings", modifier = Modifier.size(20.dp))
                     }
