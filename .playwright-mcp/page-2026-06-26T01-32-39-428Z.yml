@@ -1,0 +1,215 @@
+- generic [active]:
+  - generic:
+    - banner [ref=e1]:
+      - generic [ref=e2]:
+        - link "Kilo Code Logo Kilo CodeDOCS" [ref=e3] [cursor=pointer]:
+          - /url: /docs/
+          - img "Kilo Code Logo" [ref=e4]
+          - generic [ref=e6]: Kilo CodeDOCS
+        - button "Search (Control+k)" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]:
+            - img [ref=e11]
+            - generic [ref=e14]: Search
+          - generic [ref=e15]:
+            - generic [ref=e16]: Ctrl
+            - generic [ref=e17]: K
+        - generic [ref=e18]:
+          - button "Using system theme" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+          - link "GitHub" [ref=e22] [cursor=pointer]:
+            - /url: https://kilo.ai/github
+          - link "Sign in" [ref=e23] [cursor=pointer]:
+            - /url: https://app.kilo.ai
+      - generic [ref=e24]:
+        - navigation [ref=e25]:
+          - link "Get Started" [ref=e26] [cursor=pointer]:
+            - /url: /docs/getting-started
+          - link "Code with AI" [ref=e27] [cursor=pointer]:
+            - /url: /docs/code-with-ai
+          - link "Customize" [ref=e28] [cursor=pointer]:
+            - /url: /docs/customize
+          - link "Collaborate" [ref=e29] [cursor=pointer]:
+            - /url: /docs/collaborate
+          - link "Automate" [ref=e30] [cursor=pointer]:
+            - /url: /docs/automate
+          - link "Deploy & Secure" [ref=e31] [cursor=pointer]:
+            - /url: /docs/deploy-secure
+          - link "Kilo Gateway" [ref=e32] [cursor=pointer]:
+            - /url: /docs/gateway
+          - link "KiloClaw" [ref=e33] [cursor=pointer]:
+            - /url: /docs/kiloclaw
+          - link "Contributing" [ref=e34] [cursor=pointer]:
+            - /url: /docs/contributing
+        - generic [ref=e35]:
+          - button "Contributing" [ref=e37]:
+            - text: Contributing
+            - img [ref=e38]
+          - button "Help" [ref=e41]:
+            - text: Help
+            - img [ref=e42]
+      - paragraph [ref=e45]:
+        - text: The all-new Kilo Code extension is here, rebuilt on the
+        - link "Kilo CLI" [ref=e46] [cursor=pointer]:
+          - /url: /docs/code-with-ai/platforms/vscode/whats-new
+        - text: for speed, flexibility, and continued access to 500+ models via the Kilo Gateway →
+    - main [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - heading "Kilo Documentation" [level=1] [ref=e51]
+            - paragraph [ref=e52]: Explore guides and examples for the Kilo platform — from coding agents and AI-powered development to hosted agentic infrastructure with KiloClaw.
+            - generic [ref=e53]:
+              - link "Get started with Kilo Code →" [ref=e54] [cursor=pointer]:
+                - /url: /docs/getting-started
+              - link "Explore KiloClaw" [ref=e55] [cursor=pointer]:
+                - /url: /docs/kiloclaw/overview
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - heading "KILO CODE" [level=3] [ref=e58]
+              - generic [ref=e59]:
+                - link "Installation Guide" [ref=e60] [cursor=pointer]:
+                  - /url: /docs/getting-started/installing
+                - link "Chat Interface" [ref=e61] [cursor=pointer]:
+                  - /url: /docs/code-with-ai
+                - link "Your First Task" [ref=e62] [cursor=pointer]:
+                  - /url: /docs/getting-started
+            - generic [ref=e63]:
+              - heading "KILOCLAW" [level=3] [ref=e64]
+              - generic [ref=e65]:
+                - link "Overview" [ref=e66] [cursor=pointer]:
+                  - /url: /docs/kiloclaw/overview
+                - link "Chat Platforms" [ref=e67] [cursor=pointer]:
+                  - /url: /docs/kiloclaw/chat-platforms
+                - link "Development Tools" [ref=e68] [cursor=pointer]:
+                  - /url: /docs/kiloclaw/development-tools
+            - generic [ref=e69]:
+              - heading "PLATFORMS" [level=3] [ref=e70]
+              - generic [ref=e71]:
+                - link "VS Code Extension" [ref=e72] [cursor=pointer]:
+                  - /url: /docs/code-with-ai
+                - link "JetBrains Extension" [ref=e73] [cursor=pointer]:
+                  - /url: /docs/code-with-ai
+                - link "CLI" [ref=e74] [cursor=pointer]:
+                  - /url: /docs/code-with-ai
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Get Started" [level=3] [ref=e78]
+            - generic [ref=e79]:
+              - link "Installation" [ref=e80] [cursor=pointer]:
+                - /url: /docs/getting-started/installing
+              - link "Quickstart" [ref=e81] [cursor=pointer]:
+                - /url: /docs/getting-started
+              - link "FAQ" [ref=e82] [cursor=pointer]:
+                - /url: /docs/getting-started/faq
+          - generic [ref=e83]:
+            - heading "Code with AI" [level=3] [ref=e84]
+            - generic [ref=e85]:
+              - link "The Chat Interface" [ref=e86] [cursor=pointer]:
+                - /url: /docs/code-with-ai
+              - link "Using Modes" [ref=e87] [cursor=pointer]:
+                - /url: /docs/code-with-ai
+              - link "Custom Rules" [ref=e88] [cursor=pointer]:
+                - /url: /docs/code-with-ai
+          - generic [ref=e89]:
+            - heading "KiloClaw" [level=3] [ref=e90]
+            - generic [ref=e91]:
+              - link "Overview" [ref=e92] [cursor=pointer]:
+                - /url: /docs/kiloclaw/overview
+              - link "Chat Platforms" [ref=e93] [cursor=pointer]:
+                - /url: /docs/kiloclaw/chat-platforms
+              - link "Development Tools" [ref=e94] [cursor=pointer]:
+                - /url: /docs/kiloclaw/development-tools
+          - generic [ref=e95]:
+            - heading "Collaborate" [level=3] [ref=e96]
+            - generic [ref=e97]:
+              - link "Sessions & Sharing" [ref=e98] [cursor=pointer]:
+                - /url: /docs/collaborate
+              - link "Kilo for Teams" [ref=e99] [cursor=pointer]:
+                - /url: /docs/collaborate
+              - link "Enterprise" [ref=e100] [cursor=pointer]:
+                - /url: /docs/collaborate
+        - generic [ref=e101]:
+          - heading "Browse by topic" [level=2] [ref=e102]
+          - generic [ref=e103]:
+            - link "Get Started Install Kilo Code and get up and running in minutes" [ref=e104] [cursor=pointer]:
+              - /url: /docs/getting-started
+              - img [ref=e106]
+              - heading "Get Started" [level=3] [ref=e108]
+              - paragraph [ref=e109]: Install Kilo Code and get up and running in minutes
+              - img [ref=e111]
+            - link "Code with AI Learn how to use Kilo Code to write, edit, and understand code" [ref=e113] [cursor=pointer]:
+              - /url: /docs/code-with-ai
+              - img [ref=e115]
+              - heading "Code with AI" [level=3] [ref=e118]
+              - paragraph [ref=e119]: Learn how to use Kilo Code to write, edit, and understand code
+              - img [ref=e121]
+            - link "KiloClaw Hosted OpenClaw agents — deploy, manage, and integrate AI agents with chat platforms, dev tools, and triggers without self-hosting." [ref=e123] [cursor=pointer]:
+              - /url: /docs/kiloclaw/overview
+              - img [ref=e125]
+              - heading "KiloClaw" [level=3] [ref=e129]
+              - paragraph [ref=e130]: Hosted OpenClaw agents — deploy, manage, and integrate AI agents with chat platforms, dev tools, and triggers without self-hosting.
+              - img [ref=e132]
+            - link "Collaborate Work with teams, share sessions, and manage organizations" [ref=e134] [cursor=pointer]:
+              - /url: /docs/collaborate
+              - img [ref=e136]
+              - heading "Collaborate" [level=3] [ref=e141]
+              - paragraph [ref=e142]: Work with teams, share sessions, and manage organizations
+              - img [ref=e144]
+            - link "Automate Set up automated workflows, integrations, and MCP servers" [ref=e146] [cursor=pointer]:
+              - /url: /docs/automate
+              - img [ref=e148]
+              - heading "Automate" [level=3] [ref=e151]
+              - paragraph [ref=e152]: Set up automated workflows, integrations, and MCP servers
+              - img [ref=e154]
+            - link "Deploy & Secure Deploy your applications and ensure security best practices" [ref=e156] [cursor=pointer]:
+              - /url: /docs/deploy-secure
+              - img [ref=e158]
+              - heading "Deploy & Secure" [level=3] [ref=e160]
+              - paragraph [ref=e161]: Deploy your applications and ensure security best practices
+              - img [ref=e163]
+            - link "Kilo Gateway A unified API to access hundreds of AI models through a single endpoint with streaming, BYOK, and usage tracking." [ref=e165] [cursor=pointer]:
+              - /url: /docs/gateway
+              - img [ref=e167]
+              - heading "Kilo Gateway" [level=3] [ref=e169]
+              - paragraph [ref=e170]: A unified API to access hundreds of AI models through a single endpoint with streaming, BYOK, and usage tracking.
+              - img [ref=e172]
+            - link "Contributing Help improve Kilo Code and learn about its architecture" [ref=e174] [cursor=pointer]:
+              - /url: /docs/contributing
+              - img [ref=e176]
+              - heading "Contributing" [level=3] [ref=e178]
+              - paragraph [ref=e179]: Help improve Kilo Code and learn about its architecture
+              - img [ref=e181]
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - heading "Try it out" [level=2] [ref=e185]
+            - paragraph [ref=e186]: Get started quickly with Kilo Code, KiloClaw, and Kilo Gateway
+          - generic [ref=e187]:
+            - generic [ref=e188]:
+              - button "Installation" [ref=e189] [cursor=pointer]
+              - button "First Task" [ref=e190] [cursor=pointer]
+              - button "Custom Rules" [ref=e191] [cursor=pointer]
+              - button "KiloClaw" [ref=e192] [cursor=pointer]
+              - button "Kilo Gateway" [ref=e193] [cursor=pointer]
+            - generic [ref=e194]:
+              - generic [ref=e200]: Terminal
+              - code [ref=e203]: "# Install Kilo Code VS Code Extension $ code --install-extension kilocode.kilo-code # Or install via CLI $ npm install -g @kilocode/cli"
+        - generic [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e207]: 💬
+            - generic [ref=e208]:
+              - strong [ref=e209]: Need help?
+              - link "Join our Discord" [ref=e210] [cursor=pointer]:
+                - /url: https://kilo.ai/discord
+          - generic [ref=e211]:
+            - generic [ref=e212]: 📝
+            - generic [ref=e213]:
+              - strong [ref=e214]: Check out our
+              - link "Changelog" [ref=e215] [cursor=pointer]:
+                - /url: https://github.com/Kilo-Org/kilocode/releases
+          - generic [ref=e216]:
+            - generic [ref=e217]: 🐛
+            - generic [ref=e218]:
+              - strong [ref=e219]: Found a bug?
+              - link "Report an issue" [ref=e220] [cursor=pointer]:
+                - /url: https://github.com/Kilo-Org/kilocode/issues
+  - alert [ref=e221]

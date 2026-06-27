@@ -1,0 +1,278 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fchicanoandres702%2FKilocode-android%2Factions%2Fruns%2F28269906681%2Fjob%2F83764944617
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Fjob%2Findex&source=header-repo&source_repo=chicanoandres702%2FKilocode-android
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - img [ref=e68]
+              - link "chicanoandres702" [ref=e71] [cursor=pointer]:
+                - /url: /chicanoandres702
+              - generic [ref=e72]: /
+              - strong [ref=e73]:
+                - link "Kilocode-android" [ref=e74] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android
+              - generic [ref=e75]: Public
+            - generic [ref=e76]:
+              - text: forked from
+              - link "ym2632600/Kilocode-android" [ref=e77] [cursor=pointer]:
+                - /url: /ym2632600/Kilocode-android
+          - generic [ref=e78]:
+            - list:
+              - listitem [ref=e79]:
+                - link "You must be signed in to change notification settings" [ref=e80] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e81]
+                  - text: Notifications
+              - listitem [ref=e83]:
+                - link "Fork 0" [ref=e84] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e85]
+                  - text: Fork
+                  - generic "0" [ref=e87]
+              - listitem [ref=e88]:
+                - link "You must be signed in to star a repository" [ref=e90] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e91]
+                  - text: Star
+                  - generic "0 users starred this repository" [ref=e93]: "0"
+        - navigation "Repository" [ref=e94]:
+          - list [ref=e95]:
+            - listitem [ref=e96]:
+              - link "Code" [ref=e97] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android
+                - img [ref=e98]
+                - generic [ref=e100]: Code
+            - listitem [ref=e101]:
+              - link "Issues 6" [ref=e102] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/issues
+                - img [ref=e103]
+                - generic [ref=e106]: Issues
+                - generic "6" [ref=e107]
+            - listitem [ref=e108]:
+              - link "Pull requests" [ref=e109] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/pulls
+                - img [ref=e110]
+                - generic [ref=e112]: Pull requests
+            - listitem [ref=e113]:
+              - link "Actions" [ref=e114] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/actions
+                - img [ref=e115]
+                - generic [ref=e117]: Actions
+            - listitem [ref=e118]:
+              - link "Projects" [ref=e119] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/projects
+                - img [ref=e120]
+                - generic [ref=e122]: Projects
+            - listitem [ref=e123]:
+              - link "Security and quality" [ref=e124] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/security
+                - img [ref=e125]
+                - generic [ref=e127]: Security and quality
+            - listitem [ref=e128]:
+              - link "Insights" [ref=e129] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/pulse
+                - img [ref=e130]
+                - generic [ref=e132]: Insights
+      - generic [ref=e137]:
+        - generic [ref=e140]:
+          - link "Android CI" [ref=e143] [cursor=pointer]:
+            - /url: /chicanoandres702/Kilocode-android/actions/workflows/android.yml
+            - img [ref=e144]
+            - generic [ref=e146]: Android CI
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - img "failed:" [ref=e152]
+              - 'heading "fix: clear loading state on session.error SSE event and switch to syn… #213" [level=1] [ref=e154]':
+                - generic [ref=e155]: "fix: clear loading state on session.error SSE event and switch to syn… #213"
+            - link "Sign in to view logs" [ref=e158] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fchicanoandres702%2FKilocode-android%2Factions%2Fruns%2F28269906681%2Fjob%2F83764944617
+        - generic [ref=e159]:
+          - navigation "Workflow run" [ref=e165]:
+            - list [ref=e166]:
+              - listitem [ref=e167]:
+                - link "Summary" [ref=e168] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681
+                  - generic:
+                    - img
+                  - generic [ref=e170]: Summary
+              - generic [ref=e171]:
+                - heading "All jobs" [level=4] [ref=e172]
+                - button "Filter by job status" [ref=e173] [cursor=pointer]:
+                  - img [ref=e174]
+              - listitem [ref=e176]
+              - listitem [ref=e177]:
+                - list [ref=e178]:
+                  - listitem [ref=e179]:
+                    - generic "Loading" [ref=e180]:
+                      - generic [ref=e184]:
+                        - img [ref=e185]
+                        - generic [ref=e188]: Loading
+              - listitem [ref=e189]
+              - listitem [ref=e190]:
+                - heading "Run details" [level=3] [ref=e192]
+                - list "Run details" [ref=e193]:
+                  - listitem [ref=e194]:
+                    - link "Usage" [ref=e195] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/usage
+                      - generic:
+                        - img
+                      - generic [ref=e197]: Usage
+                  - listitem [ref=e198]:
+                    - link "Workflow file" [ref=e199] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/workflow
+                      - generic:
+                        - img
+                      - generic [ref=e201]: Workflow file
+          - region "Check run summary" [ref=e203]:
+            - generic [ref=e204]:
+              - region "Annotations" [ref=e206]:
+                - generic [ref=e210]:
+                  - button "Open job annotations" [ref=e212] [cursor=pointer]:
+                    - img [ref=e215]
+                  - generic [ref=e217]:
+                    - heading "Annotations" [level=2] [ref=e218]
+                    - generic [ref=e219]: 1 error and 4 warnings
+              - generic [ref=e221]:
+                - generic [ref=e223]:
+                  - link "build" [ref=e226] [cursor=pointer]:
+                    - /url: "#logs"
+                    - generic [ref=e227]: build
+                  - generic [ref=e228]: failed Jun 26, 202652 minutes ago in 1m 18s
+                - generic [ref=e230]:
+                  - generic [ref=e231]:
+                    - group:
+                      - generic "Set up job":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Set up job
+                  - generic [ref=e232]:
+                    - group:
+                      - generic "Check out repository":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Check out repository
+                  - generic [ref=e233]:
+                    - group:
+                      - generic "Set up Android SDK":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Set up Android SDK
+                  - generic [ref=e234]:
+                    - group:
+                      - generic "Create local.properties":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Create local.properties
+                  - generic [ref=e235]:
+                    - group:
+                      - generic "Set up JDK 17":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Set up JDK 17
+                  - generic [ref=e236]:
+                    - group:
+                      - generic "Grant execute permission for Gradle wrapper":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Grant execute permission for Gradle wrapper
+                  - generic [ref=e237]:
+                    - group:
+                      - generic "Run Android tests":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Run Android tests
+                  - generic [ref=e238]:
+                    - group:
+                      - generic "Run Android lint":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Run Android lint
+                  - generic [ref=e239]:
+                    - group:
+                      - generic "Build debug APK":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Build debug APK
+                  - generic [ref=e240]:
+                    - group:
+                      - generic "Upload debug APK":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Upload debug APK
+                  - generic [ref=e241]:
+                    - group:
+                      - generic "Post Set up JDK 17":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Post Set up JDK 17
+                  - generic [ref=e242]:
+                    - group:
+                      - generic "Post Check out repository":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Post Check out repository
+                  - generic [ref=e243]:
+                    - group:
+                      - generic "Complete job":
+                        - generic:
+                          - img
+                          - generic:
+                            - generic: Complete job

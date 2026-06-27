@@ -1,0 +1,1663 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2FKilo-Org%2Fkilocode
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E&source=header-repo&source_repo=Kilo-Org%2Fkilocode
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e66]:
+          - img [ref=e67]
+          - link "Kilo-Org" [ref=e70] [cursor=pointer]:
+            - /url: /Kilo-Org
+          - generic [ref=e71]: /
+          - strong [ref=e72]:
+            - link "kilocode" [ref=e73] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode
+          - generic [ref=e74]: Public
+        - generic [ref=e75]:
+          - list:
+            - listitem [ref=e76]:
+              - link "You must be signed in to change notification settings" [ref=e77] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e78]
+                - text: Notifications
+            - listitem [ref=e80]:
+              - link "Fork 2.8k" [ref=e81] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e82]
+                - text: Fork
+                - generic "2,796" [ref=e84]: 2.8k
+            - listitem [ref=e85]:
+              - link "You must be signed in to star a repository" [ref=e87] [cursor=pointer]:
+                - /url: /login?return_to=%2FKilo-Org%2Fkilocode
+                - img [ref=e88]
+                - text: Star
+                - generic "24625 users starred this repository" [ref=e90]: 24.6k
+      - navigation "Repository" [ref=e91]:
+        - list [ref=e92]:
+          - listitem [ref=e93]:
+            - link "Code" [ref=e94] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode
+              - img [ref=e95]
+              - generic [ref=e97]: Code
+          - listitem [ref=e98]:
+            - link "Issues 666" [ref=e99] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/issues
+              - img [ref=e100]
+              - generic [ref=e103]: Issues
+              - generic "666" [ref=e104]
+          - listitem [ref=e105]:
+            - link "Pull requests 181" [ref=e106] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/pulls
+              - img [ref=e107]
+              - generic [ref=e109]: Pull requests
+              - generic "181" [ref=e110]
+          - listitem [ref=e111]:
+            - link "Discussions" [ref=e112] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/discussions
+              - img [ref=e113]
+              - generic [ref=e115]: Discussions
+          - listitem [ref=e116]:
+            - link "Actions" [ref=e117] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/actions
+              - img [ref=e118]
+              - generic [ref=e120]: Actions
+          - listitem [ref=e121]:
+            - link "Projects" [ref=e122] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/projects
+              - img [ref=e123]
+              - generic [ref=e125]: Projects
+          - listitem [ref=e126]:
+            - link "Security and quality" [ref=e127] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/security
+              - img [ref=e128]
+              - generic [ref=e130]: Security and quality
+          - listitem [ref=e131]:
+            - link "Insights" [ref=e132] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/pulse
+              - img [ref=e133]
+              - generic [ref=e135]: Insights
+    - generic [ref=e148]:
+      - heading "Kilo-Org/kilocode" [level=1] [ref=e150]
+      - generic [ref=e151]:
+        - generic [ref=e154]:
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - button "main branch" [ref=e158] [cursor=pointer]:
+                - generic [ref=e159]:
+                  - generic [ref=e161]:
+                    - img [ref=e163]
+                    - generic [ref=e166]: main
+                  - generic:
+                    - img
+              - generic [ref=e167]:
+                - link "1085 Branches" [ref=e168] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/branches
+                  - generic [ref=e169]:
+                    - generic:
+                      - img
+                    - generic [ref=e171]:
+                      - strong [ref=e172]: "1085"
+                      - text: Branches
+                - link "160 Tags" [ref=e173] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/tags
+                  - generic [ref=e174]:
+                    - generic:
+                      - img
+                    - generic [ref=e176]:
+                      - strong [ref=e177]: "160"
+                      - text: Tags
+            - generic [ref=e178]:
+              - generic [ref=e182]:
+                - img [ref=e184]
+                - combobox "Go to file" [ref=e186]
+              - button "Code" [ref=e187] [cursor=pointer]:
+                - generic [ref=e188]:
+                  - generic:
+                    - img
+                  - generic [ref=e189]: Code
+                  - generic:
+                    - img
+          - generic [ref=e190]:
+            - generic [ref=e191]:
+              - heading "Folders and files" [level=2] [ref=e192]
+              - table "Folders and files" [ref=e193]:
+                - rowgroup:
+                  - row "Name Last commit message Last commit date":
+                    - columnheader "Name"
+                    - columnheader "Last commit message":
+                      - generic "Last commit message"
+                    - columnheader "Last commit date":
+                      - generic "Last commit date"
+                - rowgroup [ref=e194]:
+                  - 'row "Latest commit kirillk commits by kirillk Merge pull request #11705 from Kilo-Org/maple-squirrel Open commit details success Commit fc98b12 · Jun 25, 20264 hours ago History 24,293 Commits" [ref=e195]':
+                    - 'cell "Latest commit kirillk commits by kirillk Merge pull request #11705 from Kilo-Org/maple-squirrel Open commit details success Commit fc98b12 · Jun 25, 20264 hours ago History 24,293 Commits" [ref=e196]':
+                      - generic [ref=e197]:
+                        - heading "Latest commit" [level=2] [ref=e198]
+                        - generic [ref=e199]:
+                          - generic [ref=e201]:
+                            - link "kirillk" [ref=e202] [cursor=pointer]:
+                              - /url: /kirillk
+                              - img "kirillk" [ref=e203]
+                            - link "commits by kirillk" [ref=e204] [cursor=pointer]:
+                              - /url: /Kilo-Org/kilocode/commits?author=kirillk
+                              - text: kirillk
+                          - generic [ref=e205]:
+                            - generic [ref=e207]:
+                              - link "Merge pull request" [ref=e208] [cursor=pointer]:
+                                - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                              - link "#11705" [ref=e209] [cursor=pointer]:
+                                - /url: https://github.com/Kilo-Org/kilocode/pull/11705
+                              - link "from Kilo-Org/maple-squirrel" [ref=e210] [cursor=pointer]:
+                                - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                            - button "Open commit details" [ref=e211] [cursor=pointer]:
+                              - img [ref=e212]
+                            - button "success" [ref=e214] [cursor=pointer]:
+                              - img [ref=e215]
+                        - generic [ref=e217]:
+                          - generic [ref=e219]:
+                            - link "Commit fc98b12" [ref=e220] [cursor=pointer]:
+                              - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                              - text: fc98b12
+                            - text: ·
+                            - generic "Jun 25, 2026, 8:46 PM UTC" [ref=e221]: Jun 25, 20264 hours ago
+                          - generic [ref=e222]:
+                            - heading "History" [level=2] [ref=e223]
+                            - link "24,293 Commits" [ref=e224] [cursor=pointer]:
+                              - /url: /Kilo-Org/kilocode/commits/main/
+                              - generic [ref=e225]:
+                                - generic:
+                                  - img
+                                - generic [ref=e226]: 24,293 Commits
+                  - 'row ".changeset, (Directory) Merge pull request #11705 from Kilo-Org/maple-squirrel Jun 25, 20264 hours ago" [ref=e227]':
+                    - cell ".changeset, (Directory)" [ref=e228]:
+                      - generic [ref=e229]:
+                        - img [ref=e230]
+                        - link ".changeset, (Directory)" [ref=e235] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.changeset
+                          - text: .changeset
+                    - 'cell "Merge pull request #11705 from Kilo-Org/maple-squirrel" [ref=e236]':
+                      - generic [ref=e238]:
+                        - link "Merge pull request" [ref=e239] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                        - link "#11705" [ref=e240] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/11705
+                        - link "from Kilo-Org/maple-squirrel" [ref=e241] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                    - cell "Jun 25, 20264 hours ago" [ref=e242]:
+                      - generic [ref=e243]: Jun 25, 20264 hours ago
+                  - 'row ".github, (Directory) fix(ci): scope JetBrains checks to relevant changes Jun 25, 202615 hours ago" [ref=e244]':
+                    - cell ".github, (Directory)" [ref=e245]:
+                      - generic [ref=e246]:
+                        - img [ref=e247]
+                        - link ".github, (Directory)" [ref=e252] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.github
+                          - text: .github
+                    - 'cell "fix(ci): scope JetBrains checks to relevant changes" [ref=e253]':
+                      - 'link "fix(ci): scope JetBrains checks to relevant changes" [ref=e256] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/1e39b22675eb5f8b7d464b8317d210b879b94152
+                    - cell "Jun 25, 202615 hours ago" [ref=e257]:
+                      - generic [ref=e258]: Jun 25, 202615 hours ago
+                  - 'row ".husky, (Directory) fix: update pre-push hook to allow caret version differences (#9876) Jan 21, 20265 months ago" [ref=e259]':
+                    - cell ".husky, (Directory)" [ref=e260]:
+                      - generic [ref=e261]:
+                        - img [ref=e262]
+                        - link ".husky, (Directory)" [ref=e267] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.husky
+                          - text: .husky
+                    - 'cell "fix: update pre-push hook to allow caret version differences (#9876)" [ref=e268]':
+                      - generic [ref=e270]:
+                        - 'link "fix: update pre-push hook to allow caret version differences (" [ref=e271] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/0b63cae1aeb58f9ada3c0c703112f93add67d5eb
+                        - link "#9876" [ref=e272] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/issues/9876
+                        - link ")" [ref=e273] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/0b63cae1aeb58f9ada3c0c703112f93add67d5eb
+                    - cell "Jan 21, 20265 months ago" [ref=e274]:
+                      - generic [ref=e275]: Jan 21, 20265 months ago
+                  - row ".idea, (Directory) moving things Apr 13, 20262 months ago" [ref=e276]:
+                    - cell ".idea, (Directory)" [ref=e277]:
+                      - generic [ref=e278]:
+                        - img [ref=e279]
+                        - link ".idea, (Directory)" [ref=e284] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.idea
+                          - text: .idea
+                    - cell "moving things" [ref=e285]:
+                      - link "moving things" [ref=e288] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/7115a4b5eebd18f53bed90f740753e2621e8f840
+                    - cell "Apr 13, 20262 months ago" [ref=e289]:
+                      - generic [ref=e290]: Apr 13, 20262 months ago
+                  - 'row ".kilo, (Directory) fix: narrow CONFIG_REGRESSION check to opencode paths only Jun 25, 202617 hours ago" [ref=e291]':
+                    - cell ".kilo, (Directory)" [ref=e292]:
+                      - generic [ref=e293]:
+                        - img [ref=e294]
+                        - link ".kilo, (Directory)" [ref=e299] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.kilo
+                          - text: .kilo
+                    - 'cell "fix: narrow CONFIG_REGRESSION check to opencode paths only" [ref=e300]':
+                      - 'link "fix: narrow CONFIG_REGRESSION check to opencode paths only" [ref=e303] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/4ecf221c178107c12526e7511ecd00b81f7fa543
+                    - cell "Jun 25, 202617 hours ago" [ref=e304]:
+                      - generic [ref=e305]: Jun 25, 202617 hours ago
+                  - 'row ".kilocode/skills/vscode-visual-regression, (Directory) chore: ignore generated Kilo config artifacts (#10128) May 11, 2026last month" [ref=e306]':
+                    - cell ".kilocode/skills/vscode-visual-regression, (Directory)" [ref=e307]:
+                      - generic [ref=e308]:
+                        - img [ref=e309]
+                        - link ".kilocode/skills/vscode-visual-regression, (Directory)" [ref=e314] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.kilocode/skills/vscode-visual-regression
+                          - text: .kilocode/skills/vscode-visual-regression
+                    - 'cell "chore: ignore generated Kilo config artifacts (#10128)" [ref=e315]':
+                      - generic [ref=e317]:
+                        - 'link "chore: ignore generated Kilo config artifacts (" [ref=e318] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/1988db53e32f2a91a8ea1e21f3a87cef975c9b64
+                        - link "#10128" [ref=e319] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/10128
+                        - link ")" [ref=e320] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/1988db53e32f2a91a8ea1e21f3a87cef975c9b64
+                    - cell "May 11, 2026last month" [ref=e321]:
+                      - generic [ref=e322]: May 11, 2026last month
+                  - row ".opencode, (Directory) resolve merge conflicts Jun 19, 2026last week" [ref=e323]:
+                    - cell ".opencode, (Directory)" [ref=e324]:
+                      - generic [ref=e325]:
+                        - img [ref=e326]
+                        - link ".opencode, (Directory)" [ref=e331] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.opencode
+                          - text: .opencode
+                    - cell "resolve merge conflicts" [ref=e332]:
+                      - link "resolve merge conflicts" [ref=e335] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/8c2fa74f8a5c25afa1d2d871d445bc0c1e502ff9
+                    - cell "Jun 19, 2026last week" [ref=e336]:
+                      - generic [ref=e337]: Jun 19, 2026last week
+                  - 'row ".vscode, (Directory) fix: vscode kiloclaw error handler Apr 28, 20262 months ago" [ref=e338]':
+                    - cell ".vscode, (Directory)" [ref=e339]:
+                      - generic [ref=e340]:
+                        - img [ref=e341]
+                        - link ".vscode, (Directory)" [ref=e346] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.vscode
+                          - text: .vscode
+                    - 'cell "fix: vscode kiloclaw error handler" [ref=e347]':
+                      - 'link "fix: vscode kiloclaw error handler" [ref=e350] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e64fe5578893e4a990d0fe113523fd09f48d1514
+                    - cell "Apr 28, 20262 months ago" [ref=e351]:
+                      - generic [ref=e352]: Apr 28, 20262 months ago
+                  - 'row ".zed, (Directory) app: refactor server management backend (#13813) Feb 18, 20264 months ago" [ref=e353]':
+                    - cell ".zed, (Directory)" [ref=e354]:
+                      - generic [ref=e355]:
+                        - img [ref=e356]
+                        - link ".zed, (Directory)" [ref=e361] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/.zed
+                          - text: .zed
+                    - 'cell "app: refactor server management backend (#13813)" [ref=e362]':
+                      - 'link "app: refactor server management backend (#13813)" [ref=e365] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/1bb8574179bbf7c49a34ad0e5df522a752af08c2
+                    - cell "Feb 18, 20264 months ago" [ref=e366]:
+                      - generic [ref=e367]: Feb 18, 20264 months ago
+                  - 'row "bin, (Directory) feat(cli): add kilodev launcher + dev-alias helper Apr 23, 20262 months ago" [ref=e368]':
+                    - cell "bin, (Directory)" [ref=e369]:
+                      - generic [ref=e370]:
+                        - img [ref=e371]
+                        - link "bin, (Directory)" [ref=e376] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/bin
+                          - text: bin
+                    - 'cell "feat(cli): add kilodev launcher + dev-alias helper" [ref=e377]':
+                      - 'link "feat(cli): add kilodev launcher + dev-alias helper" [ref=e380] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/59d54806f6c3018451c82c9c3bb37b8b808e7df6
+                    - cell "Apr 23, 20262 months ago" [ref=e381]:
+                      - generic [ref=e382]: Apr 23, 20262 months ago
+                  - row "github, (Directory) Resolve merge conflicts Feb 25, 20264 months ago" [ref=e383]:
+                    - cell "github, (Directory)" [ref=e384]:
+                      - generic [ref=e385]:
+                        - img [ref=e386]
+                        - link "github, (Directory)" [ref=e391] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/github
+                          - text: github
+                    - cell "Resolve merge conflicts" [ref=e392]:
+                      - link "Resolve merge conflicts" [ref=e395] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/2b05e4f40b7b8fc94e952f16993ba4314e1724f3
+                    - cell "Feb 25, 20264 months ago" [ref=e396]:
+                      - generic [ref=e397]: Feb 25, 20264 months ago
+                  - 'row "nix, (Directory) feat(cli): add Linux filesystem sandbox Jun 23, 20262 days ago" [ref=e398]':
+                    - cell "nix, (Directory)" [ref=e399]:
+                      - generic [ref=e400]:
+                        - img [ref=e401]
+                        - link "nix, (Directory)" [ref=e406] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/nix
+                          - text: nix
+                    - 'cell "feat(cli): add Linux filesystem sandbox" [ref=e407]':
+                      - 'link "feat(cli): add Linux filesystem sandbox" [ref=e410] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/209e7a71d5d211b44f4831f43b989c70c78b12de
+                    - cell "Jun 23, 20262 days ago" [ref=e411]:
+                      - generic [ref=e412]: Jun 23, 20262 days ago
+                  - 'row "packages, (Directory) Merge pull request #11705 from Kilo-Org/maple-squirrel Jun 25, 20264 hours ago" [ref=e413]':
+                    - cell "packages, (Directory)" [ref=e414]:
+                      - generic [ref=e415]:
+                        - img [ref=e416]
+                        - link "packages, (Directory)" [ref=e421] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/packages
+                          - text: packages
+                    - 'cell "Merge pull request #11705 from Kilo-Org/maple-squirrel" [ref=e422]':
+                      - generic [ref=e424]:
+                        - link "Merge pull request" [ref=e425] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                        - link "#11705" [ref=e426] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/11705
+                        - link "from Kilo-Org/maple-squirrel" [ref=e427] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/fc98b125b790fa44f8da5a188e551d2eed4886c7
+                    - cell "Jun 25, 20264 hours ago" [ref=e428]:
+                      - generic [ref=e429]: Jun 25, 20264 hours ago
+                  - 'row "patches, (Directory) refactor: adapt kilo changes to upstream v1.15.13 API Jun 19, 2026last week" [ref=e430]':
+                    - cell "patches, (Directory)" [ref=e431]:
+                      - generic [ref=e432]:
+                        - img [ref=e433]
+                        - link "patches, (Directory)" [ref=e438] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/patches
+                          - text: patches
+                    - 'cell "refactor: adapt kilo changes to upstream v1.15.13 API" [ref=e439]':
+                      - 'link "refactor: adapt kilo changes to upstream v1.15.13 API" [ref=e442] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/984b1f20474384f35c130216ac08f20b51eb0ef9
+                    - cell "Jun 19, 2026last week" [ref=e443]:
+                      - generic [ref=e444]: Jun 19, 2026last week
+                  - 'row "perf, (Directory) feat(opencode): add tool metadata buffering and migrate virtua to v0.… Jun 17, 2026last week" [ref=e445]':
+                    - cell "perf, (Directory)" [ref=e446]:
+                      - generic [ref=e447]:
+                        - img [ref=e448]
+                        - link "perf, (Directory)" [ref=e453] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/perf
+                          - text: perf
+                    - 'cell "feat(opencode): add tool metadata buffering and migrate virtua to v0.…" [ref=e454]':
+                      - 'link "feat(opencode): add tool metadata buffering and migrate virtua to v0.…" [ref=e457] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/abdef9a7ee273ccc972439978ed8cd64b6fb5f1d
+                    - cell "Jun 17, 2026last week" [ref=e458]:
+                      - generic [ref=e459]: Jun 17, 2026last week
+                  - 'row "script, (Directory) fix: avoid repository-wide formatting during generation Jun 25, 202616 hours ago" [ref=e460]':
+                    - cell "script, (Directory)" [ref=e461]:
+                      - generic [ref=e462]:
+                        - img [ref=e463]
+                        - link "script, (Directory)" [ref=e468] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/script
+                          - text: script
+                    - 'cell "fix: avoid repository-wide formatting during generation" [ref=e469]':
+                      - 'link "fix: avoid repository-wide formatting during generation" [ref=e472] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/064eb6c1dc20895613720c2bbbd9d378182f94d0
+                    - cell "Jun 25, 202616 hours ago" [ref=e473]:
+                      - generic [ref=e474]: Jun 25, 202616 hours ago
+                  - 'row "specs, (Directory) chore(monorepo): remove stats package and align upstream skip rules Jun 19, 2026last week" [ref=e475]':
+                    - cell "specs, (Directory)" [ref=e476]:
+                      - generic [ref=e477]:
+                        - img [ref=e478]
+                        - link "specs, (Directory)" [ref=e483] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/tree/main/specs
+                          - text: specs
+                    - 'cell "chore(monorepo): remove stats package and align upstream skip rules" [ref=e484]':
+                      - 'link "chore(monorepo): remove stats package and align upstream skip rules" [ref=e487] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/351c2e4fc7a96af6121a2765426b302caed1940a
+                    - cell "Jun 19, 2026last week" [ref=e488]:
+                      - generic [ref=e489]: Jun 19, 2026last week
+                  - 'row ".dockerignore, (File) refactor: kilo compat for v1.15.13 Jun 18, 2026last week" [ref=e490]':
+                    - cell ".dockerignore, (File)" [ref=e491]:
+                      - generic [ref=e492]:
+                        - img [ref=e493]
+                        - link ".dockerignore, (File)" [ref=e498] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.dockerignore
+                          - text: .dockerignore
+                    - 'cell "refactor: kilo compat for v1.15.13" [ref=e499]':
+                      - 'link "refactor: kilo compat for v1.15.13" [ref=e502] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/2266489ef8b5a0dba701bf335c7fa6406a72f6cd
+                    - cell "Jun 18, 2026last week" [ref=e503]:
+                      - generic [ref=e504]: Jun 18, 2026last week
+                  - 'row ".editorconfig, (File) refactor: streamline jetbrains session UI and tests Apr 24, 20262 months ago" [ref=e505]':
+                    - cell ".editorconfig, (File)" [ref=e506]:
+                      - generic [ref=e507]:
+                        - img [ref=e508]
+                        - link ".editorconfig, (File)" [ref=e513] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.editorconfig
+                          - text: .editorconfig
+                    - 'cell "refactor: streamline jetbrains session UI and tests" [ref=e514]':
+                      - 'link "refactor: streamline jetbrains session UI and tests" [ref=e517] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/a63d77a4f7da83f4df9eb569bd744a9e888b7513
+                    - cell "Apr 24, 20262 months ago" [ref=e518]:
+                      - generic [ref=e519]: Apr 24, 20262 months ago
+                  - 'row ".envrc, (File) feat: envrc flake support Feb 2, 20264 months ago" [ref=e520]':
+                    - cell ".envrc, (File)" [ref=e521]:
+                      - generic [ref=e522]:
+                        - img [ref=e523]
+                        - link ".envrc, (File)" [ref=e528] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.envrc
+                          - text: .envrc
+                    - 'cell "feat: envrc flake support" [ref=e529]':
+                      - 'link "feat: envrc flake support" [ref=e532] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/6e66979f9ec78822c7f2836689ae65a2ef43b35d
+                    - cell "Feb 2, 20264 months ago" [ref=e533]:
+                      - generic [ref=e534]: Feb 2, 20264 months ago
+                  - 'row ".gitattributes, (File) chore: retain old visual baseline lfs paths Apr 21, 20262 months ago" [ref=e535]':
+                    - cell ".gitattributes, (File)" [ref=e536]:
+                      - generic [ref=e537]:
+                        - img [ref=e538]
+                        - link ".gitattributes, (File)" [ref=e543] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.gitattributes
+                          - text: .gitattributes
+                    - 'cell "chore: retain old visual baseline lfs paths" [ref=e544]':
+                      - 'link "chore: retain old visual baseline lfs paths" [ref=e547] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/f45bab245e7ceb52483b931f1edc0f8ee92a9cde
+                    - cell "Apr 21, 20262 months ago" [ref=e548]:
+                      - generic [ref=e549]: Apr 21, 20262 months ago
+                  - 'row ".gitignore, (File) chore: track local plans (#11062) Jun 10, 20262 weeks ago" [ref=e550]':
+                    - cell ".gitignore, (File)" [ref=e551]:
+                      - generic [ref=e552]:
+                        - img [ref=e553]
+                        - link ".gitignore, (File)" [ref=e558] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.gitignore
+                          - text: .gitignore
+                    - 'cell "chore: track local plans (#11062)" [ref=e559]':
+                      - generic [ref=e561]:
+                        - 'link "chore: track local plans (" [ref=e562] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/a261b7e016babf72f9ae89b7c6008ad1f0b7fb46
+                        - link "#11062" [ref=e563] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/11062
+                        - link ")" [ref=e564] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/a261b7e016babf72f9ae89b7c6008ad1f0b7fb46
+                    - cell "Jun 10, 20262 weeks ago" [ref=e565]:
+                      - generic [ref=e566]: Jun 10, 20262 weeks ago
+                  - 'row ".gitleaksignore, (File) refactor: kilo compat for v1.14.42 Jun 1, 2026last month" [ref=e567]':
+                    - cell ".gitleaksignore, (File)" [ref=e568]:
+                      - generic [ref=e569]:
+                        - img [ref=e570]
+                        - link ".gitleaksignore, (File)" [ref=e575] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.gitleaksignore
+                          - text: .gitleaksignore
+                    - 'cell "refactor: kilo compat for v1.14.42" [ref=e576]':
+                      - 'link "refactor: kilo compat for v1.14.42" [ref=e579] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/7cc6080646e1f40b75c871380a1d451d32feae03
+                    - cell "Jun 1, 2026last month" [ref=e580]:
+                      - generic [ref=e581]: Jun 1, 2026last month
+                  - 'row ".opencode-version, (File) refactor: kilo compat for v1.15.13 Jun 18, 2026last week" [ref=e582]':
+                    - cell ".opencode-version, (File)" [ref=e583]:
+                      - generic [ref=e584]:
+                        - img [ref=e585]
+                        - link ".opencode-version, (File)" [ref=e590] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.opencode-version
+                          - text: .opencode-version
+                    - 'cell "refactor: kilo compat for v1.15.13" [ref=e591]':
+                      - 'link "refactor: kilo compat for v1.15.13" [ref=e594] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/2266489ef8b5a0dba701bf335c7fa6406a72f6cd
+                    - cell "Jun 18, 2026last week" [ref=e595]:
+                      - generic [ref=e596]: Jun 18, 2026last week
+                  - 'row ".oxlintrc.json, (File) feat: enable type-aware no-misused-spread rule, fix 8 violations (#22… Apr 16, 20262 months ago" [ref=e597]':
+                    - cell ".oxlintrc.json, (File)" [ref=e598]:
+                      - generic [ref=e599]:
+                        - img [ref=e600]
+                        - link ".oxlintrc.json, (File)" [ref=e605] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.oxlintrc.json
+                          - text: .oxlintrc.json
+                    - 'cell "feat: enable type-aware no-misused-spread rule, fix 8 violations (#22…" [ref=e606]':
+                      - 'link "feat: enable type-aware no-misused-spread rule, fix 8 violations (#22…" [ref=e609] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/bd2900483150d690acdc53acb37e98eda7bb7fe5
+                    - cell "Apr 16, 20262 months ago" [ref=e610]:
+                      - generic [ref=e611]: Apr 16, 20262 months ago
+                  - 'row ".prettierignore, (File) refactor(build): remove sidecar models-snapshot distribution Jun 17, 2026last week" [ref=e612]':
+                    - cell ".prettierignore, (File)" [ref=e613]:
+                      - generic [ref=e614]:
+                        - img [ref=e615]
+                        - link ".prettierignore, (File)" [ref=e620] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/.prettierignore
+                          - text: .prettierignore
+                    - 'cell "refactor(build): remove sidecar models-snapshot distribution" [ref=e621]':
+                      - 'link "refactor(build): remove sidecar models-snapshot distribution" [ref=e624] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/d5f1495f12f40c6c06c964fc981fe640be4a28aa
+                    - cell "Jun 17, 2026last week" [ref=e625]:
+                      - generic [ref=e626]: Jun 17, 2026last week
+                  - row "AGENTS.md, (File) Merge branch 'main' into imanolmaiztegui/kilo-opencode-v1.15.9 Jun 17, 2026last week" [ref=e627]:
+                    - cell "AGENTS.md, (File)" [ref=e628]:
+                      - generic [ref=e629]:
+                        - img [ref=e630]
+                        - link "AGENTS.md, (File)" [ref=e635] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/AGENTS.md
+                          - text: AGENTS.md
+                    - cell "Merge branch 'main' into imanolmaiztegui/kilo-opencode-v1.15.9" [ref=e636]:
+                      - link "Merge branch 'main' into imanolmaiztegui/kilo-opencode-v1.15.9" [ref=e639] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/6b6b04bd96a1e1eea12805d29bb3c5cc5fcf1ebd
+                    - cell "Jun 17, 2026last week" [ref=e640]:
+                      - generic [ref=e641]: Jun 17, 2026last week
+                  - 'row "AgentManagerApp.tsx, (File) feat(agent-manager): add advanced worktree creation with base branch … Feb 23, 20264 months ago" [ref=e642]':
+                    - cell "AgentManagerApp.tsx, (File)" [ref=e643]:
+                      - generic [ref=e644]:
+                        - img [ref=e645]
+                        - link "AgentManagerApp.tsx, (File)" [ref=e650] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/AgentManagerApp.tsx
+                          - text: AgentManagerApp.tsx
+                    - 'cell "feat(agent-manager): add advanced worktree creation with base branch …" [ref=e651]':
+                      - 'link "feat(agent-manager): add advanced worktree creation with base branch …" [ref=e654] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/1cdad80eacee618df35f944d8f5864814d8a2c47
+                    - cell "Feb 23, 20264 months ago" [ref=e655]:
+                      - generic [ref=e656]: Feb 23, 20264 months ago
+                  - 'row "CODE_OF_CONDUCT.md, (File) docs: align contributing guidelines and community docs with kilocode (#… Feb 3, 20264 months ago" [ref=e657]':
+                    - cell "CODE_OF_CONDUCT.md, (File)" [ref=e658]:
+                      - generic [ref=e659]:
+                        - img [ref=e660]
+                        - link "CODE_OF_CONDUCT.md, (File)" [ref=e665] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/CODE_OF_CONDUCT.md
+                          - text: CODE_OF_CONDUCT.md
+                    - 'cell "docs: align contributing guidelines and community docs with kilocode (#…" [ref=e666]':
+                      - generic [ref=e668]:
+                        - 'link "docs: align contributing guidelines and community docs with kilocode (" [ref=e669] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/13ed01bd2b302377e287f683a554a76270dce12e
+                        - link "#…" [ref=e670] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/issues/82
+                    - cell "Feb 3, 20264 months ago" [ref=e671]:
+                      - generic [ref=e672]: Feb 3, 20264 months ago
+                  - 'row "CONTRIBUTING.md, (File) build(deps): bump bun from 1.3.13 to 1.3.14 (#10884) Jun 3, 20263 weeks ago" [ref=e673]':
+                    - cell "CONTRIBUTING.md, (File)" [ref=e674]:
+                      - generic [ref=e675]:
+                        - img [ref=e676]
+                        - link "CONTRIBUTING.md, (File)" [ref=e681] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/CONTRIBUTING.md
+                          - text: CONTRIBUTING.md
+                    - 'cell "build(deps): bump bun from 1.3.13 to 1.3.14 (#10884)" [ref=e682]':
+                      - generic [ref=e684]:
+                        - 'link "build(deps): bump bun from 1.3.13 to 1.3.14 (" [ref=e685] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/6cfd2dd0b4edc2064b41ddbbc75339d414e52e38
+                        - link "#10884" [ref=e686] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/10884
+                        - link ")" [ref=e687] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/6cfd2dd0b4edc2064b41ddbbc75339d414e52e38
+                    - cell "Jun 3, 20263 weeks ago" [ref=e688]:
+                      - generic [ref=e689]: Jun 3, 20263 weeks ago
+                  - 'row "LICENSE, (File) docs: update Kilo copyright year Jun 11, 20262 weeks ago" [ref=e690]':
+                    - cell "LICENSE, (File)" [ref=e691]:
+                      - generic [ref=e692]:
+                        - img [ref=e693]
+                        - link "LICENSE, (File)" [ref=e698] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/LICENSE
+                          - text: LICENSE
+                    - 'cell "docs: update Kilo copyright year" [ref=e699]':
+                      - 'link "docs: update Kilo copyright year" [ref=e702] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/13a3cf55c462f04d11ee8be5a7d28e0b05e8a5fb
+                    - cell "Jun 11, 20262 weeks ago" [ref=e703]:
+                      - generic [ref=e704]: Jun 11, 20262 weeks ago
+                  - 'row "PRIVACY.md, (File) docs: align contributing guidelines and community docs with kilocode (#… Feb 3, 20264 months ago" [ref=e705]':
+                    - cell "PRIVACY.md, (File)" [ref=e706]:
+                      - generic [ref=e707]:
+                        - img [ref=e708]
+                        - link "PRIVACY.md, (File)" [ref=e713] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/PRIVACY.md
+                          - text: PRIVACY.md
+                    - 'cell "docs: align contributing guidelines and community docs with kilocode (#…" [ref=e714]':
+                      - generic [ref=e716]:
+                        - 'link "docs: align contributing guidelines and community docs with kilocode (" [ref=e717] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/13ed01bd2b302377e287f683a554a76270dce12e
+                        - link "#…" [ref=e718] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/issues/82
+                    - cell "Feb 3, 20264 months ago" [ref=e719]:
+                      - generic [ref=e720]: Feb 3, 20264 months ago
+                  - 'row "README.ar.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e721]':
+                    - cell "README.ar.md, (File)" [ref=e722]:
+                      - generic [ref=e723]:
+                        - img [ref=e724]
+                        - link "README.ar.md, (File)" [ref=e729] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.ar.md
+                          - text: README.ar.md
+                    - 'cell "docs: fix localized readme source links" [ref=e730]':
+                      - 'link "docs: fix localized readme source links" [ref=e733] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e734]:
+                      - generic [ref=e735]: Jun 17, 2026last week
+                  - 'row "README.bn.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e736]':
+                    - cell "README.bn.md, (File)" [ref=e737]:
+                      - generic [ref=e738]:
+                        - img [ref=e739]
+                        - link "README.bn.md, (File)" [ref=e744] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.bn.md
+                          - text: README.bn.md
+                    - 'cell "docs: fix localized readme source links" [ref=e745]':
+                      - 'link "docs: fix localized readme source links" [ref=e748] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e749]:
+                      - generic [ref=e750]: Jun 17, 2026last week
+                  - 'row "README.br.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e751]':
+                    - cell "README.br.md, (File)" [ref=e752]:
+                      - generic [ref=e753]:
+                        - img [ref=e754]
+                        - link "README.br.md, (File)" [ref=e759] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.br.md
+                          - text: README.br.md
+                    - 'cell "docs: fix localized readme source links" [ref=e760]':
+                      - 'link "docs: fix localized readme source links" [ref=e763] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e764]:
+                      - generic [ref=e765]: Jun 17, 2026last week
+                  - 'row "README.bs.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e766]':
+                    - cell "README.bs.md, (File)" [ref=e767]:
+                      - generic [ref=e768]:
+                        - img [ref=e769]
+                        - link "README.bs.md, (File)" [ref=e774] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.bs.md
+                          - text: README.bs.md
+                    - 'cell "docs: fix localized readme source links" [ref=e775]':
+                      - 'link "docs: fix localized readme source links" [ref=e778] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e779]:
+                      - generic [ref=e780]: Jun 17, 2026last week
+                  - 'row "README.da.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e781]':
+                    - cell "README.da.md, (File)" [ref=e782]:
+                      - generic [ref=e783]:
+                        - img [ref=e784]
+                        - link "README.da.md, (File)" [ref=e789] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.da.md
+                          - text: README.da.md
+                    - 'cell "docs: fix localized readme source links" [ref=e790]':
+                      - 'link "docs: fix localized readme source links" [ref=e793] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e794]:
+                      - generic [ref=e795]: Jun 17, 2026last week
+                  - 'row "README.de.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e796]':
+                    - cell "README.de.md, (File)" [ref=e797]:
+                      - generic [ref=e798]:
+                        - img [ref=e799]
+                        - link "README.de.md, (File)" [ref=e804] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.de.md
+                          - text: README.de.md
+                    - 'cell "docs: fix localized readme source links" [ref=e805]':
+                      - 'link "docs: fix localized readme source links" [ref=e808] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e809]:
+                      - generic [ref=e810]: Jun 17, 2026last week
+                  - 'row "README.es.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e811]':
+                    - cell "README.es.md, (File)" [ref=e812]:
+                      - generic [ref=e813]:
+                        - img [ref=e814]
+                        - link "README.es.md, (File)" [ref=e819] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.es.md
+                          - text: README.es.md
+                    - 'cell "docs: fix localized readme source links" [ref=e820]':
+                      - 'link "docs: fix localized readme source links" [ref=e823] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e824]:
+                      - generic [ref=e825]: Jun 17, 2026last week
+                  - 'row "README.fr.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e826]':
+                    - cell "README.fr.md, (File)" [ref=e827]:
+                      - generic [ref=e828]:
+                        - img [ref=e829]
+                        - link "README.fr.md, (File)" [ref=e834] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.fr.md
+                          - text: README.fr.md
+                    - 'cell "docs: fix localized readme source links" [ref=e835]':
+                      - 'link "docs: fix localized readme source links" [ref=e838] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e839]:
+                      - generic [ref=e840]: Jun 17, 2026last week
+                  - 'row "README.gr.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e841]':
+                    - cell "README.gr.md, (File)" [ref=e842]:
+                      - generic [ref=e843]:
+                        - img [ref=e844]
+                        - link "README.gr.md, (File)" [ref=e849] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.gr.md
+                          - text: README.gr.md
+                    - 'cell "docs: fix localized readme source links" [ref=e850]':
+                      - 'link "docs: fix localized readme source links" [ref=e853] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e854]:
+                      - generic [ref=e855]: Jun 17, 2026last week
+                  - 'row "README.it.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e856]':
+                    - cell "README.it.md, (File)" [ref=e857]:
+                      - generic [ref=e858]:
+                        - img [ref=e859]
+                        - link "README.it.md, (File)" [ref=e864] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.it.md
+                          - text: README.it.md
+                    - 'cell "docs: fix localized readme source links" [ref=e865]':
+                      - 'link "docs: fix localized readme source links" [ref=e868] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e869]:
+                      - generic [ref=e870]: Jun 17, 2026last week
+                  - 'row "README.ja.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e871]':
+                    - cell "README.ja.md, (File)" [ref=e872]:
+                      - generic [ref=e873]:
+                        - img [ref=e874]
+                        - link "README.ja.md, (File)" [ref=e879] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.ja.md
+                          - text: README.ja.md
+                    - 'cell "docs: fix localized readme source links" [ref=e880]':
+                      - 'link "docs: fix localized readme source links" [ref=e883] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e884]:
+                      - generic [ref=e885]: Jun 17, 2026last week
+                  - 'row "README.ko.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e886]':
+                    - cell "README.ko.md, (File)" [ref=e887]:
+                      - generic [ref=e888]:
+                        - img [ref=e889]
+                        - link "README.ko.md, (File)" [ref=e894] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.ko.md
+                          - text: README.ko.md
+                    - 'cell "docs: fix localized readme source links" [ref=e895]':
+                      - 'link "docs: fix localized readme source links" [ref=e898] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e899]:
+                      - generic [ref=e900]: Jun 17, 2026last week
+                  - 'row "README.md, (File) docs: fix readme source link Jun 17, 2026last week" [ref=e901]':
+                    - cell "README.md, (File)" [ref=e902]:
+                      - generic [ref=e903]:
+                        - img [ref=e904]
+                        - link "README.md, (File)" [ref=e909] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.md
+                          - text: README.md
+                    - 'cell "docs: fix readme source link" [ref=e910]':
+                      - 'link "docs: fix readme source link" [ref=e913] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/d981c35e50f646b44ec20ce960bf98c19be23650
+                    - cell "Jun 17, 2026last week" [ref=e914]:
+                      - generic [ref=e915]: Jun 17, 2026last week
+                  - 'row "README.no.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e916]':
+                    - cell "README.no.md, (File)" [ref=e917]:
+                      - generic [ref=e918]:
+                        - img [ref=e919]
+                        - link "README.no.md, (File)" [ref=e924] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.no.md
+                          - text: README.no.md
+                    - 'cell "docs: fix localized readme source links" [ref=e925]':
+                      - 'link "docs: fix localized readme source links" [ref=e928] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e929]:
+                      - generic [ref=e930]: Jun 17, 2026last week
+                  - 'row "README.pl.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e931]':
+                    - cell "README.pl.md, (File)" [ref=e932]:
+                      - generic [ref=e933]:
+                        - img [ref=e934]
+                        - link "README.pl.md, (File)" [ref=e939] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.pl.md
+                          - text: README.pl.md
+                    - 'cell "docs: fix localized readme source links" [ref=e940]':
+                      - 'link "docs: fix localized readme source links" [ref=e943] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e944]:
+                      - generic [ref=e945]: Jun 17, 2026last week
+                  - 'row "README.ru.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e946]':
+                    - cell "README.ru.md, (File)" [ref=e947]:
+                      - generic [ref=e948]:
+                        - img [ref=e949]
+                        - link "README.ru.md, (File)" [ref=e954] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.ru.md
+                          - text: README.ru.md
+                    - 'cell "docs: fix localized readme source links" [ref=e955]':
+                      - 'link "docs: fix localized readme source links" [ref=e958] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e959]:
+                      - generic [ref=e960]: Jun 17, 2026last week
+                  - 'row "README.th.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e961]':
+                    - cell "README.th.md, (File)" [ref=e962]:
+                      - generic [ref=e963]:
+                        - img [ref=e964]
+                        - link "README.th.md, (File)" [ref=e969] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.th.md
+                          - text: README.th.md
+                    - 'cell "docs: fix localized readme source links" [ref=e970]':
+                      - 'link "docs: fix localized readme source links" [ref=e973] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e974]:
+                      - generic [ref=e975]: Jun 17, 2026last week
+                  - 'row "README.tr.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e976]':
+                    - cell "README.tr.md, (File)" [ref=e977]:
+                      - generic [ref=e978]:
+                        - img [ref=e979]
+                        - link "README.tr.md, (File)" [ref=e984] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.tr.md
+                          - text: README.tr.md
+                    - 'cell "docs: fix localized readme source links" [ref=e985]':
+                      - 'link "docs: fix localized readme source links" [ref=e988] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e989]:
+                      - generic [ref=e990]: Jun 17, 2026last week
+                  - 'row "README.uk.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e991]':
+                    - cell "README.uk.md, (File)" [ref=e992]:
+                      - generic [ref=e993]:
+                        - img [ref=e994]
+                        - link "README.uk.md, (File)" [ref=e999] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.uk.md
+                          - text: README.uk.md
+                    - 'cell "docs: fix localized readme source links" [ref=e1000]':
+                      - 'link "docs: fix localized readme source links" [ref=e1003] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e1004]:
+                      - generic [ref=e1005]: Jun 17, 2026last week
+                  - 'row "README.vi.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e1006]':
+                    - cell "README.vi.md, (File)" [ref=e1007]:
+                      - generic [ref=e1008]:
+                        - img [ref=e1009]
+                        - link "README.vi.md, (File)" [ref=e1014] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.vi.md
+                          - text: README.vi.md
+                    - 'cell "docs: fix localized readme source links" [ref=e1015]':
+                      - 'link "docs: fix localized readme source links" [ref=e1018] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e1019]:
+                      - generic [ref=e1020]: Jun 17, 2026last week
+                  - 'row "README.zh.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e1021]':
+                    - cell "README.zh.md, (File)" [ref=e1022]:
+                      - generic [ref=e1023]:
+                        - img [ref=e1024]
+                        - link "README.zh.md, (File)" [ref=e1029] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.zh.md
+                          - text: README.zh.md
+                    - 'cell "docs: fix localized readme source links" [ref=e1030]':
+                      - 'link "docs: fix localized readme source links" [ref=e1033] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e1034]:
+                      - generic [ref=e1035]: Jun 17, 2026last week
+                  - 'row "README.zht.md, (File) docs: fix localized readme source links Jun 17, 2026last week" [ref=e1036]':
+                    - cell "README.zht.md, (File)" [ref=e1037]:
+                      - generic [ref=e1038]:
+                        - img [ref=e1039]
+                        - link "README.zht.md, (File)" [ref=e1044] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/README.zht.md
+                          - text: README.zht.md
+                    - 'cell "docs: fix localized readme source links" [ref=e1045]':
+                      - 'link "docs: fix localized readme source links" [ref=e1048] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e208bfb5f6cb6d84323ee63d991dbb07bac0e59d
+                    - cell "Jun 17, 2026last week" [ref=e1049]:
+                      - generic [ref=e1050]: Jun 17, 2026last week
+                  - 'row "RELEASING.md, (File) docs: move GHCR follow-up out of RELEASING.md into the PR Apr 28, 20262 months ago" [ref=e1051]':
+                    - cell "RELEASING.md, (File)" [ref=e1052]:
+                      - generic [ref=e1053]:
+                        - img [ref=e1054]
+                        - link "RELEASING.md, (File)" [ref=e1059] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/RELEASING.md
+                          - text: RELEASING.md
+                    - 'cell "docs: move GHCR follow-up out of RELEASING.md into the PR" [ref=e1060]':
+                      - 'link "docs: move GHCR follow-up out of RELEASING.md into the PR" [ref=e1063] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/5325fff667cfad8e6762f64720c0f4486534b5d0
+                    - cell "Apr 28, 20262 months ago" [ref=e1064]:
+                      - generic [ref=e1065]: Apr 28, 20262 months ago
+                  - 'row "REVIEW.md, (File) docs: add REVIEW.md with reviewbot guidance May 18, 2026last month" [ref=e1066]':
+                    - cell "REVIEW.md, (File)" [ref=e1067]:
+                      - generic [ref=e1068]:
+                        - img [ref=e1069]
+                        - link "REVIEW.md, (File)" [ref=e1074] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/REVIEW.md
+                          - text: REVIEW.md
+                    - 'cell "docs: add REVIEW.md with reviewbot guidance" [ref=e1075]':
+                      - 'link "docs: add REVIEW.md with reviewbot guidance" [ref=e1078] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/98e7c25fda039040f4b6abbf09420a64194ca8cd
+                    - cell "May 18, 2026last month" [ref=e1079]:
+                      - generic [ref=e1080]: May 18, 2026last month
+                  - 'row "SECURITY.md, (File) chore: enforce minimal markdown table formatting Apr 28, 20262 months ago" [ref=e1081]':
+                    - cell "SECURITY.md, (File)" [ref=e1082]:
+                      - generic [ref=e1083]:
+                        - img [ref=e1084]
+                        - link "SECURITY.md, (File)" [ref=e1089] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/SECURITY.md
+                          - text: SECURITY.md
+                    - 'cell "chore: enforce minimal markdown table formatting" [ref=e1090]':
+                      - 'link "chore: enforce minimal markdown table formatting" [ref=e1093] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/06cd80d1bddc4c35a101248e4415a50fdb560070
+                    - cell "Apr 28, 20262 months ago" [ref=e1094]:
+                      - generic [ref=e1095]: Apr 28, 20262 months ago
+                  - 'row "TESTING.md, (File) chore: remove stale desktop package references May 4, 2026last month" [ref=e1096]':
+                    - cell "TESTING.md, (File)" [ref=e1097]:
+                      - generic [ref=e1098]:
+                        - img [ref=e1099]
+                        - link "TESTING.md, (File)" [ref=e1104] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/TESTING.md
+                          - text: TESTING.md
+                    - 'cell "chore: remove stale desktop package references" [ref=e1105]':
+                      - 'link "chore: remove stale desktop package references" [ref=e1108] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/d22d08bbced0a85628e2ecd2773ca36ab2d14af4
+                    - cell "May 4, 2026last month" [ref=e1109]:
+                      - generic [ref=e1110]: May 4, 2026last month
+                  - row "bun.lock, (File) Merge remote-tracking branch 'origin/main' into honored-sing Jun 23, 20263 days ago" [ref=e1111]:
+                    - cell "bun.lock, (File)" [ref=e1112]:
+                      - generic [ref=e1113]:
+                        - img [ref=e1114]
+                        - link "bun.lock, (File)" [ref=e1119] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/bun.lock
+                          - text: bun.lock
+                    - cell "Merge remote-tracking branch 'origin/main' into honored-sing" [ref=e1120]:
+                      - link "Merge remote-tracking branch 'origin/main' into honored-sing" [ref=e1123] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/53baaed11927efc4b00f5b6fcf9d849798977149
+                    - cell "Jun 23, 20263 days ago" [ref=e1124]:
+                      - generic [ref=e1125]: Jun 23, 20263 days ago
+                  - row "bunfig.toml, (File) resolve merge conflicts Jun 9, 20262 weeks ago" [ref=e1126]:
+                    - cell "bunfig.toml, (File)" [ref=e1127]:
+                      - generic [ref=e1128]:
+                        - img [ref=e1129]
+                        - link "bunfig.toml, (File)" [ref=e1134] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/bunfig.toml
+                          - text: bunfig.toml
+                    - cell "resolve merge conflicts" [ref=e1135]:
+                      - link "resolve merge conflicts" [ref=e1138] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/1d23dc217194692d2e3b01fc41ff2148fa1aa223
+                    - cell "Jun 9, 20262 weeks ago" [ref=e1139]:
+                      - generic [ref=e1140]: Jun 9, 20262 weeks ago
+                  - 'row "flake.lock, (File) fix: add nix support for bun 1.3.13 Apr 28, 20262 months ago" [ref=e1141]':
+                    - cell "flake.lock, (File)" [ref=e1142]:
+                      - generic [ref=e1143]:
+                        - img [ref=e1144]
+                        - link "flake.lock, (File)" [ref=e1149] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/flake.lock
+                          - text: flake.lock
+                    - 'cell "fix: add nix support for bun 1.3.13" [ref=e1150]':
+                      - 'link "fix: add nix support for bun 1.3.13" [ref=e1153] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/f4a386335749b8dcc2f5a75a13df52324b188527
+                    - cell "Apr 28, 20262 months ago" [ref=e1154]:
+                      - generic [ref=e1155]: Apr 28, 20262 months ago
+                  - 'row "flake.nix, (File) fix: session list on tui Jun 16, 2026last week" [ref=e1156]':
+                    - cell "flake.nix, (File)" [ref=e1157]:
+                      - generic [ref=e1158]:
+                        - img [ref=e1159]
+                        - link "flake.nix, (File)" [ref=e1164] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/flake.nix
+                          - text: flake.nix
+                    - 'cell "fix: session list on tui" [ref=e1165]':
+                      - 'link "fix: session list on tui" [ref=e1168] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/e91eef2b384e64ffdbbd5d9fad99d534ecb7a2e8
+                    - cell "Jun 16, 2026last week" [ref=e1169]:
+                      - generic [ref=e1170]: Jun 16, 2026last week
+                  - 'row "install, (File) fix(cli): preserve tree-sitter installer resources May 20, 2026last month" [ref=e1171]':
+                    - cell "install, (File)" [ref=e1172]:
+                      - generic [ref=e1173]:
+                        - img [ref=e1174]
+                        - link "install, (File)" [ref=e1179] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/install
+                          - text: install
+                    - 'cell "fix(cli): preserve tree-sitter installer resources" [ref=e1180]':
+                      - 'link "fix(cli): preserve tree-sitter installer resources" [ref=e1183] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/7f979dbfdd8cbd571daf5dd537fa3783dc4e1393
+                    - cell "May 20, 2026last month" [ref=e1184]:
+                      - generic [ref=e1185]: May 20, 2026last month
+                  - 'row "kilocode-2.code-workspace, (File) refactor: kilo compat for v1.14.29 Apr 29, 20262 months ago" [ref=e1186]':
+                    - cell "kilocode-2.code-workspace, (File)" [ref=e1187]:
+                      - generic [ref=e1188]:
+                        - img [ref=e1189]
+                        - link "kilocode-2.code-workspace, (File)" [ref=e1194] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/kilocode-2.code-workspace
+                          - text: kilocode-2.code-workspace
+                    - 'cell "refactor: kilo compat for v1.14.29" [ref=e1195]':
+                      - 'link "refactor: kilo compat for v1.14.29" [ref=e1198] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/7d375b93eef74e7d1cf52822ec79c993015e3483
+                    - cell "Apr 29, 20262 months ago" [ref=e1199]:
+                      - generic [ref=e1200]: Apr 29, 20262 months ago
+                  - 'row "logo.png, (File) fix: update README logo to use logo.png (#52) Jan 28, 20265 months ago" [ref=e1201]':
+                    - cell "logo.png, (File)" [ref=e1202]:
+                      - generic [ref=e1203]:
+                        - img [ref=e1204]
+                        - link "logo.png, (File)" [ref=e1209] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/logo.png
+                          - text: logo.png
+                    - 'cell "fix: update README logo to use logo.png (#52)" [ref=e1210]':
+                      - generic [ref=e1212]:
+                        - 'link "fix: update README logo to use logo.png (" [ref=e1213] [cursor=pointer]':
+                          - /url: /Kilo-Org/kilocode/commit/e8866d7db82be52945d546a309a0e2c45dde5d16
+                        - link "#52" [ref=e1214] [cursor=pointer]:
+                          - /url: https://github.com/Kilo-Org/kilocode/pull/52
+                        - link ")" [ref=e1215] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/commit/e8866d7db82be52945d546a309a0e2c45dde5d16
+                    - cell "Jan 28, 20265 months ago" [ref=e1216]:
+                      - generic [ref=e1217]: Jan 28, 20265 months ago
+                  - 'row "package.json, (File) release: v7.3.54 Jun 23, 20263 days ago" [ref=e1218]':
+                    - cell "package.json, (File)" [ref=e1219]:
+                      - generic [ref=e1220]:
+                        - img [ref=e1221]
+                        - link "package.json, (File)" [ref=e1226] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/package.json
+                          - text: package.json
+                    - 'cell "release: v7.3.54" [ref=e1227]':
+                      - 'link "release: v7.3.54" [ref=e1230] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/0f55066dc71254967b97de287bbf58541d42e577
+                    - cell "Jun 23, 20263 days ago" [ref=e1231]:
+                      - generic [ref=e1232]: Jun 23, 20263 days ago
+                  - 'row "screenshot-uk.png, (File) refactor: kilo compat for v1.15.9 Jun 15, 20262 weeks ago" [ref=e1233]':
+                    - cell "screenshot-uk.png, (File)" [ref=e1234]:
+                      - generic [ref=e1235]:
+                        - img [ref=e1236]
+                        - link "screenshot-uk.png, (File)" [ref=e1241] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/screenshot-uk.png
+                          - text: screenshot-uk.png
+                    - 'cell "refactor: kilo compat for v1.15.9" [ref=e1242]':
+                      - 'link "refactor: kilo compat for v1.15.9" [ref=e1245] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/5b9e33cfef25ed76218dc6326460927363b391cf
+                    - cell "Jun 15, 20262 weeks ago" [ref=e1246]:
+                      - generic [ref=e1247]: Jun 15, 20262 weeks ago
+                  - row "tsconfig.json, (File) sync Sep 27, 20259 months ago" [ref=e1248]:
+                    - cell "tsconfig.json, (File)" [ref=e1249]:
+                      - generic [ref=e1250]:
+                        - img [ref=e1251]
+                        - link "tsconfig.json, (File)" [ref=e1256] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/tsconfig.json
+                          - text: tsconfig.json
+                    - cell "sync" [ref=e1257]:
+                      - link "sync" [ref=e1260] [cursor=pointer]:
+                        - /url: /Kilo-Org/kilocode/commit/925ce6503e3672574ceaf02f2a03ad93abe587fd
+                    - cell "Sep 27, 20259 months ago" [ref=e1261]:
+                      - generic [ref=e1262]: Sep 27, 20259 months ago
+                  - 'row "turbo.json, (File) test(ci): focus macOS PR coverage Jun 23, 20263 days ago" [ref=e1263]':
+                    - cell "turbo.json, (File)" [ref=e1264]:
+                      - generic [ref=e1265]:
+                        - img [ref=e1266]
+                        - link "turbo.json, (File)" [ref=e1271] [cursor=pointer]:
+                          - /url: /Kilo-Org/kilocode/blob/main/turbo.json
+                          - text: turbo.json
+                    - 'cell "test(ci): focus macOS PR coverage" [ref=e1272]':
+                      - 'link "test(ci): focus macOS PR coverage" [ref=e1275] [cursor=pointer]':
+                        - /url: /Kilo-Org/kilocode/commit/31095168d212df0bb2d0a3ebc28819c63a4921eb
+                    - cell "Jun 23, 20263 days ago" [ref=e1276]:
+                      - generic [ref=e1277]: Jun 23, 20263 days ago
+            - generic [ref=e1279]:
+              - generic [ref=e1280]:
+                - heading "Repository files navigation" [level=2] [ref=e1281]
+                - navigation "Repository files" [ref=e1282]:
+                  - list [ref=e1283]:
+                    - listitem [ref=e1284]:
+                      - link "README" [ref=e1285] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e1287]
+                        - generic [ref=e1289]: README
+                    - listitem [ref=e1290]:
+                      - link "Code of conduct" [ref=e1291] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e1293]
+                        - generic [ref=e1295]: Code of conduct
+                    - listitem [ref=e1296]:
+                      - link "Contributing" [ref=e1297] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e1299]
+                        - generic [ref=e1301]: Contributing
+                    - listitem [ref=e1302]:
+                      - link "MIT license" [ref=e1303] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e1305]
+                        - generic [ref=e1307]: MIT license
+                    - listitem [ref=e1308]:
+                      - link "Security" [ref=e1309] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e1311]
+                        - generic [ref=e1313]: Security
+                - button "Outline" [ref=e1314] [cursor=pointer]:
+                  - img [ref=e1315]
+              - article [ref=e1318]:
+                - paragraph [ref=e1319]:
+                  - text: English |
+                  - link "简体中文" [ref=e1320] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.zh.md
+                  - text: "|"
+                  - link "繁體中文" [ref=e1321] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.zht.md
+                  - text: "|"
+                  - link "한국어" [ref=e1322] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.ko.md
+                  - text: "|"
+                  - link "Deutsch" [ref=e1323] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.de.md
+                  - text: "|"
+                  - link "Español" [ref=e1324] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.es.md
+                  - text: "|"
+                  - link "Français" [ref=e1325] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.fr.md
+                  - text: "|"
+                  - link "Italiano" [ref=e1326] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.it.md
+                  - text: "|"
+                  - link "Dansk" [ref=e1327] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.da.md
+                  - text: "|"
+                  - link "日本語" [ref=e1328] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.ja.md
+                  - text: "|"
+                  - link "Polski" [ref=e1329] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.pl.md
+                  - text: "|"
+                  - link "Русский" [ref=e1330] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.ru.md
+                  - text: "|"
+                  - link "Bosanski" [ref=e1331] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.bs.md
+                  - text: "|"
+                  - link "العربية" [ref=e1332] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.ar.md
+                  - text: "|"
+                  - link "Norsk" [ref=e1333] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.no.md
+                  - text: "|"
+                  - link "Português (Brasil)" [ref=e1334] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.br.md
+                  - text: "|"
+                  - link "ไทย" [ref=e1335] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.th.md
+                  - text: "|"
+                  - link "Türkçe" [ref=e1336] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.tr.md
+                  - text: "|"
+                  - link "Українська" [ref=e1337] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.uk.md
+                  - text: "|"
+                  - link "বাংলা" [ref=e1338] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.bn.md
+                  - text: "|"
+                  - link "Ελληνικά" [ref=e1339] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.gr.md
+                  - text: "|"
+                  - link "Tiếng Việt" [ref=e1340] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/README.vi.md
+                - paragraph [ref=e1341]:
+                  - link "Kilo Code logo" [ref=e1342] [cursor=pointer]:
+                    - /url: https://kilo.ai
+                    - img "Kilo Code logo" [ref=e1343]
+                - paragraph [ref=e1344]: The open source coding agent for building with AI in VS Code, JetBrains, or the CLI.
+                - paragraph [ref=e1345]:
+                  - link "VS Code Marketplace" [ref=e1346] [cursor=pointer]:
+                    - /url: https://marketplace.visualstudio.com/items?itemName=kilocode.Kilo-Code
+                    - img "VS Code Marketplace" [ref=e1347]
+                  - link "npm" [ref=e1348] [cursor=pointer]:
+                    - /url: https://www.npmjs.com/package/@kilocode/cli
+                    - img "npm" [ref=e1349]
+                  - link "X (Twitter)" [ref=e1350] [cursor=pointer]:
+                    - /url: https://x.com/kilocode
+                    - img "X (Twitter)" [ref=e1351]
+                  - link "Blog" [ref=e1352] [cursor=pointer]:
+                    - /url: https://blog.kilo.ai
+                    - img "Blog" [ref=e1353]
+                  - link "Discord" [ref=e1354] [cursor=pointer]:
+                    - /url: https://kilo.ai/discord
+                    - img "Discord" [ref=e1355]
+                  - link "Reddit" [ref=e1356] [cursor=pointer]:
+                    - /url: https://www.reddit.com/r/kilocode/
+                    - img "Reddit" [ref=e1357]
+                - paragraph [ref=e1358]:
+                  - link "Kilo-in-VS-Code-and-CLI" [ref=e1359] [cursor=pointer]:
+                    - /url: https://private-user-images.githubusercontent.com/203199126/608869027-0536ca59-ed81-4512-9e05-d186187a1b52.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODI0Mzc4NzEsIm5iZiI6MTc4MjQzNzU3MSwicGF0aCI6Ii8yMDMxOTkxMjYvNjA4ODY5MDI3LTA1MzZjYTU5LWVkODEtNDUxMi05ZTA1LWQxODYxODdhMWI1Mi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNjI2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDYyNlQwMTMyNTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wNWQxM2FiYzQxNzk1OWIyOTAzZTZlNGMzYTg3Yzc1MzA2ZWRkODQyNTFkMTgzMzFjZTEzMTE5Y2RkNjY4MTcwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.2tK86ZIyP5drcjsQND3LZo3TW7VYMq1TeKV52cPMkg0
+                    - img "Kilo-in-VS-Code-and-CLI" [ref=e1360]
+                - separator [ref=e1361]
+                - paragraph [ref=e1362]:
+                  - text: "Kilo Code is an AI coding agent that meets you everywhere you work:"
+                  - link "VS Code" [ref=e1363] [cursor=pointer]:
+                    - /url: https://kilo.ai/landing/vs-code
+                  - text: ","
+                  - link "JetBrains" [ref=e1364] [cursor=pointer]:
+                    - /url: https://kilo.ai/features/jetbrains-native
+                  - text: ", and the"
+                  - link "CLI" [ref=e1365] [cursor=pointer]:
+                    - /url: https://kilo.ai/cli
+                  - text: . It's open source with open pricing. You pick from 500+ models, switch between them mid-task, and pay the model provider's rate with zero markup. No API keys required to start.
+                - generic [ref=e1366]:
+                  - heading "Installation" [level=3] [ref=e1367]
+                  - 'link "Permalink: Installation" [ref=e1368] [cursor=pointer]':
+                    - /url: "#installation"
+                    - img [ref=e1369]
+                - paragraph [ref=e1371]: Pick where you want to run Kilo.
+                - group [ref=e1372]:
+                  - generic "VS Code" [ref=e1373] [cursor=pointer]:
+                    - strong [ref=e1374]: VS Code
+                  - paragraph [ref=e1375]:
+                    - text: Install the Kilo Code extension directly, or grab it from the
+                    - link "VS Code Marketplace" [ref=e1376] [cursor=pointer]:
+                      - /url: https://marketplace.visualstudio.com/items?itemName=kilocode.Kilo-Code
+                    - text: . Create an account and you'll have access to 500+ models including GPT-5.5, Claude Opus 4.7, Claude Sonnet 4.6, and Gemini 3.1 Pro Preview, all at provider pricing.
+                - group [ref=e1377]:
+                  - generic "CLI" [ref=e1378] [cursor=pointer]:
+                    - strong [ref=e1379]: CLI
+                  - generic [ref=e1380]:
+                    - generic [ref=e1381]:
+                      - generic [ref=e1382]: "# npm"
+                      - text: npm install -g @kilocode/cli
+                      - generic [ref=e1383]: "# curl"
+                      - text: curl -fsSL https://kilo.ai/cli/install | bash
+                      - generic [ref=e1384]: "# pnpm"
+                      - text: pnpm add -g @kilocode/cli
+                      - generic [ref=e1385]: "# bun"
+                      - text: bun add -g @kilocode/cli
+                      - generic [ref=e1386]: "# Homebrew (macOS / Linux)"
+                      - text: brew install Kilo-Org/tap/kilo
+                      - generic [ref=e1387]: "# Arch Linux (AUR)"
+                      - text: paru -S kilo-bin
+                    - button "Copy code to clipboard" [ref=e1389] [cursor=pointer]:
+                      - img [ref=e1390]
+                  - paragraph [ref=e1393]:
+                    - text: Then run
+                    - code [ref=e1394]: kilo
+                    - text: in any project directory to start.
+                - group [ref=e1395]:
+                  - generic "JetBrains" [ref=e1396] [cursor=pointer]:
+                    - strong [ref=e1397]: JetBrains
+                - group [ref=e1398]:
+                  - generic "Cloud Agent" [ref=e1399] [cursor=pointer]:
+                    - strong [ref=e1400]: Cloud Agent
+                - group [ref=e1401]:
+                  - generic "Code Reviews" [ref=e1402] [cursor=pointer]:
+                    - strong [ref=e1403]: Code Reviews
+                - group [ref=e1404]:
+                  - generic "KiloClaw" [ref=e1405] [cursor=pointer]:
+                    - strong [ref=e1406]: KiloClaw
+                - group [ref=e1407]:
+                  - generic "Install the CLI from GitHub Releases (binaries)" [ref=e1408] [cursor=pointer]
+                - generic [ref=e1409]:
+                  - heading "Agents" [level=3] [ref=e1410]
+                  - 'link "Permalink: Agents" [ref=e1411] [cursor=pointer]':
+                    - /url: "#agents"
+                    - img [ref=e1412]
+                - paragraph [ref=e1414]: Kilo ships with specialized agents you switch between depending on the task. You can also build your own custom agents.
+                - list [ref=e1415]:
+                  - listitem [ref=e1416]:
+                    - strong [ref=e1417]: Code
+                    - text: "- The default. Implements and edits code from natural language."
+                  - listitem [ref=e1418]:
+                    - strong [ref=e1419]: Plan
+                    - text: "- Designs architecture and writes implementation plans before any code gets written."
+                  - listitem [ref=e1420]:
+                    - strong [ref=e1421]: Ask
+                    - text: "- Answers questions about your codebase without touching any files."
+                  - listitem [ref=e1422]:
+                    - strong [ref=e1423]: Debug
+                    - text: "- Troubleshoots and traces issues."
+                  - listitem [ref=e1424]:
+                    - strong [ref=e1425]: Review
+                    - text: "- Reviews your changes and surfaces issues across performance, security, style, and test coverage."
+                - paragraph [ref=e1426]:
+                  - text: Learn more about
+                  - link "agents and custom agents" [ref=e1427] [cursor=pointer]:
+                    - /url: https://kilo.ai/docs/code-with-ai/agents/using-agents
+                  - text: .
+                - generic [ref=e1428]:
+                  - heading "What it does" [level=3] [ref=e1429]
+                  - 'link "Permalink: What it does" [ref=e1430] [cursor=pointer]':
+                    - /url: "#what-it-does"
+                    - img [ref=e1431]
+                - list [ref=e1433]:
+                  - listitem [ref=e1434]:
+                    - strong [ref=e1435]: Code generation
+                    - text: from natural language, across multiple files.
+                  - listitem [ref=e1436]:
+                    - strong [ref=e1437]: Inline autocomplete
+                    - text: with ghost-text suggestions and tab to accept.
+                  - listitem [ref=e1438]:
+                    - strong [ref=e1439]: Self-checking
+                    - text: so the agent reviews and corrects its own work.
+                  - listitem [ref=e1440]:
+                    - strong [ref=e1441]: Terminal and browser control
+                    - text: to run commands and automate the web.
+                  - listitem [ref=e1442]:
+                    - strong [ref=e1443]: MCP marketplace
+                    - text: to find and wire up MCP servers that extend what the agent can do.
+                  - listitem [ref=e1444]:
+                    - strong [ref=e1445]: 500+ models
+                    - text: with mid-task switching, so you can match latency, cost, and reasoning to the job.
+                - generic [ref=e1446]:
+                  - heading "Autonomous Mode (CI/CD)" [level=3] [ref=e1447]
+                  - 'link "Permalink: Autonomous Mode (CI/CD)" [ref=e1448] [cursor=pointer]':
+                    - /url: "#autonomous-mode-cicd"
+                    - img [ref=e1449]
+                - paragraph [ref=e1451]:
+                  - text: Run
+                  - code [ref=e1452]: kilo run
+                  - text: with
+                  - code [ref=e1453]: "--auto"
+                  - text: "for fully autonomous operation with no prompts, built for CI/CD pipelines:"
+                - generic [ref=e1454]:
+                  - generic [ref=e1455]:
+                    - text: kilo run --auto
+                    - generic [ref=e1456]: "\"run tests and fix any failures\""
+                  - button "Copy code to clipboard" [ref=e1458] [cursor=pointer]:
+                    - img [ref=e1459]
+                - paragraph [ref=e1462]:
+                  - code [ref=e1463]: "--auto"
+                  - text: disables all permission prompts and lets the agent execute any action without confirmation. Only use it in trusted environments.
+                - generic [ref=e1464]:
+                  - heading "Documentation" [level=3] [ref=e1465]
+                  - 'link "Permalink: Documentation" [ref=e1466] [cursor=pointer]':
+                    - /url: "#documentation"
+                    - img [ref=e1467]
+                - paragraph [ref=e1469]:
+                  - text: For configuration and everything else,
+                  - link "head over to the docs" [ref=e1470] [cursor=pointer]:
+                    - /url: https://kilo.ai/docs
+                  - text: .
+                - generic [ref=e1471]:
+                  - heading "Contributing" [level=3] [ref=e1472]
+                  - 'link "Permalink: Contributing" [ref=e1473] [cursor=pointer]':
+                    - /url: "#contributing"
+                    - img [ref=e1474]
+                - paragraph [ref=e1476]:
+                  - text: Contributions are welcome from developers, writers, and everyone in between. Start with the
+                  - link "Contributing Guide" [ref=e1477] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/CONTRIBUTING.md
+                  - text: for environment setup, coding standards, and how to open a pull request. See
+                  - link "RELEASING.md" [ref=e1478] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/RELEASING.md
+                  - text: for the VS Code extension and CLI release process, and
+                  - link "packages/kilo-jetbrains/RELEASING.md" [ref=e1479] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/packages/kilo-jetbrains/RELEASING.md
+                  - text: for the JetBrains plugin.
+                - paragraph [ref=e1480]:
+                  - text: Please review our
+                  - link "Code of Conduct" [ref=e1481] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/CODE_OF_CONDUCT.md
+                  - text: before getting involved.
+                - generic [ref=e1482]:
+                  - heading "License" [level=3] [ref=e1483]
+                  - 'link "Permalink: License" [ref=e1484] [cursor=pointer]':
+                    - /url: "#license"
+                    - img [ref=e1485]
+                - paragraph [ref=e1487]:
+                  - text: MIT. You're free to use, modify, and distribute this code, including commercially, as long as you keep the attribution and license notices. See
+                  - link "License" [ref=e1488] [cursor=pointer]:
+                    - /url: /Kilo-Org/kilocode/blob/main/LICENSE
+                  - text: .
+                - generic [ref=e1489]:
+                  - heading "FAQ" [level=3] [ref=e1490]
+                  - 'link "Permalink: FAQ" [ref=e1491] [cursor=pointer]':
+                    - /url: "#faq"
+                    - img [ref=e1492]
+                - group [ref=e1494]:
+                  - generic "Where did Kilo CLI come from?" [ref=e1495] [cursor=pointer]
+                - separator [ref=e1496]
+                - paragraph [ref=e1497]:
+                  - strong [ref=e1498]: Join the community
+                  - link "Discord" [ref=e1499] [cursor=pointer]:
+                    - /url: https://kilo.ai/discord
+                  - text: "|"
+                  - link "X" [ref=e1500] [cursor=pointer]:
+                    - /url: https://x.com/kilocode
+                  - text: "|"
+                  - link "Reddit" [ref=e1501] [cursor=pointer]:
+                    - /url: https://www.reddit.com/r/kilocode/
+        - generic [ref=e1505]:
+          - generic [ref=e1508]:
+            - heading "About" [level=2] [ref=e1509]
+            - paragraph [ref=e1510]: Kilo is the all-in-one agentic engineering platform. Build, ship, and iterate faster with the most popular open source coding agent.
+            - generic [ref=e1511]:
+              - img [ref=e1512]
+              - link "kilo.ai/" [ref=e1515] [cursor=pointer]:
+                - /url: https://kilo.ai/
+            - heading "Topics" [level=3] [ref=e1516]
+            - generic [ref=e1518]:
+              - link "cli" [ref=e1519] [cursor=pointer]:
+                - /url: /topics/cli
+              - link "ai" [ref=e1520] [cursor=pointer]:
+                - /url: /topics/ai
+              - link "jetbrains" [ref=e1521] [cursor=pointer]:
+                - /url: /topics/jetbrains
+              - link "vscode" [ref=e1522] [cursor=pointer]:
+                - /url: /topics/vscode
+              - link "gemini" [ref=e1523] [cursor=pointer]:
+                - /url: /topics/gemini
+              - link "vscode-extension" [ref=e1524] [cursor=pointer]:
+                - /url: /topics/vscode-extension
+              - link "claude" [ref=e1525] [cursor=pointer]:
+                - /url: /topics/claude
+              - link "sonnet" [ref=e1526] [cursor=pointer]:
+                - /url: /topics/sonnet
+              - link "chatgpt" [ref=e1527] [cursor=pointer]:
+                - /url: /topics/chatgpt
+              - link "ai-developer-tools" [ref=e1528] [cursor=pointer]:
+                - /url: /topics/ai-developer-tools
+              - link "ai-coding" [ref=e1529] [cursor=pointer]:
+                - /url: /topics/ai-coding
+              - link "ai-age" [ref=e1530] [cursor=pointer]:
+                - /url: /topics/ai-age
+            - heading "Resources" [level=3] [ref=e1531]
+            - link "Readme" [ref=e1533] [cursor=pointer]:
+              - /url: "#readme-ov-file"
+              - img [ref=e1534]
+              - text: Readme
+            - heading "License" [level=3] [ref=e1536]
+            - link "MIT license" [ref=e1538] [cursor=pointer]:
+              - /url: "#MIT-1-ov-file"
+              - img [ref=e1539]
+              - text: MIT license
+            - heading "Code of conduct" [level=3] [ref=e1541]
+            - link "Code of conduct" [ref=e1543] [cursor=pointer]:
+              - /url: "#coc-ov-file"
+              - img [ref=e1544]
+              - text: Code of conduct
+            - heading "Contributing" [level=3] [ref=e1546]
+            - link "Contributing" [ref=e1548] [cursor=pointer]:
+              - /url: "#contributing-ov-file"
+              - img [ref=e1549]
+              - text: Contributing
+            - heading "Security policy" [level=3] [ref=e1551]
+            - link "Security policy" [ref=e1553] [cursor=pointer]:
+              - /url: "#security-ov-file"
+              - img [ref=e1554]
+              - text: Security policy
+            - link "Activity" [ref=e1557] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/activity
+              - img [ref=e1558]
+              - text: Activity
+            - link "Custom properties" [ref=e1561] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/custom-properties
+              - img [ref=e1562]
+              - text: Custom properties
+            - heading "Stars" [level=3] [ref=e1564]
+            - link "24.6k stars" [ref=e1566] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/stargazers
+              - img [ref=e1567]
+              - strong [ref=e1569]: 24.6k
+              - text: stars
+            - heading "Watchers" [level=3] [ref=e1570]
+            - link "105 watching" [ref=e1572] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/watchers
+              - img [ref=e1573]
+              - strong [ref=e1575]: "105"
+              - text: watching
+            - heading "Forks" [level=3] [ref=e1576]
+            - link "2.8k forks" [ref=e1578] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/forks
+              - img [ref=e1579]
+              - strong [ref=e1581]: 2.8k
+              - text: forks
+            - link "Report repository" [ref=e1583] [cursor=pointer]:
+              - /url: /contact/report-content?content_url=https%3A%2F%2Fgithub.com%2FKilo-Org%2Fkilocode&report=Kilo-Org+%28user%29
+          - generic [ref=e1585]:
+            - heading "Releases 439" [level=2] [ref=e1586]:
+              - link "Releases 439" [ref=e1587] [cursor=pointer]:
+                - /url: /Kilo-Org/kilocode/releases
+                - text: Releases
+                - generic "439" [ref=e1588]
+            - link "v7.3.54 (release) Latest Jun 23, 20263 days ago" [ref=e1589] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/releases/tag/v7.3.54
+              - img [ref=e1590]
+              - generic [ref=e1592]:
+                - generic [ref=e1593]:
+                  - generic [ref=e1594]: v7.3.54 (release)
+                  - 'generic "Label: Latest" [ref=e1595]': Latest
+                - generic [ref=e1596]: Jun 23, 20263 days ago
+            - link "+ 438 releases" [ref=e1598] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/releases
+          - generic [ref=e1600]:
+            - heading "Packages 2" [level=2] [ref=e1601]:
+              - link "Packages 2" [ref=e1602] [cursor=pointer]:
+                - /url: /orgs/Kilo-Org/packages?repo_name=kilocode
+                - text: Packages
+                - generic "2" [ref=e1603]
+            - list [ref=e1604]:
+              - listitem [ref=e1605]:
+                - img [ref=e1607]
+                - link "build/jetbrains" [ref=e1609] [cursor=pointer]:
+                  - /url: /orgs/Kilo-Org/packages/container/package/build%2Fjetbrains
+              - listitem [ref=e1610]:
+                - img [ref=e1612]
+                - link "kilocode" [ref=e1614] [cursor=pointer]:
+                  - /url: /orgs/Kilo-Org/packages/container/package/kilocode
+          - generic [ref=e1616]:
+            - heading "Contributors 1,066" [level=2] [ref=e1617]:
+              - link "Contributors 1,066" [ref=e1618] [cursor=pointer]:
+                - /url: /Kilo-Org/kilocode/graphs/contributors
+                - text: Contributors
+                - generic "1,066" [ref=e1619]
+            - list [ref=e1620]:
+              - listitem [ref=e1621]:
+                - link "@thdxr" [ref=e1622] [cursor=pointer]:
+                  - /url: https://github.com/thdxr
+                  - img "@thdxr" [ref=e1623]
+              - listitem [ref=e1624]:
+                - link "@adamdotdevin" [ref=e1625] [cursor=pointer]:
+                  - /url: https://github.com/adamdotdevin
+                  - img "@adamdotdevin" [ref=e1626]
+              - listitem [ref=e1627]:
+                - link "@markijbema" [ref=e1628] [cursor=pointer]:
+                  - /url: https://github.com/markijbema
+                  - img "@markijbema" [ref=e1629]
+              - listitem [ref=e1630]:
+                - link "@rekram1-node" [ref=e1631] [cursor=pointer]:
+                  - /url: https://github.com/rekram1-node
+                  - img "@rekram1-node" [ref=e1632]
+              - listitem [ref=e1633]:
+                - link "@marius-kilocode" [ref=e1634] [cursor=pointer]:
+                  - /url: https://github.com/marius-kilocode
+                  - img "@marius-kilocode" [ref=e1635]
+              - listitem [ref=e1636]:
+                - link "@kirillk" [ref=e1637] [cursor=pointer]:
+                  - /url: https://github.com/kirillk
+                  - img "@kirillk" [ref=e1638]
+              - listitem [ref=e1639]:
+                - link "@actions-user" [ref=e1640] [cursor=pointer]:
+                  - /url: https://github.com/actions-user
+                  - img "@actions-user" [ref=e1641]
+              - listitem [ref=e1642]:
+                - link "@opencode-agent[bot]" [ref=e1643] [cursor=pointer]:
+                  - /url: https://github.com/apps/opencode-agent
+                  - img "@opencode-agent[bot]" [ref=e1644]
+              - listitem [ref=e1645]:
+                - link "@kitlangton" [ref=e1646] [cursor=pointer]:
+                  - /url: https://github.com/kitlangton
+                  - img "@kitlangton" [ref=e1647]
+              - listitem [ref=e1648]:
+                - link "@catrielmuller" [ref=e1649] [cursor=pointer]:
+                  - /url: https://github.com/catrielmuller
+                  - img "@catrielmuller" [ref=e1650]
+              - listitem [ref=e1651]:
+                - link "@kilo-code-bot[bot]" [ref=e1652] [cursor=pointer]:
+                  - /url: https://github.com/apps/kilo-code-bot
+                  - img "@kilo-code-bot[bot]" [ref=e1653]
+              - listitem [ref=e1654]:
+                - link "@alex-alecu" [ref=e1655] [cursor=pointer]:
+                  - /url: https://github.com/alex-alecu
+                  - img "@alex-alecu" [ref=e1656]
+              - listitem [ref=e1657]:
+                - link "@iamdavidhill" [ref=e1658] [cursor=pointer]:
+                  - /url: https://github.com/iamdavidhill
+                  - img "@iamdavidhill" [ref=e1659]
+              - listitem [ref=e1660]:
+                - link "@lambertjosh" [ref=e1661] [cursor=pointer]:
+                  - /url: https://github.com/lambertjosh
+                  - img "@lambertjosh" [ref=e1662]
+            - link "+ 1,052 contributors" [ref=e1664] [cursor=pointer]:
+              - /url: /Kilo-Org/kilocode/graphs/contributors
+          - generic [ref=e1666]:
+            - heading "Languages" [level=2] [ref=e1667]
+            - list [ref=e1677]:
+              - listitem [ref=e1678]:
+                - link "TypeScript 83.8%" [ref=e1679] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=typescript
+                  - img [ref=e1680]
+                  - generic [ref=e1682]: TypeScript
+                  - generic [ref=e1683]: 83.8%
+              - listitem [ref=e1684]:
+                - link "Kotlin 12.0%" [ref=e1685] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=kotlin
+                  - img [ref=e1686]
+                  - generic [ref=e1688]: Kotlin
+                  - generic [ref=e1689]: 12.0%
+              - listitem [ref=e1690]:
+                - link "CSS 3.3%" [ref=e1691] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=css
+                  - img [ref=e1692]
+                  - generic [ref=e1694]: CSS
+                  - generic [ref=e1695]: 3.3%
+              - listitem [ref=e1696]:
+                - link "HTML 0.3%" [ref=e1697] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=html
+                  - img [ref=e1698]
+                  - generic [ref=e1700]: HTML
+                  - generic [ref=e1701]: 0.3%
+              - listitem [ref=e1702]:
+                - link "JavaScript 0.2%" [ref=e1703] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=javascript
+                  - img [ref=e1704]
+                  - generic [ref=e1706]: JavaScript
+                  - generic [ref=e1707]: 0.2%
+              - listitem [ref=e1708]:
+                - link "Tree-sitter Query 0.2%" [ref=e1709] [cursor=pointer]:
+                  - /url: /Kilo-Org/kilocode/search?l=tree-sitter-query
+                  - img [ref=e1710]
+                  - generic [ref=e1712]: Tree-sitter Query
+                  - generic [ref=e1713]: 0.2%
+              - listitem [ref=e1714]:
+                - generic [ref=e1715]:
+                  - img [ref=e1716]
+                  - generic [ref=e1718]: Other
+                  - generic [ref=e1719]: 0.2%
+  - contentinfo [ref=e1721]:
+    - heading "Footer" [level=2] [ref=e1722]
+    - generic [ref=e1723]:
+      - generic [ref=e1724]:
+        - link "GitHub Homepage" [ref=e1725] [cursor=pointer]:
+          - /url: https://github.com
+          - img [ref=e1726]
+        - generic [ref=e1728]: © 2026 GitHub, Inc.
+      - navigation "Footer" [ref=e1729]:
+        - heading "Footer navigation" [level=3] [ref=e1730]
+        - list "Footer navigation" [ref=e1731]:
+          - listitem [ref=e1732]:
+            - link "Terms" [ref=e1733] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+          - listitem [ref=e1734]:
+            - link "Privacy" [ref=e1735] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+          - listitem [ref=e1736]:
+            - link "Security" [ref=e1737] [cursor=pointer]:
+              - /url: https://github.com/security
+          - listitem [ref=e1738]:
+            - link "Status" [ref=e1739] [cursor=pointer]:
+              - /url: https://www.githubstatus.com/
+          - listitem [ref=e1740]:
+            - link "Community" [ref=e1741] [cursor=pointer]:
+              - /url: https://github.community/
+          - listitem [ref=e1742]:
+            - link "Docs" [ref=e1743] [cursor=pointer]:
+              - /url: https://docs.github.com/
+          - listitem [ref=e1744]:
+            - link "Contact" [ref=e1745] [cursor=pointer]:
+              - /url: https://support.github.com?tags=dotcom-footer
+          - listitem [ref=e1746]:
+            - button "Manage cookies" [ref=e1748] [cursor=pointer]
+          - listitem [ref=e1749]:
+            - button "Do not share my personal information" [ref=e1751] [cursor=pointer]

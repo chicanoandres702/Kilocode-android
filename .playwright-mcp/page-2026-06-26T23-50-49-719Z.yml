@@ -1,0 +1,920 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fchicanoandres702%2FKilocode-android%2Factions
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Findex&source=header-repo&source_repo=chicanoandres702%2FKilocode-android
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - img [ref=e67]
+            - link "chicanoandres702" [ref=e70] [cursor=pointer]:
+              - /url: /chicanoandres702
+            - generic [ref=e71]: /
+            - strong [ref=e72]:
+              - link "Kilocode-android" [ref=e73] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android
+            - generic [ref=e74]: Public
+          - generic [ref=e75]:
+            - text: forked from
+            - link "ym2632600/Kilocode-android" [ref=e76] [cursor=pointer]:
+              - /url: /ym2632600/Kilocode-android
+        - generic [ref=e77]:
+          - list:
+            - listitem [ref=e78]:
+              - link "You must be signed in to change notification settings" [ref=e79] [cursor=pointer]:
+                - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                - img [ref=e80]
+                - text: Notifications
+            - listitem [ref=e82]:
+              - link "Fork 0" [ref=e83] [cursor=pointer]:
+                - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                - img [ref=e84]
+                - text: Fork
+                - generic "0" [ref=e86]
+            - listitem [ref=e87]:
+              - link "You must be signed in to star a repository" [ref=e89] [cursor=pointer]:
+                - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                - img [ref=e90]
+                - text: Star
+                - generic "0 users starred this repository" [ref=e92]: "0"
+      - navigation "Repository" [ref=e93]:
+        - list [ref=e94]:
+          - listitem [ref=e95]:
+            - link "Code" [ref=e96] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android
+              - img [ref=e97]
+              - generic [ref=e99]: Code
+          - listitem [ref=e100]:
+            - link "Issues 6" [ref=e101] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/issues
+              - img [ref=e102]
+              - generic [ref=e105]: Issues
+              - generic "6" [ref=e106]
+          - listitem [ref=e107]:
+            - link "Pull requests" [ref=e108] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/pulls
+              - img [ref=e109]
+              - generic [ref=e111]: Pull requests
+          - listitem [ref=e112]:
+            - link "Actions" [ref=e113] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions
+              - img [ref=e114]
+              - generic [ref=e116]: Actions
+          - listitem [ref=e117]:
+            - link "Projects" [ref=e118] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/projects
+              - img [ref=e119]
+              - generic [ref=e121]: Projects
+          - listitem [ref=e122]:
+            - link "Security and quality" [ref=e123] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/security
+              - img [ref=e124]
+              - generic [ref=e126]: Security and quality
+          - listitem [ref=e127]:
+            - link "Insights" [ref=e128] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/pulse
+              - img [ref=e129]
+              - generic [ref=e131]: Insights
+    - generic [ref=e133]:
+      - 'heading "Actions: chicanoandres702/Kilocode-android" [level=1] [ref=e134]'
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - heading "Actions" [level=2] [ref=e140]
+          - navigation "Actions Workflows" [ref=e144]:
+            - list [ref=e146]:
+              - listitem [ref=e147]:
+                - link "All workflows" [ref=e148] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/actions
+                  - generic [ref=e149]: All workflows
+              - listitem [ref=e150]
+              - listitem [ref=e151]:
+                - list "Workflows" [ref=e155]:
+                  - listitem [ref=e156]:
+                    - link "Android CI" [ref=e157] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/workflows/android.yml
+                      - generic [ref=e158]: Android CI
+                  - listitem [ref=e159]:
+                    - link "Automated Security Review" [ref=e160] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/workflows/security-review.yml
+                      - generic [ref=e161]: Automated Security Review
+                  - listitem [ref=e162]:
+                    - link "CI Gate" [ref=e163] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/workflows/ci.yml
+                      - generic [ref=e164]: CI Gate
+                  - listitem [ref=e165]:
+                    - link "Deployment Hook" [ref=e166] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/workflows/deploy.yml
+                      - generic [ref=e167]: Deployment Hook
+              - listitem [ref=e168]
+              - listitem [ref=e169]:
+                - generic [ref=e172]:
+                  - heading "Management" [level=3] [ref=e174]
+                  - list "Management" [ref=e175]:
+                    - listitem [ref=e176]:
+                      - link "Caches" [ref=e177] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/actions/caches
+                        - generic:
+                          - img
+                        - generic [ref=e178]: Caches
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - heading "All workflows" [level=2] [ref=e185]:
+                - generic [ref=e187]: All workflows
+              - search [ref=e191]:
+                - combobox "Filter workflow runs" [ref=e192]
+                - img
+            - generic [ref=e193]: Showing runs from all workflows
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - strong [ref=e198]: 325 workflow runs
+              - generic [ref=e199]:
+                - button "Workflow" [ref=e203] [cursor=pointer]:
+                  - generic [ref=e205]: Workflow
+                  - generic:
+                    - img
+                - button "Event" [ref=e209] [cursor=pointer]:
+                  - generic [ref=e211]: Event
+                  - generic:
+                    - img
+                - button "Status" [ref=e215] [cursor=pointer]:
+                  - generic [ref=e217]: Status
+                  - generic:
+                    - img
+                - button "Branch" [ref=e221] [cursor=pointer]:
+                  - generic [ref=e223]: Branch
+                  - generic:
+                    - img
+                - button "Actor" [ref=e227] [cursor=pointer]:
+                  - generic [ref=e229]: Actor
+                  - generic:
+                    - img
+            - generic [ref=e230]:
+              - generic [ref=e232]:
+                - generic [ref=e233]:
+                  - 'link "failed: Run 213 of Android CI. fix: clear loading state on session.error SSE event and switch to syn…" [ref=e234] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681
+                    - img "failed:" [ref=e236]
+                    - generic [ref=e238]: "fix: clear loading state on session.error SSE event and switch to syn…"
+                  - generic [ref=e239]:
+                    - text: "Android CI #213:"
+                    - generic [ref=e240]:
+                      - text: Commit
+                      - link "bea42b9" [ref=e241] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/bea42b9a38c22077300c681177ca3b2aebda2fd6
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e242] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e244] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e246]:
+                  - generic [ref=e247]:
+                    - generic [ref=e248]:
+                      - img [ref=e250]
+                      - generic "Jun 26, 2026, 10:57 PM UTC" [ref=e252]: 52 minutes ago
+                    - generic [ref=e253]:
+                      - img "Run duration" [ref=e254]
+                      - text: 1m 23s
+                  - group [ref=e257]:
+                    - generic "Show options" [ref=e258] [cursor=pointer]:
+                      - img "Show options" [ref=e259]
+              - generic [ref=e262]:
+                - generic [ref=e263]:
+                  - 'link "completed successfully: Run 212 of Android CI. chore: bump version to 1.2.0" [ref=e264] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227933356
+                    - img "completed successfully:" [ref=e266]
+                    - generic [ref=e268]: "chore: bump version to 1.2.0"
+                  - generic [ref=e269]:
+                    - text: "Android CI #212:"
+                    - generic [ref=e270]:
+                      - text: Commit
+                      - link "aa45b8c" [ref=e271] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/aa45b8ce153f547d68d6a32d237c0f5b627d0f8b
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e272] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "v1.2.0" [ref=e274] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/tags/v1.2.0
+                - generic [ref=e276]:
+                  - generic [ref=e277]:
+                    - generic [ref=e278]:
+                      - img [ref=e280]
+                      - generic "Jun 26, 2026, 8:56 AM UTC" [ref=e282]: Today at 8:56 AM
+                    - generic [ref=e283]:
+                      - img "Run duration" [ref=e284]
+                      - text: 9m 37s
+                  - group [ref=e287]:
+                    - generic "Show options" [ref=e288] [cursor=pointer]:
+                      - img "Show options" [ref=e289]
+              - generic [ref=e292]:
+                - generic [ref=e293]:
+                  - 'link "completed successfully: Run 211 of Android CI. chore: bump version to 1.2.0" [ref=e294] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227929024
+                    - img "completed successfully:" [ref=e296]
+                    - generic [ref=e298]: "chore: bump version to 1.2.0"
+                  - generic [ref=e299]:
+                    - text: "Android CI #211:"
+                    - generic [ref=e300]:
+                      - text: Commit
+                      - link "aa45b8c" [ref=e301] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/aa45b8ce153f547d68d6a32d237c0f5b627d0f8b
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e302] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "main" [ref=e304] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/main
+                - generic [ref=e306]:
+                  - generic [ref=e307]:
+                    - generic [ref=e308]:
+                      - img [ref=e310]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e312]: Today at 8:55 AM
+                    - generic [ref=e313]:
+                      - img "Run duration" [ref=e314]
+                      - text: 5m 12s
+                  - group [ref=e317]:
+                    - generic "Show options" [ref=e318] [cursor=pointer]:
+                      - img "Show options" [ref=e319]
+              - generic [ref=e322]:
+                - generic [ref=e323]:
+                  - 'link "completed successfully: Run 210 of Android CI. Merge pull request #29 from chicanoandres702/feature/28-fix-build-issues" [ref=e324] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227907756
+                    - img "completed successfully:" [ref=e326]
+                    - generic [ref=e328]: "Merge pull request #29 from chicanoandres702/feature/28-fix-build-issues"
+                  - generic [ref=e329]:
+                    - text: "Android CI #210:"
+                    - generic [ref=e330]:
+                      - text: Commit
+                      - link "2a9a0af" [ref=e331] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/2a9a0afa325e80bea48d46135da1d052d18eb15c
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e332] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "main" [ref=e334] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/main
+                - generic [ref=e336]:
+                  - generic [ref=e337]:
+                    - generic [ref=e338]:
+                      - img [ref=e340]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e342]: Today at 8:55 AM
+                    - generic [ref=e343]:
+                      - img "Run duration" [ref=e344]
+                      - text: 5m 16s
+                  - group [ref=e347]:
+                    - generic "Show options" [ref=e348] [cursor=pointer]:
+                      - img "Show options" [ref=e349]
+              - generic [ref=e352]:
+                - generic [ref=e353]:
+                  - 'link "failed: Run 56 of CI Gate. fix: stabilize SSE event handling and prompt_async flow" [ref=e354] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227885957
+                    - img "failed:" [ref=e356]
+                    - generic [ref=e358]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e359]:
+                    - text: "CI Gate #56:"
+                    - generic [ref=e360]:
+                      - text: Pull request
+                      - link "#29" [ref=e361] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e362] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e364] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e366]:
+                  - generic [ref=e367]:
+                    - generic [ref=e368]:
+                      - img [ref=e370]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e372]: Today at 8:55 AM
+                    - generic [ref=e373]:
+                      - img "Run duration" [ref=e374]
+                      - text: 42s
+                  - group [ref=e377]:
+                    - generic "Show options" [ref=e378] [cursor=pointer]:
+                      - img "Show options" [ref=e379]
+              - generic [ref=e382]:
+                - generic [ref=e383]:
+                  - 'link "completed successfully: Run 209 of Android CI. fix: stabilize SSE event handling and prompt_async flow" [ref=e384] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227885871
+                    - img "completed successfully:" [ref=e386]
+                    - generic [ref=e388]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e389]:
+                    - text: "Android CI #209:"
+                    - generic [ref=e390]:
+                      - text: Pull request
+                      - link "#29" [ref=e391] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e392] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e394] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e396]:
+                  - generic [ref=e397]:
+                    - generic [ref=e398]:
+                      - img [ref=e400]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e402]: Today at 8:55 AM
+                    - generic [ref=e403]:
+                      - img "Run duration" [ref=e404]
+                      - text: 2m 31s
+                  - group [ref=e407]:
+                    - generic "Show options" [ref=e408] [cursor=pointer]:
+                      - img "Show options" [ref=e409]
+              - generic [ref=e412]:
+                - generic [ref=e413]:
+                  - 'link "failed: Run 56 of Automated Security Review. fix: stabilize SSE event handling and prompt_async flow" [ref=e414] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227885830
+                    - img "failed:" [ref=e416]
+                    - generic [ref=e418]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e419]:
+                    - text: "Automated Security Review #56:"
+                    - generic [ref=e420]:
+                      - text: Pull request
+                      - link "#29" [ref=e421] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e422] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e424] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e426]:
+                  - generic [ref=e427]:
+                    - generic [ref=e428]:
+                      - img [ref=e430]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e432]: Today at 8:55 AM
+                    - generic [ref=e433]:
+                      - img "Run duration" [ref=e434]
+                      - text: 23s
+                  - group [ref=e437]:
+                    - generic "Show options" [ref=e438] [cursor=pointer]:
+                      - img "Show options" [ref=e439]
+              - generic [ref=e442]:
+                - generic [ref=e443]:
+                  - 'link "completed successfully: Run 208 of Android CI. feat: handle message.part.delta SSE events for streaming text" [ref=e444] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28227883386
+                    - img "completed successfully:" [ref=e446]
+                    - generic [ref=e448]: "feat: handle message.part.delta SSE events for streaming text"
+                  - generic [ref=e449]:
+                    - text: "Android CI #208:"
+                    - generic [ref=e450]:
+                      - text: Commit
+                      - link "4d5e1d0" [ref=e451] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/4d5e1d0c38fe3fc985fffab438dc63d3ea065f2d
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e452] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e454] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e456]:
+                  - generic [ref=e457]:
+                    - generic [ref=e458]:
+                      - img [ref=e460]
+                      - generic "Jun 26, 2026, 8:55 AM UTC" [ref=e462]: Today at 8:55 AM
+                    - generic [ref=e463]:
+                      - img "Run duration" [ref=e464]
+                      - text: 2m 5s
+                  - group [ref=e467]:
+                    - generic "Show options" [ref=e468] [cursor=pointer]:
+                      - img "Show options" [ref=e469]
+              - generic [ref=e472]:
+                - generic [ref=e473]:
+                  - 'link "completed successfully: Run 207 of Android CI. fix: stabilize SSE event handling and prompt_async flow" [ref=e474] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28226273444
+                    - img "completed successfully:" [ref=e476]
+                    - generic [ref=e478]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e479]:
+                    - text: "Android CI #207:"
+                    - generic [ref=e480]:
+                      - text: Pull request
+                      - link "#29" [ref=e481] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e482] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e484] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e486]:
+                  - generic [ref=e487]:
+                    - generic [ref=e488]:
+                      - img [ref=e490]
+                      - generic "Jun 26, 2026, 8:21 AM UTC" [ref=e492]: Today at 8:21 AM
+                    - generic [ref=e493]:
+                      - img "Run duration" [ref=e494]
+                      - text: 2m 23s
+                  - group [ref=e497]:
+                    - generic "Show options" [ref=e498] [cursor=pointer]:
+                      - img "Show options" [ref=e499]
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - 'link "failed: Run 55 of Automated Security Review. fix: stabilize SSE event handling and prompt_async flow" [ref=e504] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28226273437
+                    - img "failed:" [ref=e506]
+                    - generic [ref=e508]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e509]:
+                    - text: "Automated Security Review #55:"
+                    - generic [ref=e510]:
+                      - text: Pull request
+                      - link "#29" [ref=e511] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e512] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e514] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e516]:
+                  - generic [ref=e517]:
+                    - generic [ref=e518]:
+                      - img [ref=e520]
+                      - generic "Jun 26, 2026, 8:21 AM UTC" [ref=e522]: Today at 8:21 AM
+                    - generic [ref=e523]:
+                      - img "Run duration" [ref=e524]
+                      - text: 25s
+                  - group [ref=e527]:
+                    - generic "Show options" [ref=e528] [cursor=pointer]:
+                      - img "Show options" [ref=e529]
+              - generic [ref=e532]:
+                - generic [ref=e533]:
+                  - 'link "failed: Run 55 of CI Gate. fix: stabilize SSE event handling and prompt_async flow" [ref=e534] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28226273402
+                    - img "failed:" [ref=e536]
+                    - generic [ref=e538]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e539]:
+                    - text: "CI Gate #55:"
+                    - generic [ref=e540]:
+                      - text: Pull request
+                      - link "#29" [ref=e541] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e542] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e544] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e546]:
+                  - generic [ref=e547]:
+                    - generic [ref=e548]:
+                      - img [ref=e550]
+                      - generic "Jun 26, 2026, 8:21 AM UTC" [ref=e552]: Today at 8:21 AM
+                    - generic [ref=e553]:
+                      - img "Run duration" [ref=e554]
+                      - text: 41s
+                  - group [ref=e557]:
+                    - generic "Show options" [ref=e558] [cursor=pointer]:
+                      - img "Show options" [ref=e559]
+              - generic [ref=e562]:
+                - generic [ref=e563]:
+                  - 'link "completed successfully: Run 206 of Android CI. feat: add folder browser with directory check and session scoping" [ref=e564] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28226271998
+                    - img "completed successfully:" [ref=e566]
+                    - generic [ref=e568]: "feat: add folder browser with directory check and session scoping"
+                  - generic [ref=e569]:
+                    - text: "Android CI #206:"
+                    - generic [ref=e570]:
+                      - text: Commit
+                      - link "141b85b" [ref=e571] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/141b85b631d20049d00ebcfbf900db2dd8399fd5
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e572] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e574] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e576]:
+                  - generic [ref=e577]:
+                    - generic [ref=e578]:
+                      - img [ref=e580]
+                      - generic "Jun 26, 2026, 8:20 AM UTC" [ref=e582]: Today at 8:20 AM
+                    - generic [ref=e583]:
+                      - img "Run duration" [ref=e584]
+                      - text: 2m 29s
+                  - group [ref=e587]:
+                    - generic "Show options" [ref=e588] [cursor=pointer]:
+                      - img "Show options" [ref=e589]
+              - generic [ref=e592]:
+                - generic [ref=e593]:
+                  - 'link "failed: Run 54 of Automated Security Review. fix: stabilize SSE event handling and prompt_async flow" [ref=e594] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28224575181
+                    - img "failed:" [ref=e596]
+                    - generic [ref=e598]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e599]:
+                    - text: "Automated Security Review #54:"
+                    - generic [ref=e600]:
+                      - text: Pull request
+                      - link "#29" [ref=e601] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e602] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e604] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e606]:
+                  - generic [ref=e607]:
+                    - generic [ref=e608]:
+                      - img [ref=e610]
+                      - generic "Jun 26, 2026, 7:44 AM UTC" [ref=e612]: Today at 7:44 AM
+                    - generic [ref=e613]:
+                      - img "Run duration" [ref=e614]
+                      - text: 25s
+                  - group [ref=e617]:
+                    - generic "Show options" [ref=e618] [cursor=pointer]:
+                      - img "Show options" [ref=e619]
+              - generic [ref=e622]:
+                - generic [ref=e623]:
+                  - 'link "completed successfully: Run 205 of Android CI. fix: stabilize SSE event handling and prompt_async flow" [ref=e624] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28224575180
+                    - img "completed successfully:" [ref=e626]
+                    - generic [ref=e628]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e629]:
+                    - text: "Android CI #205:"
+                    - generic [ref=e630]:
+                      - text: Pull request
+                      - link "#29" [ref=e631] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e632] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e634] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e636]:
+                  - generic [ref=e637]:
+                    - generic [ref=e638]:
+                      - img [ref=e640]
+                      - generic "Jun 26, 2026, 7:44 AM UTC" [ref=e642]: Today at 7:44 AM
+                    - generic [ref=e643]:
+                      - img "Run duration" [ref=e644]
+                      - text: 5m 4s
+                  - group [ref=e647]:
+                    - generic "Show options" [ref=e648] [cursor=pointer]:
+                      - img "Show options" [ref=e649]
+              - generic [ref=e652]:
+                - generic [ref=e653]:
+                  - 'link "failed: Run 54 of CI Gate. fix: stabilize SSE event handling and prompt_async flow" [ref=e654] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28224575177
+                    - img "failed:" [ref=e656]
+                    - generic [ref=e658]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e659]:
+                    - text: "CI Gate #54:"
+                    - generic [ref=e660]:
+                      - text: Pull request
+                      - link "#29" [ref=e661] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e662] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e664] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e666]:
+                  - generic [ref=e667]:
+                    - generic [ref=e668]:
+                      - img [ref=e670]
+                      - generic "Jun 26, 2026, 7:44 AM UTC" [ref=e672]: Today at 7:44 AM
+                    - generic [ref=e673]:
+                      - img "Run duration" [ref=e674]
+                      - text: 38s
+                  - group [ref=e677]:
+                    - generic "Show options" [ref=e678] [cursor=pointer]:
+                      - img "Show options" [ref=e679]
+              - generic [ref=e682]:
+                - generic [ref=e683]:
+                  - 'link "completed successfully: Run 204 of Android CI. chore: bump version to 1.1.1" [ref=e684] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28224573807
+                    - img "completed successfully:" [ref=e686]
+                    - generic [ref=e688]: "chore: bump version to 1.1.1"
+                  - generic [ref=e689]:
+                    - text: "Android CI #204:"
+                    - generic [ref=e690]:
+                      - text: Commit
+                      - link "c93dc09" [ref=e691] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/c93dc0922a3a07f5d6b2c23dcfc1420c8dfc283e
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e692] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "v1.1.1" [ref=e694] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/tags/v1.1.1
+                - generic [ref=e696]:
+                  - generic [ref=e697]:
+                    - generic [ref=e698]:
+                      - img [ref=e700]
+                      - generic "Jun 26, 2026, 7:44 AM UTC" [ref=e702]: Today at 7:44 AM
+                    - generic [ref=e703]:
+                      - img "Run duration" [ref=e704]
+                      - text: 10m 10s
+                  - group [ref=e707]:
+                    - generic "Show options" [ref=e708] [cursor=pointer]:
+                      - img "Show options" [ref=e709]
+              - generic [ref=e712]:
+                - generic [ref=e713]:
+                  - 'link "completed successfully: Run 203 of Android CI. chore: bump version to 1.1.1" [ref=e714] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28224573111
+                    - img "completed successfully:" [ref=e716]
+                    - generic [ref=e718]: "chore: bump version to 1.1.1"
+                  - generic [ref=e719]:
+                    - text: "Android CI #203:"
+                    - generic [ref=e720]:
+                      - text: Commit
+                      - link "c93dc09" [ref=e721] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/c93dc0922a3a07f5d6b2c23dcfc1420c8dfc283e
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e722] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e724] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e726]:
+                  - generic [ref=e727]:
+                    - generic [ref=e728]:
+                      - img [ref=e730]
+                      - generic "Jun 26, 2026, 7:44 AM UTC" [ref=e732]: Today at 7:44 AM
+                    - generic [ref=e733]:
+                      - img "Run duration" [ref=e734]
+                      - text: 5m 7s
+                  - group [ref=e737]:
+                    - generic "Show options" [ref=e738] [cursor=pointer]:
+                      - img "Show options" [ref=e739]
+              - generic [ref=e742]:
+                - generic [ref=e743]:
+                  - 'link "completed successfully: Run 202 of Android CI. ci: remove invalid --fail-on-exists flag from gh release create" [ref=e744] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28223177436
+                    - img "completed successfully:" [ref=e746]
+                    - generic [ref=e748]: "ci: remove invalid --fail-on-exists flag from gh release create"
+                  - generic [ref=e749]:
+                    - text: "Android CI #202:"
+                    - generic [ref=e750]:
+                      - text: Commit
+                      - link "b6981a7" [ref=e751] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/b6981a75616486b71085c081fb7a8beb6c0aa211
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e752] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "v1.1.0" [ref=e754] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/tags/v1.1.0
+                - generic [ref=e756]:
+                  - generic [ref=e757]:
+                    - generic [ref=e758]:
+                      - img [ref=e760]
+                      - generic "Jun 26, 2026, 7:12 AM UTC" [ref=e762]: Today at 7:12 AM
+                    - generic [ref=e763]:
+                      - img "Run duration" [ref=e764]
+                      - text: 7m 5s
+                  - group [ref=e767]:
+                    - generic "Show options" [ref=e768] [cursor=pointer]:
+                      - img "Show options" [ref=e769]
+              - generic [ref=e772]:
+                - generic [ref=e773]:
+                  - 'link "failed: Run 53 of Automated Security Review. fix: stabilize SSE event handling and prompt_async flow" [ref=e774] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28223172923
+                    - img "failed:" [ref=e776]
+                    - generic [ref=e778]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e779]:
+                    - text: "Automated Security Review #53:"
+                    - generic [ref=e780]:
+                      - text: Pull request
+                      - link "#29" [ref=e781] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e782] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e784] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e786]:
+                  - generic [ref=e787]:
+                    - generic [ref=e788]:
+                      - img [ref=e790]
+                      - generic "Jun 26, 2026, 7:12 AM UTC" [ref=e792]: Today at 7:12 AM
+                    - generic [ref=e793]:
+                      - img "Run duration" [ref=e794]
+                      - text: 18s
+                  - group [ref=e797]:
+                    - generic "Show options" [ref=e798] [cursor=pointer]:
+                      - img "Show options" [ref=e799]
+              - generic [ref=e802]:
+                - generic [ref=e803]:
+                  - 'link "completed successfully: Run 201 of Android CI. fix: stabilize SSE event handling and prompt_async flow" [ref=e804] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28223172919
+                    - img "completed successfully:" [ref=e806]
+                    - generic [ref=e808]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e809]:
+                    - text: "Android CI #201:"
+                    - generic [ref=e810]:
+                      - text: Pull request
+                      - link "#29" [ref=e811] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e812] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e814] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e816]:
+                  - generic [ref=e817]:
+                    - generic [ref=e818]:
+                      - img [ref=e820]
+                      - generic "Jun 26, 2026, 7:12 AM UTC" [ref=e822]: Today at 7:12 AM
+                    - generic [ref=e823]:
+                      - img "Run duration" [ref=e824]
+                      - text: 2m 40s
+                  - group [ref=e827]:
+                    - generic "Show options" [ref=e828] [cursor=pointer]:
+                      - img "Show options" [ref=e829]
+              - generic [ref=e832]:
+                - generic [ref=e833]:
+                  - 'link "failed: Run 53 of CI Gate. fix: stabilize SSE event handling and prompt_async flow" [ref=e834] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28223172876
+                    - img "failed:" [ref=e836]
+                    - generic [ref=e838]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e839]:
+                    - text: "CI Gate #53:"
+                    - generic [ref=e840]:
+                      - text: Pull request
+                      - link "#29" [ref=e841] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e842] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e844] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e846]:
+                  - generic [ref=e847]:
+                    - generic [ref=e848]:
+                      - img [ref=e850]
+                      - generic "Jun 26, 2026, 7:12 AM UTC" [ref=e852]: Today at 7:12 AM
+                    - generic [ref=e853]:
+                      - img "Run duration" [ref=e854]
+                      - text: 37s
+                  - group [ref=e857]:
+                    - generic "Show options" [ref=e858] [cursor=pointer]:
+                      - img "Show options" [ref=e859]
+              - generic [ref=e862]:
+                - generic [ref=e863]:
+                  - 'link "completed successfully: Run 200 of Android CI. ci: remove invalid --fail-on-exists flag from gh release create" [ref=e864] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28223170951
+                    - img "completed successfully:" [ref=e866]
+                    - generic [ref=e868]: "ci: remove invalid --fail-on-exists flag from gh release create"
+                  - generic [ref=e869]:
+                    - text: "Android CI #200:"
+                    - generic [ref=e870]:
+                      - text: Commit
+                      - link "b6981a7" [ref=e871] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/b6981a75616486b71085c081fb7a8beb6c0aa211
+                      - text: pushed by
+                      - link "chicanoandres702" [ref=e872] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e874] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e876]:
+                  - generic [ref=e877]:
+                    - generic [ref=e878]:
+                      - img [ref=e880]
+                      - generic "Jun 26, 2026, 7:12 AM UTC" [ref=e882]: Today at 7:12 AM
+                    - generic [ref=e883]:
+                      - img "Run duration" [ref=e884]
+                      - text: 2m 27s
+                  - group [ref=e887]:
+                    - generic "Show options" [ref=e888] [cursor=pointer]:
+                      - img "Show options" [ref=e889]
+              - generic [ref=e892]:
+                - generic [ref=e893]:
+                  - 'link "completed successfully: Run 199 of Android CI. fix: stabilize SSE event handling and prompt_async flow" [ref=e894] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28222724705
+                    - img "completed successfully:" [ref=e896]
+                    - generic [ref=e898]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e899]:
+                    - text: "Android CI #199:"
+                    - generic [ref=e900]:
+                      - text: Pull request
+                      - link "#29" [ref=e901] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e902] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e904] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e906]:
+                  - generic [ref=e907]:
+                    - generic [ref=e908]:
+                      - img [ref=e910]
+                      - generic "Jun 26, 2026, 7:02 AM UTC" [ref=e912]: Today at 7:02 AM
+                    - generic [ref=e913]:
+                      - img "Run duration" [ref=e914]
+                      - text: 5m 3s
+                  - group [ref=e917]:
+                    - generic "Show options" [ref=e918] [cursor=pointer]:
+                      - img "Show options" [ref=e919]
+              - generic [ref=e922]:
+                - generic [ref=e923]:
+                  - 'link "failed: Run 52 of CI Gate. fix: stabilize SSE event handling and prompt_async flow" [ref=e924] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28222724690
+                    - img "failed:" [ref=e926]
+                    - generic [ref=e928]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e929]:
+                    - text: "CI Gate #52:"
+                    - generic [ref=e930]:
+                      - text: Pull request
+                      - link "#29" [ref=e931] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e932] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e934] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e936]:
+                  - generic [ref=e937]:
+                    - generic [ref=e938]:
+                      - img [ref=e940]
+                      - generic "Jun 26, 2026, 7:02 AM UTC" [ref=e942]: Today at 7:02 AM
+                    - generic [ref=e943]:
+                      - img "Run duration" [ref=e944]
+                      - text: 36s
+                  - group [ref=e947]:
+                    - generic "Show options" [ref=e948] [cursor=pointer]:
+                      - img "Show options" [ref=e949]
+              - generic [ref=e952]:
+                - generic [ref=e953]:
+                  - 'link "failed: Run 52 of Automated Security Review. fix: stabilize SSE event handling and prompt_async flow" [ref=e954] [cursor=pointer]':
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28222724662
+                    - img "failed:" [ref=e956]
+                    - generic [ref=e958]: "fix: stabilize SSE event handling and prompt_async flow"
+                  - generic [ref=e959]:
+                    - text: "Automated Security Review #52:"
+                    - generic [ref=e960]:
+                      - text: Pull request
+                      - link "#29" [ref=e961] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/pull/29
+                      - text: synchronize by
+                      - link "chicanoandres702" [ref=e962] [cursor=pointer]:
+                        - /url: /chicanoandres702
+                - link "feature/28-fix-build-issues" [ref=e964] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e966]:
+                  - generic [ref=e967]:
+                    - generic [ref=e968]:
+                      - img [ref=e970]
+                      - generic "Jun 26, 2026, 7:02 AM UTC" [ref=e972]: Today at 7:02 AM
+                    - generic [ref=e973]:
+                      - img "Run duration" [ref=e974]
+                      - text: 20s
+                  - group [ref=e977]:
+                    - generic "Show options" [ref=e978] [cursor=pointer]:
+                      - img "Show options" [ref=e979]
+          - navigation "Pagination" [ref=e983]:
+            - generic "Previous page" [ref=e984]: Previous
+            - emphasis [ref=e985] [cursor=pointer]: "1"
+            - link "Page 2" [ref=e986] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=2
+              - text: "2"
+            - link "Page 3" [ref=e987] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=3
+              - text: "3"
+            - link "Page 4" [ref=e988] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=4
+              - text: "4"
+            - link "Page 5" [ref=e989] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=5
+              - text: "5"
+            - generic [ref=e990]: …
+            - link "Page 12" [ref=e991] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=12
+              - text: "12"
+            - link "Page 13" [ref=e992] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=13
+              - text: "13"
+            - link "Next page" [ref=e993] [cursor=pointer]:
+              - /url: /chicanoandres702/Kilocode-android/actions?page=2
+              - text: Next

@@ -1,0 +1,1375 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#_top"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "OpenCode" [ref=e7] [cursor=pointer]:
+          - /url: /docs/
+          - generic [ref=e8]: OpenCode
+        - generic [ref=e9]:
+          - generic [ref=e10]:
+            - link [ref=e11] [cursor=pointer]:
+              - /url: https://github.com/anomalyco/opencode
+              - img [ref=e12]
+            - link [ref=e14] [cursor=pointer]:
+              - /url: https://opencode.ai/discord
+              - img [ref=e15]
+          - button "Search" [ref=e18] [cursor=pointer]:
+            - generic [ref=e19]: Search
+            - generic [ref=e20]:
+              - generic [ref=e21]: Ctrl
+              - generic [ref=e22]: K
+    - navigation "Main":
+      - list [ref=e26]:
+        - listitem [ref=e27]:
+          - link "Intro" [ref=e28] [cursor=pointer]:
+            - /url: /docs/
+        - listitem [ref=e29]:
+          - link "Config" [ref=e30] [cursor=pointer]:
+            - /url: /docs/config/
+        - listitem [ref=e31]:
+          - link "Providers" [ref=e32] [cursor=pointer]:
+            - /url: /docs/providers/
+        - listitem [ref=e33]:
+          - link "Network" [ref=e34] [cursor=pointer]:
+            - /url: /docs/network/
+        - listitem [ref=e35]:
+          - link "Enterprise" [ref=e36] [cursor=pointer]:
+            - /url: /docs/enterprise/
+        - listitem [ref=e37]:
+          - link "Troubleshooting" [ref=e38] [cursor=pointer]:
+            - /url: /docs/troubleshooting/
+        - listitem [ref=e39]:
+          - link "Windows" [ref=e40] [cursor=pointer]:
+            - /url: /docs/windows-wsl
+        - listitem [ref=e41]:
+          - group [ref=e42]:
+            - generic "Usage" [ref=e43] [cursor=pointer]:
+              - generic [ref=e44]: Usage
+              - img [ref=e45]
+            - list [ref=e47]:
+              - listitem [ref=e48]:
+                - link "Go" [ref=e49] [cursor=pointer]:
+                  - /url: /docs/go/
+              - listitem [ref=e50]:
+                - link "TUI" [ref=e51] [cursor=pointer]:
+                  - /url: /docs/tui/
+              - listitem [ref=e52]:
+                - link "CLI" [ref=e53] [cursor=pointer]:
+                  - /url: /docs/cli/
+              - listitem [ref=e54]:
+                - link "Web" [ref=e55] [cursor=pointer]:
+                  - /url: /docs/web/
+              - listitem [ref=e56]:
+                - link "IDE" [ref=e57] [cursor=pointer]:
+                  - /url: /docs/ide/
+              - listitem [ref=e58]:
+                - link "Zen" [ref=e59] [cursor=pointer]:
+                  - /url: /docs/zen/
+              - listitem [ref=e60]:
+                - link "Share" [ref=e61] [cursor=pointer]:
+                  - /url: /docs/share/
+              - listitem [ref=e62]:
+                - link "GitHub" [ref=e63] [cursor=pointer]:
+                  - /url: /docs/github/
+              - listitem [ref=e64]:
+                - link "GitLab" [ref=e65] [cursor=pointer]:
+                  - /url: /docs/gitlab/
+        - listitem [ref=e66]:
+          - group [ref=e67]:
+            - generic "Configure" [ref=e68] [cursor=pointer]:
+              - generic [ref=e69]: Configure
+              - img [ref=e70]
+            - list [ref=e72]:
+              - listitem [ref=e73]:
+                - link "Tools" [ref=e74] [cursor=pointer]:
+                  - /url: /docs/tools/
+              - listitem [ref=e75]:
+                - link "Rules" [ref=e76] [cursor=pointer]:
+                  - /url: /docs/rules/
+              - listitem [ref=e77]:
+                - link "Agents" [ref=e78] [cursor=pointer]:
+                  - /url: /docs/agents/
+              - listitem [ref=e79]:
+                - link "Models" [ref=e80] [cursor=pointer]:
+                  - /url: /docs/models/
+              - listitem [ref=e81]:
+                - link "Themes" [ref=e82] [cursor=pointer]:
+                  - /url: /docs/themes/
+              - listitem [ref=e83]:
+                - link "Keybinds" [ref=e84] [cursor=pointer]:
+                  - /url: /docs/keybinds/
+              - listitem [ref=e85]:
+                - link "Commands" [ref=e86] [cursor=pointer]:
+                  - /url: /docs/commands/
+              - listitem [ref=e87]:
+                - link "Formatters" [ref=e88] [cursor=pointer]:
+                  - /url: /docs/formatters/
+              - listitem [ref=e89]:
+                - link "Permissions" [ref=e90] [cursor=pointer]:
+                  - /url: /docs/permissions/
+              - listitem [ref=e91]:
+                - link "Policies" [ref=e92] [cursor=pointer]:
+                  - /url: /docs/policies/
+              - listitem [ref=e93]:
+                - link "LSP Servers" [ref=e94] [cursor=pointer]:
+                  - /url: /docs/lsp/
+              - listitem [ref=e95]:
+                - link "MCP servers" [ref=e96] [cursor=pointer]:
+                  - /url: /docs/mcp-servers/
+              - listitem [ref=e97]:
+                - link "ACP Support" [ref=e98] [cursor=pointer]:
+                  - /url: /docs/acp/
+              - listitem [ref=e99]:
+                - link "Agent Skills" [ref=e100] [cursor=pointer]:
+                  - /url: /docs/skills/
+              - listitem [ref=e101]:
+                - link "References" [ref=e102] [cursor=pointer]:
+                  - /url: /docs/references/
+              - listitem [ref=e103]:
+                - link "Custom Tools" [ref=e104] [cursor=pointer]:
+                  - /url: /docs/custom-tools/
+        - listitem [ref=e105]:
+          - group [ref=e106]:
+            - generic "Develop" [ref=e107] [cursor=pointer]:
+              - generic [ref=e108]: Develop
+              - img [ref=e109]
+            - list [ref=e111]:
+              - listitem [ref=e112]:
+                - link "SDK" [ref=e113] [cursor=pointer]:
+                  - /url: /docs/sdk/
+              - listitem [ref=e114]:
+                - link "Server" [ref=e115] [cursor=pointer]:
+                  - /url: /docs/server/
+              - listitem [ref=e116]:
+                - link "Plugins" [ref=e117] [cursor=pointer]:
+                  - /url: /docs/plugins/
+              - listitem [ref=e118]:
+                - link "Ecosystem" [ref=e119] [cursor=pointer]:
+                  - /url: /docs/ecosystem/
+    - generic [ref=e121]:
+      - complementary [ref=e122]:
+        - navigation "On this page" [ref=e127]:
+          - heading "On this page" [level=2] [ref=e128]
+          - list [ref=e129]:
+            - listitem [ref=e130]:
+              - link "Overview" [ref=e131] [cursor=pointer]:
+                - /url: "#_top"
+              - list [ref=e132]:
+                - listitem [ref=e133]:
+                  - link "Usage" [ref=e134] [cursor=pointer]:
+                    - /url: "#usage"
+                - listitem [ref=e135]:
+                  - link "Authentication" [ref=e136] [cursor=pointer]:
+                    - /url: "#authentication"
+                - listitem [ref=e137]:
+                  - link "How it works" [ref=e138] [cursor=pointer]:
+                    - /url: "#how-it-works"
+            - listitem [ref=e139]:
+              - link "Spec" [ref=e140] [cursor=pointer]:
+                - /url: "#spec"
+            - listitem [ref=e141]:
+              - link "APIs" [ref=e142] [cursor=pointer]:
+                - /url: "#apis"
+              - list [ref=e143]:
+                - listitem [ref=e144]:
+                  - link "Global" [ref=e145] [cursor=pointer]:
+                    - /url: "#global"
+                - listitem [ref=e146]:
+                  - link "Project" [ref=e147] [cursor=pointer]:
+                    - /url: "#project"
+                - listitem [ref=e148]:
+                  - link "Path & VCS" [ref=e149] [cursor=pointer]:
+                    - /url: "#path--vcs"
+                - listitem [ref=e150]:
+                  - link "Instance" [ref=e151] [cursor=pointer]:
+                    - /url: "#instance"
+                - listitem [ref=e152]:
+                  - link "Config" [ref=e153] [cursor=pointer]:
+                    - /url: "#config"
+                - listitem [ref=e154]:
+                  - link "Provider" [ref=e155] [cursor=pointer]:
+                    - /url: "#provider"
+                - listitem [ref=e156]:
+                  - link "Sessions" [ref=e157] [cursor=pointer]:
+                    - /url: "#sessions"
+                - listitem [ref=e158]:
+                  - link "Messages" [ref=e159] [cursor=pointer]:
+                    - /url: "#messages"
+                - listitem [ref=e160]:
+                  - link "Commands" [ref=e161] [cursor=pointer]:
+                    - /url: "#commands"
+                - listitem [ref=e162]:
+                  - link "Files" [ref=e163] [cursor=pointer]:
+                    - /url: "#files"
+                - listitem [ref=e164]:
+                  - link "Tools (Experimental)" [ref=e165] [cursor=pointer]:
+                    - /url: "#tools-experimental"
+                - listitem [ref=e166]:
+                  - link "LSP, Formatters & MCP" [ref=e167] [cursor=pointer]:
+                    - /url: "#lsp-formatters--mcp"
+                - listitem [ref=e168]:
+                  - link "Agents" [ref=e169] [cursor=pointer]:
+                    - /url: "#agents"
+                - listitem [ref=e170]:
+                  - link "Logging" [ref=e171] [cursor=pointer]:
+                    - /url: "#logging"
+                - listitem [ref=e172]:
+                  - link "TUI" [ref=e173] [cursor=pointer]:
+                    - /url: "#tui"
+                - listitem [ref=e174]:
+                  - link "Auth" [ref=e175] [cursor=pointer]:
+                    - /url: "#auth"
+                - listitem [ref=e176]:
+                  - link "Events" [ref=e177] [cursor=pointer]:
+                    - /url: "#events"
+                - listitem [ref=e178]:
+                  - link "Docs" [ref=e179] [cursor=pointer]:
+                    - /url: "#docs"
+      - main [ref=e181]:
+        - generic [ref=e183]:
+          - heading "Server" [level=1] [ref=e184]
+          - paragraph [ref=e185]: Interact with opencode server over HTTP.
+        - generic [ref=e187]:
+          - generic [ref=e188]:
+            - paragraph [ref=e189]:
+              - text: The
+              - code [ref=e190]: "`opencode serve`"
+              - text: command runs a headless HTTP server that exposes an OpenAPI endpoint that an opencode client can use.
+            - separator [ref=e191]
+            - heading "Usage" [level=3] [ref=e192]:
+              - link "Usage" [ref=e193]:
+                - /url: "#usage"
+            - figure "Terminal window" [ref=e195]:
+              - generic [ref=e198]: Terminal window
+              - code [ref=e200]:
+                - generic [ref=e202]: opencode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+              - button "Copy to clipboard" [ref=e204] [cursor=pointer]
+            - heading "Options" [level=4] [ref=e206]:
+              - link "Options" [ref=e207]:
+                - /url: "#options"
+            - table [ref=e208]:
+              - rowgroup [ref=e209]:
+                - row "Flag Description Default" [ref=e210]:
+                  - columnheader "Flag" [ref=e211]
+                  - columnheader "Description" [ref=e212]
+                  - columnheader "Default" [ref=e213]
+              - rowgroup [ref=e214]:
+                - 'row "`--port` Port to listen on `4096`" [ref=e215]':
+                  - 'cell "`--port`" [ref=e216]':
+                    - code [ref=e217]: "`--port`"
+                  - cell "Port to listen on" [ref=e218]
+                  - 'cell "`4096`" [ref=e219]':
+                    - code [ref=e220]: "`4096`"
+                - 'row "`--hostname` Hostname to listen on `127.0.0.1`" [ref=e221]':
+                  - 'cell "`--hostname`" [ref=e222]':
+                    - code [ref=e223]: "`--hostname`"
+                  - cell "Hostname to listen on" [ref=e224]
+                  - 'cell "`127.0.0.1`" [ref=e225]':
+                    - code [ref=e226]: "`127.0.0.1`"
+                - 'row "`--mdns` Enable mDNS discovery `false`" [ref=e227]':
+                  - 'cell "`--mdns`" [ref=e228]':
+                    - code [ref=e229]: "`--mdns`"
+                  - cell "Enable mDNS discovery" [ref=e230]
+                  - 'cell "`false`" [ref=e231]':
+                    - code [ref=e232]: "`false`"
+                - 'row "`--mdns-domain` Custom domain name for mDNS service `opencode.local`" [ref=e233]':
+                  - 'cell "`--mdns-domain`" [ref=e234]':
+                    - code [ref=e235]: "`--mdns-domain`"
+                  - cell "Custom domain name for mDNS service" [ref=e236]
+                  - 'cell "`opencode.local`" [ref=e237]':
+                    - code [ref=e238]: "`opencode.local`"
+                - 'row "`--cors` Additional browser origins to allow `[]`" [ref=e239]':
+                  - 'cell "`--cors`" [ref=e240]':
+                    - code [ref=e241]: "`--cors`"
+                  - cell "Additional browser origins to allow" [ref=e242]
+                  - 'cell "`[]`" [ref=e243]':
+                    - code [ref=e244]: "`[]`"
+            - paragraph [ref=e245]:
+              - code [ref=e246]: "`--cors`"
+              - text: "can be passed multiple times:"
+            - figure "Terminal window" [ref=e248]:
+              - generic [ref=e251]: Terminal window
+              - code [ref=e253]:
+                - generic [ref=e255]: opencode serve --cors http://localhost:5173 --cors https://app.example.com
+              - button "Copy to clipboard" [ref=e257] [cursor=pointer]
+            - separator [ref=e259]
+            - heading "Authentication" [level=3] [ref=e260]:
+              - link "Authentication" [ref=e261]:
+                - /url: "#authentication"
+            - paragraph [ref=e262]:
+              - text: Set
+              - code [ref=e263]: "`OPENCODE_SERVER_PASSWORD`"
+              - text: to protect the server with HTTP basic auth. The username defaults to
+              - code [ref=e264]: "`opencode`"
+              - text: ", or set"
+              - code [ref=e265]: "`OPENCODE_SERVER_USERNAME`"
+              - text: to override it. This applies to both
+              - code [ref=e266]: "`opencode serve`"
+              - text: and
+              - code [ref=e267]: "`opencode web`"
+              - text: .
+            - figure "Terminal window" [ref=e269]:
+              - generic [ref=e272]: Terminal window
+              - code [ref=e274]:
+                - generic [ref=e276]: OPENCODE_SERVER_PASSWORD=your-password opencode serve
+              - button "Copy to clipboard" [ref=e278] [cursor=pointer]
+            - separator [ref=e280]
+            - heading "How it works" [level=3] [ref=e281]:
+              - link "How it works" [ref=e282]:
+                - /url: "#how-it-works"
+            - paragraph [ref=e283]:
+              - text: When you run
+              - code [ref=e284]: "`opencode`"
+              - text: it starts a TUI and a server. Where the TUI is the client that talks to the server. The server exposes an OpenAPI 3.1 spec endpoint. This endpoint is also used to generate an
+              - link "SDK" [ref=e285] [cursor=pointer]:
+                - /url: /docs/sdk
+              - text: .
+            - complementary "Tip" [ref=e286]:
+              - paragraph [ref=e287]:
+                - img [ref=e288]
+                - text: Tip
+              - paragraph [ref=e292]: Use the opencode server to interact with opencode programmatically.
+            - paragraph [ref=e293]: This architecture lets opencode support multiple clients and allows you to interact with opencode programmatically.
+            - paragraph [ref=e294]:
+              - text: You can run
+              - code [ref=e295]: "`opencode serve`"
+              - text: to start a standalone server. If you have the opencode TUI running,
+              - code [ref=e296]: "`opencode serve`"
+              - text: will start a new server.
+            - separator [ref=e297]
+            - heading "Connect to an existing server" [level=4] [ref=e298]:
+              - link "Connect to an existing server" [ref=e299]:
+                - /url: "#connect-to-an-existing-server"
+            - paragraph [ref=e300]:
+              - text: When you start the TUI it randomly assigns a port and hostname. You can instead pass in the
+              - code [ref=e301]: "`--hostname`"
+              - text: and
+              - code [ref=e302]: "`--port`"
+              - link "flags" [ref=e303] [cursor=pointer]:
+                - /url: /docs/cli
+              - text: . Then use this to connect to its server.
+            - paragraph [ref=e304]:
+              - text: The
+              - 'link "`/tui`" [ref=e305] [cursor=pointer]':
+                - /url: "#tui"
+                - code [ref=e306]: "`/tui`"
+              - text: endpoint can be used to drive the TUI through the server. For example, you can prefill or run a prompt. This setup is used by the OpenCode
+              - link "IDE" [ref=e307] [cursor=pointer]:
+                - /url: /docs/ide
+              - text: plugins.
+            - separator [ref=e308]
+            - heading "Spec" [level=2] [ref=e309]:
+              - link "Spec" [ref=e310]:
+                - /url: "#spec"
+            - paragraph [ref=e311]: "The server publishes an OpenAPI 3.1 spec that can be viewed at:"
+            - figure [ref=e313]:
+              - code [ref=e315]:
+                - generic [ref=e317]: http://<hostname>:<port>/doc
+              - button "Copy to clipboard" [ref=e319] [cursor=pointer]
+            - paragraph [ref=e321]:
+              - text: For example,
+              - code [ref=e322]: "`http://localhost:4096/doc`"
+              - text: . Use the spec to generate clients or inspect request and response types. Or view it in a Swagger explorer.
+            - separator [ref=e323]
+            - heading "APIs" [level=2] [ref=e324]:
+              - link "APIs" [ref=e325]:
+                - /url: "#apis"
+            - paragraph [ref=e326]: The opencode server exposes the following APIs.
+            - separator [ref=e327]
+            - heading "Global" [level=3] [ref=e328]:
+              - link "Global" [ref=e329]:
+                - /url: "#global"
+            - table [ref=e330]:
+              - rowgroup [ref=e331]:
+                - row "Method Path Description Response" [ref=e332]:
+                  - columnheader "Method" [ref=e333]
+                  - columnheader "Path" [ref=e334]
+                  - columnheader "Description" [ref=e335]
+                  - columnheader "Response" [ref=e336]
+              - rowgroup [ref=e337]:
+                - 'row "`GET` `/global/health` Get server health and version `{ healthy: true, version: string }`" [ref=e338]':
+                  - 'cell "`GET`" [ref=e339]':
+                    - code [ref=e340]: "`GET`"
+                  - 'cell "`/global/health`" [ref=e341]':
+                    - code [ref=e342]: "`/global/health`"
+                  - cell "Get server health and version" [ref=e343]
+                  - 'cell "`{ healthy: true, version: string }`" [ref=e344]':
+                    - code [ref=e345]: "`{ healthy: true, version: string }`"
+                - 'row "`GET` `/global/event` Get global events (SSE stream) Event stream" [ref=e346]':
+                  - 'cell "`GET`" [ref=e347]':
+                    - code [ref=e348]: "`GET`"
+                  - 'cell "`/global/event`" [ref=e349]':
+                    - code [ref=e350]: "`/global/event`"
+                  - cell "Get global events (SSE stream)" [ref=e351]
+                  - cell "Event stream" [ref=e352]
+            - separator [ref=e353]
+            - heading "Project" [level=3] [ref=e354]:
+              - link "Project" [ref=e355]:
+                - /url: "#project"
+            - table [ref=e356]:
+              - rowgroup [ref=e357]:
+                - row "Method Path Description Response" [ref=e358]:
+                  - columnheader "Method" [ref=e359]
+                  - columnheader "Path" [ref=e360]
+                  - columnheader "Description" [ref=e361]
+                  - columnheader "Response" [ref=e362]
+              - rowgroup [ref=e363]:
+                - 'row "`GET` `/project` List all projects `Project[]`" [ref=e364]':
+                  - 'cell "`GET`" [ref=e365]':
+                    - code [ref=e366]: "`GET`"
+                  - 'cell "`/project`" [ref=e367]':
+                    - code [ref=e368]: "`/project`"
+                  - cell "List all projects" [ref=e369]
+                  - 'cell "`Project[]`" [ref=e370]':
+                    - 'link "`Project[]`" [ref=e371] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e372]: "`Project[]`"
+                - 'row "`GET` `/project/current` Get the current project `Project`" [ref=e373]':
+                  - 'cell "`GET`" [ref=e374]':
+                    - code [ref=e375]: "`GET`"
+                  - 'cell "`/project/current`" [ref=e376]':
+                    - code [ref=e377]: "`/project/current`"
+                  - cell "Get the current project" [ref=e378]
+                  - 'cell "`Project`" [ref=e379]':
+                    - 'link "`Project`" [ref=e380] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e381]: "`Project`"
+            - separator [ref=e382]
+            - heading "Path & VCS" [level=3] [ref=e383]:
+              - link "Path & VCS" [ref=e384]:
+                - /url: "#path--vcs"
+            - table [ref=e385]:
+              - rowgroup [ref=e386]:
+                - row "Method Path Description Response" [ref=e387]:
+                  - columnheader "Method" [ref=e388]
+                  - columnheader "Path" [ref=e389]
+                  - columnheader "Description" [ref=e390]
+                  - columnheader "Response" [ref=e391]
+              - rowgroup [ref=e392]:
+                - 'row "`GET` `/path` Get the current path `Path`" [ref=e393]':
+                  - 'cell "`GET`" [ref=e394]':
+                    - code [ref=e395]: "`GET`"
+                  - 'cell "`/path`" [ref=e396]':
+                    - code [ref=e397]: "`/path`"
+                  - cell "Get the current path" [ref=e398]
+                  - 'cell "`Path`" [ref=e399]':
+                    - 'link "`Path`" [ref=e400] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e401]: "`Path`"
+                - 'row "`GET` `/vcs` Get VCS info for the current project `VcsInfo`" [ref=e402]':
+                  - 'cell "`GET`" [ref=e403]':
+                    - code [ref=e404]: "`GET`"
+                  - 'cell "`/vcs`" [ref=e405]':
+                    - code [ref=e406]: "`/vcs`"
+                  - cell "Get VCS info for the current project" [ref=e407]
+                  - 'cell "`VcsInfo`" [ref=e408]':
+                    - 'link "`VcsInfo`" [ref=e409] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e410]: "`VcsInfo`"
+            - separator [ref=e411]
+            - heading "Instance" [level=3] [ref=e412]:
+              - link "Instance" [ref=e413]:
+                - /url: "#instance"
+            - table [ref=e414]:
+              - rowgroup [ref=e415]:
+                - row "Method Path Description Response" [ref=e416]:
+                  - columnheader "Method" [ref=e417]
+                  - columnheader "Path" [ref=e418]
+                  - columnheader "Description" [ref=e419]
+                  - columnheader "Response" [ref=e420]
+              - rowgroup [ref=e421]:
+                - 'row "`POST` `/instance/dispose` Dispose the current instance `boolean`" [ref=e422]':
+                  - 'cell "`POST`" [ref=e423]':
+                    - code [ref=e424]: "`POST`"
+                  - 'cell "`/instance/dispose`" [ref=e425]':
+                    - code [ref=e426]: "`/instance/dispose`"
+                  - cell "Dispose the current instance" [ref=e427]
+                  - 'cell "`boolean`" [ref=e428]':
+                    - code [ref=e429]: "`boolean`"
+            - separator [ref=e430]
+            - heading "Config" [level=3] [ref=e431]:
+              - link "Config" [ref=e432]:
+                - /url: "#config"
+            - table [ref=e433]:
+              - rowgroup [ref=e434]:
+                - row "Method Path Description Response" [ref=e435]:
+                  - columnheader "Method" [ref=e436]
+                  - columnheader "Path" [ref=e437]
+                  - columnheader "Description" [ref=e438]
+                  - columnheader "Response" [ref=e439]
+              - rowgroup [ref=e440]:
+                - 'row "`GET` `/config` Get config info `Config`" [ref=e441]':
+                  - 'cell "`GET`" [ref=e442]':
+                    - code [ref=e443]: "`GET`"
+                  - 'cell "`/config`" [ref=e444]':
+                    - code [ref=e445]: "`/config`"
+                  - cell "Get config info" [ref=e446]
+                  - 'cell "`Config`" [ref=e447]':
+                    - 'link "`Config`" [ref=e448] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e449]: "`Config`"
+                - 'row "`PATCH` `/config` Update config `Config`" [ref=e450]':
+                  - 'cell "`PATCH`" [ref=e451]':
+                    - code [ref=e452]: "`PATCH`"
+                  - 'cell "`/config`" [ref=e453]':
+                    - code [ref=e454]: "`/config`"
+                  - cell "Update config" [ref=e455]
+                  - 'cell "`Config`" [ref=e456]':
+                    - 'link "`Config`" [ref=e457] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e458]: "`Config`"
+                - 'row "`GET` `/config/providers` List providers and default models `{ providers: `Provider[]`, default: { [key: string]: string } }`" [ref=e459]':
+                  - 'cell "`GET`" [ref=e460]':
+                    - code [ref=e461]: "`GET`"
+                  - 'cell "`/config/providers`" [ref=e462]':
+                    - code [ref=e463]: "`/config/providers`"
+                  - cell "List providers and default models" [ref=e464]
+                  - 'cell "`{ providers: `Provider[]`, default: { [key: string]: string } }`" [ref=e465]':
+                    - code [ref=e466]: "`{ providers: `"
+                    - link "Provider[]" [ref=e467] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e468]: "`, default: { [key: string]: string } }`"
+            - separator [ref=e469]
+            - heading "Provider" [level=3] [ref=e470]:
+              - link "Provider" [ref=e471]:
+                - /url: "#provider"
+            - table [ref=e472]:
+              - rowgroup [ref=e473]:
+                - row "Method Path Description Response" [ref=e474]:
+                  - columnheader "Method" [ref=e475]
+                  - columnheader "Path" [ref=e476]
+                  - columnheader "Description" [ref=e477]
+                  - columnheader "Response" [ref=e478]
+              - rowgroup [ref=e479]:
+                - 'row "`GET` `/provider` List all providers `{ all: `Provider[]`, default: {...}, connected: string[] }`" [ref=e480]':
+                  - 'cell "`GET`" [ref=e481]':
+                    - code [ref=e482]: "`GET`"
+                  - 'cell "`/provider`" [ref=e483]':
+                    - code [ref=e484]: "`/provider`"
+                  - cell "List all providers" [ref=e485]
+                  - 'cell "`{ all: `Provider[]`, default: {...}, connected: string[] }`" [ref=e486]':
+                    - code [ref=e487]: "`{ all: `"
+                    - link "Provider[]" [ref=e488] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e489]: "`, default: {...}, connected: string[] }`"
+                - 'row "`GET` `/provider/auth` Get provider authentication methods `{ [providerID: string]: `ProviderAuthMethod[]` }`" [ref=e490]':
+                  - 'cell "`GET`" [ref=e491]':
+                    - code [ref=e492]: "`GET`"
+                  - 'cell "`/provider/auth`" [ref=e493]':
+                    - code [ref=e494]: "`/provider/auth`"
+                  - cell "Get provider authentication methods" [ref=e495]
+                  - 'cell "`{ [providerID: string]: `ProviderAuthMethod[]` }`" [ref=e496]':
+                    - code [ref=e497]: "`{ [providerID: string]: `"
+                    - link "ProviderAuthMethod[]" [ref=e498] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e499]: "` }`"
+                - 'row "`POST` `/provider/{id}/oauth/authorize` Authorize a provider using OAuth `ProviderAuthAuthorization`" [ref=e500]':
+                  - 'cell "`POST`" [ref=e501]':
+                    - code [ref=e502]: "`POST`"
+                  - 'cell "`/provider/{id}/oauth/authorize`" [ref=e503]':
+                    - code [ref=e504]: "`/provider/{id}/oauth/authorize`"
+                  - cell "Authorize a provider using OAuth" [ref=e505]
+                  - 'cell "`ProviderAuthAuthorization`" [ref=e506]':
+                    - 'link "`ProviderAuthAuthorization`" [ref=e507] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e508]: "`ProviderAuthAuthorization`"
+                - 'row "`POST` `/provider/{id}/oauth/callback` Handle OAuth callback for a provider `boolean`" [ref=e509]':
+                  - 'cell "`POST`" [ref=e510]':
+                    - code [ref=e511]: "`POST`"
+                  - 'cell "`/provider/{id}/oauth/callback`" [ref=e512]':
+                    - code [ref=e513]: "`/provider/{id}/oauth/callback`"
+                  - cell "Handle OAuth callback for a provider" [ref=e514]
+                  - 'cell "`boolean`" [ref=e515]':
+                    - code [ref=e516]: "`boolean`"
+            - separator [ref=e517]
+            - heading "Sessions" [level=3] [ref=e518]:
+              - link "Sessions" [ref=e519]:
+                - /url: "#sessions"
+            - table [ref=e520]:
+              - rowgroup [ref=e521]:
+                - row "Method Path Description Notes" [ref=e522]:
+                  - columnheader "Method" [ref=e523]
+                  - columnheader "Path" [ref=e524]
+                  - columnheader "Description" [ref=e525]
+                  - columnheader "Notes" [ref=e526]
+              - rowgroup [ref=e527]:
+                - 'row "`GET` `/session` List all sessions Returns `Session[]`" [ref=e528]':
+                  - 'cell "`GET`" [ref=e529]':
+                    - code [ref=e530]: "`GET`"
+                  - 'cell "`/session`" [ref=e531]':
+                    - code [ref=e532]: "`/session`"
+                  - cell "List all sessions" [ref=e533]
+                  - 'cell "Returns `Session[]`" [ref=e534]':
+                    - text: Returns
+                    - 'link "`Session[]`" [ref=e535] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e536]: "`Session[]`"
+                - 'row "`POST` `/session` Create a new session body: `{ parentID?, title? }`, returns `Session`" [ref=e537]':
+                  - 'cell "`POST`" [ref=e538]':
+                    - code [ref=e539]: "`POST`"
+                  - 'cell "`/session`" [ref=e540]':
+                    - code [ref=e541]: "`/session`"
+                  - cell "Create a new session" [ref=e542]
+                  - 'cell "body: `{ parentID?, title? }`, returns `Session`" [ref=e543]':
+                    - text: "body:"
+                    - code [ref=e544]: "`{ parentID?, title? }`"
+                    - text: ", returns"
+                    - 'link "`Session`" [ref=e545] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e546]: "`Session`"
+                - 'row "`GET` `/session/status` Get session status for all sessions Returns `{ [sessionID: string]: `SessionStatus` }`" [ref=e547]':
+                  - 'cell "`GET`" [ref=e548]':
+                    - code [ref=e549]: "`GET`"
+                  - 'cell "`/session/status`" [ref=e550]':
+                    - code [ref=e551]: "`/session/status`"
+                  - cell "Get session status for all sessions" [ref=e552]
+                  - 'cell "Returns `{ [sessionID: string]: `SessionStatus` }`" [ref=e553]':
+                    - text: Returns
+                    - code [ref=e554]: "`{ [sessionID: string]: `"
+                    - link "SessionStatus" [ref=e555] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e556]: "` }`"
+                - 'row "`GET` `/session/:id` Get session details Returns `Session`" [ref=e557]':
+                  - 'cell "`GET`" [ref=e558]':
+                    - code [ref=e559]: "`GET`"
+                  - 'cell "`/session/:id`" [ref=e560]':
+                    - code [ref=e561]: "`/session/:id`"
+                  - cell "Get session details" [ref=e562]
+                  - 'cell "Returns `Session`" [ref=e563]':
+                    - text: Returns
+                    - 'link "`Session`" [ref=e564] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e565]: "`Session`"
+                - 'row "`DELETE` `/session/:id` Delete a session and all its data Returns `boolean`" [ref=e566]':
+                  - 'cell "`DELETE`" [ref=e567]':
+                    - code [ref=e568]: "`DELETE`"
+                  - 'cell "`/session/:id`" [ref=e569]':
+                    - code [ref=e570]: "`/session/:id`"
+                  - cell "Delete a session and all its data" [ref=e571]
+                  - 'cell "Returns `boolean`" [ref=e572]':
+                    - text: Returns
+                    - code [ref=e573]: "`boolean`"
+                - 'row "`PATCH` `/session/:id` Update session properties body: `{ title? }`, returns `Session`" [ref=e574]':
+                  - 'cell "`PATCH`" [ref=e575]':
+                    - code [ref=e576]: "`PATCH`"
+                  - 'cell "`/session/:id`" [ref=e577]':
+                    - code [ref=e578]: "`/session/:id`"
+                  - cell "Update session properties" [ref=e579]
+                  - 'cell "body: `{ title? }`, returns `Session`" [ref=e580]':
+                    - text: "body:"
+                    - code [ref=e581]: "`{ title? }`"
+                    - text: ", returns"
+                    - 'link "`Session`" [ref=e582] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e583]: "`Session`"
+                - 'row "`GET` `/session/:id/children` Get a session’s child sessions Returns `Session[]`" [ref=e584]':
+                  - 'cell "`GET`" [ref=e585]':
+                    - code [ref=e586]: "`GET`"
+                  - 'cell "`/session/:id/children`" [ref=e587]':
+                    - code [ref=e588]: "`/session/:id/children`"
+                  - cell "Get a session’s child sessions" [ref=e589]
+                  - 'cell "Returns `Session[]`" [ref=e590]':
+                    - text: Returns
+                    - 'link "`Session[]`" [ref=e591] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e592]: "`Session[]`"
+                - 'row "`GET` `/session/:id/todo` Get the todo list for a session Returns `Todo[]`" [ref=e593]':
+                  - 'cell "`GET`" [ref=e594]':
+                    - code [ref=e595]: "`GET`"
+                  - 'cell "`/session/:id/todo`" [ref=e596]':
+                    - code [ref=e597]: "`/session/:id/todo`"
+                  - cell "Get the todo list for a session" [ref=e598]
+                  - 'cell "Returns `Todo[]`" [ref=e599]':
+                    - text: Returns
+                    - 'link "`Todo[]`" [ref=e600] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e601]: "`Todo[]`"
+                - 'row "`POST` `/session/:id/init` Analyze app and create `AGENTS.md` body: `{ messageID, providerID, modelID }`, returns `boolean`" [ref=e602]':
+                  - 'cell "`POST`" [ref=e603]':
+                    - code [ref=e604]: "`POST`"
+                  - 'cell "`/session/:id/init`" [ref=e605]':
+                    - code [ref=e606]: "`/session/:id/init`"
+                  - 'cell "Analyze app and create `AGENTS.md`" [ref=e607]':
+                    - text: Analyze app and create
+                    - code [ref=e608]: "`AGENTS.md`"
+                  - 'cell "body: `{ messageID, providerID, modelID }`, returns `boolean`" [ref=e609]':
+                    - text: "body:"
+                    - code [ref=e610]: "`{ messageID, providerID, modelID }`"
+                    - text: ", returns"
+                    - code [ref=e611]: "`boolean`"
+                - 'row "`POST` `/session/:id/fork` Fork an existing session at a message body: `{ messageID? }`, returns `Session`" [ref=e612]':
+                  - 'cell "`POST`" [ref=e613]':
+                    - code [ref=e614]: "`POST`"
+                  - 'cell "`/session/:id/fork`" [ref=e615]':
+                    - code [ref=e616]: "`/session/:id/fork`"
+                  - cell "Fork an existing session at a message" [ref=e617]
+                  - 'cell "body: `{ messageID? }`, returns `Session`" [ref=e618]':
+                    - text: "body:"
+                    - code [ref=e619]: "`{ messageID? }`"
+                    - text: ", returns"
+                    - 'link "`Session`" [ref=e620] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e621]: "`Session`"
+                - 'row "`POST` `/session/:id/abort` Abort a running session Returns `boolean`" [ref=e622]':
+                  - 'cell "`POST`" [ref=e623]':
+                    - code [ref=e624]: "`POST`"
+                  - 'cell "`/session/:id/abort`" [ref=e625]':
+                    - code [ref=e626]: "`/session/:id/abort`"
+                  - cell "Abort a running session" [ref=e627]
+                  - 'cell "Returns `boolean`" [ref=e628]':
+                    - text: Returns
+                    - code [ref=e629]: "`boolean`"
+                - 'row "`POST` `/session/:id/share` Share a session Returns `Session`" [ref=e630]':
+                  - 'cell "`POST`" [ref=e631]':
+                    - code [ref=e632]: "`POST`"
+                  - 'cell "`/session/:id/share`" [ref=e633]':
+                    - code [ref=e634]: "`/session/:id/share`"
+                  - cell "Share a session" [ref=e635]
+                  - 'cell "Returns `Session`" [ref=e636]':
+                    - text: Returns
+                    - 'link "`Session`" [ref=e637] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e638]: "`Session`"
+                - 'row "`DELETE` `/session/:id/share` Unshare a session Returns `Session`" [ref=e639]':
+                  - 'cell "`DELETE`" [ref=e640]':
+                    - code [ref=e641]: "`DELETE`"
+                  - 'cell "`/session/:id/share`" [ref=e642]':
+                    - code [ref=e643]: "`/session/:id/share`"
+                  - cell "Unshare a session" [ref=e644]
+                  - 'cell "Returns `Session`" [ref=e645]':
+                    - text: Returns
+                    - 'link "`Session`" [ref=e646] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e647]: "`Session`"
+                - 'row "`GET` `/session/:id/diff` Get the diff for this session query: `messageID?`, returns `FileDiff[]`" [ref=e648]':
+                  - 'cell "`GET`" [ref=e649]':
+                    - code [ref=e650]: "`GET`"
+                  - 'cell "`/session/:id/diff`" [ref=e651]':
+                    - code [ref=e652]: "`/session/:id/diff`"
+                  - cell "Get the diff for this session" [ref=e653]
+                  - 'cell "query: `messageID?`, returns `FileDiff[]`" [ref=e654]':
+                    - text: "query:"
+                    - code [ref=e655]: "`messageID?`"
+                    - text: ", returns"
+                    - 'link "`FileDiff[]`" [ref=e656] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e657]: "`FileDiff[]`"
+                - 'row "`POST` `/session/:id/summarize` Summarize the session body: `{ providerID, modelID }`, returns `boolean`" [ref=e658]':
+                  - 'cell "`POST`" [ref=e659]':
+                    - code [ref=e660]: "`POST`"
+                  - 'cell "`/session/:id/summarize`" [ref=e661]':
+                    - code [ref=e662]: "`/session/:id/summarize`"
+                  - cell "Summarize the session" [ref=e663]
+                  - 'cell "body: `{ providerID, modelID }`, returns `boolean`" [ref=e664]':
+                    - text: "body:"
+                    - code [ref=e665]: "`{ providerID, modelID }`"
+                    - text: ", returns"
+                    - code [ref=e666]: "`boolean`"
+                - 'row "`POST` `/session/:id/revert` Revert a message body: `{ messageID, partID? }`, returns `boolean`" [ref=e667]':
+                  - 'cell "`POST`" [ref=e668]':
+                    - code [ref=e669]: "`POST`"
+                  - 'cell "`/session/:id/revert`" [ref=e670]':
+                    - code [ref=e671]: "`/session/:id/revert`"
+                  - cell "Revert a message" [ref=e672]
+                  - 'cell "body: `{ messageID, partID? }`, returns `boolean`" [ref=e673]':
+                    - text: "body:"
+                    - code [ref=e674]: "`{ messageID, partID? }`"
+                    - text: ", returns"
+                    - code [ref=e675]: "`boolean`"
+                - 'row "`POST` `/session/:id/unrevert` Restore all reverted messages Returns `boolean`" [ref=e676]':
+                  - 'cell "`POST`" [ref=e677]':
+                    - code [ref=e678]: "`POST`"
+                  - 'cell "`/session/:id/unrevert`" [ref=e679]':
+                    - code [ref=e680]: "`/session/:id/unrevert`"
+                  - cell "Restore all reverted messages" [ref=e681]
+                  - 'cell "Returns `boolean`" [ref=e682]':
+                    - text: Returns
+                    - code [ref=e683]: "`boolean`"
+                - 'row "`POST` `/session/:id/permissions/:permissionID` Respond to a permission request body: `{ response, remember? }`, returns `boolean`" [ref=e684]':
+                  - 'cell "`POST`" [ref=e685]':
+                    - code [ref=e686]: "`POST`"
+                  - 'cell "`/session/:id/permissions/:permissionID`" [ref=e687]':
+                    - code [ref=e688]: "`/session/:id/permissions/:permissionID`"
+                  - cell "Respond to a permission request" [ref=e689]
+                  - 'cell "body: `{ response, remember? }`, returns `boolean`" [ref=e690]':
+                    - text: "body:"
+                    - code [ref=e691]: "`{ response, remember? }`"
+                    - text: ", returns"
+                    - code [ref=e692]: "`boolean`"
+            - separator [ref=e693]
+            - heading "Messages" [level=3] [ref=e694]:
+              - link "Messages" [ref=e695]:
+                - /url: "#messages"
+            - table [ref=e696]:
+              - rowgroup [ref=e697]:
+                - row "Method Path Description Notes" [ref=e698]:
+                  - columnheader "Method" [ref=e699]
+                  - columnheader "Path" [ref=e700]
+                  - columnheader "Description" [ref=e701]
+                  - columnheader "Notes" [ref=e702]
+              - rowgroup [ref=e703]:
+                - 'row "`GET` `/session/:id/message` List messages in a session query: `limit?`, returns `{ info: `Message`, parts: `Part[]`}[]`" [ref=e704]':
+                  - 'cell "`GET`" [ref=e705]':
+                    - code [ref=e706]: "`GET`"
+                  - 'cell "`/session/:id/message`" [ref=e707]':
+                    - code [ref=e708]: "`/session/:id/message`"
+                  - cell "List messages in a session" [ref=e709]
+                  - 'cell "query: `limit?`, returns `{ info: `Message`, parts: `Part[]`}[]`" [ref=e710]':
+                    - text: "query:"
+                    - code [ref=e711]: "`limit?`"
+                    - text: ", returns"
+                    - code [ref=e712]: "`{ info: `"
+                    - link "Message" [ref=e713] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e714]: "`, parts: `"
+                    - link "Part[]" [ref=e715] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e716]: "`}[]`"
+                - 'row "`POST` `/session/:id/message` Send a message and wait for response body: `{ messageID?, model?, agent?, noReply?, system?, tools?, parts }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e717]':
+                  - 'cell "`POST`" [ref=e718]':
+                    - code [ref=e719]: "`POST`"
+                  - 'cell "`/session/:id/message`" [ref=e720]':
+                    - code [ref=e721]: "`/session/:id/message`"
+                  - cell "Send a message and wait for response" [ref=e722]
+                  - 'cell "body: `{ messageID?, model?, agent?, noReply?, system?, tools?, parts }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e723]':
+                    - text: "body:"
+                    - code [ref=e724]: "`{ messageID?, model?, agent?, noReply?, system?, tools?, parts }`"
+                    - text: ", returns"
+                    - code [ref=e725]: "`{ info: `"
+                    - link "Message" [ref=e726] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e727]: "`, parts: `"
+                    - link "Part[]" [ref=e728] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e729]: "`}`"
+                - 'row "`GET` `/session/:id/message/:messageID` Get message details Returns `{ info: `Message`, parts: `Part[]`}`" [ref=e730]':
+                  - 'cell "`GET`" [ref=e731]':
+                    - code [ref=e732]: "`GET`"
+                  - 'cell "`/session/:id/message/:messageID`" [ref=e733]':
+                    - code [ref=e734]: "`/session/:id/message/:messageID`"
+                  - cell "Get message details" [ref=e735]
+                  - 'cell "Returns `{ info: `Message`, parts: `Part[]`}`" [ref=e736]':
+                    - text: Returns
+                    - code [ref=e737]: "`{ info: `"
+                    - link "Message" [ref=e738] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e739]: "`, parts: `"
+                    - link "Part[]" [ref=e740] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e741]: "`}`"
+                - 'row "`POST` `/session/:id/prompt_async` Send a message asynchronously (no wait) body: same as `/session/:id/message`, returns `204 No Content`" [ref=e742]':
+                  - 'cell "`POST`" [ref=e743]':
+                    - code [ref=e744]: "`POST`"
+                  - 'cell "`/session/:id/prompt_async`" [ref=e745]':
+                    - code [ref=e746]: "`/session/:id/prompt_async`"
+                  - cell "Send a message asynchronously (no wait)" [ref=e747]
+                  - 'cell "body: same as `/session/:id/message`, returns `204 No Content`" [ref=e748]':
+                    - text: "body: same as"
+                    - code [ref=e749]: "`/session/:id/message`"
+                    - text: ", returns"
+                    - code [ref=e750]: "`204 No Content`"
+                - 'row "`POST` `/session/:id/command` Execute a slash command body: `{ messageID?, agent?, model?, command, arguments }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e751]':
+                  - 'cell "`POST`" [ref=e752]':
+                    - code [ref=e753]: "`POST`"
+                  - 'cell "`/session/:id/command`" [ref=e754]':
+                    - code [ref=e755]: "`/session/:id/command`"
+                  - cell "Execute a slash command" [ref=e756]
+                  - 'cell "body: `{ messageID?, agent?, model?, command, arguments }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e757]':
+                    - text: "body:"
+                    - code [ref=e758]: "`{ messageID?, agent?, model?, command, arguments }`"
+                    - text: ", returns"
+                    - code [ref=e759]: "`{ info: `"
+                    - link "Message" [ref=e760] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e761]: "`, parts: `"
+                    - link "Part[]" [ref=e762] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e763]: "`}`"
+                - 'row "`POST` `/session/:id/shell` Run a shell command body: `{ agent, model?, command }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e764]':
+                  - 'cell "`POST`" [ref=e765]':
+                    - code [ref=e766]: "`POST`"
+                  - 'cell "`/session/:id/shell`" [ref=e767]':
+                    - code [ref=e768]: "`/session/:id/shell`"
+                  - cell "Run a shell command" [ref=e769]
+                  - 'cell "body: `{ agent, model?, command }`, returns `{ info: `Message`, parts: `Part[]`}`" [ref=e770]':
+                    - text: "body:"
+                    - code [ref=e771]: "`{ agent, model?, command }`"
+                    - text: ", returns"
+                    - code [ref=e772]: "`{ info: `"
+                    - link "Message" [ref=e773] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e774]: "`, parts: `"
+                    - link "Part[]" [ref=e775] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e776]: "`}`"
+            - separator [ref=e777]
+            - heading "Commands" [level=3] [ref=e778]:
+              - link "Commands" [ref=e779]:
+                - /url: "#commands"
+            - table [ref=e780]:
+              - rowgroup [ref=e781]:
+                - row "Method Path Description Response" [ref=e782]:
+                  - columnheader "Method" [ref=e783]
+                  - columnheader "Path" [ref=e784]
+                  - columnheader "Description" [ref=e785]
+                  - columnheader "Response" [ref=e786]
+              - rowgroup [ref=e787]:
+                - 'row "`GET` `/command` List all commands `Command[]`" [ref=e788]':
+                  - 'cell "`GET`" [ref=e789]':
+                    - code [ref=e790]: "`GET`"
+                  - 'cell "`/command`" [ref=e791]':
+                    - code [ref=e792]: "`/command`"
+                  - cell "List all commands" [ref=e793]
+                  - 'cell "`Command[]`" [ref=e794]':
+                    - 'link "`Command[]`" [ref=e795] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e796]: "`Command[]`"
+            - separator [ref=e797]
+            - heading "Files" [level=3] [ref=e798]:
+              - link "Files" [ref=e799]:
+                - /url: "#files"
+            - table [ref=e800]:
+              - rowgroup [ref=e801]:
+                - row "Method Path Description Response" [ref=e802]:
+                  - columnheader "Method" [ref=e803]
+                  - columnheader "Path" [ref=e804]
+                  - columnheader "Description" [ref=e805]
+                  - columnheader "Response" [ref=e806]
+              - rowgroup [ref=e807]:
+                - 'row "`GET` `/find?pattern=<pat>` Search for text in files Array of match objects with `path`, `lines`, `line_number`, `absolute_offset`, `submatches`" [ref=e808]':
+                  - 'cell "`GET`" [ref=e809]':
+                    - code [ref=e810]: "`GET`"
+                  - 'cell "`/find?pattern=<pat>`" [ref=e811]':
+                    - code [ref=e812]: "`/find?pattern=<pat>`"
+                  - cell "Search for text in files" [ref=e813]
+                  - 'cell "Array of match objects with `path`, `lines`, `line_number`, `absolute_offset`, `submatches`" [ref=e814]':
+                    - text: Array of match objects with
+                    - code [ref=e815]: "`path`"
+                    - text: ","
+                    - code [ref=e816]: "`lines`"
+                    - text: ","
+                    - code [ref=e817]: "`line_number`"
+                    - text: ","
+                    - code [ref=e818]: "`absolute_offset`"
+                    - text: ","
+                    - code [ref=e819]: "`submatches`"
+                - 'row "`GET` `/find/file?query=<q>` Find files and directories by name `string[]` (paths)" [ref=e820]':
+                  - 'cell "`GET`" [ref=e821]':
+                    - code [ref=e822]: "`GET`"
+                  - 'cell "`/find/file?query=<q>`" [ref=e823]':
+                    - code [ref=e824]: "`/find/file?query=<q>`"
+                  - cell "Find files and directories by name" [ref=e825]
+                  - 'cell "`string[]` (paths)" [ref=e826]':
+                    - code [ref=e827]: "`string[]`"
+                    - text: (paths)
+                - 'row "`GET` `/find/symbol?query=<q>` Find workspace symbols `Symbol[]`" [ref=e828]':
+                  - 'cell "`GET`" [ref=e829]':
+                    - code [ref=e830]: "`GET`"
+                  - 'cell "`/find/symbol?query=<q>`" [ref=e831]':
+                    - code [ref=e832]: "`/find/symbol?query=<q>`"
+                  - cell "Find workspace symbols" [ref=e833]
+                  - 'cell "`Symbol[]`" [ref=e834]':
+                    - 'link "`Symbol[]`" [ref=e835] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e836]: "`Symbol[]`"
+                - 'row "`GET` `/file?path=<path>` List files and directories `FileNode[]`" [ref=e837]':
+                  - 'cell "`GET`" [ref=e838]':
+                    - code [ref=e839]: "`GET`"
+                  - 'cell "`/file?path=<path>`" [ref=e840]':
+                    - code [ref=e841]: "`/file?path=<path>`"
+                  - cell "List files and directories" [ref=e842]
+                  - 'cell "`FileNode[]`" [ref=e843]':
+                    - 'link "`FileNode[]`" [ref=e844] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e845]: "`FileNode[]`"
+                - 'row "`GET` `/file/content?path=<p>` Read a file `FileContent`" [ref=e846]':
+                  - 'cell "`GET`" [ref=e847]':
+                    - code [ref=e848]: "`GET`"
+                  - 'cell "`/file/content?path=<p>`" [ref=e849]':
+                    - code [ref=e850]: "`/file/content?path=<p>`"
+                  - cell "Read a file" [ref=e851]
+                  - 'cell "`FileContent`" [ref=e852]':
+                    - 'link "`FileContent`" [ref=e853] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e854]: "`FileContent`"
+                - 'row "`GET` `/file/status` Get status for tracked files `File[]`" [ref=e855]':
+                  - 'cell "`GET`" [ref=e856]':
+                    - code [ref=e857]: "`GET`"
+                  - 'cell "`/file/status`" [ref=e858]':
+                    - code [ref=e859]: "`/file/status`"
+                  - cell "Get status for tracked files" [ref=e860]
+                  - 'cell "`File[]`" [ref=e861]':
+                    - 'link "`File[]`" [ref=e862] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e863]: "`File[]`"
+            - 'heading "`/find/file` query parameters" [level=4] [ref=e864]':
+              - 'link "`/find/file` query parameters" [ref=e865]':
+                - /url: "#findfile-query-parameters"
+                - code [ref=e866]: "`/find/file`"
+                - text: query parameters
+            - list [ref=e867]:
+              - listitem [ref=e868]:
+                - code [ref=e869]: "`query`"
+                - text: (required) — search string (fuzzy match)
+              - listitem [ref=e870]:
+                - code [ref=e871]: "`type`"
+                - text: (optional) — limit results to
+                - code [ref=e872]: "`\"file\"`"
+                - text: or
+                - code [ref=e873]: "`\"directory\"`"
+              - listitem [ref=e874]:
+                - code [ref=e875]: "`directory`"
+                - text: (optional) — override the project root for the search
+              - listitem [ref=e876]:
+                - code [ref=e877]: "`limit`"
+                - text: (optional) — max results (1–200)
+              - listitem [ref=e878]:
+                - code [ref=e879]: "`dirs`"
+                - text: (optional) — legacy flag (
+                - code [ref=e880]: "`\"false\"`"
+                - text: returns only files)
+            - separator [ref=e881]
+            - heading "Tools (Experimental)" [level=3] [ref=e882]:
+              - link "Tools (Experimental)" [ref=e883]:
+                - /url: "#tools-experimental"
+            - table [ref=e884]:
+              - rowgroup [ref=e885]:
+                - row "Method Path Description Response" [ref=e886]:
+                  - columnheader "Method" [ref=e887]
+                  - columnheader "Path" [ref=e888]
+                  - columnheader "Description" [ref=e889]
+                  - columnheader "Response" [ref=e890]
+              - rowgroup [ref=e891]:
+                - 'row "`GET` `/experimental/tool/ids` List all tool IDs `ToolIDs`" [ref=e892]':
+                  - 'cell "`GET`" [ref=e893]':
+                    - code [ref=e894]: "`GET`"
+                  - 'cell "`/experimental/tool/ids`" [ref=e895]':
+                    - code [ref=e896]: "`/experimental/tool/ids`"
+                  - cell "List all tool IDs" [ref=e897]
+                  - 'cell "`ToolIDs`" [ref=e898]':
+                    - 'link "`ToolIDs`" [ref=e899] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e900]: "`ToolIDs`"
+                - 'row "`GET` `/experimental/tool?provider=<p>&model=<m>` List tools with JSON schemas for a model `ToolList`" [ref=e901]':
+                  - 'cell "`GET`" [ref=e902]':
+                    - code [ref=e903]: "`GET`"
+                  - 'cell "`/experimental/tool?provider=<p>&model=<m>`" [ref=e904]':
+                    - code [ref=e905]: "`/experimental/tool?provider=<p>&model=<m>`"
+                  - cell "List tools with JSON schemas for a model" [ref=e906]
+                  - 'cell "`ToolList`" [ref=e907]':
+                    - 'link "`ToolList`" [ref=e908] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e909]: "`ToolList`"
+            - separator [ref=e910]
+            - heading "LSP, Formatters & MCP" [level=3] [ref=e911]:
+              - link "LSP, Formatters & MCP" [ref=e912]:
+                - /url: "#lsp-formatters--mcp"
+            - table [ref=e913]:
+              - rowgroup [ref=e914]:
+                - row "Method Path Description Response" [ref=e915]:
+                  - columnheader "Method" [ref=e916]
+                  - columnheader "Path" [ref=e917]
+                  - columnheader "Description" [ref=e918]
+                  - columnheader "Response" [ref=e919]
+              - rowgroup [ref=e920]:
+                - 'row "`GET` `/lsp` Get LSP server status `LSPStatus[]`" [ref=e921]':
+                  - 'cell "`GET`" [ref=e922]':
+                    - code [ref=e923]: "`GET`"
+                  - 'cell "`/lsp`" [ref=e924]':
+                    - code [ref=e925]: "`/lsp`"
+                  - cell "Get LSP server status" [ref=e926]
+                  - 'cell "`LSPStatus[]`" [ref=e927]':
+                    - 'link "`LSPStatus[]`" [ref=e928] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e929]: "`LSPStatus[]`"
+                - 'row "`GET` `/formatter` Get formatter status `FormatterStatus[]`" [ref=e930]':
+                  - 'cell "`GET`" [ref=e931]':
+                    - code [ref=e932]: "`GET`"
+                  - 'cell "`/formatter`" [ref=e933]':
+                    - code [ref=e934]: "`/formatter`"
+                  - cell "Get formatter status" [ref=e935]
+                  - 'cell "`FormatterStatus[]`" [ref=e936]':
+                    - 'link "`FormatterStatus[]`" [ref=e937] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e938]: "`FormatterStatus[]`"
+                - 'row "`GET` `/mcp` Get MCP server status `{ [name: string]: `MCPStatus` }`" [ref=e939]':
+                  - 'cell "`GET`" [ref=e940]':
+                    - code [ref=e941]: "`GET`"
+                  - 'cell "`/mcp`" [ref=e942]':
+                    - code [ref=e943]: "`/mcp`"
+                  - cell "Get MCP server status" [ref=e944]
+                  - 'cell "`{ [name: string]: `MCPStatus` }`" [ref=e945]':
+                    - code [ref=e946]: "`{ [name: string]: `"
+                    - link "MCPStatus" [ref=e947] [cursor=pointer]:
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                    - code [ref=e948]: "` }`"
+                - 'row "`POST` `/mcp` Add MCP server dynamically body: `{ name, config }`, returns MCP status object" [ref=e949]':
+                  - 'cell "`POST`" [ref=e950]':
+                    - code [ref=e951]: "`POST`"
+                  - 'cell "`/mcp`" [ref=e952]':
+                    - code [ref=e953]: "`/mcp`"
+                  - cell "Add MCP server dynamically" [ref=e954]
+                  - 'cell "body: `{ name, config }`, returns MCP status object" [ref=e955]':
+                    - text: "body:"
+                    - code [ref=e956]: "`{ name, config }`"
+                    - text: ", returns MCP status object"
+            - separator [ref=e957]
+            - heading "Agents" [level=3] [ref=e958]:
+              - link "Agents" [ref=e959]:
+                - /url: "#agents"
+            - table [ref=e960]:
+              - rowgroup [ref=e961]:
+                - row "Method Path Description Response" [ref=e962]:
+                  - columnheader "Method" [ref=e963]
+                  - columnheader "Path" [ref=e964]
+                  - columnheader "Description" [ref=e965]
+                  - columnheader "Response" [ref=e966]
+              - rowgroup [ref=e967]:
+                - 'row "`GET` `/agent` List all available agents `Agent[]`" [ref=e968]':
+                  - 'cell "`GET`" [ref=e969]':
+                    - code [ref=e970]: "`GET`"
+                  - 'cell "`/agent`" [ref=e971]':
+                    - code [ref=e972]: "`/agent`"
+                  - cell "List all available agents" [ref=e973]
+                  - 'cell "`Agent[]`" [ref=e974]':
+                    - 'link "`Agent[]`" [ref=e975] [cursor=pointer]':
+                      - /url: https://github.com/anomalyco/opencode/blob/dev/packages/sdk/js/src/gen/types.gen.ts
+                      - code [ref=e976]: "`Agent[]`"
+            - separator [ref=e977]
+            - heading "Logging" [level=3] [ref=e978]:
+              - link "Logging" [ref=e979]:
+                - /url: "#logging"
+            - table [ref=e980]:
+              - rowgroup [ref=e981]:
+                - row "Method Path Description Response" [ref=e982]:
+                  - columnheader "Method" [ref=e983]
+                  - columnheader "Path" [ref=e984]
+                  - columnheader "Description" [ref=e985]
+                  - columnheader "Response" [ref=e986]
+              - rowgroup [ref=e987]:
+                - 'row "`POST` `/log` Write log entry. Body: `{ service, level, message, extra? }` `boolean`" [ref=e988]':
+                  - 'cell "`POST`" [ref=e989]':
+                    - code [ref=e990]: "`POST`"
+                  - 'cell "`/log`" [ref=e991]':
+                    - code [ref=e992]: "`/log`"
+                  - 'cell "Write log entry. Body: `{ service, level, message, extra? }`" [ref=e993]':
+                    - text: "Write log entry. Body:"
+                    - code [ref=e994]: "`{ service, level, message, extra? }`"
+                  - 'cell "`boolean`" [ref=e995]':
+                    - code [ref=e996]: "`boolean`"
+            - separator [ref=e997]
+            - heading "TUI" [level=3] [ref=e998]:
+              - link "TUI" [ref=e999]:
+                - /url: "#tui"
+            - table [ref=e1000]:
+              - rowgroup [ref=e1001]:
+                - row "Method Path Description Response" [ref=e1002]:
+                  - columnheader "Method" [ref=e1003]
+                  - columnheader "Path" [ref=e1004]
+                  - columnheader "Description" [ref=e1005]
+                  - columnheader "Response" [ref=e1006]
+              - rowgroup [ref=e1007]:
+                - 'row "`POST` `/tui/append-prompt` Append text to the prompt `boolean`" [ref=e1008]':
+                  - 'cell "`POST`" [ref=e1009]':
+                    - code [ref=e1010]: "`POST`"
+                  - 'cell "`/tui/append-prompt`" [ref=e1011]':
+                    - code [ref=e1012]: "`/tui/append-prompt`"
+                  - cell "Append text to the prompt" [ref=e1013]
+                  - 'cell "`boolean`" [ref=e1014]':
+                    - code [ref=e1015]: "`boolean`"
+                - 'row "`POST` `/tui/open-help` Open the help dialog `boolean`" [ref=e1016]':
+                  - 'cell "`POST`" [ref=e1017]':
+                    - code [ref=e1018]: "`POST`"
+                  - 'cell "`/tui/open-help`" [ref=e1019]':
+                    - code [ref=e1020]: "`/tui/open-help`"
+                  - cell "Open the help dialog" [ref=e1021]
+                  - 'cell "`boolean`" [ref=e1022]':
+                    - code [ref=e1023]: "`boolean`"
+                - 'row "`POST` `/tui/open-sessions` Open the session selector `boolean`" [ref=e1024]':
+                  - 'cell "`POST`" [ref=e1025]':
+                    - code [ref=e1026]: "`POST`"
+                  - 'cell "`/tui/open-sessions`" [ref=e1027]':
+                    - code [ref=e1028]: "`/tui/open-sessions`"
+                  - cell "Open the session selector" [ref=e1029]
+                  - 'cell "`boolean`" [ref=e1030]':
+                    - code [ref=e1031]: "`boolean`"
+                - 'row "`POST` `/tui/open-themes` Open the theme selector `boolean`" [ref=e1032]':
+                  - 'cell "`POST`" [ref=e1033]':
+                    - code [ref=e1034]: "`POST`"
+                  - 'cell "`/tui/open-themes`" [ref=e1035]':
+                    - code [ref=e1036]: "`/tui/open-themes`"
+                  - cell "Open the theme selector" [ref=e1037]
+                  - 'cell "`boolean`" [ref=e1038]':
+                    - code [ref=e1039]: "`boolean`"
+                - 'row "`POST` `/tui/open-models` Open the model selector `boolean`" [ref=e1040]':
+                  - 'cell "`POST`" [ref=e1041]':
+                    - code [ref=e1042]: "`POST`"
+                  - 'cell "`/tui/open-models`" [ref=e1043]':
+                    - code [ref=e1044]: "`/tui/open-models`"
+                  - cell "Open the model selector" [ref=e1045]
+                  - 'cell "`boolean`" [ref=e1046]':
+                    - code [ref=e1047]: "`boolean`"
+                - 'row "`POST` `/tui/submit-prompt` Submit the current prompt `boolean`" [ref=e1048]':
+                  - 'cell "`POST`" [ref=e1049]':
+                    - code [ref=e1050]: "`POST`"
+                  - 'cell "`/tui/submit-prompt`" [ref=e1051]':
+                    - code [ref=e1052]: "`/tui/submit-prompt`"
+                  - cell "Submit the current prompt" [ref=e1053]
+                  - 'cell "`boolean`" [ref=e1054]':
+                    - code [ref=e1055]: "`boolean`"
+                - 'row "`POST` `/tui/clear-prompt` Clear the prompt `boolean`" [ref=e1056]':
+                  - 'cell "`POST`" [ref=e1057]':
+                    - code [ref=e1058]: "`POST`"
+                  - 'cell "`/tui/clear-prompt`" [ref=e1059]':
+                    - code [ref=e1060]: "`/tui/clear-prompt`"
+                  - cell "Clear the prompt" [ref=e1061]
+                  - 'cell "`boolean`" [ref=e1062]':
+                    - code [ref=e1063]: "`boolean`"
+                - 'row "`POST` `/tui/execute-command` Execute a command (`{ command }`) `boolean`" [ref=e1064]':
+                  - 'cell "`POST`" [ref=e1065]':
+                    - code [ref=e1066]: "`POST`"
+                  - 'cell "`/tui/execute-command`" [ref=e1067]':
+                    - code [ref=e1068]: "`/tui/execute-command`"
+                  - 'cell "Execute a command (`{ command }`)" [ref=e1069]':
+                    - text: Execute a command (
+                    - code [ref=e1070]: "`{ command }`"
+                    - text: )
+                  - 'cell "`boolean`" [ref=e1071]':
+                    - code [ref=e1072]: "`boolean`"
+                - 'row "`POST` `/tui/show-toast` Show toast (`{ title?, message, variant }`) `boolean`" [ref=e1073]':
+                  - 'cell "`POST`" [ref=e1074]':
+                    - code [ref=e1075]: "`POST`"
+                  - 'cell "`/tui/show-toast`" [ref=e1076]':
+                    - code [ref=e1077]: "`/tui/show-toast`"
+                  - 'cell "Show toast (`{ title?, message, variant }`)" [ref=e1078]':
+                    - text: Show toast (
+                    - code [ref=e1079]: "`{ title?, message, variant }`"
+                    - text: )
+                  - 'cell "`boolean`" [ref=e1080]':
+                    - code [ref=e1081]: "`boolean`"
+                - 'row "`GET` `/tui/control/next` Wait for the next control request Control request object" [ref=e1082]':
+                  - 'cell "`GET`" [ref=e1083]':
+                    - code [ref=e1084]: "`GET`"
+                  - 'cell "`/tui/control/next`" [ref=e1085]':
+                    - code [ref=e1086]: "`/tui/control/next`"
+                  - cell "Wait for the next control request" [ref=e1087]
+                  - cell "Control request object" [ref=e1088]
+                - 'row "`POST` `/tui/control/response` Respond to a control request (`{ body }`) `boolean`" [ref=e1089]':
+                  - 'cell "`POST`" [ref=e1090]':
+                    - code [ref=e1091]: "`POST`"
+                  - 'cell "`/tui/control/response`" [ref=e1092]':
+                    - code [ref=e1093]: "`/tui/control/response`"
+                  - 'cell "Respond to a control request (`{ body }`)" [ref=e1094]':
+                    - text: Respond to a control request (
+                    - code [ref=e1095]: "`{ body }`"
+                    - text: )
+                  - 'cell "`boolean`" [ref=e1096]':
+                    - code [ref=e1097]: "`boolean`"
+            - separator [ref=e1098]
+            - heading "Auth" [level=3] [ref=e1099]:
+              - link "Auth" [ref=e1100]:
+                - /url: "#auth"
+            - table [ref=e1101]:
+              - rowgroup [ref=e1102]:
+                - row "Method Path Description Response" [ref=e1103]:
+                  - columnheader "Method" [ref=e1104]
+                  - columnheader "Path" [ref=e1105]
+                  - columnheader "Description" [ref=e1106]
+                  - columnheader "Response" [ref=e1107]
+              - rowgroup [ref=e1108]:
+                - 'row "`PUT` `/auth/:id` Set authentication credentials. Body must match provider schema `boolean`" [ref=e1109]':
+                  - 'cell "`PUT`" [ref=e1110]':
+                    - code [ref=e1111]: "`PUT`"
+                  - 'cell "`/auth/:id`" [ref=e1112]':
+                    - code [ref=e1113]: "`/auth/:id`"
+                  - cell "Set authentication credentials. Body must match provider schema" [ref=e1114]
+                  - 'cell "`boolean`" [ref=e1115]':
+                    - code [ref=e1116]: "`boolean`"
+            - separator [ref=e1117]
+            - heading "Events" [level=3] [ref=e1118]:
+              - link "Events" [ref=e1119]:
+                - /url: "#events"
+            - table [ref=e1120]:
+              - rowgroup [ref=e1121]:
+                - row "Method Path Description Response" [ref=e1122]:
+                  - columnheader "Method" [ref=e1123]
+                  - columnheader "Path" [ref=e1124]
+                  - columnheader "Description" [ref=e1125]
+                  - columnheader "Response" [ref=e1126]
+              - rowgroup [ref=e1127]:
+                - 'row "`GET` `/event` Server-sent events stream. First event is `server.connected`, then bus events Server-sent events stream" [ref=e1128]':
+                  - 'cell "`GET`" [ref=e1129]':
+                    - code [ref=e1130]: "`GET`"
+                  - 'cell "`/event`" [ref=e1131]':
+                    - code [ref=e1132]: "`/event`"
+                  - 'cell "Server-sent events stream. First event is `server.connected`, then bus events" [ref=e1133]':
+                    - text: Server-sent events stream. First event is
+                    - code [ref=e1134]: "`server.connected`"
+                    - text: ", then bus events"
+                  - cell "Server-sent events stream" [ref=e1135]
+            - separator [ref=e1136]
+            - heading "Docs" [level=3] [ref=e1137]:
+              - link "Docs" [ref=e1138]:
+                - /url: "#docs"
+            - table [ref=e1139]:
+              - rowgroup [ref=e1140]:
+                - row "Method Path Description Response" [ref=e1141]:
+                  - columnheader "Method" [ref=e1142]
+                  - columnheader "Path" [ref=e1143]
+                  - columnheader "Description" [ref=e1144]
+                  - columnheader "Response" [ref=e1145]
+              - rowgroup [ref=e1146]:
+                - 'row "`GET` `/doc` OpenAPI 3.1 specification HTML page with OpenAPI spec" [ref=e1147]':
+                  - 'cell "`GET`" [ref=e1148]':
+                    - code [ref=e1149]: "`GET`"
+                  - 'cell "`/doc`" [ref=e1150]':
+                    - code [ref=e1151]: "`/doc`"
+                  - cell "OpenAPI 3.1 specification" [ref=e1152]
+                  - cell "HTML page with OpenAPI spec" [ref=e1153]
+          - generic [ref=e1155]:
+            - generic [ref=e1156]:
+              - link "Edit page" [ref=e1157] [cursor=pointer]:
+                - /url: https://github.com/anomalyco/opencode/edit/dev/packages/web/src/content/docs/server.mdx
+                - img [ref=e1158]
+                - text: Edit page
+              - link "Found a bug? Open an issue" [ref=e1160] [cursor=pointer]:
+                - /url: https://github.com/anomalyco/opencode/issues/new
+                - img [ref=e1161]
+                - text: Found a bug? Open an issue
+              - link "Join our Discord community" [ref=e1163] [cursor=pointer]:
+                - /url: https://opencode.ai/discord
+                - img [ref=e1164]
+                - text: Join our Discord community
+              - generic [ref=e1168]:
+                - generic [ref=e1169]: Select language
+                - img
+                - combobox "Select language" [ref=e1170] [cursor=pointer]:
+                  - option "English" [selected]
+                  - option "العربية"
+                  - option "Bosanski"
+                  - option "Dansk"
+                  - option "Deutsch"
+                  - option "Español"
+                  - option "Français"
+                  - option "Italiano"
+                  - option "日本語"
+                  - option "한국어"
+                  - option "Norsk Bokmål"
+                  - option "Polski"
+                  - option "Português (Brasil)"
+                  - option "Русский"
+                  - option "ไทย"
+                  - option "Türkçe"
+                  - option "简体中文"
+                  - option "繁體中文"
+                - img
+            - generic [ref=e1171]:
+              - paragraph [ref=e1172]:
+                - text: ©
+                - link "Anomaly" [ref=e1173] [cursor=pointer]:
+                  - /url: https://anoma.ly
+              - paragraph [ref=e1174]:
+                - text: "Last updated:"
+                - time [ref=e1175]: Jun 25, 2026

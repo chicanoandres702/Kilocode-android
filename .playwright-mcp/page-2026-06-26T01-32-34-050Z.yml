@@ -1,0 +1,787 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - paragraph [ref=e4]: Introducing Kilo Auto Efficient — our smartest model routing yet.
+    - link "Learn More" [ref=e5] [cursor=pointer]:
+      - /url: /auto-model
+    - button "Dismiss banner" [ref=e6]:
+      - img [ref=e7]
+  - generic [ref=e10]:
+    - link "Skip to main content" [ref=e11] [cursor=pointer]:
+      - /url: "#main"
+    - generic [ref=e12]:
+      - banner [ref=e13]:
+        - generic [ref=e14]:
+          - link "Kilo" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img [ref=e22]
+            - generic [ref=e25]: Kilo
+          - button "Toggle mobile menu" [ref=e29] [cursor=pointer]:
+            - img [ref=e31]
+      - main [ref=e32]:
+        - region "Hero section" [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - link "Star Kilo-Org/kilocode on GitHub - 24625 stars" [ref=e36] [cursor=pointer]:
+                - /url: https://github.com/Kilo-Org/kilocode
+                - img "GitHub" [ref=e37]
+                - generic [ref=e39]: 24.6k
+              - heading "Code with AI without breaking the bank" [level=1] [ref=e40]:
+                - text: Code with AI
+                - text: without breaking the bank
+              - paragraph [ref=e41]: "500+ models, zero markup: frontier, open weight, or your own keys. One agent, everywhere you work, fully open source."
+            - generic [ref=e43]:
+              - generic [ref=e45]:
+                - radiogroup "Choose where to start with Kilo" [ref=e46]:
+                  - generic [ref=e47]: Choose where to start with Kilo
+                  - radio "VS Code" [checked] [ref=e48]:
+                    - img [ref=e50]
+                    - generic [ref=e54]: VS Code
+                  - radio "JetBrains" [ref=e56] [cursor=pointer]:
+                    - img [ref=e58]
+                    - generic [ref=e62]: JetBrains
+                  - radio "CLI" [ref=e63] [cursor=pointer]:
+                    - img [ref=e65]
+                    - generic [ref=e67]: CLI
+                  - radio "Cloud" [ref=e68] [cursor=pointer]:
+                    - img [ref=e70]
+                    - generic [ref=e72]: Cloud
+                - paragraph [ref=e76]: $vscode:extension/kilocode.kilo-code
+              - generic [ref=e77]:
+                - button "Code for Free" [ref=e78] [cursor=pointer]
+                - link "Request a Demo" [ref=e79] [cursor=pointer]:
+                  - /url: /contact-sales
+                  - generic [ref=e80]: Request a Demo
+              - paragraph [ref=e82]:
+                - text: Using a VS Code-like editor?
+                - link "Open VSX" [ref=e83] [cursor=pointer]:
+                  - /url: https://open-vsx.org/extension/kilocode/kilo-code
+            - img "Kilo Code running inside VS Code" [ref=e87]
+        - region "Trusted section" [ref=e88]:
+          - heading "Trusted by developers at the world's most innovative companies" [level=2] [ref=e90]
+          - generic [ref=e91]:
+            - img "Meta logo" [ref=e94]
+            - img "Amazon logo" [ref=e103]
+            - img "Airbnb logo" [ref=e110]
+            - img "PayPal logo" [ref=e116]
+            - img "Square logo" [ref=e125]
+            - img "Red Hat logo" [ref=e137]
+        - region "Social proof metrics" [ref=e148]:
+          - generic [ref=e149]:
+            - generic [ref=e152]:
+              - generic [ref=e153]: "#1"
+              - paragraph [ref=e154]: Open Source Product of the Month
+            - generic [ref=e157]:
+              - generic [ref=e158]: 3M+
+              - paragraph [ref=e159]: Kilo Coders
+            - generic [ref=e162]:
+              - generic [ref=e163]: 40T+
+              - paragraph [ref=e164]: tokens processed
+        - region "Why choose Kilo" [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e167]: Why Kilo?
+            - heading "Built differently, on purpose" [level=2] [ref=e171]
+            - paragraph [ref=e172]: AI coding tools should work for you, not against you.
+          - generic [ref=e173]:
+            - generic [ref=e176]:
+              - paragraph [ref=e177]: Agent command center
+              - img [ref=e179]
+              - heading "One portal for every agent" [level=3] [ref=e182]
+              - paragraph [ref=e183]: Control every agent from one place across IDEs, CLI, and cloud.
+              - list [ref=e184]:
+                - listitem [ref=e185]:
+                  - img [ref=e186]
+                  - generic [ref=e189]: Local and cloud agents
+                - listitem [ref=e190]:
+                  - img [ref=e191]
+                  - generic [ref=e194]: Parallel isolated worktrees
+                - listitem [ref=e195]:
+                  - img [ref=e196]
+                  - generic [ref=e199]: IDE and CLI sessions
+              - link "Start using Kilo" [ref=e201] [cursor=pointer]:
+                - /url: /install
+                - text: Start using Kilo
+                - generic [ref=e202]: →
+            - generic [ref=e205]:
+              - paragraph [ref=e206]: Aligned pricing
+              - img [ref=e208]
+              - heading "Models at cost. No markup. No lock-in." [level=3] [ref=e211]
+              - paragraph [ref=e212]: Choose the right model without markup, lock-in, or provider limits.
+              - list [ref=e213]:
+                - listitem [ref=e214]:
+                  - img [ref=e215]
+                  - generic [ref=e218]: Zero AI inference markup
+                - listitem [ref=e219]:
+                  - img [ref=e220]
+                  - generic [ref=e223]: Bring your own keys
+                - listitem [ref=e224]:
+                  - img [ref=e225]
+                  - generic [ref=e228]: Local models supported
+              - link "How the Gateway works" [ref=e230] [cursor=pointer]:
+                - /url: /gateway
+                - text: How the Gateway works
+                - generic [ref=e231]: →
+            - generic [ref=e234]:
+              - paragraph [ref=e235]: Open source
+              - img [ref=e237]
+              - heading "No black boxes. Inspect everything." [level=3] [ref=e241]
+              - paragraph [ref=e242]: Audit the prompt, context window, and decisions in MIT-licensed source.
+              - list [ref=e243]:
+                - listitem [ref=e244]:
+                  - img [ref=e245]
+                  - generic [ref=e248]: Fork, modify, self-host
+                - listitem [ref=e249]:
+                  - img [ref=e250]
+                  - generic [ref=e253]: Prompt and context visibility
+                - listitem [ref=e254]:
+                  - img [ref=e255]
+                  - generic [ref=e258]: No silent model switching
+              - link "View on GitHub" [ref=e260] [cursor=pointer]:
+                - /url: https://github.com/Kilo-Org/kilocode
+                - text: View on GitHub
+                - generic [ref=e261]: →
+          - generic [ref=e264]:
+            - generic [ref=e265]:
+              - generic [ref=e266]:
+                - img [ref=e267]
+                - text: VS Code
+              - generic [ref=e269]:
+                - img [ref=e270]
+                - text: CLI
+              - generic [ref=e272]:
+                - img [ref=e273]
+                - text: Cloud
+              - generic [ref=e278]:
+                - img [ref=e279]
+                - text: Slack
+            - paragraph [ref=e288]:
+              - strong [ref=e289]: Your agents should move with your work.
+              - text: Start anywhere, hand off seamlessly, and keep everything in flight.
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - heading "Use Kilo Everywhere" [level=2] [ref=e293]
+            - paragraph [ref=e294]: Kilo works where you work. Build alone or with your team.
+          - generic [ref=e296]:
+            - link "VS Code" [ref=e297] [cursor=pointer]:
+              - /url: /landing/vs-code
+              - img [ref=e299]
+              - generic [ref=e303]: VS Code
+            - link "JetBrains" [ref=e304] [cursor=pointer]:
+              - /url: /install#jetbrains
+              - img [ref=e306]
+              - generic [ref=e310]: JetBrains
+            - link "IntelliJ IDEA IntelliJ" [ref=e311] [cursor=pointer]:
+              - /url: /install#jetbrains
+              - img "IntelliJ IDEA" [ref=e313]
+              - generic [ref=e315]: IntelliJ
+            - link "PyCharm PyCharm" [ref=e316] [cursor=pointer]:
+              - /url: /install#jetbrains
+              - img "PyCharm" [ref=e318]
+              - generic [ref=e320]: PyCharm
+            - link "WebStorm WebStorm" [ref=e321] [cursor=pointer]:
+              - /url: /install#jetbrains
+              - img "WebStorm" [ref=e323]
+              - generic [ref=e325]: WebStorm
+            - link "CLI" [ref=e326] [cursor=pointer]:
+              - /url: /cli
+              - img [ref=e328]
+              - generic [ref=e330]: CLI
+            - link "Cloud Agents" [ref=e331] [cursor=pointer]:
+              - /url: /cloud
+              - img [ref=e333]
+              - generic [ref=e337]: Cloud Agents
+            - link "Slack Slack" [ref=e338] [cursor=pointer]:
+              - /url: /slack
+              - img "Slack" [ref=e340]
+              - generic [ref=e345]: Slack
+            - link "Code Reviewer" [ref=e346] [cursor=pointer]:
+              - /url: /code-reviewer
+              - img [ref=e348]
+              - generic [ref=e351]: Code Reviewer
+            - link "Gateway" [ref=e352] [cursor=pointer]:
+              - /url: /gateway
+              - img [ref=e354]
+              - generic [ref=e359]: Gateway
+            - link "Gastown" [ref=e360] [cursor=pointer]:
+              - /url: /gastown
+              - img [ref=e362]
+              - generic [ref=e365]: Gastown
+            - link "KiloClaw" [ref=e366] [cursor=pointer]:
+              - /url: /kiloclaw
+              - img [ref=e368]
+              - generic [ref=e453]: KiloClaw
+          - link "Start free with Kilo Auto — no credit card required" [ref=e455] [cursor=pointer]:
+            - /url: https://app.kilo.ai
+        - generic [ref=e458]:
+          - generic [ref=e459]:
+            - heading "Built for agentic engineering" [level=2] [ref=e460]
+            - paragraph [ref=e461]: Multiple modes, one agent
+            - paragraph [ref=e462]: Kilo Code ships with specialized agent modes so you can switch contexts without switching tools.
+            - generic [ref=e463]:
+              - generic [ref=e464]:
+                - term [ref=e465]:
+                  - img [ref=e466]
+                  - text: Every coding surface.
+                - definition [ref=e469]: Use the same open-source agent in VS Code, JetBrains, CLI, and cloud agents.
+              - generic [ref=e470]:
+                - term [ref=e471]:
+                  - img [ref=e472]
+                  - text: Code Mode.
+                - definition [ref=e476]: Write, refactor, and ship production-ready code with an AI agent that understands your entire codebase.
+              - generic [ref=e477]:
+                - term [ref=e478]:
+                  - img [ref=e479]
+                  - text: Architect Mode.
+                - definition [ref=e482]: Plan complex features and get structured guidance before writing a single line of code.
+              - generic [ref=e483]:
+                - term [ref=e484]:
+                  - img [ref=e485]
+                  - text: Cloud agents and code review.
+                - definition [ref=e487]: Move from local coding to remote agents and review workflows without changing tools.
+              - generic [ref=e488]:
+                - term [ref=e489]:
+                  - img [ref=e490]
+                  - text: Debug Mode.
+                - definition [ref=e499]: Identify and fix bugs fast with an agent that reads errors, traces issues, and suggests fixes.
+          - region "Modes section" [ref=e501]:
+            - generic [ref=e502]:
+              - tablist [ref=e503]:
+                - tab "Ask" [selected] [ref=e504] [cursor=pointer]:
+                  - generic [ref=e505]:
+                    - generic [ref=e506]: 
+                    - generic [ref=e507]: Ask
+                - tab "Architect" [ref=e508] [cursor=pointer]:
+                  - generic [ref=e509]:
+                    - generic [ref=e510]: 
+                    - generic [ref=e511]: Architect
+                - tab "Code" [ref=e512] [cursor=pointer]:
+                  - generic [ref=e513]:
+                    - generic [ref=e514]: 
+                    - generic [ref=e515]: Code
+                - tab "Debug" [ref=e516] [cursor=pointer]:
+                  - generic [ref=e517]:
+                    - generic [ref=e518]: 
+                    - generic [ref=e519]: Debug
+                - tab "Custom" [ref=e520] [cursor=pointer]:
+                  - generic [ref=e521]:
+                    - generic [ref=e522]: 
+                    - generic [ref=e523]: Custom
+              - tabpanel "Ask" [ref=e525]:
+                - button "" [ref=e531] [cursor=pointer]:
+                  - generic [ref=e532]: 
+        - generic [ref=e539]:
+          - heading "Hosted OpenClaw" [level=2] [ref=e540]
+          - paragraph [ref=e541]: Meet KiloClaw
+          - paragraph [ref=e542]: "Kilo Code is where engineering work starts. KiloClaw is where your OpenClaw agent keeps working after the IDE closes: always-on, hosted, and connected to your channels."
+          - generic [ref=e543]:
+            - generic [ref=e544]:
+              - term [ref=e545]:
+                - img [ref=e546]
+                - text: One-click deploy.
+              - definition [ref=e551]: No SSH, no Docker, no yaml files. Deploy an always-on OpenClaw agent in under 60 seconds.
+            - generic [ref=e552]:
+              - term [ref=e553]:
+                - img [ref=e554]
+                - text: Chat where you are.
+              - definition [ref=e556]: "Connect via Telegram, Discord, or Slack. Your agent keeps acting on your behalf after the IDE closes: shell commands, browser control, and more."
+            - generic [ref=e557]:
+              - term [ref=e558]:
+                - img [ref=e559]
+                - text: Scheduled automations.
+              - definition [ref=e562]: Run scheduled tasks, cron jobs, and long-running workflows while you sleep.
+            - generic [ref=e563]:
+              - term [ref=e564]:
+                - img [ref=e565]
+                - text: Fully managed.
+              - definition [ref=e567]: Auto-restart, monitoring, security updates, and 500+ AI models via Kilo Gateway at zero markup keep the agent ready after hours.
+        - generic [ref=e571]:
+          - generic [ref=e572]:
+            - generic [ref=e573]:
+              - img [ref=e574]
+              - text: Auto Model
+            - heading "Stop choosing models. Start shipping." [level=2] [ref=e577]
+            - paragraph [ref=e578]: Pick Efficient, Frontier, Balanced, or Free. Auto Model handles the routing behind the scenes, using the right model strategy for your budget and the work at hand.
+            - link "Learn about Auto Model" [ref=e580] [cursor=pointer]:
+              - /url: /auto-model
+              - text: Learn about Auto Model
+              - img [ref=e581]
+          - generic [ref=e583]:
+            - generic [ref=e584]:
+              - generic [ref=e585]:
+                - heading "Efficient" [level=3] [ref=e586]
+                - generic [ref=e587]: New
+              - paragraph [ref=e588]: Session-aware routing for smarter spend, powered by live session classification.
+            - generic [ref=e589]:
+              - heading "Frontier" [level=3] [ref=e591]
+              - paragraph [ref=e592]: Routes to the latest and most capable paid models when the work needs it.
+            - generic [ref=e593]:
+              - heading "Balanced" [level=3] [ref=e595]
+              - paragraph [ref=e596]: Cost-effective paid model routing for day-to-day engineering work.
+            - generic [ref=e597]:
+              - heading "Free" [level=3] [ref=e599]
+              - paragraph [ref=e600]: Best free models available, including free and experimental options.
+        - region "blog section" [ref=e601]:
+          - generic [ref=e602]:
+            - heading "Recent posts" [level=2] [ref=e604]
+            - paragraph [ref=e605]: Read the latest news and updates from the Kilo Code team.
+          - generic [ref=e606]:
+            - link "Announcing Kilo’s Agency Partner Program Help your clients embrace data and AI in ways that really work Ari Messer·Jun 25, 2026" [ref=e607] [cursor=pointer]:
+              - /url: https://blog.kilo.ai/p/announcing-kilos-agency-partner-program
+              - heading "Announcing Kilo’s Agency Partner Program" [level=3] [ref=e609]
+              - generic [ref=e610]:
+                - paragraph [ref=e611]: Help your clients embrace data and AI in ways that really work
+                - paragraph [ref=e612]:
+                  - text: Ari Messer·
+                  - time [ref=e613]: Jun 25, 2026
+            - link "Cloud Agents Just Got a Major Upgrade Kilo's Cloud Agents are now more personal, configurable, and connected. Brian Turcotte·Jun 25, 2026" [ref=e614] [cursor=pointer]:
+              - /url: https://blog.kilo.ai/p/cloud-agents-upgrade
+              - heading "Cloud Agents Just Got a Major Upgrade" [level=3] [ref=e616]
+              - generic [ref=e617]:
+                - paragraph [ref=e618]: Kilo's Cloud Agents are now more personal, configurable, and connected.
+                - paragraph [ref=e619]:
+                  - text: Brian Turcotte·
+                  - time [ref=e620]: Jun 25, 2026
+            - link "Why Most Dependency Alerts Don’t Matter How Kilo Security Agent uses AI reachability analysis to reduce false positives and prioritize exploitable vulnerabilities Brendan O'Leary·Jun 24, 2026" [ref=e621] [cursor=pointer]:
+              - /url: https://blog.kilo.ai/p/why-most-dependency-alerts-dont-matter
+              - heading "Why Most Dependency Alerts Don’t Matter" [level=3] [ref=e623]
+              - generic [ref=e624]:
+                - paragraph [ref=e625]: How Kilo Security Agent uses AI reachability analysis to reduce false positives and prioritize exploitable vulnerabilities
+                - paragraph [ref=e626]:
+                  - text: Brendan O'Leary·
+                  - time [ref=e627]: Jun 24, 2026
+            - link "We predicted the $100k/yr-per-dev AI bill. Now the winners are routing around it. The teams pulling ahead aren't spending the most, they're routing each task to the right model. Job Rietbergen·Jun 23, 2026" [ref=e628] [cursor=pointer]:
+              - /url: https://blog.kilo.ai/p/we-predicted-the-100kyr-per-dev-ai
+              - heading "We predicted the $100k/yr-per-dev AI bill. Now the winners are routing around it." [level=3] [ref=e630]
+              - generic [ref=e631]:
+                - paragraph [ref=e632]: The teams pulling ahead aren't spending the most, they're routing each task to the right model.
+                - paragraph [ref=e633]:
+                  - text: Job Rietbergen·
+                  - time [ref=e634]: Jun 23, 2026
+            - 'link "Auto Efficient: The Right Model for Every Request, Automatically Optimize AI spend without sacrificing performance Brian Turcotte·Jun 23, 2026" [ref=e635] [cursor=pointer]':
+              - /url: https://blog.kilo.ai/p/auto-efficient
+              - 'heading "Auto Efficient: The Right Model for Every Request, Automatically" [level=3] [ref=e637]'
+              - generic [ref=e638]:
+                - paragraph [ref=e639]: Optimize AI spend without sacrificing performance
+                - paragraph [ref=e640]:
+                  - text: Brian Turcotte·
+                  - time [ref=e641]: Jun 23, 2026
+            - link "Announcing Next-Edit in Kilo, Powered by Inception With Mercury Edit 2, Next-Edit is Free in Kilo for an Entire Month Ari Messer·Jun 22, 2026" [ref=e642] [cursor=pointer]:
+              - /url: https://blog.kilo.ai/p/announcing-next-edit-in-kilo-powered-by-inception
+              - heading "Announcing Next-Edit in Kilo, Powered by Inception" [level=3] [ref=e644]
+              - generic [ref=e645]:
+                - paragraph [ref=e646]: With Mercury Edit 2, Next-Edit is Free in Kilo for an Entire Month
+                - paragraph [ref=e647]:
+                  - text: Ari Messer·
+                  - time [ref=e648]: Jun 22, 2026
+          - generic [ref=e649]:
+            - link "Explore AI model rankings" [ref=e650] [cursor=pointer]:
+              - /url: /leaderboard
+            - link "Compare Kilo pricing" [ref=e651] [cursor=pointer]:
+              - /url: /pricing
+            - link "Browse the Knowledge Base" [ref=e652] [cursor=pointer]:
+              - /url: /articles
+          - link "All posts" [ref=e654] [cursor=pointer]:
+            - /url: https://blog.kilo.ai
+            - text: All posts
+            - generic [ref=e656]: 
+        - region "faq section" [ref=e657]:
+          - generic [ref=e659]:
+            - generic [ref=e660]:
+              - heading "Frequently asked questions" [level=2] [ref=e661]:
+                - img [ref=e662]
+                - text: Frequently asked questions
+              - generic [ref=e665]: Direct answers to common questions about Kilo Code.
+            - generic [ref=e667]:
+              - heading "What is Kilo Code?" [level=3] [ref=e669]:
+                - button "What is Kilo Code?" [ref=e670] [cursor=pointer]:
+                  - text: What is Kilo Code?
+                  - img
+              - heading "Is Kilo Code free?" [level=3] [ref=e672]:
+                - button "Is Kilo Code free?" [ref=e673] [cursor=pointer]:
+                  - text: Is Kilo Code free?
+                  - img
+              - heading "How do I install Kilo Code?" [level=3] [ref=e675]:
+                - button "How do I install Kilo Code?" [ref=e676] [cursor=pointer]:
+                  - text: How do I install Kilo Code?
+                  - img
+              - heading "What IDEs and platforms does Kilo support?" [level=3] [ref=e678]:
+                - button "What IDEs and platforms does Kilo support?" [ref=e679] [cursor=pointer]:
+                  - text: What IDEs and platforms does Kilo support?
+                  - img
+              - heading "Which AI models does Kilo Code support?" [level=3] [ref=e681]:
+                - button "Which AI models does Kilo Code support?" [ref=e682] [cursor=pointer]:
+                  - text: Which AI models does Kilo Code support?
+                  - img
+              - heading "How does pricing work and can I bring my own API key?" [level=3] [ref=e684]:
+                - button "How does pricing work and can I bring my own API key?" [ref=e685] [cursor=pointer]:
+                  - text: How does pricing work and can I bring my own API key?
+                  - img
+              - heading "How does Kilo handle code privacy and data?" [level=3] [ref=e687]:
+                - button "How does Kilo handle code privacy and data?" [ref=e688] [cursor=pointer]:
+                  - text: How does Kilo handle code privacy and data?
+                  - img
+              - heading "What agent modes does Kilo Code have?" [level=3] [ref=e690]:
+                - button "What agent modes does Kilo Code have?" [ref=e691] [cursor=pointer]:
+                  - text: What agent modes does Kilo Code have?
+                  - img
+              - heading "How do Cloud Agents work?" [level=3] [ref=e693]:
+                - button "How do Cloud Agents work?" [ref=e694] [cursor=pointer]:
+                  - text: How do Cloud Agents work?
+                  - img
+              - heading "Does Kilo understand my entire codebase?" [level=3] [ref=e696]:
+                - button "Does Kilo understand my entire codebase?" [ref=e697] [cursor=pointer]:
+                  - text: Does Kilo understand my entire codebase?
+                  - img
+              - heading "What programming languages does Kilo support?" [level=3] [ref=e699]:
+                - button "What programming languages does Kilo support?" [ref=e700] [cursor=pointer]:
+                  - text: What programming languages does Kilo support?
+                  - img
+              - heading "Why switch from Cursor to Kilo Code?" [level=3] [ref=e702]:
+                - button "Why switch from Cursor to Kilo Code?" [ref=e703] [cursor=pointer]:
+                  - text: Why switch from Cursor to Kilo Code?
+                  - img
+              - heading "How does Kilo Code compare to GitHub Copilot?" [level=3] [ref=e705]:
+                - button "How does Kilo Code compare to GitHub Copilot?" [ref=e706] [cursor=pointer]:
+                  - text: How does Kilo Code compare to GitHub Copilot?
+                  - img
+              - heading "Does Kilo support MCP (Model Context Protocol)?" [level=3] [ref=e708]:
+                - button "Does Kilo support MCP (Model Context Protocol)?" [ref=e709] [cursor=pointer]:
+                  - text: Does Kilo support MCP (Model Context Protocol)?
+                  - img
+              - heading "Can I use Kilo Code on a team or in an enterprise?" [level=3] [ref=e711]:
+                - button "Can I use Kilo Code on a team or in an enterprise?" [ref=e712] [cursor=pointer]:
+                  - text: Can I use Kilo Code on a team or in an enterprise?
+                  - img
+              - heading "Is Kilo Code really open source?" [level=3] [ref=e714]:
+                - button "Is Kilo Code really open source?" [ref=e715] [cursor=pointer]:
+                  - text: Is Kilo Code really open source?
+                  - img
+        - region "Get started with Kilo" [ref=e716]:
+          - generic [ref=e717]:
+            - heading "Ready to get started?" [level=2] [ref=e718]
+            - generic [ref=e719]:
+              - link "Start Coding Free" [ref=e721] [cursor=pointer]:
+                - /url: /api/impact/redirect?target=https%3A%2F%2Fapp.kilo.ai%2Fget-started
+                - img [ref=e722]
+                - text: Start Coding Free
+              - link "Talk to sales" [ref=e727] [cursor=pointer]:
+                - /url: /contact-sales
+      - generic [ref=e728]:
+        - separator [ref=e730]
+        - contentinfo [ref=e731]:
+          - link "Kilo" [ref=e734] [cursor=pointer]:
+            - /url: /
+            - img [ref=e740]
+            - generic [ref=e743]: Kilo
+          - generic [ref=e744]:
+            - generic [ref=e745]:
+              - generic [ref=e746]:
+                - paragraph [ref=e747]: Community
+                - list [ref=e748]:
+                  - listitem [ref=e749]:
+                    - link "Discord Discord" [ref=e750] [cursor=pointer]:
+                      - /url: /discord
+                      - img "Discord" [ref=e752]
+                      - text: Discord
+                  - listitem [ref=e754]:
+                    - link "GitHub GitHub" [ref=e755] [cursor=pointer]:
+                      - /url: /github
+                      - img "GitHub" [ref=e757]
+                      - text: GitHub
+                  - listitem [ref=e759]:
+                    - link "Reddit r/kilocode" [ref=e760] [cursor=pointer]:
+                      - /url: https://www.reddit.com/r/kilocode/
+                      - img "Reddit" [ref=e762]
+                      - text: r/kilocode
+                  - listitem [ref=e764]:
+                    - link "X" [ref=e765] [cursor=pointer]:
+                      - /url: https://kilo.codes/XkKxgG8
+                      - img [ref=e767]
+                      - text: X
+                  - listitem [ref=e769]:
+                    - link "LinkedIn" [ref=e770] [cursor=pointer]:
+                      - /url: https://kilo.codes/31Yfadd
+                      - img [ref=e772]
+                      - text: LinkedIn
+                  - listitem [ref=e774]:
+                    - link "Bluesky" [ref=e775] [cursor=pointer]:
+                      - /url: https://kilo.codes/Zdrmkk7
+                      - img [ref=e777]
+                      - text: Bluesky
+                  - listitem [ref=e779]:
+                    - link "Instagram" [ref=e780] [cursor=pointer]:
+                      - /url: https://kilo.codes/spNJF0y
+                      - img [ref=e782]
+                      - text: Instagram
+                  - listitem [ref=e784]:
+                    - link "Product Hunt p/kilocode" [ref=e785] [cursor=pointer]:
+                      - /url: https://www.producthunt.com/products/kilocode
+                      - img "Product Hunt" [ref=e787]
+                      - text: p/kilocode
+              - generic [ref=e790]:
+                - paragraph [ref=e791]: Product
+                - list [ref=e792]:
+                  - listitem [ref=e793]:
+                    - link "IDE" [ref=e794] [cursor=pointer]:
+                      - /url: /install
+                  - listitem [ref=e795]:
+                    - link "VS Code" [ref=e796] [cursor=pointer]:
+                      - /url: /landing/vs-code
+                  - listitem [ref=e797]:
+                    - link "CLI" [ref=e798] [cursor=pointer]:
+                      - /url: /cli
+                  - listitem [ref=e799]:
+                    - link "Slack" [ref=e800] [cursor=pointer]:
+                      - /url: /slack
+                  - listitem [ref=e801]:
+                    - link "Cloud" [ref=e802] [cursor=pointer]:
+                      - /url: /cloud
+                  - listitem [ref=e803]:
+                    - link "Autocomplete" [ref=e804] [cursor=pointer]:
+                      - /url: /autocomplete
+                  - listitem [ref=e805]:
+                    - link "Security Agent" [ref=e806] [cursor=pointer]:
+                      - /url: /security-agent
+                  - listitem [ref=e807]:
+                    - link "Customers" [ref=e808] [cursor=pointer]:
+                      - /url: /customers/plug-and-pay
+                  - listitem [ref=e809]:
+                    - link "Teams" [ref=e810] [cursor=pointer]:
+                      - /url: /teams
+                  - listitem [ref=e811]:
+                    - link "Enterprise" [ref=e812] [cursor=pointer]:
+                      - /url: /enterprise
+                  - listitem [ref=e813]:
+                    - link "Early Access" [ref=e814] [cursor=pointer]:
+                      - /url: /next
+                  - listitem [ref=e815]:
+                    - link "Pricing" [ref=e816] [cursor=pointer]:
+                      - /url: /pricing
+                  - listitem [ref=e817]:
+                    - link "Kilo Pass" [ref=e818] [cursor=pointer]:
+                      - /url: /pricing/kilo-pass
+              - generic [ref=e820]:
+                - paragraph [ref=e821]: Learn
+                - list [ref=e822]:
+                  - listitem [ref=e823]:
+                    - link "Documentation" [ref=e824] [cursor=pointer]:
+                      - /url: /docs
+                  - listitem [ref=e825]:
+                    - link "Articles" [ref=e826] [cursor=pointer]:
+                      - /url: /articles
+                  - listitem [ref=e827]:
+                    - link "Kilo College (opens in new tab)" [ref=e828] [cursor=pointer]:
+                      - /url: https://learn.kilo.ai
+                      - text: Kilo College
+                      - img [ref=e829]
+                      - generic [ref=e832]: (opens in new tab)
+                  - listitem [ref=e833]:
+                    - link "Blog (opens in new tab)" [ref=e834] [cursor=pointer]:
+                      - /url: https://blog.kilo.ai
+                      - text: Blog
+                      - img [ref=e835]
+                      - generic [ref=e838]: (opens in new tab)
+                  - listitem [ref=e839]:
+                    - link "YouTube (opens in new tab)" [ref=e840] [cursor=pointer]:
+                      - /url: https://www.youtube.com/@Kilo-Code
+                      - text: YouTube
+                      - img [ref=e841]
+                      - generic [ref=e844]: (opens in new tab)
+                  - listitem [ref=e845]:
+                    - link "Changelog (opens in new tab)" [ref=e846] [cursor=pointer]:
+                      - /url: https://github.com/Kilo-Org/kilocode/releases
+                      - text: Changelog
+                      - img [ref=e847]
+                      - generic [ref=e850]: (opens in new tab)
+                  - listitem [ref=e851]:
+                    - link "OpenClaw Workflows" [ref=e852] [cursor=pointer]:
+                      - /url: /kiloclaw/openclaw-for
+                  - listitem [ref=e853]:
+                    - link "OpenClaw Guides" [ref=e854] [cursor=pointer]:
+                      - /url: /openclaw
+                  - listitem [ref=e855]:
+                    - link "OpenClaw Integrations" [ref=e856] [cursor=pointer]:
+                      - /url: /kiloclaw/integrations
+              - generic [ref=e858]:
+                - paragraph [ref=e859]: Company
+                - list [ref=e860]:
+                  - listitem [ref=e861]:
+                    - link "Careers (opens in new tab)" [ref=e862] [cursor=pointer]:
+                      - /url: https://jobs.ashbyhq.com/kilocode
+                      - text: Careers
+                      - img [ref=e863]
+                      - generic [ref=e866]: (opens in new tab)
+                  - listitem [ref=e867]:
+                    - link "About" [ref=e868] [cursor=pointer]:
+                      - /url: /about
+                  - listitem [ref=e869]:
+                    - link "Press" [ref=e870] [cursor=pointer]:
+                      - /url: /press
+                  - listitem [ref=e871]:
+                    - link "Open Source" [ref=e872] [cursor=pointer]:
+                      - /url: /open
+                  - listitem [ref=e873]:
+                    - link "Events" [ref=e874] [cursor=pointer]:
+                      - /url: /events
+                  - listitem [ref=e875]:
+                    - link "Kilo League" [ref=e876] [cursor=pointer]:
+                      - /url: /league
+                  - listitem [ref=e877]:
+                    - link "Hackathons" [ref=e878] [cursor=pointer]:
+                      - /url: /hackathons
+                  - listitem [ref=e879]:
+                    - link "Affiliate Program" [ref=e880] [cursor=pointer]:
+                      - /url: /partners
+                  - listitem [ref=e881]:
+                    - link "Agency Partners" [ref=e882] [cursor=pointer]:
+                      - /url: /agencies
+                  - listitem [ref=e883]:
+                    - link "Responsible Disclosure" [ref=e884] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e885]:
+                    - link "Security Overview" [ref=e886] [cursor=pointer]:
+                      - /url: /security-and-compliance
+            - generic [ref=e887]:
+              - generic [ref=e889]:
+                - paragraph [ref=e890]: Compare Kilo Code
+                - list [ref=e891]:
+                  - listitem [ref=e892]:
+                    - link "All Alternatives" [ref=e893] [cursor=pointer]:
+                      - /url: /kilo-code/alternatives
+                  - listitem [ref=e894]:
+                    - link "vs Roo Code" [ref=e895] [cursor=pointer]:
+                      - /url: /kilo-code/vs/roo-code
+                  - listitem [ref=e896]:
+                    - link "vs Cursor" [ref=e897] [cursor=pointer]:
+                      - /url: /kilo-code/vs/cursor
+                  - listitem [ref=e898]:
+                    - link "vs Windsurf" [ref=e899] [cursor=pointer]:
+                      - /url: /kilo-code/vs/windsurf
+                  - listitem [ref=e900]:
+                    - link "vs GitHub Copilot" [ref=e901] [cursor=pointer]:
+                      - /url: /kilo-code/vs/copilot
+                  - listitem [ref=e902]:
+                    - link "vs Claude Code" [ref=e903] [cursor=pointer]:
+                      - /url: /kilo-code/vs/claude-code
+                  - listitem [ref=e904]:
+                    - link "vs Cline" [ref=e905] [cursor=pointer]:
+                      - /url: /kilo-code/vs/cline
+                  - listitem [ref=e906]:
+                    - link "vs Tabnine" [ref=e907] [cursor=pointer]:
+                      - /url: /kilo-code/vs/tabnine
+                  - listitem [ref=e908]:
+                    - link "vs Replit" [ref=e909] [cursor=pointer]:
+                      - /url: /kilo-code/vs/replit
+                  - listitem [ref=e910]:
+                    - link "vs Lovable" [ref=e911] [cursor=pointer]:
+                      - /url: /kilo-code/vs/lovable
+                  - listitem [ref=e912]:
+                    - link "vs CodeRabbit" [ref=e913] [cursor=pointer]:
+                      - /url: /kilo-code/vs/coderabbit
+                  - listitem [ref=e914]:
+                    - link "vs Augment Code" [ref=e915] [cursor=pointer]:
+                      - /url: /kilo-code/vs/augment-code
+                  - listitem [ref=e916]:
+                    - link "Roo Migration" [ref=e917] [cursor=pointer]:
+                      - /url: /roo-migration
+                  - listitem [ref=e918]:
+                    - link "Cursor Migration" [ref=e919] [cursor=pointer]:
+                      - /url: /cursor-to-kilo
+              - generic [ref=e921]:
+                - paragraph [ref=e922]: Compare KiloClaw
+                - list [ref=e923]:
+                  - listitem [ref=e924]:
+                    - link "All Alternatives" [ref=e925] [cursor=pointer]:
+                      - /url: /kiloclaw/alternatives
+                  - listitem [ref=e926]:
+                    - link "vs xCloud" [ref=e927] [cursor=pointer]:
+                      - /url: /kiloclaw/alternatives/xcloud-alternative
+                  - listitem [ref=e928]:
+                    - link "vs MyClaw" [ref=e929] [cursor=pointer]:
+                      - /url: /kiloclaw/alternatives/myclaw-alternative
+                  - listitem [ref=e930]:
+                    - link "vs Hostinger" [ref=e931] [cursor=pointer]:
+                      - /url: /kiloclaw/alternatives/hostinger-alternative
+                  - listitem [ref=e932]:
+                    - link "Self-Hosted" [ref=e933] [cursor=pointer]:
+                      - /url: /kiloclaw/hosting
+                  - listitem [ref=e934]:
+                    - link "OpenClaw vs n8n" [ref=e935] [cursor=pointer]:
+                      - /url: /kiloclaw/openclaw-vs-n8n
+                  - listitem [ref=e936]:
+                    - link "OpenClaw vs Perplexity" [ref=e937] [cursor=pointer]:
+                      - /url: /kiloclaw/openclaw-vs-perplexity-computer
+              - generic [ref=e939]:
+                - paragraph [ref=e940]: Models
+                - list [ref=e941]:
+                  - listitem [ref=e942]:
+                    - link "Leaderboard" [ref=e943] [cursor=pointer]:
+                      - /url: /leaderboard
+                  - listitem [ref=e944]:
+                    - link "Open Source Models" [ref=e945] [cursor=pointer]:
+                      - /url: /open-source-models
+                  - listitem [ref=e946]:
+                    - link "Model Freedom" [ref=e947] [cursor=pointer]:
+                      - /url: /model-freedom
+                  - listitem [ref=e948]:
+                    - link "Free Models" [ref=e949] [cursor=pointer]:
+                      - /url: /landing/free-models
+                  - listitem [ref=e950]:
+                    - link "Qwen3 Models" [ref=e951] [cursor=pointer]:
+                      - /url: /landing/qwen3
+                  - listitem [ref=e952]:
+                    - link "GLM Models" [ref=e953] [cursor=pointer]:
+                      - /url: /landing/glm
+                  - listitem [ref=e954]:
+                    - link "MiniMax M2.7" [ref=e955] [cursor=pointer]:
+                      - /url: /landing/minimax-m27
+                  - listitem [ref=e956]:
+                    - link "Browse by Lab" [ref=e957] [cursor=pointer]:
+                      - /url: /models/by
+                  - listitem [ref=e958]:
+                    - link "Launch Partners" [ref=e959] [cursor=pointer]:
+                      - /url: /launch-partner
+              - generic [ref=e961]:
+                - paragraph [ref=e962]: Legal
+                - list [ref=e963]:
+                  - listitem [ref=e964]:
+                    - link "Terms" [ref=e965] [cursor=pointer]:
+                      - /url: /terms
+                  - listitem [ref=e966]:
+                    - link "Privacy" [ref=e967] [cursor=pointer]:
+                      - /url: /privacy
+                  - listitem [ref=e968]:
+                    - link "Trust Center (opens in new tab)" [ref=e969] [cursor=pointer]:
+                      - /url: https://trust.kilo.ai/
+                      - text: Trust Center
+                      - img [ref=e970]
+                      - generic [ref=e973]: (opens in new tab)
+              - generic [ref=e975]:
+                - paragraph [ref=e976]: Support
+                - list [ref=e977]:
+                  - listitem [ref=e978]:
+                    - link "Get Support" [ref=e979] [cursor=pointer]:
+                      - /url: /support
+                  - listitem [ref=e980]:
+                    - link "Status (opens in new tab)" [ref=e981] [cursor=pointer]:
+                      - /url: https://status.kilo.ai/
+                      - text: Status
+                      - img [ref=e982]
+                      - generic [ref=e985]: (opens in new tab)
+                  - listitem [ref=e986]:
+                    - link "Report Abuse" [ref=e987] [cursor=pointer]:
+                      - /url: /abuse
+          - generic [ref=e988]:
+            - paragraph [ref=e989]: © 2026 Kilo Code, Inc. All rights reserved.
+            - paragraph [ref=e990]: Made with ❤️ in Amsterdam
+  - region "Notifications alt+T"
+  - alert [ref=e991]
+  - generic [ref=e993]:
+    - paragraph [ref=e994]:
+      - text: We use necessary cookies for core site features. With your permission, we also use optional cookies to improve Kilo.
+      - link "Learn more" [ref=e995] [cursor=pointer]:
+        - /url: /privacy
+    - generic [ref=e996]:
+      - button "Accept" [ref=e997]
+      - button "Decline" [ref=e998]
+      - button "Dismiss cookie banner" [ref=e999]:
+        - img [ref=e1000]

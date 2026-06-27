@@ -1,0 +1,359 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fchicanoandres702%2FKilocode-android%2Factions%2Fruns%2F28269906681
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Fworkflow_runs%2Fshow&source=header-repo&source_repo=chicanoandres702%2FKilocode-android
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - img [ref=e68]
+              - link "chicanoandres702" [ref=e71] [cursor=pointer]:
+                - /url: /chicanoandres702
+              - generic [ref=e72]: /
+              - strong [ref=e73]:
+                - link "Kilocode-android" [ref=e74] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android
+              - generic [ref=e75]: Public
+            - generic [ref=e76]:
+              - text: forked from
+              - link "ym2632600/Kilocode-android" [ref=e77] [cursor=pointer]:
+                - /url: /ym2632600/Kilocode-android
+          - generic [ref=e78]:
+            - list:
+              - listitem [ref=e79]:
+                - link "You must be signed in to change notification settings" [ref=e80] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e81]
+                  - text: Notifications
+              - listitem [ref=e83]:
+                - link "Fork 0" [ref=e84] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e85]
+                  - text: Fork
+                  - generic "0" [ref=e87]
+              - listitem [ref=e88]:
+                - link "You must be signed in to star a repository" [ref=e90] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fchicanoandres702%2FKilocode-android
+                  - img [ref=e91]
+                  - text: Star
+                  - generic "0 users starred this repository" [ref=e93]: "0"
+        - navigation "Repository" [ref=e94]:
+          - list [ref=e95]:
+            - listitem [ref=e96]:
+              - link "Code" [ref=e97] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android
+                - img [ref=e98]
+                - generic [ref=e100]: Code
+            - listitem [ref=e101]:
+              - link "Issues 6" [ref=e102] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/issues
+                - img [ref=e103]
+                - generic [ref=e106]: Issues
+                - generic "6" [ref=e107]
+            - listitem [ref=e108]:
+              - link "Pull requests" [ref=e109] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/pulls
+                - img [ref=e110]
+                - generic [ref=e112]: Pull requests
+            - listitem [ref=e113]:
+              - link "Actions" [ref=e114] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/actions
+                - img [ref=e115]
+                - generic [ref=e117]: Actions
+            - listitem [ref=e118]:
+              - link "Projects" [ref=e119] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/projects
+                - img [ref=e120]
+                - generic [ref=e122]: Projects
+            - listitem [ref=e123]:
+              - link "Security and quality" [ref=e124] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/security
+                - img [ref=e125]
+                - generic [ref=e127]: Security and quality
+            - listitem [ref=e128]:
+              - link "Insights" [ref=e129] [cursor=pointer]:
+                - /url: /chicanoandres702/Kilocode-android/pulse
+                - img [ref=e130]
+                - generic [ref=e132]: Insights
+      - generic [ref=e137]:
+        - generic [ref=e140]:
+          - link "Android CI" [ref=e143] [cursor=pointer]:
+            - /url: /chicanoandres702/Kilocode-android/actions/workflows/android.yml
+            - img [ref=e144]
+            - generic [ref=e146]: Android CI
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - img "failed:" [ref=e152]
+              - 'heading "fix: clear loading state on session.error SSE event and switch to syn… #213" [level=1] [ref=e154]':
+                - generic [ref=e155]: "fix: clear loading state on session.error SSE event and switch to syn… #213"
+            - link "Sign in to view logs" [ref=e158] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fchicanoandres702%2FKilocode-android%2Factions%2Fruns%2F28269906681
+        - generic [ref=e159]:
+          - navigation "Workflow run" [ref=e165]:
+            - list [ref=e166]:
+              - listitem [ref=e167]:
+                - link "Summary" [ref=e168] [cursor=pointer]:
+                  - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681
+                  - generic:
+                    - img
+                  - generic [ref=e170]: Summary
+              - generic [ref=e171]:
+                - heading "All jobs" [level=4] [ref=e172]
+                - button "Filter by job status" [ref=e173] [cursor=pointer]:
+                  - img [ref=e174]
+              - listitem [ref=e176]
+              - listitem [ref=e177]:
+                - list [ref=e178]:
+                  - listitem [ref=e179]:
+                    - link "build" [ref=e180] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617
+                      - generic:
+                        - img
+                      - generic [ref=e182]: build
+                  - listitem [ref=e183]:
+                    - link "build-kilo-cli" [ref=e184] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944600
+                      - generic:
+                        - img
+                      - generic [ref=e186]: build-kilo-cli
+                  - listitem [ref=e187]:
+                    - link "release" [ref=e188] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83765081788
+                      - generic:
+                        - img
+                      - generic [ref=e190]: release
+              - listitem [ref=e191]
+              - listitem [ref=e192]:
+                - heading "Run details" [level=3] [ref=e194]
+                - list "Run details" [ref=e195]:
+                  - listitem [ref=e196]:
+                    - link "Usage" [ref=e197] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/usage
+                      - generic:
+                        - img
+                      - generic [ref=e199]: Usage
+                  - listitem [ref=e200]:
+                    - link "Workflow file" [ref=e201] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/workflow
+                      - generic:
+                        - img
+                      - generic [ref=e203]: Workflow file
+          - generic [ref=e205]:
+            - region "Workflow run summary" [ref=e206]:
+              - generic [ref=e207]:
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Triggered via push June 26, 2026 22:571 hour ago
+                  - generic [ref=e210]:
+                    - link "@chicanoandres702 chicanoandres702" [ref=e211] [cursor=pointer]:
+                      - /url: /chicanoandres702
+                      - img "@chicanoandres702" [ref=e212]
+                      - text: chicanoandres702
+                    - generic [ref=e213]:
+                      - generic [ref=e214]: pushed
+                      - link "bea42b9" [ref=e215] [cursor=pointer]:
+                        - /url: /chicanoandres702/Kilocode-android/commit/bea42b9a38c22077300c681177ca3b2aebda2fd6
+                        - img [ref=e216]
+                        - text: bea42b9
+                    - link "feature/28-fix-build-issues" [ref=e218] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/tree/refs/heads/feature/28-fix-build-issues
+                - generic [ref=e219]:
+                  - generic [ref=e220]: Status
+                  - text: Failure
+                - generic [ref=e221]:
+                  - generic [ref=e222]: Total duration
+                  - link "1m 23s" [ref=e223] [cursor=pointer]:
+                    - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/usage
+                - generic [ref=e224]:
+                  - generic [ref=e225]: Artifacts
+                  - link "1" [ref=e226] [cursor=pointer]:
+                    - /url: "#artifacts"
+            - region "Workflow run graph" [ref=e227]:
+              - generic [ref=e229]:
+                - generic [ref=e231]:
+                  - heading "android.yml" [level=2] [ref=e232]:
+                    - link "android.yml" [ref=e233] [cursor=pointer]:
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/workflow
+                  - generic [ref=e234]: "on: push"
+                - generic [ref=e236]:
+                  - generic [ref=e237]:
+                    - img
+                    - img
+                    - generic [ref=e238]:
+                      - 'link "failed: build 1m 18s" [ref=e241] [cursor=pointer]':
+                        - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617
+                        - generic [ref=e243]:
+                          - img "failed:" [ref=e245]
+                          - generic [ref=e248]: build
+                          - generic [ref=e249]: 1m 18s
+                      - 'link "completed successfully: build-kilo-cli 1m 8s" [ref=e253] [cursor=pointer]':
+                        - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944600
+                        - generic [ref=e255]:
+                          - img "completed successfully:" [ref=e257]
+                          - generic [ref=e260]: build-kilo-cli
+                          - generic [ref=e261]: 1m 8s
+                    - 'link "skipped: release" [ref=e265] [cursor=pointer]':
+                      - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83765081788
+                      - generic [ref=e267]:
+                        - img "skipped:" [ref=e269]
+                        - generic [ref=e272]: release
+                  - generic [ref=e274]:
+                    - paragraph [ref=e275]: Oh hello! Nice to see you.
+                    - paragraph [ref=e276]:
+                      - text: Made with ❤️ by
+                      - link [ref=e277] [cursor=pointer]:
+                        - /url: https://actions.github.io/humans.txt
+                        - text: humans.txt
+                - generic [ref=e278]:
+                  - button "Fit to window" [disabled] [ref=e279]:
+                    - img
+                  - generic [ref=e280]:
+                    - button "Zoom out" [disabled] [ref=e282]:
+                      - img
+                    - button "Zoom in" [disabled] [ref=e284]:
+                      - img
+            - region "Annotations" [ref=e285]:
+              - generic [ref=e286]:
+                - generic [ref=e288]:
+                  - heading "Annotations" [level=2] [ref=e289]
+                  - generic [ref=e290]: 1 error and 5 warnings
+                - table [ref=e291]:
+                  - rowgroup [ref=e292]:
+                    - row "build Process completed with exit code 1." [ref=e293]:
+                      - cell "build Process completed with exit code 1." [ref=e294]:
+                        - generic [ref=e295]:
+                          - img [ref=e297]
+                          - generic [ref=e299]:
+                            - link "build" [ref=e300] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617#step:7:94
+                              - strong [ref=e301]: build
+                            - generic [ref=e304]: Process completed with exit code 1.
+                    - 'row "build-kilo-cli Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/ Show more" [ref=e305]':
+                      - 'cell "build-kilo-cli Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/ Show more" [ref=e306]':
+                        - generic [ref=e307]:
+                          - img [ref=e309]
+                          - generic [ref=e311]:
+                            - link "build-kilo-cli" [ref=e312] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944600#step:13:2
+                              - strong [ref=e313]: build-kilo-cli
+                            - generic [ref=e314]:
+                              - generic [ref=e316]:
+                                - text: "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see:"
+                                - link "https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/" [ref=e317] [cursor=pointer]:
+                                  - /url: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+                              - button "Show more" [ref=e318] [cursor=pointer]
+                    - 'row "build Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, android-actions/setup-android@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/ Show more" [ref=e319]':
+                      - 'cell "build Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, android-actions/setup-android@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/ Show more" [ref=e320]':
+                        - generic [ref=e321]:
+                          - img [ref=e323]
+                          - generic [ref=e325]:
+                            - link "build" [ref=e326] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617#step:21:4
+                              - strong [ref=e327]: build
+                            - generic [ref=e328]:
+                              - generic [ref=e330]:
+                                - text: "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, android-actions/setup-android@v3. For more information see:"
+                                - link "https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/" [ref=e331] [cursor=pointer]:
+                                  - /url: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+                              - button "Show more" [ref=e332] [cursor=pointer]
+                    - row "build Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url'] Show more" [ref=e333]:
+                      - cell "build Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url'] Show more" [ref=e334]:
+                        - generic [ref=e335]:
+                          - img [ref=e337]
+                          - generic [ref=e339]:
+                            - link "build" [ref=e340] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617#step:20:1
+                              - strong [ref=e341]: build
+                            - generic [ref=e342]:
+                              - generic [ref=e344]: Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url']
+                              - button "Show more" [ref=e345] [cursor=pointer]
+                    - row "build Unexpected input(s) 'node-version', valid inputs are ['cmdline-tools-version', 'accept-android-sdk-licenses', 'log-accepted-android-sdk-licenses', 'packages'] Show more" [ref=e346]:
+                      - cell "build Unexpected input(s) 'node-version', valid inputs are ['cmdline-tools-version', 'accept-android-sdk-licenses', 'log-accepted-android-sdk-licenses', 'packages'] Show more" [ref=e347]:
+                        - generic [ref=e348]:
+                          - img [ref=e350]
+                          - generic [ref=e352]:
+                            - link "build" [ref=e353] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617#step:3:1
+                              - strong [ref=e354]: build
+                            - generic [ref=e355]:
+                              - generic [ref=e357]: Unexpected input(s) 'node-version', valid inputs are ['cmdline-tools-version', 'accept-android-sdk-licenses', 'log-accepted-android-sdk-licenses', 'packages']
+                              - button "Show more" [ref=e358] [cursor=pointer]
+                    - row "build Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url'] Show more" [ref=e359]:
+                      - cell "build Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url'] Show more" [ref=e360]:
+                        - generic [ref=e361]:
+                          - img [ref=e363]
+                          - generic [ref=e365]:
+                            - link "build" [ref=e366] [cursor=pointer]:
+                              - /url: /chicanoandres702/Kilocode-android/actions/runs/28269906681/job/83764944617#step:2:1
+                              - strong [ref=e367]: build
+                            - generic [ref=e368]:
+                              - generic [ref=e370]: Unexpected input(s) 'node-version', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url']
+                              - button "Show more" [ref=e371] [cursor=pointer]
+            - region "Artifacts" [ref=e372]:
+              - generic [ref=e373]:
+                - generic [ref=e375]:
+                  - heading "Artifacts" [level=2] [ref=e376]
+                  - generic [ref=e377]: Produced during runtime
+                - table [ref=e378]:
+                  - rowgroup [ref=e379]:
+                    - row "Name Size Digest" [ref=e380]:
+                      - columnheader "Name" [ref=e381]
+                      - columnheader "Size" [ref=e382]
+                      - columnheader "Digest" [ref=e383]
+                      - cell [ref=e384]
+                  - rowgroup [ref=e385]:
+                    - row "kilo-android-arm64 1.79 KB sha256:e751451243d4ef406fbe4fc6ccf216190499345dc0100b10382bf9946e3ca880 Copy artifact digest" [ref=e386]:
+                      - cell "kilo-android-arm64" [ref=e387]:
+                        - generic [ref=e388]:
+                          - img [ref=e390]
+                          - generic [ref=e392]: kilo-android-arm64
+                      - cell "1.79 KB" [ref=e393]
+                      - cell "sha256:e751451243d4ef406fbe4fc6ccf216190499345dc0100b10382bf9946e3ca880 Copy artifact digest" [ref=e394]:
+                        - generic [ref=e395]:
+                          - code [ref=e396]: sha256:e751451243d4ef406fbe4fc6ccf216190499345dc0100b10382bf9946e3ca880
+                          - button "Copy artifact digest" [ref=e398] [cursor=pointer]:
+                            - img [ref=e399]
+                      - cell [ref=e403]
