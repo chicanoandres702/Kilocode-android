@@ -16,7 +16,6 @@ function ensureReposDir() {
 }
 
 function sanitizeRepoName(name: string): string {
-  // Convert "owner/repo" to safe directory name
   return name.replace(/[^a-zA-Z0-9._-]/g, '_');
 }
 
@@ -38,7 +37,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate repo format (owner/repo)
     if (!/^[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+$/.test(repo)) {
       return NextResponse.json(
         { error: 'repo must be in "owner/repo" format' },
@@ -50,7 +48,6 @@ export async function POST(request: Request) {
     const repoDir = join(REPOS_DIR, sanitizeRepoName(repo));
 
     if (action === 'reopen') {
-      // Check if repo already exists
       if (existsSync(repoDir)) {
         return NextResponse.json({
           success: true,
@@ -76,7 +73,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // Clone using gh CLI (must be authenticated via /api/auth/github first)
+    // Clone using gh CLI (authenticated via /api/auth/github)
     const { stdout, stderr } = await execAsync(
       `gh repo clone "${repo}" "${repoDir}" -- --depth 1`,
       { timeout: 120000 }
@@ -98,7 +95,6 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Repo operation error:', error);
 
-    // Check for specific gh errors
     const errMsg = error.message || '';
     if (errMsg.includes('not authenticated') || errMsg.includes('gh auth')) {
       return NextResponse.json(
@@ -122,67 +118,32 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const url = new URL(request.url);
-    const searchQuery = url.searchParams.get('q')?.trim();
+    ensureReposDir();
+    const { readdirSync, statSync } = require('fs');
 
-    if (!searchQuery) {
-      ensureReposDir();
-      const { readdirSync, statSync } = require('fs');
+    const entries = readdirSync(REPOS_DIR)
+      .filter((name: string) => !name.startsWith('.'))
+      .map((name: string) => {
+        const fullPath = join(REPOS_DIR, name);
+        try {
+          const stat = statSync(fullPath);
+          return {
+            name,
+            path: fullPath,
+            modified: stat.mtime.toISOString(),
+            source: 'local',
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean);
 
-      const entries = readdirSync(REPOS_DIR)
-        .filter((name: string) => !name.startsWith('.'))
-        .map((name: string) => {
-          const fullPath = join(REPOS_DIR, name);
-          try {
-            const stat = statSync(fullPath);
-            return {
-              name,
-              path: fullPath,
-              modified: stat.mtime.toISOString(),
-              source: 'local',
-            };
-          } catch {
-            return null;
-          }
-        })
-        .filter(Boolean);
-
-      return NextResponse.json({ repos: entries, source: 'local' });
-    }
-
-    // Search GitHub using gh CLI
-    const { stdout } = await execAsync(
-      `gh search repos "${searchQuery}" --limit 30 --json name,owner,description,stargazersCount,updatedAt`,
-      { timeout: 30000 }
-    );
-
-    if (!stdout || stdout.trim() === '') {
-      return NextResponse.json({ repos: [], source: 'github' });
-    }
-
-    const results = JSON.parse(stdout);
-    const repos = results.map((item: any) => ({
-      name: item.owner?.login ? `${item.owner.login}/${item.name}` : item.name,
-      description: item.description || '',
-      stars: item.stargazersCount || 0,
-      updated: item.updatedAt || '',
-      source: 'github',
-    }));
-
-    return NextResponse.json({ repos, source: 'github' });
+    return NextResponse.json({ repos: entries, source: 'local' });
   } catch (error: any) {
-    console.error('Search repos error:', error);
-
-    const errMsg = error.message || '';
-    if (errMsg.includes('not authenticated') || errMsg.includes('gh auth')) {
-      return NextResponse.json(
-        { error: 'GitHub not authenticated. Please authenticate first via /api/auth/github' },
-        { status: 401 }
-      );
-    }
-
+    console.error('List repos error:', error);
     return NextResponse.json(
-      { error: 'Failed to search repositories', details: errMsg },
+      { error: 'Failed to list repositories', details: error.message },
       { status: 500 }
     );
   }
