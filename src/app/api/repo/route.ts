@@ -151,7 +151,15 @@ export async function GET(request: Request) {
       const lines = stdout.trim().split('\n').filter(Boolean);
       githubRepos = lines.map((line: string) => {
         try {
-          return { ...JSON.parse(line), source: 'github' };
+          const repo = JSON.parse(line);
+          return {
+            name: repo.full_name,
+            description: repo.description,
+            stars: repo.stargazers_count,
+            updated: repo.updated_at,
+            url: repo.html_url,
+            source: 'github',
+          };
         } catch {
           return null;
         }

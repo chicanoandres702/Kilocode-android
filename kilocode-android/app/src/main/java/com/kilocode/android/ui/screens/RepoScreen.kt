@@ -248,15 +248,16 @@ fun RepoScreen(
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(clonedRepos) { repoName ->
+                        items(clonedRepos) { repo ->
+                            val repoName = repo.name.replace("_", "/")
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
                                         scope.launch {
-                                            val result = repoRepository.reopenRepo(repoName.replace("_", "/"))
+                                            val result = repoRepository.reopenRepo(repoName)
                                             if (result.isSuccess) {
-                                                onRepoSelected(repoName)
+                                                onRepoSelected(repo.name)
                                             }
                                         }
                                     },
@@ -277,7 +278,7 @@ fun RepoScreen(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
-                                            text = repoName.replace("_", "/"),
+                                            text = repoName,
                                             style = MaterialTheme.typography.bodyLarge,
                                             fontWeight = FontWeight.Medium
                                         )
