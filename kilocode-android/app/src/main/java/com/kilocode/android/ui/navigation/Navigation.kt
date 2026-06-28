@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.ui.screens.HomeScreen
+import com.kilocode.android.ui.screens.PlanningScreen
+import com.kilocode.android.ui.screens.PlanningWizardScreen
 import com.kilocode.android.ui.screens.RepoScreen
 import com.kilocode.android.ui.screens.SessionScreen
 import com.kilocode.android.ui.screens.SettingsScreen
@@ -23,6 +25,8 @@ sealed class Screen(val route: String) {
     }
     data object Settings : Screen("settings")
     data object Repos : Screen("repos")
+    data object Planning : Screen("planning")
+    data object PlanningWizard : Screen("planning/wizard")
 }
 
 @Composable
@@ -56,26 +60,31 @@ fun KiloCodeNavHost(
                  backStackEntry.arguments?.getString("directory") ?: "/",
                  "UTF-8"
              )
-             HomeScreen(
-                 serverUrl = serverUrl,
-                 sharedSecret = sharedSecret,
-                 initialDirectory = directory,
-                 onNavigateToSession = { sessionId ->
-                     navController.navigate(Screen.Session.createRoute(sessionId)) {
-                         launchSingleTop = true
-                     }
-                 },
-                 onNavigateToSettings = {
-                     navController.navigate(Screen.Settings.route) {
-                         launchSingleTop = true
-                     }
-                 },
-                 onNavigateToRepos = {
-                     navController.navigate(Screen.Repos.route) {
-                         launchSingleTop = true
-                     }
-                 },
-             )
+              HomeScreen(
+                  serverUrl = serverUrl,
+                  sharedSecret = sharedSecret,
+                  initialDirectory = directory,
+                  onNavigateToSession = { sessionId ->
+                      navController.navigate(Screen.Session.createRoute(sessionId)) {
+                          launchSingleTop = true
+                      }
+                  },
+                  onNavigateToSettings = {
+                      navController.navigate(Screen.Settings.route) {
+                          launchSingleTop = true
+                      }
+                  },
+                  onNavigateToRepos = {
+                      navController.navigate(Screen.Repos.route) {
+                          launchSingleTop = true
+                      }
+                  },
+                  onNavigateToPlanning = {
+                      navController.navigate(Screen.Planning.route) {
+                          launchSingleTop = true
+                      }
+                  },
+              )
          }
 
         composable(
@@ -115,16 +124,38 @@ fun KiloCodeNavHost(
         }
 
            composable(Screen.Repos.route) {
-               RepoScreen(
-                   serverUrl = serverUrl,
-                   apiServerUrl = apiServerUrl,
-                   sharedSecret = sharedSecret,
-                   onRepoSelected = { repoName, repoPath ->
-                       navController.navigate(Screen.Home.createRoute(repoPath)) {
-                           launchSingleTop = true
-                       }
-                   },
-               )
-           }
+                RepoScreen(
+                    serverUrl = serverUrl,
+                    apiServerUrl = apiServerUrl,
+                    sharedSecret = sharedSecret,
+                    onRepoSelected = { repoName, repoPath ->
+                        navController.navigate(Screen.Home.createRoute(repoPath)) {
+                            launchSingleTop = true
+                        }
+                    },
+                )
+            }
+
+            composable(Screen.Planning.route) {
+                PlanningScreen(
+                    serverUrl = serverUrl,
+                    sharedSecret = sharedSecret,
+                    onBack = { navController.popBackStack() },
+                    onNavigateToWizard = {
+                        navController.navigate(Screen.PlanningWizard.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                )
+            }
+
+            composable(Screen.PlanningWizard.route) {
+                PlanningWizardScreen(
+                    serverUrl = serverUrl,
+                    sharedSecret = sharedSecret,
+                    onBack = { navController.popBackStack() },
+                    onComplete = { navController.popBackStack() },
+                )
+        }
     }
 }

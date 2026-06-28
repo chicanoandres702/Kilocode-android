@@ -30,6 +30,7 @@ fun HomeScreen(
     onNavigateToSession: (String) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToRepos: () -> Unit,
+    onNavigateToPlanning: () -> Unit,
     viewModel: SessionViewModel = viewModel(
         key     = "$serverUrl|$sharedSecret|$initialDirectory",
         factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")),
@@ -96,6 +97,9 @@ fun HomeScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToPlanning) {
+                        Icon(Icons.Rounded.TaskAlt, "Planning", modifier = Modifier.size(20.dp))
+                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Rounded.Settings, "Settings", modifier = Modifier.size(20.dp))
                     }

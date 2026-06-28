@@ -2,10 +2,16 @@ package com.kilocode.android.data.api
 
 import android.util.Log
 import com.kilocode.android.BuildConfig
+import com.kilocode.android.data.AppError
+import com.kilocode.android.data.httpError
+import com.kilocode.android.data.isRetryable
 import com.kilocode.android.data.model.*
+import com.kilocode.android.data.retryDelay
+import com.kilocode.android.data.toAppError
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
@@ -55,87 +61,12 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
 
     val api: KiloCodeApi = retrofit.create(KiloCodeApi::class.java)
 
-    suspend fun getSessions(directory: String? = null): List<Session> {
-        val response = api.listSessions(directory = directory)
-        if (response.isSuccessful) {
-            return response.body() ?: emptyList()
-        }
-        throw Exception("Failed to list sessions: ${response.code()} ${response.message()}")
-    }
-
-    suspend fun getMessages(sessionId: String, directory: String? = null): List<MessageWithParts> {
-        val response = api.listMessages(sessionId, directory = directory)
-        if (response.isSuccessful) {
-            return response.body() ?: emptyList()
-        }
-        throw Exception("Failed to list messages: ${response.code()}")
-    }
-
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null, directory: String? = null) {
-        val request = PromptRequest(
-            parts = listOf(PartRequest(type = "text", text = prompt)),
-            agent = agent,
-            model = model
-        )
-        val response = api.sendPrompt(sessionId, directory = directory, request = request)
-        if (!response.isSuccessful) {
-            throw Exception("Failed to send prompt: ${response.code()} ${response.message()}")
-        }
-    }
-
-    suspend fun listAgents(): List<Agent> {
-        val response = api.listAgents()
-        if (response.isSuccessful) {
-            return response.body() ?: emptyList()
-        }
-        throw Exception("Failed to list agents: ${response.code()}")
-    }
-
-    suspend fun cloneRepo(action: String, repo: String): RepoOperationResponse {
-        val request = CloneRepoRequest(action = action, repo = repo)
-        val response = api.repoOperation(request)
-        if (response.isSuccessful) {
-            return response.body() ?: RepoOperationResponse(success = false, error = "Empty response")
-        }
-        throw Exception("Failed to $action repo: ${response.code()} ${response.message()}")
-    }
-
-    suspend fun listRepos(): List<RepoEntry> {
-        val response = api.listRepos()
-        if (response.isSuccessful) {
-            return response.body()?.repos ?: emptyList()
-        }
-        throw Exception("Failed to list repos: ${response.code()}")
-    }
-
-    suspend fun searchGitHubRepos(query: String): List<RepoEntry> {
-        val response = api.searchRepos(query)
-        if (response.isSuccessful) {
-            return response.body()?.repos ?: emptyList()
-        }
-        throw Exception("Failed to search GitHub repos: ${response.code()}")
-    }
-
-    fun createStreamCall(path: String): okhttp3.Call {
-        val request = Request.Builder()
-            .url("${baseUrl}${path}")
-            .header("Accept", "text/event-stream")
-            .build()
-        return sseClient.newCall(request)
-    }
-
-    fun createEventSource(
-        path: String,
-        listener: EventSourceListener,
-    ): EventSource {
-        val request = Request.Builder()
-            .url("${baseUrl}${path}")
-            .build()
-        val factory = EventSources.createFactory(okHttpClient)
-        return factory.newEventSource(request, listener)
-    }
+    // ── Retry-with-backoff wrapper ─────────────────────────────────────────────
+    // All API calls go through this to handle transient failures autonomously.
 
     companion object {
+        private const val MAX_RETRIES = 3
+
         @Volatile
         private var INSTANCE: ApiClient? = null
         private var instanceBaseUrl: String? = null
@@ -144,7 +75,7 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         fun getInstance(baseUrl: String, sharedSecret: String): ApiClient {
             // Trim and sanitize URL
             val sanitizedBaseUrl = baseUrl.trim().removeSuffix("/") + "/"
-            
+
             // Check for invalid URL format
             if (sanitizedBaseUrl.toHttpUrlOrNull() == null) {
                 Log.e("ApiClient", "Invalid base URL: $sanitizedBaseUrl")
@@ -179,5 +110,117 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
                 }
             }
         }
+    }
+
+    /**
+     * Execute a suspend block with exponential-backoff retry on transient errors.
+     * Auth errors and unknown 4xx errors are NOT retried — they need user action.
+     */
+    private suspend fun <T> withRetry(
+        operation: String,
+        block: suspend () -> T
+    ): T {
+        var lastError: AppError? = null
+        repeat(MAX_RETRIES) { attempt ->
+            try {
+                return block()
+            } catch (e: Exception) {
+                val appError = e.toAppError()
+                lastError = appError
+                if (!appError.isRetryable()) {
+                    throw e // Don't retry auth or unknown errors
+                }
+                val delayMs = appError.retryDelay(attempt)
+                Log.w("ApiClient", "$operation failed (attempt ${attempt + 1}/$MAX_RETRIES): ${appError.message}. Retrying in ${delayMs}ms")
+                kotlinx.coroutines.delay(delayMs)
+            }
+        }
+        throw lastError ?: Exception("$operation failed after $MAX_RETRIES attempts")
+    }
+
+    suspend fun getSessions(directory: String? = null): List<Session> = withRetry("getSessions") {
+        val response = api.listSessions(directory = directory)
+        if (response.isSuccessful) {
+            response.body() ?: emptyList()
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun getMessages(sessionId: String, directory: String? = null): List<MessageWithParts> = withRetry("getMessages") {
+        val response = api.listMessages(sessionId, directory = directory)
+        if (response.isSuccessful) {
+            response.body() ?: emptyList()
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null, directory: String? = null) = withRetry("sendPrompt") {
+        val request = PromptRequest(
+            parts = listOf(PartRequest(type = "text", text = prompt)),
+            agent = agent,
+            model = model
+        )
+        val response = api.sendPrompt(sessionId, directory = directory, request = request)
+        if (!response.isSuccessful) {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun listAgents(): List<Agent> = withRetry("listAgents") {
+        val response = api.listAgents()
+        if (response.isSuccessful) {
+            response.body() ?: emptyList()
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun cloneRepo(action: String, repo: String): RepoOperationResponse = withRetry("cloneRepo") {
+        val request = CloneRepoRequest(action = action, repo = repo)
+        val response = api.repoOperation(request)
+        if (response.isSuccessful) {
+            response.body() ?: RepoOperationResponse(success = false, error = "Empty response")
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun listRepos(): List<RepoEntry> = withRetry("listRepos") {
+        val response = api.listRepos()
+        if (response.isSuccessful) {
+            response.body()?.repos ?: emptyList()
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    suspend fun searchGitHubRepos(query: String): List<RepoEntry> = withRetry("searchRepos") {
+        val response = api.searchRepos(query)
+        if (response.isSuccessful) {
+            response.body()?.repos ?: emptyList()
+        } else {
+            throw httpError(response.code(), response.errorBody()?.string() ?: "")
+        }
+    }
+
+    fun createStreamCall(path: String): okhttp3.Call {
+        val request = Request.Builder()
+            .url("${baseUrl}${path}")
+            .header("Accept", "text/event-stream")
+            .build()
+        return sseClient.newCall(request)
+    }
+
+    fun createEventSource(
+        path: String,
+        listener: EventSourceListener,
+    ): EventSource {
+        val request = Request.Builder()
+            .url("${baseUrl}${path}")
+            .build()
+        val factory = EventSources.createFactory(okHttpClient)
+        return factory.newEventSource(request, listener)
     }
 }
