@@ -20,11 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kilocode.android.data.AutonomousRecoveryManager
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.Agent
 import com.kilocode.android.data.model.ModelOption
-import com.kilocode.android.data.model.Part
 import com.kilocode.android.data.repository.AuthPreferencesRepository
+import com.kilocode.android.data.repository.PendingPrompt
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
 import com.kilocode.android.worker.PromptWorker
@@ -47,6 +48,8 @@ fun SessionScreen(
     // Assuming simple singleton access for the prototype:
     val repository = remember(apiClient) { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
+    val recoveryManager = remember { AutonomousRecoveryManager.getInstance(context) }
+    val pendingCount by recoveryManager.getPendingCount().collectAsState(initial = 0)
     
     // Debugging state flow collection
     val messagesState = repository.messages.collectAsState()
@@ -77,14 +80,6 @@ fun SessionScreen(
     var manualSendInProgress by remember { mutableStateOf(false) }
     var autonomousIterations by remember { mutableIntStateOf(0) }
     val maxAutonomousIterations = 20 // Prevent infinite loops
-
-    val hasPendingWork by remember(parts) {
-        derivedStateOf {
-            parts.values.flatten().any { part ->
-                part.state?.status == "pending" || part.state?.status == "running"
-            }
-        }
-    }
 
     val isAtBottom by remember {
         derivedStateOf {
@@ -139,6 +134,8 @@ fun SessionScreen(
             sessionId,
             directory = repository.currentSession.value?.directory
         )
+        // Persist session state for crash recovery
+        recoveryManager.saveSessionState(sessionId, repository.currentSession.value?.directory ?: "/")
     }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
@@ -150,12 +147,12 @@ fun SessionScreen(
         }
     }
 
-    LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size, sessionBusy) {
+    // Issue #43: Autonomous loop — drain duplicate guard, keep single sessionBusy check
+    LaunchedEffect(autonomousMode, continueGeneration, isLoading, sessionBusy, messages.size) {
         if (!autonomousMode) return@LaunchedEffect
-        if (isLoading || hasPendingWork) return@LaunchedEffect
+        if (isLoading || sessionBusy) return@LaunchedEffect
         if (messages.isEmpty()) return@LaunchedEffect
         if (manualSendInProgress) return@LaunchedEffect
-        if (sessionBusy) return@LaunchedEffect
         // Safety: stop after N iterations to prevent infinite loops
         if (autonomousIterations >= maxAutonomousIterations) {
             autonomousMode = false
@@ -163,7 +160,7 @@ fun SessionScreen(
         }
         // Wait longer between iterations to give the model time and reduce API load
         delay(1500)
-        if (autonomousMode && !isLoading && !hasPendingWork && !sessionBusy && messages.isNotEmpty() && !manualSendInProgress) {
+        if (autonomousMode && !isLoading && !sessionBusy && messages.isNotEmpty() && !manualSendInProgress) {
             val lastMessage = messages.lastOrNull()
             // Only auto-continue if the last message was from the assistant
             val shouldContinue = lastMessage?.role == "assistant"
@@ -198,6 +195,20 @@ fun SessionScreen(
                     selectedAgent?.name,
                     selectedModel,
                     directory = currentSession?.directory
+                )
+            } catch (e: Exception) {
+                // Queue for retry when connectivity returns
+                recoveryManager.queuePendingPrompt(
+                    PendingPrompt(
+                        sessionId = sessionId,
+                        prompt = text,
+                        agent = selectedAgent?.name,
+                        modelProvider = selectedModel?.providerID,
+                        modelId = selectedModel?.modelID,
+                        directory = currentSession?.directory,
+                        serverUrl = serverUrl,
+                        sharedSecret = sharedSecret ?: ""
+                    )
                 )
             } finally {
                 manualSendInProgress = false
@@ -369,8 +380,43 @@ fun SessionScreen(
                         scope.launch {
                             repository.clearError()
                             repository.selectSession(sessionId)
+                            // Also force-retry any pending prompts
+                            recoveryManager.forceRetryNow()
                         }
                     })
+                }
+            }
+
+            // Pending prompts indicator
+            if (pendingCount > 0) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            Icons.Rounded.Sync,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "$pendingCount pending prompt${if (pendingCount > 1) "s" else ""} — will retry when online",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            modifier = Modifier.weight(1f),
+                        )
+                        TextButton(onClick = { recoveryManager.forceRetryNow() }) {
+                            Text("Retry now", fontSize = 12.sp)
+                        }
+                    }
                 }
             }
 

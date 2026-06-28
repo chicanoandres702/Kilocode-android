@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -140,4 +141,33 @@ interface KiloCodeApi {
     suspend fun removeMcpServer(
         @Path("name") name: String,
     ): Response<Unit>
+
+    // ── Planning endpoints ─────────────────────────────────────────────────────
+
+    @GET("api/planning/milestones")
+    suspend fun listMilestones(
+        @Query("state") state: String? = null,
+    ): Response<MilestoneListResponse>
+
+    @GET("api/planning/milestone/{number}/issues")
+    suspend fun listMilestoneIssues(
+        @Path("number") milestoneNumber: Int,
+        @Query("state") state: String? = null,
+    ): Response<IssueListResponse>
+
+    @POST("api/planning/milestones")
+    suspend fun createMilestone(
+        @Body request: CreateMilestoneRequest,
+    ): Response<Milestone>
+
+    @POST("api/planning/issues")
+    suspend fun createIssue(
+        @Body request: CreateIssueRequest,
+    ): Response<Issue>
+
+    @PATCH("api/planning/issues/{number}")
+    suspend fun updateIssueState(
+        @Path("number") issueNumber: Int,
+        @Body request: UpdateIssueStateRequest,
+    ): Response<Issue>
 }

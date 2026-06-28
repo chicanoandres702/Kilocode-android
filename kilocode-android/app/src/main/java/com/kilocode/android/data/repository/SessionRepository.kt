@@ -380,6 +380,9 @@ class SessionRepository(private val apiClient: ApiClient) {
          sseJob = repositoryScope.launch {
              var retryDelay = 1000L
              val maxRetryDelay = 30000L
+             var consecutiveFailures = 0
+             val maxConsecutiveFailures = 10
+             
              while (isActive) {
                  try {
                      val call = apiClient.createStreamCall(path)
@@ -388,12 +391,24 @@ class SessionRepository(private val apiClient: ApiClient) {
                          if (!response.isSuccessful) {
                              logE("SessionRepo", "SSE connection failed: ${response.code}")
                              if (response.code == 401 || response.code == 403) {
-                                 // Auth errors — don't retry
+                                 // Auth errors — don't retry, surface to user
+                                 _error.value = "Authentication error — check shared secret"
                                  return@launch
+                             }
+                             // Server error — retry with backoff
+                             consecutiveFailures++
+                             if (consecutiveFailures >= maxConsecutiveFailures) {
+                                 _error.value = "Connection lost — too many failures"
+                                 // Keep retrying but with longer delays
+                                 delay(maxRetryDelay)
+                                 consecutiveFailures = maxConsecutiveFailures / 2 // Reset partially
+                                 return@use
                              }
                          } else {
                              _isConnected.value = true
+                             _error.value = null // Clear any previous error
                              retryDelay = 1000L // Reset on success
+                             consecutiveFailures = 0
                              logD("SessionRepo", "SSE connected")
                              val source = response.body?.source() ?: return@launch
                              var currentType = "message"
@@ -413,15 +428,21 @@ class SessionRepository(private val apiClient: ApiClient) {
                      }
                  } catch (e: Exception) {
                      if (isActive) {
-                         logE("SessionRepo", "SSE failed", e)
+                         logE("SessionRepo", "SSE stream error", e)
+                         // Don't surface transient network errors to user during autonomous mode
+                         // Only surface persistent errors after many failures
+                         consecutiveFailures++
                      }
                  }
                  
                  // Reconnection delay with exponential backoff
                  if (isActive) {
-                     logD("SessionRepo", "SSE reconnecting in ${retryDelay}ms")
+                     // Add jitter to prevent thundering herd
+                     val jitter = (0..500).random()
+                     val waitTime = retryDelay + jitter
+                     logD("SessionRepo", "SSE reconnecting in ${waitTime}ms (attempt $consecutiveFailures)")
                      _isConnected.value = false
-                     delay(retryDelay)
+                     delay(waitTime)
                      retryDelay = (retryDelay * 2).coerceAtMost(maxRetryDelay)
                  }
              }
