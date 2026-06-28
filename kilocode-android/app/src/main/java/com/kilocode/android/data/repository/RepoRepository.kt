@@ -11,8 +11,8 @@ import kotlinx.coroutines.withContext
 class RepoRepository(
     private val apiClient: ApiClient
 ) {
-    private val _clonedRepos = MutableStateFlow<List<String>>(emptyList())
-    val clonedRepos: StateFlow<List<String>> = _clonedRepos.asStateFlow()
+    private val _clonedRepos = MutableStateFlow<List<RepoEntry>>(emptyList())
+    val clonedRepos: StateFlow<List<RepoEntry>> = _clonedRepos.asStateFlow()
 
     private val _currentRepo = MutableStateFlow<String?>(null)
     val currentRepo: StateFlow<String?> = _currentRepo.asStateFlow()
@@ -41,8 +41,8 @@ class RepoRepository(
             if (result.success) {
                 val current = _clonedRepos.value.toMutableList()
                 val repoName = repo.replace("/", "_")
-                if (!current.contains(repoName)) {
-                    current.add(repoName)
+                if (!current.any { it.name == repoName }) {
+                    current.add(RepoEntry(name = repoName, source = "local"))
                     _clonedRepos.value = current
                 }
                 Result.success(repoName)
@@ -86,12 +86,12 @@ class RepoRepository(
         }
     }
 
-    suspend fun listLocalRepos(): List<String> = withContext(Dispatchers.IO) {
+    suspend fun listLocalRepos(): List<RepoEntry> = withContext(Dispatchers.IO) {
         try {
             val repos = apiClient.listRepos()
-            val names = repos.map { it.name }
-            _clonedRepos.value = names
-            names
+            val localRepos = repos.filter { it.source == "local" }
+            _clonedRepos.value = localRepos
+            localRepos
         } catch (e: Exception) {
             _error.value = e.message
             _clonedRepos.value
