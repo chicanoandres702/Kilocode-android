@@ -50,3 +50,7 @@ kilocode-android/build/
 kilocode-android/app/build/
 kilocode-android/local.properties
 kilocode-android/.idea/
+
+# Backend subdirectory
+kilocode-android/backend/node_modules/
+kilocode-android/backend/.next/

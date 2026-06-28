@@ -1,6 +1,7 @@
 package com.kilocode.android.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -36,31 +37,36 @@ fun KiloCodeNavHost(
 ) {
     val context = LocalContext.current
     val authPreferencesRepository = remember { AuthPreferencesRepository(context) }
+
+    // Holds the selected repo path from RepoScreen; consumed by HomeScreen
+    val selectedRepoPath = remember { mutableStateOf<String?>(null) }
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route,
     ) {
-        composable(Screen.Home.route) {
-            HomeScreen(
-                serverUrl = serverUrl,
-                sharedSecret = sharedSecret,
-                onNavigateToSession = { sessionId ->
-                    navController.navigate(Screen.Session.createRoute(sessionId)) {
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateToSettings = {
-                    navController.navigate(Screen.Settings.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateToRepos = {
-                    navController.navigate(Screen.Repos.route) {
-                        launchSingleTop = true
-                    }
-                },
-            )
-        }
+         composable(Screen.Home.route) {
+             HomeScreen(
+                 serverUrl = serverUrl,
+                 sharedSecret = sharedSecret,
+                 initialDirectory = selectedRepoPath.value ?: "/",
+                 onNavigateToSession = { sessionId ->
+                     navController.navigate(Screen.Session.createRoute(sessionId)) {
+                         launchSingleTop = true
+                     }
+                 },
+                 onNavigateToSettings = {
+                     navController.navigate(Screen.Settings.route) {
+                         launchSingleTop = true
+                     }
+                 },
+                 onNavigateToRepos = {
+                     navController.navigate(Screen.Repos.route) {
+                         launchSingleTop = true
+                     }
+                 },
+             )
+         }
 
         composable(
             route = Screen.Session.route,
@@ -98,17 +104,17 @@ fun KiloCodeNavHost(
             )
         }
 
-        composable(Screen.Repos.route) {
-            RepoScreen(
-                serverUrl = serverUrl,
-                apiServerUrl = apiServerUrl,
-                sharedSecret = sharedSecret,
-                onBack = { navController.popBackStack() },
-                onRepoSelected = { repoName ->
-                    // Navigate to home with the selected repo as working directory
-                    navController.popBackStack()
-                },
-            )
-        }
+          composable(Screen.Repos.route) {
+              RepoScreen(
+                  serverUrl = serverUrl,
+                  apiServerUrl = apiServerUrl,
+                  sharedSecret = sharedSecret,
+                  onBack = { navController.popBackStack() },
+                  onRepoSelected = { repoName, repoPath ->
+                      selectedRepoPath.value = repoPath
+                      navController.popBackStack()
+                  },
+              )
+          }
     }
 }

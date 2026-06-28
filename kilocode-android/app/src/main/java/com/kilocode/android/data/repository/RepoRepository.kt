@@ -31,6 +31,35 @@ class RepoRepository(
         _error.value = null
     }
 
+    suspend fun createRepo(name: String): Result<String> = withContext(Dispatchers.IO) {
+        _isLoading.value = true
+        _error.value = null
+
+        try {
+            val result = apiClient.cloneRepo("create", name)
+
+            if (result.success) {
+                val repoName = name
+                val repoPath = result.path ?: "/tmp/kilo-repos/${repoName}"
+                val entry = RepoEntry(name = repoName, path = repoPath, source = "local")
+                val current = _clonedRepos.value.toMutableList()
+                current.removeAll { it.name == repoName }
+                current.add(entry)
+                _clonedRepos.value = current
+                Result.success(repoName)
+            } else {
+                val errMsg = result.error ?: "Unknown error"
+                _error.value = errMsg
+                Result.failure(Exception(errMsg))
+            }
+        } catch (e: Exception) {
+            _error.value = e.message
+            Result.failure(e)
+        } finally {
+            _isLoading.value = false
+        }
+    }
+
     suspend fun cloneRepo(repo: String): Result<String> = withContext(Dispatchers.IO) {
         _isLoading.value = true
         _error.value = null
@@ -40,10 +69,12 @@ class RepoRepository(
 
             if (result.success) {
                 val repoName = repo.replace("/", "_")
+                val repoPath = result.path ?: "/tmp/kilo-repos/${repoName}"
+                val entry = RepoEntry(name = repoName, path = repoPath, source = "local")
                 val current = _clonedRepos.value.toMutableList()
                 // Remove any existing entry for this repo and add as local
                 current.removeAll { it.name == repoName }
-                current.add(RepoEntry(name = repoName, source = "local"))
+                current.add(entry)
                 _clonedRepos.value = current
                 Result.success(repoName)
             } else {
