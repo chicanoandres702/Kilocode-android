@@ -54,3 +54,4 @@ kilocode-android/.idea/
 # Backend subdirectory
 kilocode-android/backend/node_modules/
 kilocode-android/backend/.next/
+backend/
