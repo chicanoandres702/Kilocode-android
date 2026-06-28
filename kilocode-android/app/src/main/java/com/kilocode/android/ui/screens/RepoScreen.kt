@@ -35,7 +35,7 @@ fun RepoScreen(
     apiServerUrl: String,
     sharedSecret: String?,
     onBack: () -> Unit,
-    onRepoSelected: (String) -> Unit,
+    onRepoSelected: (String, String) -> Unit,
 ) {
     val apiClient = remember(apiServerUrl, sharedSecret) { ApiClient.getInstance(apiServerUrl, sharedSecret ?: "") }
     val repoRepository = remember(apiClient) { RepoRepository(apiClient) }
@@ -119,20 +119,20 @@ fun RepoScreen(
             if (selectedTabIndex == 0) {
                 // ── Your Repos tab ──────────────────────────────────────────────
 
-                // Clone input
+                // Create repo input
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            "Clone a repository",
+                            "Create a new repository",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            "Enter a GitHub repository in owner/repo format",
+                            "Create a fresh repository directory for new projects",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -141,47 +141,62 @@ fun RepoScreen(
                         OutlinedTextField(
                             value = repoInput,
                             onValueChange = { repoInput = it },
-                            placeholder = { Text("e.g. kilocode/kilocode") },
+                            placeholder = { Text("e.g. my-new-project") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             enabled = !isLoading,
                             leadingIcon = {
-                                Icon(Icons.Default.Link, contentDescription = null)
+                                Icon(Icons.Default.FolderOpen, contentDescription = null)
                             }
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        Button(
-                            onClick = {
-                                if (repoInput.isNotBlank()) {
-                                    scope.launch {
-                                        val result = repoRepository.cloneRepo(repoInput.trim())
-                                        if (result.isSuccess) {
-                                            repoInput = ""
-                                            repoRepository.setCurrentRepo(result.getOrNull())
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = {
+                                    if (repoInput.isNotBlank()) {
+                                        scope.launch {
+                                            val result = repoRepository.createRepo(repoInput.trim())
+                                            if (result.isSuccess) {
+                                                repoInput = ""
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = !isLoading && repoInput.isNotBlank()
-                        ) {
-                            if (isLoading) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    strokeWidth = 2.dp,
-                                    color = MaterialTheme.colorScheme.onPrimary
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                            } else {
-                                Icon(Icons.Default.CloudDownload, contentDescription = null)
-                                Spacer(modifier = Modifier.width(8.dp))
+                                },
+                                modifier = Modifier.weight(1f),
+                                enabled = !isLoading && repoInput.isNotBlank()
+                            ) {
+                                Icon(Icons.Default.FolderOpen, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Create")
                             }
-                            Text(if (isLoading) "Cloning..." else "Clone Repository")
+                            Button(
+                                onClick = {
+                                    if (repoInput.isNotBlank()) {
+                                        scope.launch {
+                                            val result = repoRepository.cloneRepo(repoInput.trim())
+                                            if (result.isSuccess) {
+                                                repoInput = ""
+                                            }
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.weight(1f),
+                                enabled = !isLoading && repoInput.isNotBlank()
+                            ) {
+                                Icon(Icons.Default.CloudDownload, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Clone")
+                            }
                         }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // Error display
                 if (error != null) {
@@ -251,6 +266,7 @@ fun RepoScreen(
                         items(clonedRepos) { repo ->
                             val isGitHub = repo.source == "github"
                             val repoName = if (isGitHub) repo.name else repo.name.replace("_", "/")
+                            val repoPath = repo.path ?: "/tmp/kilo-repos/${repo.name.replace("/", "_")}"
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -260,12 +276,13 @@ fun RepoScreen(
                                                 val result = repoRepository.cloneRepo(repo.name)
                                                 if (result.isSuccess) {
                                                     repoRepository.setCurrentRepo(result.getOrNull())
-                                                    onRepoSelected(result.getOrNull() ?: repo.name)
+                                                    val clonedPath = "/tmp/kilo-repos/${result.getOrNull() ?: repo.name.replace("/", "_")}"
+                                                    onRepoSelected(result.getOrNull() ?: repo.name, clonedPath)
                                                 }
                                             } else {
                                                 val result = repoRepository.reopenRepo(repoName)
                                                 if (result.isSuccess) {
-                                                    onRepoSelected(repo.name)
+                                                    onRepoSelected(repo.name, repoPath)
                                                 }
                                             }
                                         }
@@ -300,7 +317,7 @@ fun RepoScreen(
                                             )
                                         }
                                         Text(
-                                            text = if (isGitHub) "GitHub • Tap to clone" else "Local clone",
+                                            text = if (isGitHub) "GitHub • Tap to clone" else repoPath,
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -433,7 +450,8 @@ fun RepoScreen(
                                             val result = repoRepository.cloneRepo(repo.name)
                                             if (result.isSuccess) {
                                                 repoRepository.setCurrentRepo(result.getOrNull())
-                                                onRepoSelected(result.getOrNull() ?: repo.name)
+                                                val repoPath = "/tmp/kilo-repos/${repo.name.replace("/", "_")}"
+                                                onRepoSelected(result.getOrNull() ?: repo.name, repoPath)
                                             }
                                         }
                                     },
