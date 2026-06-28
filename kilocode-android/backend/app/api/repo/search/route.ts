@@ -43,7 +43,7 @@ export async function GET(request: Request) {
         try {
           const stat = statSync(fullPath);
           return {
-            name,
+            name: name.replace(/^([^_]+)_(.+)$/, '$1/$2'),
             path: fullPath,
             modified: stat.mtime.toISOString(),
             source: 'local',

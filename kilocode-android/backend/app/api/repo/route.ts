@@ -19,6 +19,11 @@ function sanitizeRepoName(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, '_');
 }
 
+function toDisplayName(name: string): string {
+  // Convert filesystem-safe name back to "owner/repo" format
+  return name.replace(/^([^_]+)_(.+)$/, '$1/$2');
+}
+
 export async function POST(request: Request) {
   try {
     const { action, repo } = await request.json();
@@ -163,7 +168,7 @@ export async function GET(request: Request) {
         try {
           const stat = statSync(fullPath);
           return {
-            name,
+            name: toDisplayName(name),
             path: fullPath,
             modified: stat.mtime.toISOString(),
             source: 'local',
