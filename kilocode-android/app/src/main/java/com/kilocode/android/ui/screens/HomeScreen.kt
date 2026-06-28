@@ -4,20 +4,15 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kilocode.android.data.api.ApiClient
@@ -45,24 +40,19 @@ fun HomeScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val error     by viewModel.error.collectAsState()
 
-    val sheetState    = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var showSheet     by remember { mutableStateOf(false) }
-    var directoryPath by remember { mutableStateOf(initialDirectory) }
-    val focusRequester = remember { FocusRequester() }
-    val keyboard       = LocalSoftwareKeyboardController.current
+    // Derive a friendly repo name from the directory path
+    val repoName = remember(initialDirectory) {
+        initialDirectory.trimEnd('/').substringAfterLast('/').replace("_", "/")
+    }
 
-    // Load sessions for the initial directory on first composition
+    // Load sessions for the directory on first composition
     LaunchedEffect(initialDirectory) {
-        directoryPath = initialDirectory
         viewModel.loadSessions(initialDirectory)
     }
 
     fun createSession() {
         scope.launch {
-            sheetState.hide()
-            showSheet = false
-            val session = viewModel.createSession(directoryPath.ifBlank { "/" })
-            directoryPath = initialDirectory
+            val session = viewModel.createSession(initialDirectory)
             session?.id?.let(onNavigateToSession)
         }
     }
@@ -80,29 +70,32 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                repoName,
+                                style      = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            StatusChip(
+                                text     = if (error == null) "Connected" else "Disconnected",
+                                isOnline = error == null,
+                            )
+                        }
                         Text(
-                            "Kilo",
-                            style      = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            "Code",
-                            style      = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Light,
-                            color      = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        StatusChip(
-                            text     = if (error == null) "Connected" else "Disconnected",
-                            isOnline = error == null,
+                            "${sessions.size} session${if (sessions.size != 1) "s" else ""}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 },
-                actions = {
+                navigationIcon = {
                     IconButton(onClick = onNavigateToRepos) {
-                        Icon(Icons.Rounded.Cloud, "Repositories", modifier = Modifier.size(20.dp))
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back to repos", modifier = Modifier.size(20.dp))
                     }
+                },
+                actions = {
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Rounded.Settings, "Settings", modifier = Modifier.size(20.dp))
                     }
@@ -112,7 +105,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick        = { showSheet = true },
+                onClick        = { createSession() },
                 shape          = RoundedCornerShape(16.dp),
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
@@ -128,35 +121,6 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // ── Current working directory indicator ─────────────────────────────
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 8.dp),
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.FolderOpen,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = directoryPath,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                    )
-                }
-            }
-
             HorizontalDivider(
                 thickness = 0.5.dp,
                 color     = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
@@ -176,9 +140,9 @@ fun HomeScreen(
                         "loading" -> SessionListSkeleton()
                         else -> SessionList(
                             sessions        = sessions,
-                            currentDirectory = directoryPath,
+                            currentDirectory = initialDirectory,
                             onSessionClick  = onNavigateToSession,
-                            onNewSession    = { showSheet = true },
+                            onNewSession    = { createSession() },
                             onDeleteSession = viewModel::deleteSession,
                         )
                     }
@@ -188,72 +152,11 @@ fun HomeScreen(
                     error?.let { msg ->
                         ErrorCard(
                             message = msg,
-                            onRetry = { scope.launch { viewModel.clearError(); viewModel.loadSessions(directoryPath) } },
+                            onRetry = { scope.launch { viewModel.clearError(); viewModel.loadSessions(initialDirectory) } },
                             modifier = Modifier.align(Alignment.BottomCenter),
                         )
                     }
                 }
-            }
-        }
-    }
-
-    // ── New session bottom sheet ───────────────────────────────────────────────
-    if (showSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showSheet = false; directoryPath = initialDirectory },
-            sheetState       = sheetState,
-            shape            = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-            containerColor   = MaterialTheme.colorScheme.surface,
-            dragHandle = {
-                Box(
-                    modifier         = Modifier.padding(top = 10.dp, bottom = 2.dp).fillMaxWidth(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Surface(
-                        color    = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
-                        shape    = RoundedCornerShape(2.dp),
-                        modifier = Modifier.size(width = 28.dp, height = 3.dp),
-                    ) {}
-                }
-            },
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 20.dp)
-                    .windowInsetsPadding(WindowInsets.navigationBars),
-            ) {
-                Text(
-                    "New session",
-                    style      = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier   = Modifier.padding(bottom = 14.dp, top = 2.dp),
-                )
-                OutlinedTextField(
-                    value         = directoryPath,
-                    onValueChange = { directoryPath = it },
-                    label         = { Text("Working directory") },
-                    placeholder   = { Text(initialDirectory) },
-                    singleLine    = true,
-                    modifier      = Modifier.fillMaxWidth().focusRequester(focusRequester),
-                    shape         = RoundedCornerShape(14.dp),
-                    leadingIcon   = { Icon(Icons.Rounded.FolderOpen, null, modifier = Modifier.size(16.dp)) },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = { createSession() }),
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-                Button(
-                    onClick  = ::createSession,
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
-                    shape    = RoundedCornerShape(14.dp),
-                ) {
-                    Text("Create session", fontWeight = FontWeight.SemiBold)
-                }
-            }
-            LaunchedEffect(Unit) {
-                focusRequester.requestFocus()
-                keyboard?.show()
             }
         }
     }

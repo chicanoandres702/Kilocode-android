@@ -166,7 +166,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     suspend fun createSession(directory: String): Session? {
         return try {
             _isLoading.value = true
-            val response = apiClient.api.createSession(mapOf("directory" to directory))
+            val response = apiClient.api.createSession(directory = directory)
             if (response.isSuccessful) {
                 val session = response.body()
                 if (session != null) {
@@ -195,7 +195,8 @@ class SessionRepository(private val apiClient: ApiClient) {
             _messages.value = emptyList()
             _parts.value = emptyMap()
             _error.value = null
-            val response = apiClient.api.getSession(sessionId)
+            val existingDir = _currentSession.value?.directory
+            val response = apiClient.api.getSession(sessionId, directory = existingDir)
             if (response.isSuccessful) {
                 _currentSession.value = response.body()
                 logD("SessionRepo", "Session selected, loading messages: $sessionId")
@@ -251,9 +252,9 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null) {
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null, directory: String? = null) {
         val messageId = generateMessageId()
-        // Optimistic update
+        // Optimistic update for user message
         val optimisticMessage = Message(id = messageId, sessionID = sessionId, role = "user", agent = agent)
         upsertMessage(optimisticMessage)
         _parts.update { current ->
@@ -265,28 +266,21 @@ class SessionRepository(private val apiClient: ApiClient) {
             val modelInfo = model?.let {
                 ModelInfo(it.providerID, it.modelID)
             }
-            logD("SessionRepo", "Sending prompt to $sessionId: ${prompt.take(80)}")
-            val response = apiClient.api.sendMessage(sessionId, PromptRequest(
-                messageID = messageId,
-                parts = listOf(PartRequest(type = "text", text = prompt)),
-                agent = agent,
-                model = modelInfo
-            ))
+            logD("SessionRepo", "Sending async prompt to $sessionId: ${prompt.take(80)}")
+            // Use prompt_async (fire-and-forget) — response comes via SSE events
+            val response = apiClient.api.sendPrompt(
+                sessionId,
+                directory = directory,
+                request = PromptRequest(
+                    messageID = messageId,
+                    parts = listOf(PartRequest(type = "text", text = prompt)),
+                    agent = agent,
+                    model = modelInfo
+                )
+            )
             if (response.isSuccessful) {
-                val assistantMessage = response.body()
-                if (assistantMessage != null) {
-                    logD("SessionRepo", "Received AI response: id=${assistantMessage.info?.id}, parts=${assistantMessage.parts.size}")
-                    upsertMessage(assistantMessage.info!!)
-                    // Store assistant parts under the assistant's messageID (from server)
-                    val assistantId = assistantMessage.info.id ?: generateMessageId()
-                    _parts.update { current ->
-                        current + (assistantId to assistantMessage.parts)
-                    }
-                } else {
-                    logD("SessionRepo", "sendMessage returned empty body")
-                }
-                _sessionBusy.value = false
-                _isLoading.value = false
+                logD("SessionRepo", "Async prompt accepted for $sessionId — waiting for SSE events")
+                // Do NOT clear loading/busy here — SSE events (session.turn.close, session.idle) will do that
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 logE("SessionRepo", "Prompt failed: HTTP ${response.code()} $errorBody")
@@ -305,9 +299,17 @@ class SessionRepository(private val apiClient: ApiClient) {
      fun abortSession(sessionId: String) {
          repositoryScope.launch {
              try {
-                 apiClient.api.abortSession(sessionId)
+                 logD("SessionRepo", "Aborting session: $sessionId")
+                 val dir = _currentSession.value?.directory
+                 apiClient.api.abortSession(sessionId, directory = dir)
+                 // Clear loading state immediately for responsive UI
+                 // SSE events will confirm the abort
+                 _isLoading.value = false
+                 _sessionBusy.value = false
              } catch (e: Exception) {
                  logE("SessionRepo", "Error aborting session", e)
+                 _isLoading.value = false
+                 _sessionBusy.value = false
              }
          }
      }
@@ -316,7 +318,8 @@ class SessionRepository(private val apiClient: ApiClient) {
          repositoryScope.launch {
              try {
                  logD("SessionRepo", "Compacting session: $sessionId")
-                 val response = apiClient.api.compactSession(sessionId)
+                 val dir = _currentSession.value?.directory
+                 val response = apiClient.api.compactSession(sessionId, directory = dir)
                  if (response.isSuccessful) {
                      logD("SessionRepo", "Session compacted: $sessionId, result=${response.body()}")
                  } else {
@@ -332,7 +335,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun deleteSession(sessionId: String) {
         try {
-            apiClient.api.deleteSession(sessionId)
+            val dir = _currentSession.value?.directory
+            apiClient.api.deleteSession(sessionId, directory = dir)
             _sessions.value = _sessions.value.filter { it.id != sessionId }
             if (_currentSession.value?.id == sessionId) {
                 _currentSession.value = null
@@ -347,7 +351,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     private fun loadMessages(sessionId: String) {
         repositoryScope.launch {
             try {
-                val messagesWithParts = apiClient.getMessages(sessionId)
+                val dir = _currentSession.value?.directory
+                val messagesWithParts = apiClient.getMessages(sessionId, directory = dir)
                 _messages.value = messagesWithParts.mapNotNull { it.info }
                 _parts.value = messagesWithParts
                     .mapNotNull { messageWithParts ->

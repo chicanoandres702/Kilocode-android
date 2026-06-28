@@ -63,21 +63,21 @@ class ApiClient(baseUrl: String, sharedSecret: String) {
         throw Exception("Failed to list sessions: ${response.code()} ${response.message()}")
     }
 
-    suspend fun getMessages(sessionId: String): List<MessageWithParts> {
-        val response = api.listMessages(sessionId)
+    suspend fun getMessages(sessionId: String, directory: String? = null): List<MessageWithParts> {
+        val response = api.listMessages(sessionId, directory = directory)
         if (response.isSuccessful) {
             return response.body() ?: emptyList()
         }
         throw Exception("Failed to list messages: ${response.code()}")
     }
 
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null) {
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelInfo? = null, directory: String? = null) {
         val request = PromptRequest(
             parts = listOf(PartRequest(type = "text", text = prompt)),
             agent = agent,
             model = model
         )
-        val response = api.sendPrompt(sessionId, request)
+        val response = api.sendPrompt(sessionId, directory = directory, request = request)
         if (!response.isSuccessful) {
             throw Exception("Failed to send prompt: ${response.code()} ${response.message()}")
         }
