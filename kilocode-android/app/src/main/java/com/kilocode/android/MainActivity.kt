@@ -31,11 +31,13 @@ class MainActivity : ComponentActivity() {
                     val context = LocalContext.current
                     val authRepo = remember { AuthPreferencesRepository(context) }
                     var serverUrl by remember { mutableStateOf(BuildConfig.DEFAULT_SERVER_URL) }
+                    var apiServerUrl by remember { mutableStateOf(BuildConfig.API_SERVER_URL) }
                     var sharedSecret by remember { mutableStateOf("") }
                     var autonomousMode by remember { mutableStateOf(false) }
 
                     LaunchedEffect(Unit) {
                         serverUrl = authRepo.serverUrlFlow.first() ?: BuildConfig.DEFAULT_SERVER_URL
+                        apiServerUrl = authRepo.serverUrlFlow.first() ?: BuildConfig.API_SERVER_URL
                         sharedSecret = authRepo.sharedSecretFlow.first() ?: ""
                         autonomousMode = authRepo.autonomousModeFlow.first() ?: false
                         
@@ -47,6 +49,7 @@ class MainActivity : ComponentActivity() {
                     KiloCodeNavHost(
                         navController = navController,
                         serverUrl = serverUrl,
+                        apiServerUrl = apiServerUrl,
                         sharedSecret = sharedSecret,
                         autonomousMode = autonomousMode,
                         onServerUrlChanged = { newUrl, newSecret ->
