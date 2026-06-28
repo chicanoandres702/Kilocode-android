@@ -249,15 +249,24 @@ fun RepoScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(clonedRepos) { repo ->
-                            val repoName = repo.name.replace("_", "/")
+                            val isGitHub = repo.source == "github"
+                            val repoName = if (isGitHub) repo.name else repo.name.replace("_", "/")
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
                                         scope.launch {
-                                            val result = repoRepository.reopenRepo(repoName)
-                                            if (result.isSuccess) {
-                                                onRepoSelected(repo.name)
+                                            if (isGitHub) {
+                                                val result = repoRepository.cloneRepo(repo.name)
+                                                if (result.isSuccess) {
+                                                    repoRepository.setCurrentRepo(result.getOrNull())
+                                                    onRepoSelected(result.getOrNull() ?: repo.name)
+                                                }
+                                            } else {
+                                                val result = repoRepository.reopenRepo(repoName)
+                                                if (result.isSuccess) {
+                                                    onRepoSelected(repo.name)
+                                                }
                                             }
                                         }
                                     },
@@ -270,7 +279,7 @@ fun RepoScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                        Icons.Default.Folder,
+                                        if (isGitHub) Icons.Default.Link else Icons.Default.Folder,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(24.dp)
@@ -282,10 +291,26 @@ fun RepoScreen(
                                             style = MaterialTheme.typography.bodyLarge,
                                             fontWeight = FontWeight.Medium
                                         )
+                                        if (isGitHub && !repo.description.isNullOrBlank()) {
+                                            Text(
+                                                text = repo.description,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                maxLines = 1
+                                            )
+                                        }
                                         Text(
-                                            text = "Local clone",
+                                            text = if (isGitHub) "GitHub • Tap to clone" else "Local clone",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    if (isGitHub) {
+                                        Icon(
+                                            Icons.Default.CloudDownload,
+                                            contentDescription = "Clone",
+                                            tint = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(20.dp)
                                         )
                                     }
                                 }
