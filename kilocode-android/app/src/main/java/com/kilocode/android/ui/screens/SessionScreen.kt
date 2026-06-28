@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import com.kilocode.android.data.model.Part
 import com.kilocode.android.data.repository.AuthPreferencesRepository
 import com.kilocode.android.data.repository.SessionRepository
 import com.kilocode.android.ui.components.*
+import com.kilocode.android.worker.PromptWorker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -38,6 +40,7 @@ fun SessionScreen(
     authPreferencesRepository: AuthPreferencesRepository,
     onBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
     // Use a singleton/shared repository instance managed via dependency injection or a provider to ensure consistency.
     // For now, reuse the instance if possible or lift it to a higher level in Navigation.
@@ -65,12 +68,15 @@ fun SessionScreen(
     val selectedModel by repository.selectedModel.collectAsState()
     val isLoading by repository.isLoading.collectAsState()
     val isConnected by repository.isConnected.collectAsState()
+    val sessionBusy by repository.sessionBusy.collectAsState()
     val error by repository.error.collectAsState()
 
     val listState = rememberLazyListState()
     var autonomousMode by remember { mutableStateOf(false) }
     var continueGeneration by remember { mutableStateOf(0) }
     var manualSendInProgress by remember { mutableStateOf(false) }
+    var autonomousIterations by remember { mutableIntStateOf(0) }
+    val maxAutonomousIterations = 20 // Prevent infinite loops
 
     val hasPendingWork by remember(parts) {
         derivedStateOf {
@@ -125,14 +131,15 @@ fun SessionScreen(
             repository.setSelectedModel(preferred)
         }
     }
-     LaunchedEffect(sessionId) {
-         autonomousMode = false
-         repository.selectSession(sessionId)
-         repository.connectSse(
-             sessionId,
-             directory = repository.currentSession.value?.directory
-         )
-     }
+    LaunchedEffect(sessionId) {
+        autonomousMode = false
+        autonomousIterations = 0
+        repository.selectSession(sessionId)
+        repository.connectSse(
+            sessionId,
+            directory = repository.currentSession.value?.directory
+        )
+    }
     DisposableEffect(sessionId) { onDispose { repository.disconnectSse() } }
 
     // Improved scroll-to-bottom logic
@@ -143,14 +150,41 @@ fun SessionScreen(
         }
     }
 
-    LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size) {
-        if (!autonomousMode || isLoading || hasPendingWork || messages.isEmpty()) return@LaunchedEffect
-        // Don't auto-send "continue" if a manual prompt was just sent — prevents double-submit
+    LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size, sessionBusy) {
+        if (!autonomousMode) return@LaunchedEffect
+        if (isLoading || hasPendingWork) return@LaunchedEffect
+        if (messages.isEmpty()) return@LaunchedEffect
         if (manualSendInProgress) return@LaunchedEffect
-        delay(900)
-        if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty() && !manualSendInProgress) {
-            repository.sendPrompt(sessionId, "continue", selectedAgent?.name, selectedModel)
-            continueGeneration++
+        if (sessionBusy) return@LaunchedEffect
+        // Safety: stop after N iterations to prevent infinite loops
+        if (autonomousIterations >= maxAutonomousIterations) {
+            autonomousMode = false
+            return@LaunchedEffect
+        }
+        // Wait longer between iterations to give the model time and reduce API load
+        delay(1500)
+        if (autonomousMode && !isLoading && !hasPendingWork && !sessionBusy && messages.isNotEmpty() && !manualSendInProgress) {
+            val lastMessage = messages.lastOrNull()
+            // Only auto-continue if the last message was from the assistant
+            val shouldContinue = lastMessage?.role == "assistant"
+            if (shouldContinue) {
+                // Use WorkManager for background execution — survives app backgrounding and phone-off
+                PromptWorker.enqueue(
+                    context = context,
+                    sessionId = sessionId,
+                    prompt = "continue with the next step",
+                    agent = selectedAgent?.name,
+                    modelProvider = selectedModel?.providerID,
+                    modelId = selectedModel?.modelID,
+                    directory = currentSession?.directory,
+                    serverUrl = serverUrl,
+                    sharedSecret = sharedSecret ?: ""
+                )
+                autonomousIterations++
+                continueGeneration++
+            } else {
+                // Last message was from user — wait for response
+            }
         }
     }
 
@@ -158,10 +192,37 @@ fun SessionScreen(
         manualSendInProgress = true
         scope.launch {
             try {
-                repository.sendPrompt(sessionId, text, selectedAgent?.name, selectedModel)
+                repository.sendPrompt(
+                    sessionId,
+                    text,
+                    selectedAgent?.name,
+                    selectedModel,
+                    directory = currentSession?.directory
+                )
             } finally {
                 manualSendInProgress = false
             }
+        }
+    }
+
+    fun sendPromptInBackground(text: String) {
+        manualSendInProgress = true
+        // Use WorkManager for background execution
+        PromptWorker.enqueue(
+            context = context,
+            sessionId = sessionId,
+            prompt = text,
+            agent = selectedAgent?.name,
+            modelProvider = selectedModel?.providerID,
+            modelId = selectedModel?.modelID,
+            directory = currentSession?.directory,
+            serverUrl = serverUrl,
+            sharedSecret = sharedSecret ?: ""
+        )
+        scope.launch {
+            // Give it a moment then reset the flag since WorkManager handles retry
+            kotlinx.coroutines.delay(2000)
+            manualSendInProgress = false
         }
     }
 
@@ -220,31 +281,77 @@ fun SessionScreen(
             )
         },
         bottomBar = {
-            PromptInput(
-                onSend = { sendPrompt(it) },
-                onContinue = { autonomousMode = !autonomousMode },
-                onStop = {
-                    scope.launch {
-                        repository.abortSession(sessionId)
-                        autonomousMode = false
+            if (isLoading) {
+                // Prominent stop button during generation
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 2.dp,
+                ) {
+                    Column {
+                        HorizontalDivider(
+                            thickness = 0.5.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .windowInsetsPadding(WindowInsets.navigationBars)
+                                .padding(horizontal = 16.dp, vertical = 10.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Button(
+                                onClick = {
+                                    scope.launch {
+                                        repository.abortSession(sessionId)
+                                        autonomousMode = false
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error,
+                                    contentColor = MaterialTheme.colorScheme.onError,
+                                ),
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Icon(
+                                    Icons.Rounded.Stop,
+                                    contentDescription = "Stop generation",
+                                    modifier = Modifier.size(20.dp),
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Stop generation")
+                            }
+                        }
                     }
-                },
-                isLoading = isLoading,
-                models = models,
-                selectedModel = selectedModel,
-                onModelSelected = { repository.setSelectedModel(it) },
-                agents = agents,
-                selectedAgent = selectedAgent,
-                onAgentSelected = { agent ->
-                    repository.setSelectedAgent(agent)
-                    scope.launch {
-                        agent?.let { authPreferencesRepository.saveSelectedAgentName(it.name) }
-                    }
-                },
-                autonomousMode = autonomousMode,
-                onAutonomousModeChanged = { autonomousMode = it },
-                messages = messages,
-            )
+                }
+            } else {
+                PromptInput(
+                    onSend = { sendPrompt(it) },
+                    onContinue = { autonomousMode = !autonomousMode },
+                    onStop = {
+                        scope.launch {
+                            repository.abortSession(sessionId)
+                            autonomousMode = false
+                        }
+                    },
+                    isLoading = isLoading,
+                    models = models,
+                    selectedModel = selectedModel,
+                    onModelSelected = { repository.setSelectedModel(it) },
+                    agents = agents,
+                    selectedAgent = selectedAgent,
+                    onAgentSelected = { agent ->
+                        repository.setSelectedAgent(agent)
+                        scope.launch {
+                            agent?.let { authPreferencesRepository.saveSelectedAgentName(it.name) }
+                        }
+                    },
+                    autonomousMode = autonomousMode,
+                    onAutonomousModeChanged = { autonomousMode = it },
+                    messages = messages,
+                )
+            }
         },
     ) { padding ->
         Column(

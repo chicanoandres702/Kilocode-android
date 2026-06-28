@@ -29,17 +29,24 @@ interface KiloCodeApi {
 
     @POST("session")
     suspend fun createSession(
-        @Body request: Map<String, String>,
+        @Query("directory") directory: String? = null,
+        @Query("workspace") workspace: String? = null,
+        @Body request: Map<String, String> = emptyMap(),
     ): Response<Session>
 
     @DELETE("session/{sessionID}")
     suspend fun deleteSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<Unit>
 
     @GET("session/{sessionID}/message")
     suspend fun listMessages(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("order") order: String? = null,
+        @Query("cursor") cursor: String? = null,
     ): Response<List<MessageWithParts>>
 
     @GET("session/{sessionID}/message/{messageID}")
@@ -51,23 +58,27 @@ interface KiloCodeApi {
     @POST("session/{sessionID}/prompt_async")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
         @Body request: PromptRequest,
     ): Response<Unit>
 
     @POST("session/{sessionID}/message")
     suspend fun sendMessage(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
         @Body request: PromptRequest,
     ): Response<MessageWithParts>
 
     @POST("session/{sessionID}/abort")
     suspend fun abortSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<Unit>
 
     @POST("session/{sessionID}/compact")
     suspend fun compactSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<JsonObject>
 
     @GET("session/status")

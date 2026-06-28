@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.FolderOpen
@@ -34,7 +33,6 @@ fun RepoScreen(
     serverUrl: String,
     apiServerUrl: String,
     sharedSecret: String?,
-    onBack: () -> Unit,
     onRepoSelected: (String, String) -> Unit,
 ) {
     val apiClient = remember(apiServerUrl, sharedSecret) { ApiClient.getInstance(apiServerUrl, sharedSecret ?: "") }
@@ -81,9 +79,9 @@ fun RepoScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Repositories") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                actions = {
+                    IconButton(onClick = { /* refresh */ }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search", modifier = Modifier.size(20.dp))
                     }
                 }
             )
@@ -271,20 +269,18 @@ fun RepoScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        scope.launch {
-                                            if (isGitHub) {
+                                        if (isGitHub) {
+                                            scope.launch {
                                                 val result = repoRepository.cloneRepo(repo.name)
                                                 if (result.isSuccess) {
                                                     repoRepository.setCurrentRepo(result.getOrNull())
                                                     val clonedPath = "/tmp/kilo-repos/${result.getOrNull() ?: repo.name.replace("/", "_")}"
                                                     onRepoSelected(result.getOrNull() ?: repo.name, clonedPath)
                                                 }
-                                            } else {
-                                                val result = repoRepository.reopenRepo(repoName)
-                                                if (result.isSuccess) {
-                                                    onRepoSelected(repo.name, repoPath)
-                                                }
                                             }
+                                        } else {
+                                            // Local repo — just navigate to its sessions
+                                            onRepoSelected(repo.name, repoPath)
                                         }
                                     },
                                 shape = RoundedCornerShape(8.dp)

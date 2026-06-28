@@ -108,6 +108,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 
+    // WorkManager for reliable background tasks
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
     // Markdown
     implementation("com.github.jeziellago:compose-markdown:0.5.0")
     testImplementation("junit:junit:4.13.2")
