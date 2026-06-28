@@ -39,12 +39,12 @@ class RepoRepository(
             val result = apiClient.cloneRepo("clone", repo)
 
             if (result.success) {
-                val current = _clonedRepos.value.toMutableList()
                 val repoName = repo.replace("/", "_")
-                if (!current.any { it.name == repoName }) {
-                    current.add(RepoEntry(name = repoName, source = "local"))
-                    _clonedRepos.value = current
-                }
+                val current = _clonedRepos.value.toMutableList()
+                // Remove any existing entry for this repo and add as local
+                current.removeAll { it.name == repoName }
+                current.add(RepoEntry(name = repoName, source = "local"))
+                _clonedRepos.value = current
                 Result.success(repoName)
             } else {
                 val errMsg = result.error ?: "Unknown error"
@@ -89,9 +89,8 @@ class RepoRepository(
     suspend fun listLocalRepos(): List<RepoEntry> = withContext(Dispatchers.IO) {
         try {
             val repos = apiClient.listRepos()
-            val localRepos = repos.filter { it.source == "local" }
-            _clonedRepos.value = localRepos
-            localRepos
+            _clonedRepos.value = repos
+            repos
         } catch (e: Exception) {
             _error.value = e.message
             _clonedRepos.value
