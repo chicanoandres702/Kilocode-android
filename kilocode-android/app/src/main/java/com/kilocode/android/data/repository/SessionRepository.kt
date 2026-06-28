@@ -581,10 +581,13 @@ class SessionRepository(private val apiClient: ApiClient) {
                      logD("SessionRepo", "Session diff received: $properties")
                      // Diff events carry incremental updates; handled by message.part events
                  }
-                  "session.compacted" -> {
-                      logD("SessionRepo", "Session compacted")
-                      // Compaction complete — messages list may have changed
-                  }
+                   "session.compacted" -> {
+                       logD("SessionRepo", "Session compacted")
+                       // Compaction complete — clear busy/loading state so the UI doesn't get stuck
+                       // and don't trigger autonomous "continue" since this was a manual action
+                       _sessionBusy.value = false
+                       _isLoading.value = false
+                   }
                   "session.next.model.switched" -> {
                       if (properties == null) return
                       val model = properties["model"] as? String

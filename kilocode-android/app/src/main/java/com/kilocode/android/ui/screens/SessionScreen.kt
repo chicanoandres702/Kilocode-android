@@ -70,6 +70,7 @@ fun SessionScreen(
     val listState = rememberLazyListState()
     var autonomousMode by remember { mutableStateOf(false) }
     var continueGeneration by remember { mutableStateOf(0) }
+    var manualSendInProgress by remember { mutableStateOf(false) }
 
     val hasPendingWork by remember(parts) {
         derivedStateOf {
@@ -144,16 +145,23 @@ fun SessionScreen(
 
     LaunchedEffect(autonomousMode, continueGeneration, isLoading, hasPendingWork, messages.size) {
         if (!autonomousMode || isLoading || hasPendingWork || messages.isEmpty()) return@LaunchedEffect
+        // Don't auto-send "continue" if a manual prompt was just sent — prevents double-submit
+        if (manualSendInProgress) return@LaunchedEffect
         delay(900)
-        if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty()) {
+        if (autonomousMode && !isLoading && !hasPendingWork && messages.isNotEmpty() && !manualSendInProgress) {
             repository.sendPrompt(sessionId, "continue", selectedAgent?.name, selectedModel)
             continueGeneration++
         }
     }
 
     fun sendPrompt(text: String) {
+        manualSendInProgress = true
         scope.launch {
-            repository.sendPrompt(sessionId, text, selectedAgent?.name, selectedModel)
+            try {
+                repository.sendPrompt(sessionId, text, selectedAgent?.name, selectedModel)
+            } finally {
+                manualSendInProgress = false
+            }
         }
     }
 
