@@ -15,12 +15,14 @@ android {
         versionCode = 3
         versionName = "1.1.1"
 
-        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:3000"
+        val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:4096"
+        val apiServerUrl = System.getenv("API_SERVER_URL") ?: "http://18.191.142.105:3000"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
         val serverUrlDomain = System.getenv("SERVER_URL_DOMAIN") ?: "10.0.2.2"
         manifestPlaceholders["serverUrlDomain"] = serverUrlDomain
 
         buildConfigField("String", "DEFAULT_SERVER_URL", "\"$defaultServerUrl\"")
+        buildConfigField("String", "API_SERVER_URL", "\"$apiServerUrl\"")
         buildConfigField("String", "KILO_SHARED_SECRET", "\"$sharedSecret\"")
     }
 

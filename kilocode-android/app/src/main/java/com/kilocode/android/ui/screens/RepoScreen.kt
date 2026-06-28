@@ -32,11 +32,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun RepoScreen(
     serverUrl: String,
+    apiServerUrl: String,
     sharedSecret: String?,
     onBack: () -> Unit,
     onRepoSelected: (String) -> Unit,
 ) {
-    val apiClient = remember(serverUrl, sharedSecret) { ApiClient.getInstance(serverUrl, sharedSecret ?: "") }
+    val apiClient = remember(apiServerUrl, sharedSecret) { ApiClient.getInstance(apiServerUrl, sharedSecret ?: "") }
     val repoRepository = remember(apiClient) { RepoRepository(apiClient) }
     val scope = rememberCoroutineScope()
 

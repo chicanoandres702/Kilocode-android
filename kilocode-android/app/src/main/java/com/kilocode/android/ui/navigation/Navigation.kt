@@ -27,6 +27,7 @@ sealed class Screen(val route: String) {
 fun KiloCodeNavHost(
     navController: NavHostController,
     serverUrl: String,
+    apiServerUrl: String,
     sharedSecret: String?,
     autonomousMode: Boolean,
     onServerUrlChanged: (String, String) -> Unit,
@@ -100,6 +101,7 @@ fun KiloCodeNavHost(
         composable(Screen.Repos.route) {
             RepoScreen(
                 serverUrl = serverUrl,
+                apiServerUrl = apiServerUrl,
                 sharedSecret = sharedSecret,
                 onBack = { navController.popBackStack() },
                 onRepoSelected = { repoName ->
