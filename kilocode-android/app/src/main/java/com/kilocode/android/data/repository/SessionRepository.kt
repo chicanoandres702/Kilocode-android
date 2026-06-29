@@ -166,7 +166,7 @@ class SessionRepository(private val apiClient: ApiClient) {
     suspend fun createSession(directory: String): Session? {
         return try {
             _isLoading.value = true
-            val response = apiClient.api.createSession(mapOf("directory" to directory))
+            val response = apiClient.api.createSession(directory = directory)
             if (response.isSuccessful) {
                 val session = response.body()
                 if (session != null) {
@@ -195,7 +195,8 @@ class SessionRepository(private val apiClient: ApiClient) {
             _messages.value = emptyList()
             _parts.value = emptyMap()
             _error.value = null
-            val response = apiClient.api.getSession(sessionId)
+            val existingDir = _currentSession.value?.directory
+            val response = apiClient.api.getSession(sessionId, directory = existingDir)
             if (response.isSuccessful) {
                 _currentSession.value = response.body()
                 logD("SessionRepo", "Session selected, loading messages: $sessionId")
@@ -251,9 +252,9 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null) {
+    suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null, directory: String? = null) {
         val messageId = generateMessageId()
-        // Optimistic update
+        // Optimistic update for user message
         val optimisticMessage = Message(id = messageId, sessionID = sessionId, role = "user", agent = agent)
         upsertMessage(optimisticMessage)
         _parts.update { current ->
@@ -263,15 +264,30 @@ class SessionRepository(private val apiClient: ApiClient) {
         _sessionBusy.value = true
         try {
             val modelInfo = model?.let {
-                // The API returns providerID="kilo" for all models.
-                // The server's getModel looks up by providerID + "/" + modelID.
-                // For kilo-auto/free, the server expects providerID="kilo", modelID="kilo-auto/free".
-                // So always use the API's providerID and pass modelID unchanged.
                 ModelInfo(it.providerID, it.modelID)
             }
-            apiClient.sendPrompt(sessionId, prompt, agent, modelInfo)
-            // Do NOT reset _isLoading here — prompt_async returns immediately.
-            // Loading state is cleared by session.turn.close / session.idle SSE events.
+            logD("SessionRepo", "Sending async prompt to $sessionId: ${prompt.take(80)}")
+            // Use prompt_async (fire-and-forget) — response comes via SSE events
+            val response = apiClient.api.sendPrompt(
+                sessionId,
+                directory = directory,
+                request = PromptRequest(
+                    messageID = messageId,
+                    parts = listOf(PartRequest(type = "text", text = prompt)),
+                    agent = agent,
+                    model = modelInfo
+                )
+            )
+            if (response.isSuccessful) {
+                logD("SessionRepo", "Async prompt accepted for $sessionId — waiting for SSE events")
+                // Do NOT clear loading/busy here — SSE events (session.turn.close, session.idle) will do that
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                logE("SessionRepo", "Prompt failed: HTTP ${response.code()} $errorBody")
+                _error.value = "Failed to send prompt: HTTP ${response.code()}"
+                _isLoading.value = false
+                _sessionBusy.value = false
+            }
         } catch (e: Exception) {
             logE("SessionRepo", "Error sending prompt", e)
             _error.value = "Failed to send prompt: ${e.message}"
@@ -283,9 +299,17 @@ class SessionRepository(private val apiClient: ApiClient) {
      fun abortSession(sessionId: String) {
          repositoryScope.launch {
              try {
-                 apiClient.api.abortSession(sessionId)
+                 logD("SessionRepo", "Aborting session: $sessionId")
+                 val dir = _currentSession.value?.directory
+                 apiClient.api.abortSession(sessionId, directory = dir)
+                 // Clear loading state immediately for responsive UI
+                 // SSE events will confirm the abort
+                 _isLoading.value = false
+                 _sessionBusy.value = false
              } catch (e: Exception) {
                  logE("SessionRepo", "Error aborting session", e)
+                 _isLoading.value = false
+                 _sessionBusy.value = false
              }
          }
      }
@@ -294,7 +318,8 @@ class SessionRepository(private val apiClient: ApiClient) {
          repositoryScope.launch {
              try {
                  logD("SessionRepo", "Compacting session: $sessionId")
-                 val response = apiClient.api.compactSession(sessionId)
+                 val dir = _currentSession.value?.directory
+                 val response = apiClient.api.compactSession(sessionId, directory = dir)
                  if (response.isSuccessful) {
                      logD("SessionRepo", "Session compacted: $sessionId, result=${response.body()}")
                  } else {
@@ -310,7 +335,8 @@ class SessionRepository(private val apiClient: ApiClient) {
 
     suspend fun deleteSession(sessionId: String) {
         try {
-            apiClient.api.deleteSession(sessionId)
+            val dir = _currentSession.value?.directory
+            apiClient.api.deleteSession(sessionId, directory = dir)
             _sessions.value = _sessions.value.filter { it.id != sessionId }
             if (_currentSession.value?.id == sessionId) {
                 _currentSession.value = null
@@ -325,7 +351,8 @@ class SessionRepository(private val apiClient: ApiClient) {
     private fun loadMessages(sessionId: String) {
         repositoryScope.launch {
             try {
-                val messagesWithParts = apiClient.getMessages(sessionId)
+                val dir = _currentSession.value?.directory
+                val messagesWithParts = apiClient.getMessages(sessionId, directory = dir)
                 _messages.value = messagesWithParts.mapNotNull { it.info }
                 _parts.value = messagesWithParts
                     .mapNotNull { messageWithParts ->
@@ -340,17 +367,22 @@ class SessionRepository(private val apiClient: ApiClient) {
         }
     }
 
-     fun connectSse(sessionId: String, directory: String? = null, workspace: String? = null) {
-         logD("SessionRepo", "connectSse called for: $sessionId, directory: $directory, workspace: $workspace")
-         disconnectSse()
-         val encodedDirectory = URLEncoder.encode(directory ?: "", StandardCharsets.UTF_8.toString())
-         val encodedWorkspace = URLEncoder.encode(workspace ?: "", StandardCharsets.UTF_8.toString())
-         
-         val path = "event?directory=$encodedDirectory&workspace=$encodedWorkspace"
-         logD("SessionRepo", "Connecting SSE to: ${apiClient.baseUrl}$path")
+      fun connectSse(sessionId: String, directory: String? = null, workspace: String? = null) {
+           logD("SessionRepo", "connectSse called for: $sessionId, directory: $directory, workspace: $workspace")
+           disconnectSse()
+           val dir = directory ?: "/"
+           val ws = workspace ?: ""
+           val encodedDirectory = URLEncoder.encode(dir, StandardCharsets.UTF_8.toString())
+           val encodedWorkspace = URLEncoder.encode(ws, StandardCharsets.UTF_8.toString())
+           
+           val path = "event?directory=$encodedDirectory&workspace=$encodedWorkspace"
+           logD("SessionRepo", "Connecting SSE to: ${apiClient.baseUrl}$path")
          sseJob = repositoryScope.launch {
              var retryDelay = 1000L
              val maxRetryDelay = 30000L
+             var consecutiveFailures = 0
+             val maxConsecutiveFailures = 10
+             
              while (isActive) {
                  try {
                      val call = apiClient.createStreamCall(path)
@@ -359,12 +391,24 @@ class SessionRepository(private val apiClient: ApiClient) {
                          if (!response.isSuccessful) {
                              logE("SessionRepo", "SSE connection failed: ${response.code}")
                              if (response.code == 401 || response.code == 403) {
-                                 // Auth errors — don't retry
+                                 // Auth errors — don't retry, surface to user
+                                 _error.value = "Authentication error — check shared secret"
                                  return@launch
+                             }
+                             // Server error — retry with backoff
+                             consecutiveFailures++
+                             if (consecutiveFailures >= maxConsecutiveFailures) {
+                                 _error.value = "Connection lost — too many failures"
+                                 // Keep retrying but with longer delays
+                                 delay(maxRetryDelay)
+                                 consecutiveFailures = maxConsecutiveFailures / 2 // Reset partially
+                                 return@use
                              }
                          } else {
                              _isConnected.value = true
+                             _error.value = null // Clear any previous error
                              retryDelay = 1000L // Reset on success
+                             consecutiveFailures = 0
                              logD("SessionRepo", "SSE connected")
                              val source = response.body?.source() ?: return@launch
                              var currentType = "message"
@@ -384,15 +428,21 @@ class SessionRepository(private val apiClient: ApiClient) {
                      }
                  } catch (e: Exception) {
                      if (isActive) {
-                         logE("SessionRepo", "SSE failed", e)
+                         logE("SessionRepo", "SSE stream error", e)
+                         // Don't surface transient network errors to user during autonomous mode
+                         // Only surface persistent errors after many failures
+                         consecutiveFailures++
                      }
                  }
                  
                  // Reconnection delay with exponential backoff
                  if (isActive) {
-                     logD("SessionRepo", "SSE reconnecting in ${retryDelay}ms")
+                     // Add jitter to prevent thundering herd
+                     val jitter = (0..500).random()
+                     val waitTime = retryDelay + jitter
+                     logD("SessionRepo", "SSE reconnecting in ${waitTime}ms (attempt $consecutiveFailures)")
                      _isConnected.value = false
-                     delay(retryDelay)
+                     delay(waitTime)
                      retryDelay = (retryDelay * 2).coerceAtMost(maxRetryDelay)
                  }
              }
@@ -531,16 +581,19 @@ class SessionRepository(private val apiClient: ApiClient) {
                      _sessionBusy.value = false
                      _isLoading.value = false
                  }
-                 "session.error" -> {
-                     if (properties == null) return
-                     val error = properties["error"] as? Map<String, Any>
-                     _error.value = error?.let {
-                         val name = it["name"] as? String ?: "Session error"
-                         val errorData = it["data"] as? Map<String, Any>
-                         val message = errorData?.get("message") as? String
-                         "$name${message?.let { m -> ": $m" }.orEmpty()}"
-                     }
-                 }
+                  "session.error" -> {
+                      if (properties == null) return
+                      val error = properties["error"] as? Map<String, Any>
+                      _error.value = error?.let {
+                          val name = it["name"] as? String ?: "Session error"
+                          val errorData = it["data"] as? Map<String, Any>
+                          val message = errorData?.get("message") as? String
+                          "$name${message?.let { m -> ": $m" }.orEmpty()}"
+                      }
+                      // Clear loading state so the UI isn't stuck after an error
+                      _sessionBusy.value = false
+                      _isLoading.value = false
+                  }
                  "session.turn.open" -> {
                      logD("SessionRepo", "Session turn started")
                      _sessionBusy.value = true
@@ -554,10 +607,13 @@ class SessionRepository(private val apiClient: ApiClient) {
                      logD("SessionRepo", "Session diff received: $properties")
                      // Diff events carry incremental updates; handled by message.part events
                  }
-                  "session.compacted" -> {
-                      logD("SessionRepo", "Session compacted")
-                      // Compaction complete — messages list may have changed
-                  }
+                   "session.compacted" -> {
+                       logD("SessionRepo", "Session compacted")
+                       // Compaction complete — clear busy/loading state so the UI doesn't get stuck
+                       // and don't trigger autonomous "continue" since this was a manual action
+                       _sessionBusy.value = false
+                       _isLoading.value = false
+                   }
                   "session.next.model.switched" -> {
                       if (properties == null) return
                       val model = properties["model"] as? String

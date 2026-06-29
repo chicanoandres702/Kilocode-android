@@ -26,11 +26,13 @@ import com.kilocode.android.ui.viewmodel.SettingsViewModel
 fun SettingsScreen(
     onBack: () -> Unit,
     defaultServerUrl: String,
+    defaultApiServerUrl: String,
     sharedSecret: String = "",
     autonomousMode: Boolean = false,
     onServerUrlChanged: (String, String) -> Unit,
     onAutonomousModeChanged: (Boolean) -> Unit,
     onSharedSecretChanged: (String) -> Unit,
+    onApiServerUrlChanged: (String) -> Unit = {},
     onSave: (url: String, secret: String) -> Unit = { url, secret ->
         onServerUrlChanged(url, secret)
         onSharedSecretChanged(secret)
@@ -43,6 +45,7 @@ fun SettingsScreen(
     val connectionStatus by viewModel.connectionStatus.collectAsState(initial = null)
 
     var urlInput by remember(serverUrlState) { mutableStateOf(serverUrlState ?: defaultServerUrl) }
+    var apiServerUrlInput by remember { mutableStateOf(defaultApiServerUrl) }
     var secretInput by remember { mutableStateOf(secretState ?: sharedSecret) }
     var secretVisible by remember { mutableStateOf(false) }
     var autonomousInput by remember(autonomousState) { mutableStateOf(autonomousState) }
@@ -53,10 +56,13 @@ fun SettingsScreen(
 
     fun saveSettings() {
         val normalizedUrl = urlInput.trim().ifBlank { defaultServerUrl }
+        val normalizedApiUrl = apiServerUrlInput.trim().ifBlank { defaultApiServerUrl }
         viewModel.saveServerUrl(normalizedUrl)
         viewModel.saveSharedSecret(secretInput)
         viewModel.saveAutonomousMode(autonomousInput)
+        viewModel.saveApiServerUrl(normalizedApiUrl)
         onSave(normalizedUrl, secretInput)
+        onApiServerUrlChanged(normalizedApiUrl)
         onAutonomousModeChanged(autonomousInput)
     }
 
@@ -108,6 +114,15 @@ fun SettingsScreen(
                     onValueChange = { urlInput = it },
                     label = { Text("Server URL (e.g., http://18.191.142.105:4096)") },
                     placeholder = { Text("http://18.191.142.105:4096") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = apiServerUrlInput,
+                    onValueChange = { apiServerUrlInput = it },
+                    label = { Text("Planning API URL (e.g., http://10.0.2.2:3001)") },
+                    placeholder = { Text("http://10.0.2.2:3001") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )

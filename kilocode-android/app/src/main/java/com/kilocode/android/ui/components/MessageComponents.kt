@@ -85,7 +85,7 @@ fun MessageBubble(
                         "text"      -> TextPartView(text = part.text.orEmpty())
                         "tool"      -> ToolPartView(part = part, sessionId = part.messageID ?: "", onOptionSelected = onOptionSelected)
                         "reasoning" -> ReasoningPartView(part = part)
-                        "step-start", "step-finish" -> { /* No-op, handled by structural state */ }
+                        "step-start", "step-finish", "compaction" -> { /* No-op — compaction is triggered via button, not rendered */ }
                         else        -> {
                             if (!part.text.isNullOrBlank()) {
                                 TextPartView(text = part.text)

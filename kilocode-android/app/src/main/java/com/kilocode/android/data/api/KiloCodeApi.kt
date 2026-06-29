@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -29,17 +30,24 @@ interface KiloCodeApi {
 
     @POST("session")
     suspend fun createSession(
-        @Body request: Map<String, String>,
+        @Query("directory") directory: String? = null,
+        @Query("workspace") workspace: String? = null,
+        @Body request: Map<String, String> = emptyMap(),
     ): Response<Session>
 
     @DELETE("session/{sessionID}")
     suspend fun deleteSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<Unit>
 
     @GET("session/{sessionID}/message")
     suspend fun listMessages(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("order") order: String? = null,
+        @Query("cursor") cursor: String? = null,
     ): Response<List<MessageWithParts>>
 
     @GET("session/{sessionID}/message/{messageID}")
@@ -51,17 +59,27 @@ interface KiloCodeApi {
     @POST("session/{sessionID}/prompt_async")
     suspend fun sendPrompt(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
         @Body request: PromptRequest,
     ): Response<Unit>
+
+    @POST("session/{sessionID}/message")
+    suspend fun sendMessage(
+        @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
+        @Body request: PromptRequest,
+    ): Response<MessageWithParts>
 
     @POST("session/{sessionID}/abort")
     suspend fun abortSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<Unit>
 
     @POST("session/{sessionID}/compact")
     suspend fun compactSession(
         @Path("sessionID") sessionID: String,
+        @Query("directory") directory: String? = null,
     ): Response<JsonObject>
 
     @GET("session/status")
@@ -109,8 +127,47 @@ interface KiloCodeApi {
     @POST("api/auth/github")
     suspend fun authenticateGitHub(@Body body: Map<String, String>): Response<Unit>
 
+    // Repo endpoints
+    @POST("api/repo")
+    suspend fun repoOperation(@Body request: CloneRepoRequest): Response<RepoOperationResponse>
+
+    @GET("api/repo")
+    suspend fun listRepos(): Response<RepoListResponse>
+
+    @GET("api/repo/search")
+    suspend fun searchRepos(@Query("q") query: String): Response<RepoListResponse>
+
     @DELETE("mcp/{name}")
     suspend fun removeMcpServer(
         @Path("name") name: String,
     ): Response<Unit>
+
+    // ── Planning endpoints ─────────────────────────────────────────────────────
+
+    @GET("api/planning/milestones")
+    suspend fun listMilestones(
+        @Query("state") state: String? = null,
+    ): Response<MilestoneListResponse>
+
+    @GET("api/planning/milestone/{number}/issues")
+    suspend fun listMilestoneIssues(
+        @Path("number") milestoneNumber: Int,
+        @Query("state") state: String? = null,
+    ): Response<IssueListResponse>
+
+    @POST("api/planning/milestones")
+    suspend fun createMilestone(
+        @Body request: CreateMilestoneRequest,
+    ): Response<Milestone>
+
+    @POST("api/planning/issues")
+    suspend fun createIssue(
+        @Body request: CreateIssueRequest,
+    ): Response<Issue>
+
+    @PATCH("api/planning/issues/{number}")
+    suspend fun updateIssueState(
+        @Path("number") issueNumber: Int,
+        @Body request: UpdateIssueStateRequest,
+    ): Response<Issue>
 }

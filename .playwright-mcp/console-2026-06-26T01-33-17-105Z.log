@@ -1,0 +1,5 @@
+[     342ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/Kilo-Org/kilocode/tree/main/packages/plugin-sdk:0
+[     958ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://github.com/in-product-messaging/budget-threshold-banner?organization=Kilo-Org:0
+[     961ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://github.com/Kilo-Org/kilocode/latest-commit/main/packages/plugin-sdk:0
+[    1136ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://github.com/Kilo-Org/kilocode/latest-commit/main/packages/plugin-sdk:0
+[    1137ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/Kilo-Org/kilocode/tree-commit-info/main/packages/plugin-sdk:0

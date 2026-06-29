@@ -225,3 +225,110 @@ data class PartRequest(
     val type: String,
     val text: String,
 )
+
+data class CloneRepoRequest(
+    val action: String,
+    val repo: String,
+)
+
+data class RepoOperationResponse(
+    val success: Boolean,
+    val path: String? = null,
+    val message: String? = null,
+    val alreadyCloned: Boolean = false,
+    val error: String? = null,
+    val details: String? = null,
+)
+
+data class RepoEntry(
+    val name: String,
+    val path: String? = null,
+    val modified: String? = null,
+    val description: String? = null,
+    val stars: Int = 0,
+    val source: String = "local",
+)
+
+data class RepoListResponse(
+    val repos: List<RepoEntry> = emptyList(),
+    val source: String = "local",
+)
+
+// ── Planning models (milestones, issues) ─────────────────────────────────────
+
+data class Milestone(
+    val number: Int = 0,
+    val title: String = "",
+    val description: String? = null,
+    @com.google.gson.annotations.SerializedName("state")
+    val state: String = "open",
+    @com.google.gson.annotations.SerializedName("open_issues")
+    val openIssues: Int = 0,
+    @com.google.gson.annotations.SerializedName("closed_issues")
+    val closedIssues: Int = 0,
+    @com.google.gson.annotations.SerializedName("html_url")
+    val htmlUrl: String? = null,
+    @com.google.gson.annotations.SerializedName("created_at")
+    val createdAt: String? = null,
+    @com.google.gson.annotations.SerializedName("updated_at")
+    val updatedAt: String? = null,
+    @com.google.gson.annotations.SerializedName("due_on")
+    val dueOn: String? = null,
+) {
+    val totalIssues: Int get() = openIssues + closedIssues
+    val isClosed: Boolean get() = state == "closed"
+}
+
+data class IssueLabel(
+    val name: String = "",
+    val color: String? = null,
+    val description: String? = null,
+)
+
+data class Issue(
+    val number: Int = 0,
+    val title: String = "",
+    val body: String? = null,
+    @com.google.gson.annotations.SerializedName("state")
+    val state: String = "open",
+    val labels: List<IssueLabel> = emptyList(),
+    val milestone: Milestone? = null,
+    @com.google.gson.annotations.SerializedName("html_url")
+    val htmlUrl: String? = null,
+    val assignee: String? = null,
+    val comments: Int = 0,
+    @com.google.gson.annotations.SerializedName("created_at")
+    val createdAt: String? = null,
+    @com.google.gson.annotations.SerializedName("updated_at")
+    val updatedAt: String? = null,
+) {
+    val isClosed: Boolean get() = state == "closed"
+}
+
+data class MilestoneListResponse(
+    val milestones: List<Milestone> = emptyList(),
+    val totalCount: Int = 0,
+)
+
+data class IssueListResponse(
+    val issues: List<Issue> = emptyList(),
+    val totalCount: Int = 0,
+)
+
+// Request bodies
+data class CreateMilestoneRequest(
+    val title: String,
+    val description: String? = null,
+    val dueOn: String? = null,
+)
+
+data class CreateIssueRequest(
+    val title: String,
+    val body: String? = null,
+    val milestone: Int? = null,
+    val labels: List<String> = emptyList(),
+)
+
+data class UpdateIssueStateRequest(
+    val state: String,
+)

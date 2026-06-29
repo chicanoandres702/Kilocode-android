@@ -16,11 +16,13 @@ android {
         versionName = "1.2.0"
 
         val defaultServerUrl = System.getenv("SERVER_URL") ?: "http://18.191.142.105:4096"
+        val apiServerUrl = System.getenv("API_SERVER_URL") ?: "http://18.191.142.105:3001"
         val sharedSecret = System.getenv("KILO_SHARED_SECRET") ?: ""
         val serverUrlDomain = System.getenv("SERVER_URL_DOMAIN") ?: "10.0.2.2"
         manifestPlaceholders["serverUrlDomain"] = serverUrlDomain
 
         buildConfigField("String", "DEFAULT_SERVER_URL", "\"$defaultServerUrl\"")
+        buildConfigField("String", "API_SERVER_URL", "\"$apiServerUrl\"")
         buildConfigField("String", "KILO_SHARED_SECRET", "\"$sharedSecret\"")
     }
 
@@ -97,7 +99,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    debugImplementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // JSON
     implementation("com.google.code.gson:gson:2.11.0")
@@ -105,6 +107,9 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+
+    // WorkManager for reliable background tasks
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 
     // Markdown
     implementation("com.github.jeziellago:compose-markdown:0.5.0")

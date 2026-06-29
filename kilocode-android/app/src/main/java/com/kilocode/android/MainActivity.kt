@@ -31,14 +31,16 @@ class MainActivity : ComponentActivity() {
                     val context = LocalContext.current
                     val authRepo = remember { AuthPreferencesRepository(context) }
                     var serverUrl by remember { mutableStateOf(BuildConfig.DEFAULT_SERVER_URL) }
+                    var apiServerUrl by remember { mutableStateOf(BuildConfig.API_SERVER_URL) }
                     var sharedSecret by remember { mutableStateOf("") }
                     var autonomousMode by remember { mutableStateOf(false) }
 
                     LaunchedEffect(Unit) {
                         serverUrl = authRepo.serverUrlFlow.first() ?: BuildConfig.DEFAULT_SERVER_URL
+                        apiServerUrl = BuildConfig.API_SERVER_URL
                         sharedSecret = authRepo.sharedSecretFlow.first() ?: ""
                         autonomousMode = authRepo.autonomousModeFlow.first() ?: false
-                        
+
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrl, autonomousMode)
                     }
 
@@ -47,6 +49,7 @@ class MainActivity : ComponentActivity() {
                     KiloCodeNavHost(
                         navController = navController,
                         serverUrl = serverUrl,
+                        apiServerUrl = apiServerUrl,
                         sharedSecret = sharedSecret,
                         autonomousMode = autonomousMode,
                         onServerUrlChanged = { newUrl, newSecret ->
@@ -62,6 +65,10 @@ class MainActivity : ComponentActivity() {
                             // ApiClient update will be handled by the screens when they recompose due to serverUrl/sharedSecret change
                             com.kilocode.android.data.BinaryManager.stopServer()
                             com.kilocode.android.data.BinaryManager.startServer(context, normalizedUrl, autonomousMode)
+                        },
+                        onApiServerUrlChanged = { _ ->
+                            // Ignore user settings, enforced via BuildConfig
+                            apiServerUrl = BuildConfig.API_SERVER_URL
                         },
                         onAutonomousModeChanged = { enabled ->
                             scope.launch {
