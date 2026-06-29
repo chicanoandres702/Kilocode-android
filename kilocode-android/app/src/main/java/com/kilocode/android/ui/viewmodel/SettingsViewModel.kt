@@ -31,6 +31,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val autonomousMode: StateFlow<Boolean> = repository.autonomousModeFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
+    val apiServerUrl: StateFlow<String?> = repository.apiServerUrlFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
     private val _connectionStatus = MutableStateFlow<String?>(null)
     val connectionStatus: StateFlow<String?> = _connectionStatus
 

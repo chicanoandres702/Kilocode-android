@@ -452,9 +452,14 @@ fun SessionScreen(
                                     color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f),
                                     modifier = Modifier.size(64.dp).graphicsLayer { translationY = floatY },
                                 ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        // TODO: Add app icon placeholder
-                                    }
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Code,
+                                                contentDescription = "App Icon",
+                                                modifier = Modifier.size(32.dp),
+                                                tint = MaterialTheme.colorScheme.primary,
+                                            )
+                                        }
                                 }
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(

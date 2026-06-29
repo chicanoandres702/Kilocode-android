@@ -51,4 +51,6 @@
 | 2026-06-29 | Forced API Server URL to `http://18.191.142.105:3001` and disabled user settings override for planning API URL. |
 | 2026-06-28 | Implemented planning milestones/issues feature |
 | 2026-06-29 | Verified session list display and prompting in `SessionScreen.kt`. |
+| 2026-06-29 | Updated "Built with" field in Settings from "Kilo Code · Anthropic" to "Kilo Code". |
+| 2026-06-29 | Added UI test dependencies and created `NavigationTest.kt` with 7 tests covering Repos screen and tab navigation. |
 

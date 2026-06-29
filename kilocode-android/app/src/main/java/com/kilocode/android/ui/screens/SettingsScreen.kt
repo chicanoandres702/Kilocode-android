@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -40,13 +41,14 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
 ) {
     val serverUrlState by viewModel.serverUrl.collectAsState(initial = defaultServerUrl)
+    val apiServerUrlState by viewModel.apiServerUrl.collectAsState(initial = defaultApiServerUrl)
     val secretState by viewModel.sharedSecret.collectAsState(initial = null)
     val autonomousState by viewModel.autonomousMode.collectAsState(initial = autonomousMode)
     val connectionStatus by viewModel.connectionStatus.collectAsState(initial = null)
 
     var urlInput by remember(serverUrlState) { mutableStateOf(serverUrlState ?: defaultServerUrl) }
-    var apiServerUrlInput by remember { mutableStateOf(defaultApiServerUrl) }
-    var secretInput by remember { mutableStateOf(secretState ?: sharedSecret) }
+    var apiServerUrlInput by remember(apiServerUrlState) { mutableStateOf(apiServerUrlState ?: defaultApiServerUrl) }
+    var secretInput by remember(secretState) { mutableStateOf(secretState ?: sharedSecret) }
     var secretVisible by remember { mutableStateOf(false) }
     var autonomousInput by remember(autonomousState) { mutableStateOf(autonomousState) }
 
@@ -78,12 +80,11 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.size(24.dp),
-                )
-
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                            contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
+                        )
                     }
                 },
                 actions = {
@@ -201,11 +202,11 @@ fun SettingsScreen(
                     thickness = 0.5.dp,
                     color     = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
                 )
-                SettingsInfoRow(
-                    icon  = Icons.Rounded.Code,
-                    label = "Built with",
-                    value = "Kilo Code · Anthropic",
-                )
+            SettingsInfoRow(
+                icon  = Icons.Rounded.Code,
+                label = "Built with",
+                value = "Kilo Code",
+            )
             }
         }
     }

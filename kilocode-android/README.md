@@ -26,8 +26,13 @@ This Android app connects to a running Kilo Code server (`kilo serve`) and provi
 - **Real-time Chat** - Communicate with AI agent with live updates via SSE
 - **Tool Execution View** - See tool calls and their results in real-time
 - **Message History** - Browse conversation history with parts (text, tool, reasoning)
+- **Repository Management** - Clone GitHub repos or create local ones, browse your repositories
+- **GitHub Search** - Search and clone public GitHub repositories directly from the app
 - **Server Configuration** - Connect to any running Kilo Code server
+- **Autonomous Mode** - Let the agent work without waiting for confirmation
+- **Planning** - Create and manage milestones and issues for your projects
 - **Dark Theme** - Modern dark UI matching the Kilo Code aesthetic
+- **UI Tests** - Automated Compose UI tests for core navigation flows
 
 ## Requirements
 
@@ -83,7 +88,9 @@ app/src/main/java/com/kilocode/android/
 │   ├── model/
 │   │   └── Models.kt            # Data models
 │   └── repository/
-│       └── SessionRepository.kt # Session data management
+│       ├── SessionRepository.kt # Session data management
+│       ├── RepoRepository.kt    # Repository management
+│       └── AuthPreferencesRepository.kt # Auth/preferences storage
 ├── ui/
 │   ├── components/
 │   │   ├── CommonComponents.kt  # Shared UI components
@@ -94,12 +101,34 @@ app/src/main/java/com/kilocode/android/
 │   │   └── Navigation.kt        # Navigation graph
 │   ├── screens/
 │   │   ├── HomeScreen.kt        # Session list screen
+│   │   ├── RepoScreen.kt        # Repository list & GitHub search
 │   │   ├── SessionScreen.kt     # Chat session screen
-│   │   └── SettingsScreen.kt    # Settings screen
+│   │   ├── SettingsScreen.kt    # Settings screen
+│   │   ├── PlanningScreen.kt    # Planning overview
+│   │   └── PlanningWizardScreen.kt # Planning wizard
+│   ├── viewmodel/
+│   │   ├── SessionViewModel.kt   # Session state management
+│   │   └── SettingsViewModel.kt # Settings state management
 │   └── theme/
 │       ├── Color.kt             # Color definitions
 │       └── Theme.kt             # Material theme
+├── BinaryManager.kt             # Server binary lifecycle
+└── network/
+    └── NetworkSecurityConfig.kt # Network security configuration
 ```
+
+## UI Tests
+
+Automated instrumented tests using Jetpack Compose testing framework:
+
+```bash
+./gradlew connectedAndroidTest
+```
+
+Tests cover:
+- App launch and initial screen rendering
+- Repository screen tabs and search navigation
+- Repository creation/cloning UI elements
 
 ## API Endpoints
 
