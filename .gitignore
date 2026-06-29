@@ -51,7 +51,8 @@ kilocode-android/app/build/
 kilocode-android/local.properties
 kilocode-android/.idea/
 
-# Backend subdirectory
+# Backend subdirectory (only ignore build artifacts, not source)
 kilocode-android/backend/node_modules/
 kilocode-android/backend/.next/
-backend/
+backend/node_modules/
+backend/.next/
