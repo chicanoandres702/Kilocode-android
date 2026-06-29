@@ -40,6 +40,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun saveApiServerUrl(url: String) {
+        viewModelScope.launch {
+            repository.saveApiServerUrl(url)
+        }
+    }
+
     fun saveAutonomousMode(enabled: Boolean) {
         viewModelScope.launch {
             repository.saveAutonomousMode(enabled)

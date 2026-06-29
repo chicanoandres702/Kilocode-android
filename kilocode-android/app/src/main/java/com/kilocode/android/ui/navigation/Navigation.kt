@@ -37,6 +37,7 @@ fun KiloCodeNavHost(
     sharedSecret: String?,
     autonomousMode: Boolean,
     onServerUrlChanged: (String, String) -> Unit,
+    onApiServerUrlChanged: (String) -> Unit,
     onAutonomousModeChanged: (Boolean) -> Unit,
     onSharedSecretChanged: (String) -> Unit,
 ) {
@@ -110,12 +111,14 @@ fun KiloCodeNavHost(
         composable(Screen.Settings.route) {
             SettingsScreen(
                 defaultServerUrl = serverUrl,
+                defaultApiServerUrl = apiServerUrl,
                 sharedSecret = sharedSecret ?: "",
                 autonomousMode = autonomousMode,
                 onBack = { navController.popBackStack() },
                 onServerUrlChanged = onServerUrlChanged,
                 onAutonomousModeChanged = onAutonomousModeChanged,
                 onSharedSecretChanged = onSharedSecretChanged,
+                onApiServerUrlChanged = onApiServerUrlChanged,
                 onSave = { url, secret ->
                     onServerUrlChanged(url, secret)
                     onSharedSecretChanged(secret)
@@ -139,6 +142,7 @@ fun KiloCodeNavHost(
             composable(Screen.Planning.route) {
                 PlanningScreen(
                     serverUrl = serverUrl,
+                    apiServerUrl = apiServerUrl,
                     sharedSecret = sharedSecret,
                     onBack = { navController.popBackStack() },
                     onNavigateToWizard = {
@@ -152,10 +156,11 @@ fun KiloCodeNavHost(
             composable(Screen.PlanningWizard.route) {
                 PlanningWizardScreen(
                     serverUrl = serverUrl,
+                    apiServerUrl = apiServerUrl,
                     sharedSecret = sharedSecret,
                     onBack = { navController.popBackStack() },
                     onComplete = { navController.popBackStack() },
                 )
-        }
+            }
     }
 }

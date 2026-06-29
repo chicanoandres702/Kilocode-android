@@ -37,10 +37,10 @@ class MainActivity : ComponentActivity() {
 
                     LaunchedEffect(Unit) {
                         serverUrl = authRepo.serverUrlFlow.first() ?: BuildConfig.DEFAULT_SERVER_URL
-                        apiServerUrl = authRepo.serverUrlFlow.first() ?: BuildConfig.API_SERVER_URL
+                        apiServerUrl = authRepo.apiServerUrlFlow.first() ?: BuildConfig.API_SERVER_URL
                         sharedSecret = authRepo.sharedSecretFlow.first() ?: ""
                         autonomousMode = authRepo.autonomousModeFlow.first() ?: false
-                        
+
                         com.kilocode.android.data.BinaryManager.startServer(context, serverUrl, autonomousMode)
                     }
 
@@ -65,6 +65,13 @@ class MainActivity : ComponentActivity() {
                             // ApiClient update will be handled by the screens when they recompose due to serverUrl/sharedSecret change
                             com.kilocode.android.data.BinaryManager.stopServer()
                             com.kilocode.android.data.BinaryManager.startServer(context, normalizedUrl, autonomousMode)
+                        },
+                        onApiServerUrlChanged = { newApiUrl ->
+                            val normalizedUrl = newApiUrl.trim().ifBlank { BuildConfig.API_SERVER_URL }
+                            apiServerUrl = normalizedUrl
+                            scope.launch {
+                                authRepo.saveApiServerUrl(normalizedUrl)
+                            }
                         },
                         onAutonomousModeChanged = { enabled ->
                             scope.launch {
