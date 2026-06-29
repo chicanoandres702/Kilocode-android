@@ -22,6 +22,7 @@ class AuthPreferencesRepository(private val context: Context) {
     companion object {
         val SHARED_SECRET_KEY = stringPreferencesKey("shared_secret")
         val SERVER_URL_KEY = stringPreferencesKey("server_url")
+        val API_SERVER_URL_KEY = stringPreferencesKey("api_server_url")
         val AUTONOMOUS_MODE_KEY = booleanPreferencesKey("autonomous_mode")
         val SELECTED_AGENT_NAME_KEY = stringPreferencesKey("selected_agent_name")
     }
@@ -34,6 +35,11 @@ class AuthPreferencesRepository(private val context: Context) {
     val serverUrlFlow: Flow<String?> = context.dataStore.data
         .map { preferences ->
             preferences[SERVER_URL_KEY]
+        }
+
+    val apiServerUrlFlow: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[API_SERVER_URL_KEY]
         }
 
     val autonomousModeFlow: Flow<Boolean> = context.dataStore.data
@@ -55,6 +61,12 @@ class AuthPreferencesRepository(private val context: Context) {
     suspend fun saveServerUrl(url: String) {
         context.dataStore.edit { preferences ->
             preferences[SERVER_URL_KEY] = url
+        }
+    }
+
+    suspend fun saveApiServerUrl(url: String) {
+        context.dataStore.edit { preferences ->
+            preferences[API_SERVER_URL_KEY] = url
         }
     }
 

@@ -33,12 +33,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlanningWizardScreen(
     serverUrl: String,
+    apiServerUrl: String,
     sharedSecret: String?,
     onBack: () -> Unit,
     onComplete: () -> Unit,
 ) {
-    val apiClient = remember(serverUrl, sharedSecret) {
-        ApiClient.getInstance(serverUrl, sharedSecret ?: "")
+    val apiClient = remember(apiServerUrl, sharedSecret) {
+        ApiClient.getInstance(apiServerUrl, sharedSecret ?: "")
     }
     val repository = remember(apiClient) { PlanningRepository(apiClient) }
     val scope = rememberCoroutineScope()
