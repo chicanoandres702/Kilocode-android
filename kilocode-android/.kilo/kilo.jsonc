@@ -1,0 +1,26 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "default_agent": "android-dev",
+  "model": "kilo-auto/free",
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "snapshot": false,
+  "permission": {
+    "bash": "allow",
+    "edit": {
+      "kilocode-android/**": "allow",
+      ".kilo/**": "allow",
+      ".kilocode/**": "allow",
+      "*": "ask"
+    },
+    "skill": {
+      "kilo-config": "allow",
+      "security-review": "allow",
+      "adb-emulator": "allow",
+      "android-build": "allow",
+      "android-navigation": "allow"
+    }
+  }
+}

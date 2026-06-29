@@ -1,0 +1,3 @@
+[     385ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/Kilo-Org/kilocode/blob/main/packages/plugin-sdk/src/model-picker.tsx:0
+[     980ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/Kilo-Org/kilocode/latest-commit/main/packages/plugin-sdk/src/model-picker.tsx:0
+[     982ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://github.com/in-product-messaging/budget-threshold-banner?organization=Kilo-Org:0
