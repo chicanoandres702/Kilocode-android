@@ -97,7 +97,10 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onNavigateToPlanning) {
+                    IconButton(onClick = {
+                        println("D/HomeScreen: Planning clicked")
+                        onNavigateToPlanning()
+                    }) {
                         Icon(Icons.Rounded.TaskAlt, "Planning", modifier = Modifier.size(20.dp))
                     }
                     IconButton(onClick = onNavigateToSettings) {

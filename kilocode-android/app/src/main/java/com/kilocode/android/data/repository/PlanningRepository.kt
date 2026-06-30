@@ -91,12 +91,15 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
     // -- Public API --------------------------------------------------------------
 
     suspend fun getMilestones(state: String? = null, forceRefresh: Boolean = false): List<Milestone> {
+        Log.i(TAG, "getMilestones called: state=$state, forceRefresh=$forceRefresh")
         getCached(milestonesCache)?.let { if (!forceRefresh) return it }
         _isLoading.value = true
         _error.value = null
         return try {
             val result = withRetry("getMilestones") {
-                unwrap(apiClient.api.listMilestones(state = state))
+                val call = apiClient.api.listMilestones(state = state)
+                Log.d(TAG, "getMilestones requested: ${call.raw().request.url}")
+                unwrap(call)
             }
             val list = result.milestones
             milestonesCache = CacheEntry(list)
@@ -113,12 +116,15 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
     }
 
     suspend fun getIssues(milestoneNumber: Int, state: String? = null, forceRefresh: Boolean = false): List<Issue> {
+        Log.i(TAG, "getIssues called: milestoneNumber=$milestoneNumber, state=$state, forceRefresh=$forceRefresh")
         getCached(issuesCache[milestoneNumber])?.let { if (!forceRefresh) return it }
         _isLoading.value = true
         _error.value = null
         return try {
             val result = withRetry("getIssues") {
-                unwrap(apiClient.api.listMilestoneIssues(milestoneNumber, state = state))
+                val call = apiClient.api.listMilestoneIssues(milestoneNumber, state = state)
+                Log.d(TAG, "getIssues requested: ${call.raw().request.url}")
+                unwrap(call)
             }
             val list = result.issues
             issuesCache[milestoneNumber] = CacheEntry(list)
@@ -138,7 +144,7 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
         _error.value = null
         return try {
             val result = withRetry("createMilestone") {
-                unwrap(apiClient.api.createMilestone(CreateMilestoneRequest(title, description, dueOn)))
+                unwrap(apiClient.api.createMilestone(CreateMilestoneRequest(title = title, description = description, dueOn = dueOn)))
             }
             // Invalidate milestones cache
             milestonesCache = null
@@ -156,7 +162,7 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
         _error.value = null
         return try {
             val result = withRetry("createIssue") {
-                unwrap(apiClient.api.createIssue(CreateIssueRequest(title, body, milestoneNumber, labels)))
+                unwrap(apiClient.api.createIssue(CreateIssueRequest(title = title, body = body, milestone = milestoneNumber, labels = labels)))
             }
             // Invalidate issues cache for this milestone
             if (milestoneNumber != null) {
@@ -178,7 +184,7 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
         _error.value = null
         return try {
             val result = withRetry("updateIssueState") {
-                unwrap(apiClient.api.updateIssueState(issueNumber, UpdateIssueStateRequest(state)))
+                unwrap(apiClient.api.updateIssueState(UpdateIssueStateRequest(issueNumber = issueNumber, state = state)))
             }
             // Invalidate all issues caches (issue may have moved between milestones)
             issuesCache.clear()

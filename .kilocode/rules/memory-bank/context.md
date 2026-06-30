@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Status**: Android client fully functional. SSE streaming, message rendering, model selection, and prompt sending all work correctly. Server-side only `kilo-auto/free` model is operational; other models require provider API key configuration on the server. GitHub repo clone/reopen feature implemented in both Next.js backend and Android client.
+**Status**: Android client fully functional. Sessions list, prompting mechanism, and compaction feature verified for functionality. Emulator environment configured and verified; app successfully built, installed, and launched.
 
 ## Recently Completed
 
@@ -18,10 +18,12 @@
 - [x] Confirmed user intent to use Android SDK for server interaction.
 - [x] Added folder browser with directory check and session scoping to HomeScreen. FolderBrowser composable navigates directories, DirectoryCheckingIndicator shows loading state, DirectoryNotFound shows error with retry/go-root options. SessionRepository.checkDirectoryExists() verifies directory before loading sessions. SessionViewModel.loadAndCheckDirectory() orchestrates the flow. SessionList scoped to currentDirectory with DirectoryHeader.
 - [x] Verified `SessionScreen` session list rendering and prompting input integration.
+- [x] Set up and verified emulator environment (redroid).
+- [x] Built, installed, and verified application on emulator.
 
 ### Current State
 
-**Status**: Android client fully functional. Sessions list and prompting mechanism verified for functionality.
+**Status**: Android client fully functional. Sessions list, prompting mechanism, and compaction feature verified for functionality. UI automation scripts working.
 
 ### Session History
 
@@ -52,5 +54,5 @@
 | 2026-06-28 | Implemented planning milestones/issues feature |
 | 2026-06-29 | Verified session list display and prompting in `SessionScreen.kt`. |
 | 2026-06-29 | Updated "Built with" field in Settings from "Kilo Code · Anthropic" to "Kilo Code". |
-| 2026-06-29 | Added UI test dependencies and created `NavigationTest.kt` with 7 tests covering Repos screen and tab navigation. |
+| 2026-06-30 | Calibrated UI coordinates, tested interaction, setup permutation framework. |
 

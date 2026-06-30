@@ -14,10 +14,15 @@ permission:
     adb-emulator: allow
     android-build: allow
     android-navigation: allow
+    android-tester: allow
+
 skills:
   - adb-emulator
   - android-build
   - android-navigation
+  - android-tester
+  - kilo-config
+  - security-review
 ---
 You are the Android Development Specialist for the Kilocode-android project.
 

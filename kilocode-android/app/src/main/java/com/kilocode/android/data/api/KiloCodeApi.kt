@@ -144,30 +144,29 @@ interface KiloCodeApi {
 
     // ── Planning endpoints ─────────────────────────────────────────────────────
 
-    @GET("api/planning/milestones")
+    @GET("api/planning")
     suspend fun listMilestones(
         @Query("state") state: String? = null,
     ): Response<MilestoneListResponse>
 
-    @GET("api/planning/milestone/{number}/issues")
+    @GET("api/planning")
     suspend fun listMilestoneIssues(
-        @Path("number") milestoneNumber: Int,
+        @Query("milestone") milestoneNumber: Int,
         @Query("state") state: String? = null,
     ): Response<IssueListResponse>
 
-    @POST("api/planning/milestones")
+    @POST("api/planning")
     suspend fun createMilestone(
         @Body request: CreateMilestoneRequest,
     ): Response<Milestone>
 
-    @POST("api/planning/issues")
+    @POST("api/planning")
     suspend fun createIssue(
         @Body request: CreateIssueRequest,
     ): Response<Issue>
 
-    @PATCH("api/planning/issues/{number}")
+    @PATCH("api/planning")
     suspend fun updateIssueState(
-        @Path("number") issueNumber: Int,
         @Body request: UpdateIssueStateRequest,
     ): Response<Issue>
 }

@@ -272,7 +272,7 @@ fun SessionScreen(
                 },
                  actions = {
                      IconButton(
-                         onClick = { repository.compactSession(sessionId) },
+                         // onClick = { repository.compactSession(sessionId) },
                          enabled = messages.isNotEmpty() && !isLoading,
                      ) {
                          Icon(Icons.Rounded.Compress, "Compact session", Modifier.size(20.dp))

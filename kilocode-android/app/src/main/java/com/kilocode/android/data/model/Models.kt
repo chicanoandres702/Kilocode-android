@@ -317,12 +317,14 @@ data class IssueListResponse(
 
 // Request bodies
 data class CreateMilestoneRequest(
+    val type: String = "milestone",
     val title: String,
     val description: String? = null,
     val dueOn: String? = null,
 )
 
 data class CreateIssueRequest(
+    val type: String = "issue",
     val title: String,
     val body: String? = null,
     val milestone: Int? = null,
@@ -330,5 +332,6 @@ data class CreateIssueRequest(
 )
 
 data class UpdateIssueStateRequest(
+    val issueNumber: Int,
     val state: String,
 )

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.util.Log
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.Issue
 import com.kilocode.android.data.model.Milestone
@@ -45,6 +46,7 @@ fun PlanningScreen(
         ApiClient.getInstance(apiServerUrl, sharedSecret ?: "")
     }
     val repository = remember(apiClient) { PlanningRepository(apiClient) }
+    Log.d("PlanningScreen", "PlanningScreen composed")
     val scope = rememberCoroutineScope()
 
     val milestones by repository.milestones.collectAsState()
@@ -57,6 +59,7 @@ fun PlanningScreen(
 
     // Load milestones on first composition
     LaunchedEffect(Unit) {
+        Log.d("PlanningScreen", "Loading milestones")
         repository.getMilestones()
     }
 
