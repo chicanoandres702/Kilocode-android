@@ -144,12 +144,12 @@ interface KiloCodeApi {
 
     // ── Planning endpoints ─────────────────────────────────────────────────────
 
-    @GET("api/planning")
+    @GET("api/planning/milestones")
     suspend fun listMilestones(
         @Query("state") state: String? = null,
     ): Response<MilestoneListResponse>
 
-    @GET("api/planning")
+    @GET("api/planning/issues")
     suspend fun listMilestoneIssues(
         @Query("milestone") milestoneNumber: Int,
         @Query("state") state: String? = null,

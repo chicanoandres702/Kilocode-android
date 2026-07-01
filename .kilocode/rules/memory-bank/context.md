@@ -20,6 +20,8 @@
 - [x] Verified `SessionScreen` session list rendering and prompting input integration.
 - [x] Set up and verified emulator environment (redroid).
 - [x] Built, installed, and verified application on emulator.
+- [x] **Fixed 404 in planning mode** - Split `api/planning` endpoint into separate paths: `api/planning/milestones` and `api/planning/issues` to avoid Retrofit method collision. Updated both backend (Next.js routes) and Android API interface.
+- [x] Added `PlanningRepositoryTest` unit tests.
 
 ### Current State
 
@@ -47,7 +49,7 @@
 | 2026-06-25 | Fixed `SessionRepository.kt` by removing duplicate `connectSse` implementation and cleaning up broken code block. |
 | 2026-06-26 | Fixed SSE implementation to align with documented API |
 | 2026-06-26 | Investigated model availability |
-| 2026-06-26 | Added folder browser with directory check and session scoping |
+| 2026-06-26 | Added folder browser with directory check and session scoping to HomeScreen. FolderBrowser composable navigates directories, DirectoryCheckingIndicator shows loading state, DirectoryNotFound shows error with retry/go-root options. SessionRepository.checkDirectoryExists() verifies directory before loading sessions. SessionViewModel.loadAndCheckDirectory() orchestrates the flow. SessionList scoped to currentDirectory with DirectoryHeader. |
 | 2026-06-27 | Implemented GitHub repo clone/reopen feature |
 | 2026-06-28 | Added Stop button during generation, WorkManager for background prompt execution |
 | 2026-06-29 | Forced API Server URL to `http://18.191.142.105:3001` and disabled user settings override for planning API URL. |
@@ -55,4 +57,5 @@
 | 2026-06-29 | Verified session list display and prompting in `SessionScreen.kt`. |
 | 2026-06-29 | Updated "Built with" field in Settings from "Kilo Code · Anthropic" to "Kilo Code". |
 | 2026-06-30 | Calibrated UI coordinates, tested interaction, setup permutation framework. |
+| 2026-07-01 | Fixed 404 in planning mode by splitting planning API endpoints; added unit tests for PlanningRepository. |
 
