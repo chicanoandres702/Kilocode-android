@@ -22,6 +22,7 @@
 - [x] Built, installed, and verified application on emulator.
 - [x] **Fixed 404 in planning mode** - Split `api/planning` endpoint into separate paths: `api/planning/milestones` and `api/planning/issues` to avoid Retrofit method collision. Updated both backend (Next.js routes) and Android API interface.
 - [x] Added `PlanningRepositoryTest` unit tests.
+- [x] Fixed missing onClick parameter in SessionScreen IconButton for compact session button.
 
 ### Current State
 
