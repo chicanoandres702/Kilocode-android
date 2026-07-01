@@ -25,6 +25,7 @@
 - [x] Fixed missing onClick parameter in SessionScreen IconButton for compact session button.
 - [x] Fixed GitHub API field names: `url` instead of `htmlUrl`, `assignees` array to `assignee` string mapping.
 - [x] **Enhanced planning wizard** - AI-powered feature generation from project description with selection, editing, and review steps.
+- [x] Added `/api/planning/generate` backend endpoint for AI feature generation.
 
 ### Current State
 
