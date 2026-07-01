@@ -270,13 +270,13 @@ fun SessionScreen(
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", modifier = Modifier.size(22.dp))
                     }
                 },
-                 actions = {
-                     IconButton(
-                         // onClick = { repository.compactSession(sessionId) },
-                         enabled = messages.isNotEmpty() && !isLoading,
-                     ) {
-                         Icon(Icons.Rounded.Compress, "Compact session", Modifier.size(20.dp))
-                     }
+actions = {
+                      IconButton(
+                          onClick = { /* TODO: Implement compact session */ },
+                          enabled = messages.isNotEmpty() && !isLoading,
+                      ) {
+                          Icon(Icons.Rounded.Compress, "Compact session", Modifier.size(20.dp))
+                      }
                      AnimatedVisibility(
                          visible = isLoading,
                          enter = fadeIn(tween(150)),
