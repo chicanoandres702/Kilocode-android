@@ -33,13 +33,19 @@ export async function GET(request: Request) {
 
     const repoFlag = getRepoFlag();
     const { stdout } = await execAsync(
-      `gh issue list --milestone "${milestoneNumber}" --state "${state}" --json number,title,body,state,labels,milestone,htmlUrl,assignee,comments,createdAt,updatedAt ${repoFlag}`,
+      `gh issue list --milestone "${milestoneNumber}" --state "${state}" --json number,title,body,state,labels,milestone,url,assignees,comments,createdAt,updatedAt ${repoFlag}`,
       { timeout: 30000, env: getEnv() }
     );
     const issues = JSON.parse(stdout || '[]');
+    // Transform issues to match expected format (assignees -> assignee as string)
+    const transformedIssues = issues.map((issue: any) => ({
+      ...issue,
+      assignee: issue.assignees?.[0]?.login || null,
+      assignees: undefined
+    }));
     return NextResponse.json({
-      issues,
-      totalCount: issues.length,
+      issues: transformedIssues,
+      totalCount: transformedIssues.length,
     });
   } catch (error: any) {
     console.error('Planning issues GET error:', error);
@@ -83,7 +89,7 @@ export async function POST(request: Request) {
       const issueUrl = stdout.trim();
       const issueNumber = issueUrl.split('/').pop();
       const { stdout: issueJson } = await execAsync(
-        `gh issue view ${issueNumber} --json number,title,body,state,labels,milestone,htmlUrl,assignee,comments,createdAt,updatedAt ${repoFlag}`,
+        `gh issue view ${issueNumber} --json number,title,body,state,labels,milestone,url,assignees,comments,createdAt,updatedAt ${repoFlag}`,
         { timeout: 30000, env: getEnv() }
       );
       const issue = JSON.parse(issueJson);
@@ -147,7 +153,7 @@ export async function PATCH(request: Request) {
     }
 
     const { stdout: issueJson } = await execAsync(
-      `gh issue view ${issueNumber} --json number,title,body,state,labels,milestone,htmlUrl,assignee,comments,createdAt,updatedAt ${repoFlag}`,
+      `gh issue view ${issueNumber} --json number,title,body,state,labels,milestone,url,assignees,comments,createdAt,updatedAt ${repoFlag}`,
       { timeout: 30000, env: getEnv() }
     );
     const issue = JSON.parse(issueJson);

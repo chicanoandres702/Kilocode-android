@@ -266,7 +266,7 @@ data class Milestone(
     val openIssues: Int = 0,
     @com.google.gson.annotations.SerializedName("closed_issues")
     val closedIssues: Int = 0,
-    @com.google.gson.annotations.SerializedName("html_url")
+    @com.google.gson.annotations.SerializedName("url")
     val htmlUrl: String? = null,
     @com.google.gson.annotations.SerializedName("created_at")
     val createdAt: String? = null,
@@ -293,8 +293,9 @@ data class Issue(
     val state: String = "open",
     val labels: List<IssueLabel> = emptyList(),
     val milestone: Milestone? = null,
-    @com.google.gson.annotations.SerializedName("html_url")
+    @com.google.gson.annotations.SerializedName("url")
     val htmlUrl: String? = null,
+    @com.google.gson.annotations.SerializedName("assignees")
     val assignee: String? = null,
     val comments: Int = 0,
     @com.google.gson.annotations.SerializedName("created_at")

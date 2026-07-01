@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     const state = url.searchParams.get('state') || 'all';
     const repoFlag = getRepoFlag();
     const { stdout } = await execAsync(
-      `gh api "repos/{owner}/{repo}/milestones?state=${state}&per_page=100" --jq '.[] | {number, title, description, state, open_issues, closed_issues, html_url, created_at, updated_at, due_on}'`,
+      `gh api "repos/{owner}/{repo}/milestones?state=${state}&per_page=100" --jq '.[] | {number, title, description, state, open_issues, closed_issues, url, created_at, updated_at, due_on}'`,
       { timeout: 30000, env: getEnv() }
     );
     const lines = stdout.trim().split('\n').filter(Boolean);
