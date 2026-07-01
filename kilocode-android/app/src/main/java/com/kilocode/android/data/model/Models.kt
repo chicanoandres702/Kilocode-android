@@ -336,3 +336,36 @@ data class UpdateIssueStateRequest(
     val issueNumber: Int,
     val state: String,
 )
+
+// Planning wizard models
+data class GenerateFeaturesRequest(
+    val description: String,
+)
+
+data class GeneratedFeatureResponse(
+    val title: String,
+    val description: String,
+    val tasks: List<String>,
+)
+
+data class GenerateFeaturesResponse(
+    val features: List<GeneratedFeatureResponse>,
+)
+
+data class GeneratedFeature(
+    val id: Int,
+    val title: String = "",
+    val description: String = "",
+    val tasks: List<String> = emptyList(),
+)
+
+data class SelectedFeature(
+    val id: Int,
+    val title: String = "",
+    val description: String = "",
+    val tasks: List<String> = emptyList(),
+    val selected: Boolean = true
+) {
+    fun copy(selected: Boolean = this.selected, description: String = this.description, tasks: List<String> = this.tasks): SelectedFeature =
+        SelectedFeature(id, title, description, tasks, selected)
+}

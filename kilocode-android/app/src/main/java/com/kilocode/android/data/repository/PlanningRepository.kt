@@ -7,6 +7,9 @@ import com.kilocode.android.data.isRetryable
 import com.kilocode.android.data.model.*
 import com.kilocode.android.data.retryDelay
 import com.kilocode.android.data.toAppError
+import com.kilocode.android.data.model.GeneratedFeature
+import com.kilocode.android.data.model.GenerateFeaturesResponse
+import com.kilocode.android.data.model.GeneratedFeatureResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -204,5 +207,31 @@ class PlanningRepository(private val apiClient: com.kilocode.android.data.api.Ap
 
     fun clearError() {
         _error.value = null
+    }
+
+    suspend fun generateFeatures(projectDescription: String): List<GeneratedFeature> {
+        _isLoading.value = true
+        _error.value = null
+        return try {
+            val response: GenerateFeaturesResponse = withRetry("generateFeatures") {
+                val result = apiClient.api.generateFeatures(GenerateFeaturesRequest(description = projectDescription))
+                unwrap(result)
+            }
+            response.features.mapIndexed { index: Int, feature: GeneratedFeatureResponse ->
+                GeneratedFeature(
+                    id = index + 1,
+                    title = feature.title,
+                    description = feature.description,
+                    tasks = feature.tasks
+                )
+            }
+        } catch (e: Exception) {
+            val appError = e.toAppError()
+            _error.value = appError
+            Log.e(TAG, "generateFeatures failed", e)
+            emptyList()
+        } finally {
+            _isLoading.value = false
+        }
     }
 }

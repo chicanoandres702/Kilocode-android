@@ -169,4 +169,11 @@ interface KiloCodeApi {
     suspend fun updateIssueState(
         @Body request: UpdateIssueStateRequest,
     ): Response<Issue>
+
+    // ── Planning wizard endpoints ──────────────────────────────────────────────
+
+    @POST("api/planning/generate")
+    suspend fun generateFeatures(
+        @Body request: GenerateFeaturesRequest,
+    ): Response<GenerateFeaturesResponse>
 }
