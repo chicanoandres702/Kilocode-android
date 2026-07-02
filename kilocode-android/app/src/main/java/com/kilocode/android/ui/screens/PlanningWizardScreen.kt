@@ -19,9 +19,15 @@ import com.kilocode.android.data.model.GeneratedFeature
 import com.kilocode.android.data.model.SelectedFeature
 import com.kilocode.android.data.model.Task
 import com.kilocode.android.data.repository.PlanningRepository
+import com.kilocode.android.data.repository.SessionRepository
+import com.kilocode.android.data.model.Message
+import com.kilocode.android.data.model.Part
 import com.kilocode.android.ui.components.ErrorCard
 import com.kilocode.android.ui.components.LoadingIndicator
-import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalContext
+import com.kilocode.android.ui.util.BranchManager
+import com.kilocode.android.worker.BranchWorker
+import kotlinx.coroutines.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +42,9 @@ fun PlanningWizardScreen(
         ApiClient.getInstance(apiServerUrl, sharedSecret ?: "")
     }
     val repository = remember(apiClient) { PlanningRepository(apiClient) }
+    val sessionRepository = remember(apiClient) { SessionRepository(apiClient) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     var step by remember { mutableIntStateOf(1) }
     val totalSteps = 4
@@ -48,6 +56,16 @@ fun PlanningWizardScreen(
     var selectedFeatures by remember { mutableStateOf(mapOf<Int, SelectedFeature>()) }
     var isCreating by remember { mutableStateOf(false) }
     var createError by remember { mutableStateOf<String?>(null) }
+    var aiQuestion by remember { mutableStateOf("") }
+    var aiResponse by remember { mutableStateOf<String?>(null) }
+    var isAskingAI by remember { mutableStateOf(false) }
+    var agents by remember { mutableStateOf(listOf<com.kilocode.android.data.model.Agent>()) }
+    var selectedAgent by remember { mutableStateOf<com.kilocode.android.data.model.Agent?>(null) }
+
+    LaunchedEffect(apiClient) {
+        agents = sessionRepository.listAgents()
+        selectedAgent = agents.find { it.name == "aidde-Main" } ?: agents.firstOrNull()
+    }
 
     fun generateFeatures() {
         isGeneratingFeatures = true
@@ -93,6 +111,36 @@ fun PlanningWizardScreen(
         }
     }
 
+    fun askAI(question: String, agent: com.kilocode.android.data.model.Agent?) {
+        if (question.isBlank()) return
+        isAskingAI = true
+        aiResponse = null
+        scope.launch {
+            try {
+                // We need an active session. If none, create one.
+                val session = sessionRepository.currentSession.value 
+                    ?: sessionRepository.createSession(directory = "/")
+                
+                if (session?.id != null) {
+                    sessionRepository.sendPrompt(
+                        sessionId = session.id,
+                        prompt = question,
+                        agent = agent?.name
+                    )
+                    // SSE event handling is asynchronous in SessionRepository. 
+                    // This is just a prototype.
+                    aiResponse = "Prompt sent to ${agent?.name ?: "default agent"}"
+                } else {
+                    aiResponse = "Failed to create/get session"
+                }
+            } catch (e: Exception) {
+                aiResponse = "Failed to ask AI: ${e.message}"
+            } finally {
+                isAskingAI = false
+            }
+        }
+    }
+
     fun createAll() {
         val featuresToCreate = selectedFeatures.values.filter { it.selected }
         if (featuresToCreate.isEmpty()) {
@@ -114,7 +162,7 @@ fun PlanningWizardScreen(
                     return@launch
                 }
                 featuresToCreate.forEach { feature ->
-                    repository.createIssue(
+                    val issue = repository.createIssue(
                         title = feature.title,
                         body = buildString {
                             append(feature.description)
@@ -125,6 +173,10 @@ fun PlanningWizardScreen(
                         },
                         milestoneNumber = milestone.number,
                     )
+                    
+                    if (issue != null) {
+                        BranchWorker.enqueue(context, issue.number, feature.title)
+                    }
                 }
                 isCreating = false
                 onComplete()
@@ -187,7 +239,17 @@ fun PlanningWizardScreen(
                     onUpdateTasks = { id, tasks -> updateFeatureTasks(id, tasks) },
                     onBack = { step = 2 },
                     onNext = { step = 4 },
+                    aiQuestion = aiQuestion,
+                    onAiQuestionChange = { aiQuestion = it },
+                    onAskAI = { askAI(aiQuestion, selectedAgent) },
+                    aiResponse = aiResponse,
+                    isAskingAI = isAskingAI,
+                    agents = agents,
+                    selectedAgent = selectedAgent,
+                    onAgentSelected = { selectedAgent = it }
                 )
+
+
                 4 -> Step4Review(
                     projectDescription = projectDescription,
                     selectedFeatures = selectedFeatures,
@@ -318,6 +380,14 @@ private fun Step3FeatureDetails(
     onUpdateTasks: (Int, List<Task>) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit,
+    aiQuestion: String,
+    onAiQuestionChange: (String) -> Unit,
+    onAskAI: () -> Unit,
+    aiResponse: String?,
+    isAskingAI: Boolean,
+    agents: List<com.kilocode.android.data.model.Agent>,
+    selectedAgent: com.kilocode.android.data.model.Agent?,
+    onAgentSelected: (com.kilocode.android.data.model.Agent) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f), modifier = Modifier.size(40.dp)) {
@@ -329,6 +399,22 @@ private fun Step3FeatureDetails(
         Text("Edit Features", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
         Text("Refine descriptions and task lists", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Agent Selector
+        if (agents.isNotEmpty()) {
+            Text("Select Agent:", style = MaterialTheme.typography.labelSmall)
+            // Simplified selector: just show agent names in a Row for now or use a Dropdown
+            // For simplicity, let's just use a row of chips
+            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                agents.forEach { agent ->
+                    FilterChip(
+                        selected = selectedAgent == agent,
+                        onClick = { onAgentSelected(agent) },
+                        label = { Text(agent.name) }
+                    )
+                }
+            }
+        }
 
         selectedFeatures.values.filter { it.selected }.forEach { feature ->
             Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f), modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
@@ -354,6 +440,28 @@ private fun Step3FeatureDetails(
                         maxLines = 4,
                         modifier = Modifier.fillMaxWidth(),
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    // AI Prompting
+                    OutlinedTextField(
+                        value = aiQuestion,
+                        onValueChange = onAiQuestionChange,
+                        label = { Text("Ask ${selectedAgent?.name ?: "AI"} about this feature") },
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingIcon = {
+                            IconButton(onClick = onAskAI, enabled = aiQuestion.isNotBlank() && !isAskingAI) {
+                                Icon(Icons.Rounded.Send, contentDescription = "Ask AI")
+                            }
+                        }
+                    )
+                    
+                    if (isAskingAI) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp).padding(8.dp))
+                    }
+                    
+                    aiResponse?.let { response ->
+                        Text("AI: $response", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
             }
         }

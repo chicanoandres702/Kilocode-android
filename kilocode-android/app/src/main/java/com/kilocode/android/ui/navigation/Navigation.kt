@@ -15,6 +15,7 @@ import com.kilocode.android.ui.screens.PlanningWizardScreen
 import com.kilocode.android.ui.screens.RepoScreen
 import com.kilocode.android.ui.screens.SessionScreen
 import com.kilocode.android.ui.screens.SettingsScreen
+import com.kilocode.android.ui.screens.TaskManagerScreen
 
 sealed class Screen(val route: String) {
     data object Home : Screen("home?directory={directory}") {
@@ -27,6 +28,7 @@ sealed class Screen(val route: String) {
     data object Repos : Screen("repos")
     data object Planning : Screen("planning")
     data object PlanningWizard : Screen("planning/wizard")
+    data object TaskManager : Screen("task-manager")
 }
 
 @Composable
@@ -82,6 +84,11 @@ fun KiloCodeNavHost(
                   },
                   onNavigateToPlanning = {
                       navController.navigate(Screen.Planning.route) {
+                          launchSingleTop = true
+                      }
+                  },
+                  onNavigateToTaskManager = {
+                      navController.navigate(Screen.TaskManager.route) {
                           launchSingleTop = true
                       }
                   },
@@ -160,6 +167,12 @@ fun KiloCodeNavHost(
                     sharedSecret = sharedSecret,
                     onBack = { navController.popBackStack() },
                     onComplete = { navController.popBackStack() },
+                )
+            }
+
+            composable(Screen.TaskManager.route) {
+                TaskManagerScreen(
+                    onBack = { navController.popBackStack() },
                 )
             }
     }

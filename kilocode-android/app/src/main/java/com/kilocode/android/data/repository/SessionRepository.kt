@@ -253,6 +253,9 @@ class SessionRepository(private val apiClient: ApiClient) {
     }
 
     suspend fun sendPrompt(sessionId: String, prompt: String, agent: String? = null, model: ModelOption? = null, directory: String? = null) {
+        // PRE-PROMPT HOOK
+        runPrePromptScripts(sessionId, prompt)
+
         val messageId = generateMessageId()
         // Optimistic update for user message
         val optimisticMessage = Message(id = messageId, sessionID = sessionId, role = "user", agent = agent)
@@ -280,7 +283,12 @@ class SessionRepository(private val apiClient: ApiClient) {
             )
             if (response.isSuccessful) {
                 logD("SessionRepo", "Async prompt accepted for $sessionId — waiting for SSE events")
-                // Do NOT clear loading/busy here — SSE events (session.turn.close, session.idle) will do that
+                
+                // Monitor for completion
+                monitorForCompletion(sessionId)
+                
+                // POST-PROMPT HOOK
+                runPostPromptScripts(sessionId)
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 logE("SessionRepo", "Prompt failed: HTTP ${response.code()} $errorBody")
@@ -294,6 +302,26 @@ class SessionRepository(private val apiClient: ApiClient) {
             _isLoading.value = false
             _sessionBusy.value = false
         }
+    }
+
+    private suspend fun runPrePromptScripts(sessionId: String, prompt: String) {
+        logD("SessionRepo", "Running pre-prompt scripts for $sessionId")
+        // Logic for delegation/pre-prompt checks
+    }
+
+    private suspend fun runPostPromptScripts(sessionId: String) {
+        logD("SessionRepo", "Running post-prompt scripts for $sessionId")
+        // Logic for delegation/post-prompt checks
+    }
+
+    private suspend fun monitorForCompletion(sessionId: String) {
+        logD("SessionRepo", "Monitoring for completion: $sessionId")
+        // The SSE listener is already updating sessionBusy state.
+        // We can poll the session status or just wait until sessionBusy becomes false.
+        while (_sessionBusy.value) {
+            delay(1000)
+        }
+        logD("SessionRepo", "Task complete for $sessionId")
     }
 
      fun abortSession(sessionId: String) {

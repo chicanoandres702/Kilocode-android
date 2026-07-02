@@ -31,6 +31,7 @@ fun HomeScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToRepos: () -> Unit,
     onNavigateToPlanning: () -> Unit,
+    onNavigateToTaskManager: () -> Unit,
     viewModel: SessionViewModel = viewModel(
         key     = "$serverUrl|$sharedSecret|$initialDirectory",
         factory = SessionViewModelFactory(ApiClient.getInstance(serverUrl, sharedSecret ?: "")),
@@ -102,6 +103,12 @@ fun HomeScreen(
                         onNavigateToPlanning()
                     }) {
                         Icon(Icons.Rounded.TaskAlt, "Planning", modifier = Modifier.size(20.dp))
+                    }
+                    IconButton(onClick = {
+                        println("D/HomeScreen: Task Manager clicked")
+                        onNavigateToTaskManager()
+                    }) {
+                        Icon(Icons.Rounded.List, "Task Manager", modifier = Modifier.size(20.dp))
                     }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Rounded.Settings, "Settings", modifier = Modifier.size(20.dp))

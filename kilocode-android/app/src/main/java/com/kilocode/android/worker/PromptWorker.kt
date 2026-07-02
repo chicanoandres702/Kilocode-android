@@ -162,6 +162,7 @@ class PromptWorker(
                 .setConstraints(constraints)
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .addTag("prompt")
                 .addTag("prompt_$sessionId")
                 .build()
 
