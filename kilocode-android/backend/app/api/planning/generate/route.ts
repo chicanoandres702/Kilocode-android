@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+}
+
 interface Feature {
   title: string;
   description: string;
-  tasks: string[];
+  tasks: Task[];
 }
 
 interface GenerateRequest {
@@ -12,6 +19,15 @@ interface GenerateRequest {
 
 interface GenerateResponse {
   features: Feature[];
+}
+
+function createTask(title: string): Task {
+  return {
+    id: Math.random().toString(36).substr(2, 9),
+    title,
+    description: '',
+    status: 'pending'
+  };
 }
 
 // Simple AI-powered feature generation based on project description
@@ -25,10 +41,10 @@ function generateFeaturesFromDescription(description: string): Feature[] {
       title: 'Task Management System',
       description: 'Core task creation, editing, and organization functionality',
       tasks: [
-        'Design task data model',
-        'Implement CRUD operations for tasks',
-        'Add task categorization and filtering',
-        'Create task status tracking'
+        createTask('Design task data model'),
+        createTask('Implement CRUD operations for tasks'),
+        createTask('Add task categorization and filtering'),
+        createTask('Create task status tracking')
       ]
     });
   }
@@ -38,10 +54,10 @@ function generateFeaturesFromDescription(description: string): Feature[] {
       title: 'Authentication & User Management',
       description: 'User authentication, profile management, and security features',
       tasks: [
-        'Implement user registration flow',
-        'Add login/logout functionality',
-        'Create password reset mechanism',
-        'Add session management'
+        createTask('Implement user registration flow'),
+        createTask('Add login/logout functionality'),
+        createTask('Create password reset mechanism'),
+        createTask('Add session management')
       ]
     });
   }
@@ -51,10 +67,10 @@ function generateFeaturesFromDescription(description: string): Feature[] {
       title: 'Messaging System',
       description: 'Real-time messaging and conversation handling',
       tasks: [
-        'Design message data model',
-        'Implement real-time message delivery',
-        'Add message history persistence',
-        'Create typing indicators'
+        createTask('Design message data model'),
+        createTask('Implement real-time message delivery'),
+        createTask('Add message history persistence'),
+        createTask('Create typing indicators')
       ]
     });
   }
@@ -64,10 +80,10 @@ function generateFeaturesFromDescription(description: string): Feature[] {
       title: 'AI-Powered Features',
       description: 'Artificial intelligence integration for enhanced functionality',
       tasks: [
-        'Integrate AI model API',
-        'Implement prompt engineering',
-        'Add response streaming',
-        'Create AI configuration options'
+        createTask('Integrate AI model API'),
+        createTask('Implement prompt engineering'),
+        createTask('Add response streaming'),
+        createTask('Create AI configuration options')
       ]
     });
   }
@@ -79,30 +95,30 @@ function generateFeaturesFromDescription(description: string): Feature[] {
         title: 'Core Application Setup',
         description: 'Foundation structure and configuration',
         tasks: [
-          'Set up project structure',
-          'Configure build system',
-          'Add basic navigation',
-          'Implement error handling'
+          createTask('Set up project structure'),
+          createTask('Configure build system'),
+          createTask('Add basic navigation'),
+          createTask('Implement error handling')
         ]
       },
       {
         title: 'User Interface',
         description: 'Main user interface components and screens',
         tasks: [
-          'Design main layout',
-          'Create navigation flow',
-          'Implement responsive design',
-          'Add loading states'
+          createTask('Design main layout'),
+          createTask('Create navigation flow'),
+          createTask('Implement responsive design'),
+          createTask('Add loading states')
         ]
       },
       {
         title: 'Data Management',
         description: 'Data persistence and state management',
         tasks: [
-          'Design data models',
-          'Implement local storage',
-          'Add data synchronization',
-          'Create backup strategy'
+          createTask('Design data models'),
+          createTask('Implement local storage'),
+          createTask('Add data synchronization'),
+          createTask('Create backup strategy')
         ]
       }
     );

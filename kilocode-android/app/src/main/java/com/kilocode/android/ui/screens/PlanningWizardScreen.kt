@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.kilocode.android.data.api.ApiClient
 import com.kilocode.android.data.model.GeneratedFeature
 import com.kilocode.android.data.model.SelectedFeature
+import com.kilocode.android.data.model.Task
 import com.kilocode.android.data.repository.PlanningRepository
 import com.kilocode.android.ui.components.ErrorCard
 import com.kilocode.android.ui.components.LoadingIndicator
@@ -73,13 +74,20 @@ fun PlanningWizardScreen(
         }
     }
 
+    fun deleteFeature(id: Int) {
+        selectedFeatures = selectedFeatures.toMutableMap().apply {
+            remove(id)
+        }
+        generatedFeatures = generatedFeatures.filter { it.id != id }
+    }
+
     fun updateFeatureDescription(id: Int, description: String) {
         selectedFeatures = selectedFeatures.toMutableMap().apply {
             this[id] = (this[id] ?: SelectedFeature(id)).copy(description = description)
         }
     }
 
-    fun updateFeatureTasks(id: Int, tasks: List<String>) {
+    fun updateFeatureTasks(id: Int, tasks: List<Task>) {
         selectedFeatures = selectedFeatures.toMutableMap().apply {
             this[id] = (this[id] ?: SelectedFeature(id)).copy(tasks = tasks)
         }
@@ -112,7 +120,7 @@ fun PlanningWizardScreen(
                             append(feature.description)
                             if (feature.tasks.isNotEmpty()) {
                                 append("\n\n## Tasks\n")
-                                feature.tasks.forEach { task -> append("- [ ] $task\n") }
+                                feature.tasks.forEach { task -> append("- [ ] ${task.title}\n") }
                             }
                         },
                         milestoneNumber = milestone.number,
@@ -169,6 +177,7 @@ fun PlanningWizardScreen(
                     features = generatedFeatures,
                     selectedFeatures = selectedFeatures,
                     onToggle = { id, selected -> toggleFeature(id, selected) },
+                    onDelete = { deleteFeature(it) },
                     onNext = { step = 3 },
                     onBack = { step = 1 },
                 )
@@ -240,11 +249,13 @@ private fun Step1ProjectDescription(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Step2FeatureSelection(
     features: List<GeneratedFeature>,
     selectedFeatures: Map<Int, SelectedFeature>,
     onToggle: (Int, Boolean) -> Unit,
+    onDelete: (Int) -> Unit,
     onNext: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -256,18 +267,40 @@ private fun Step2FeatureSelection(
         }
         Spacer(modifier = Modifier.height(12.dp))
         Text("Select Features", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-        Text("Choose which features to include", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
+        Text("Toggle to include, swipe to delete", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
         Spacer(modifier = Modifier.height(12.dp))
         
         features.forEach { feature ->
             val selected = selectedFeatures[feature.id]?.selected ?: true
-            Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
-                Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = selected, onCheckedChange = { onToggle(feature.id, it) })
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(feature.title, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+            val dismissState = rememberSwipeToDismissBoxState(
+                confirmValueChange = {
+                    if (it == SwipeToDismissBoxValue.EndToStart) {
+                        onDelete(feature.id)
+                        true
+                    } else false
                 }
-            }
+            )
+
+            SwipeToDismissBox(
+                state = dismissState,
+                backgroundContent = {
+                    val color = if (dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.surfaceVariant
+                    Surface(color = color, shape = RoundedCornerShape(8.dp), modifier = Modifier.fillMaxWidth()) {
+                        Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.padding(horizontal = 16.dp)) {
+                            Icon(Icons.Rounded.Delete, contentDescription = "Delete", tint = MaterialTheme.colorScheme.onErrorContainer)
+                        }
+                    }
+                },
+                content = {
+                    Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+                        Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(checked = selected, onCheckedChange = { onToggle(feature.id, it) })
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(feature.title, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
+            )
         }
         
         Spacer(modifier = Modifier.height(20.dp))
@@ -282,7 +315,7 @@ private fun Step2FeatureSelection(
 private fun Step3FeatureDetails(
     selectedFeatures: Map<Int, SelectedFeature>,
     onUpdateDescription: (Int, String) -> Unit,
-    onUpdateTasks: (Int, List<String>) -> Unit,
+    onUpdateTasks: (Int, List<Task>) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit,
 ) {
@@ -312,8 +345,10 @@ private fun Step3FeatureDetails(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = feature.tasks.joinToString("\n"),
-                        onValueChange = { onUpdateTasks(feature.id, it.split("\n").map { it.trim() }.filter { it.isNotEmpty() }) },
+                        value = feature.tasks.joinToString("\n") { it.title },
+                        onValueChange = { 
+                            onUpdateTasks(feature.id, it.split("\n").map { title -> Task(title = title.trim()) }.filter { it.title.isNotEmpty() }) 
+                        },
                         label = { Text("Tasks (one per line)") },
                         minLines = 2,
                         maxLines = 4,
