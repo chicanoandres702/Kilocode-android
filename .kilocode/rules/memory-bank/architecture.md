@@ -1,120 +1,78 @@
-# System Patterns: Next.js Starter Template
+# System Patterns: Kilo Code Android App
 
 ## Architecture Overview
 
 ```
-src/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx          # Root layout + metadata
-│   ├── page.tsx            # Home page
-│   ├── globals.css         # Tailwind imports + global styles
-│   └── favicon.ico         # Site icon
-└── (expand as needed)
-    ├── components/         # React components (add when needed)
-    ├── lib/                # Utilities and helpers (add when needed)
-    └── db/                 # Database files (add via recipe)
+app/
+├── src/main/java/com/kilocode/android/
+│   ├── ui/
+│   │   ├── screens/          # Compose screens (Home, Planning, TaskManager)
+│   │   ├── components/       # Reusable UI components
+│   │   ├── navigation/       # Navigation graph and routes
+│   │   └── viewmodel/        # ViewModel factories
+│   ├── data/
+│   │   ├── model/            # Data classes (Message, Task, Agent)
+│   │   ├── repository/       # Data sources (SessionRepository, TaskManagerRepository)
+│   │   └── api/              # API client and interfaces
+│   ├── worker/               # WorkManager workers (BranchWorker, PromptWorker)
+│   ├── ui/util/              # Utility classes (BranchManager)
+│   └── di/                   # Dependency injection
 ```
 
 ## Key Design Patterns
 
-### 1. App Router Pattern
+### 1. Navigation Pattern
 
-Uses Next.js App Router with file-based routing:
-```
-src/app/
-├── page.tsx           # Route: /
-├── about/page.tsx     # Route: /about
-├── blog/
-│   ├── page.tsx       # Route: /blog
-│   └── [slug]/page.tsx # Route: /blog/:slug
-└── api/
-    └── route.ts       # API Route: /api
-```
-
-### 2. Component Organization Pattern (When Expanding)
-
-```
-src/components/
-├── ui/                # Reusable UI components (Button, Card, etc.)
-├── layout/            # Layout components (Header, Footer)
-├── sections/          # Page sections (Hero, Features, etc.)
-└── forms/             # Form components
-```
-
-### 3. Server Components by Default
-
-All components are Server Components unless marked with `"use client"`:
-```tsx
-// Server Component (default) - can fetch data, access DB
-export default function Page() {
-  return <div>Server rendered</div>;
-}
-
-// Client Component - for interactivity
-"use client";
-export default function Counter() {
-  const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+Uses Jetpack Navigation Compose with sealed routes:
+```kotlin
+sealed class Screen(val route: String) {
+    data object Home : Screen("home?directory={directory}")
+    data object Session : Screen("session/{sessionId}")
+    data object Planning : Screen("planning")
+    data object PlanningWizard : Screen("planning/wizard")
+    data object TaskManager : Screen("task-manager")
 }
 ```
 
-### 4. Layout Pattern
+### 2. Repository Pattern
 
-Layouts wrap pages and can be nested:
-```tsx
-// src/app/layout.tsx - Root layout
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
-}
+Data abstraction layer for API calls and local state:
+- `SessionRepository`: Manages SSE sessions, prompts, and agent communication
+- `TaskManagerRepository`: Manages WorkManager tasks for background execution
+- `PlanningRepository`: Handles feature generation and issue creation
 
-// src/app/dashboard/layout.tsx - Nested layout
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex">
-      <Sidebar />
-      <main>{children}</main>
-    </div>
-  );
-}
-```
+### 3. ViewModel Pattern
 
-## Styling Conventions
+UI state holders with coroutine scopes:
+- `SessionViewModel`: Session state and message management
+- `TaskManagerViewModel`: Background task state and operations
 
-### Tailwind CSS Usage
-- Utility classes directly on elements
-- Component composition for repeated patterns
-- Responsive: `sm:`, `md:`, `lg:`, `xl:`
+### 4. WorkManager Integration
 
-### Common Patterns
-```tsx
-// Container
-<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+Background task management:
+- `BranchWorker`: Creates branches from generated issues
+- `PromptWorker`: Sends prompts to AI agents
+- Tagged work requests for filtering and tracking
 
-// Responsive grid
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+## UI Patterns
 
-// Flexbox centering
-<div className="flex items-center justify-center">
-```
+### State Management
+
+- `remember` and `mutableStateOf` for local screen state
+- `collectAsState()` for ViewModel flows
+- `LaunchedEffect` for side effects
+
+### Compose Conventions
+
+- Surface components for cards and containers
+- IconButton for actions
+- FilterChip for selection
+- LazyColumn for lists
 
 ## File Naming Conventions
 
-- Components: PascalCase (`Button.tsx`, `Header.tsx`)
-- Utilities: camelCase (`utils.ts`, `helpers.ts`)
-- Pages/Routes: lowercase (`page.tsx`, `layout.tsx`)
-- Directories: kebab-case (`api-routes/`) or lowercase (`components/`)
-
-## State Management
-
-For simple needs:
-- `useState` for local component state
-- `useContext` for shared state
-- Server Components for data fetching
-
-For complex needs (add when necessary):
-- Zustand for client state
-- React Query for server state
+- Screens: PascalCase (`HomeScreen.kt`, `PlanningWizardScreen.kt`)
+- ViewModels: PascalCase with `ViewModel` suffix
+- Repositories: PascalCase with `Repository` suffix
+- Workers: PascalCase with `Worker` suffix
+- Utilities: PascalCase (`BranchManager.kt`)

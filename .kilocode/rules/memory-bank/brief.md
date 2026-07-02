@@ -1,48 +1,47 @@
-# Project Brief: Next.js Starter Template
+# Project Brief: Kilo Code Android App
 
 ## Purpose
 
-This is a minimal Next.js starter template designed for AI-assisted development. It provides a clean foundation that can be extended to build any type of web application through interaction with an AI assistant.
+Android client for the Kilo Code AI-assisted development platform. Provides session management, planning mode with autonomous feature generation, and task management capabilities.
 
 ## Target Users
 
-- Developers wanting a clean Next.js starting point
-- Users building applications through AI-assisted coding
-- Teams needing a standardized, modern Next.js setup
+- Developers wanting AI-assisted coding on Android
+- Users building applications through AI-assisted coding on mobile
+- Teams needing mobile access to the Kilo Code platform
 
 ## Core Use Case
 
-Users describe what they want to build to an AI assistant, which then expands this template by:
-
-1. Adding components and pages as needed
-2. Installing additional dependencies
-3. Setting up databases, authentication, etc. using recipes
-4. Customizing styling and branding
+Users interact with an AI assistant through the Android app to:
+1. Create and manage coding sessions
+2. Generate features through planning mode with AI assistance
+3. Monitor and manage background tasks via WorkManager
+4. Handle branch management for autonomous workflows
 
 ## Key Requirements
 
 ### Must Have
 
-- Modern Next.js 16 setup with App Router
-- TypeScript for type safety
-- Tailwind CSS 4 for styling
-- ESLint for code quality
-- Clean, minimal starting structure
-- Bun as package manager
+- Android client with Kotlin/Compose
+- Session management with SSE streaming
+- Planning mode with AI feature generation
+- Task Manager for background work tracking
+- Autonomous branch management
 
 ### Nice to Have
 
-- Recipe system for common additions (database, auth)
+- Recipe system for common additions
 - Memory bank for AI context persistence
 - Clear development guidelines
 
 ## Success Metrics
 
-- Clean, zero-error TypeScript setup
-- Passing lint and type checks
+- Clean, zero-error Kotlin compilation
+- Passing lint checks
+- Functional planning wizard with AI integration
 
 ## Constraints
 
-- Minimal dependencies by default
-- Framework: Next.js 16 + React 19 + Tailwind CSS 4
+- Android client using Kotlin/Compose
 - Package manager: Bun
+- WorkManager for background tasks

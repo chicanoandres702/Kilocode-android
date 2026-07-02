@@ -1,143 +1,99 @@
-# Technical Context: Next.js Starter Template
+# Technical Context: Kilo Code Android App
 
 ## Technology Stack
 
 | Technology   | Version | Purpose                         |
 | ------------ | ------- | ------------------------------- |
-| Next.js      | 16.x    | React framework with App Router |
-| React        | 19.x    | UI library                      |
-| TypeScript   | 5.9.x   | Type-safe JavaScript            |
-| Tailwind CSS | 4.x     | Utility-first CSS               |
-| Bun          | Latest  | Package manager & runtime       |
+| Android SDK  | 35      | Android platform                |
+| Kotlin       | 2.0     | Language for Android development |
+| Jetpack Compose | Latest | UI toolkit |
+| ViewModel    | 2.9.0   | UI state holder |
+| WorkManager  | 2.10.0  | Background task scheduling |
+| Navigation   | 2.8.9   | Navigation component |
+| Retrofit     | 2.11.0  | HTTP client |
+| OkHttp       | 4.12.0  | Networking |
+| Gson         | 2.11.0  | JSON serialization |
 
 ## Development Environment
 
 ### Prerequisites
 
-- Bun installed (`curl -fsSL https://bun.sh/install | bash`)
-- Node.js 20+ (for compatibility)
+- Android SDK 35
+- Kotlin 2.0
+- Android Studio (for emulator)
 
 ### Commands
 
 ```bash
-bun install        # Install dependencies
-bun dev            # Start dev server (http://localhost:3000)
-bun build          # Production build
-bun start          # Start production server
-bun lint           # Run ESLint
-bun typecheck      # Run TypeScript type checking
+./gradlew :app:compileDebugKotlin  # Compile Kotlin
+./gradlew :app:lint                 # Run lint
+./gradlew :app:assembleDebug        # Build debug APK
 ```
 
 ## Project Configuration
 
-### Next.js Config (`next.config.ts`)
+### Android Config (`build.gradle.kts`)
 
-- App Router enabled
-- Default settings for flexibility
+- Namespace: `com.kilocode.android`
+- Compile SDK: 35
+- Min SDK: 26
+- Target SDK: 35
 
-### TypeScript Config (`tsconfig.json`)
+### Key Dependencies
 
-- Strict mode enabled
-- Path alias: `@/*` → `src/*`
-- Target: ESNext
+```kotlin
+// Core
+implementation("androidx.core:core-ktx:1.16.0")
+implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
+implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
+implementation("androidx.activity:activity-compose:1.10.1")
 
-### Tailwind CSS 4 (`postcss.config.mjs`)
+// Compose
+implementation(platform("androidx.compose:compose-bom:2025.03.00"))
+implementation("androidx.compose.ui:ui")
+implementation("androidx.compose.material3:material3")
 
-- Uses `@tailwindcss/postcss` plugin
-- CSS-first configuration (v4 style)
+// WorkManager
+implementation("androidx.work:work-runtime-ktx:2.10.0")
 
-### ESLint (`eslint.config.mjs`)
-
-- Uses `eslint-config-next`
-- Flat config format
-
-## Key Dependencies
-
-### Production Dependencies
-
-```json
-{
-  "next": "^16.1.3", // Framework
-  "react": "^19.2.3", // UI library
-  "react-dom": "^19.2.3" // React DOM
-}
-```
-
-### Dev Dependencies
-
-```json
-{
-  "typescript": "^5.9.3",
-  "@types/node": "^24.10.2",
-  "@types/react": "^19.2.7",
-  "@types/react-dom": "^19.2.3",
-  "@tailwindcss/postcss": "^4.1.17",
-  "tailwindcss": "^4.1.17",
-  "eslint": "^9.39.1",
-  "eslint-config-next": "^16.0.0"
-}
+// Networking
+implementation("com.squareup.retrofit2:retrofit:2.11.0")
+implementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
 ```
 
 ## File Structure
 
 ```
-/
-├── .gitignore              # Git ignore rules
-├── package.json            # Dependencies and scripts
-├── bun.lock                # Bun lockfile
-├── next.config.ts          # Next.js configuration
-├── tsconfig.json           # TypeScript configuration
-├── postcss.config.mjs      # PostCSS (Tailwind) config
-├── eslint.config.mjs       # ESLint configuration
-├── public/                 # Static assets
-│   └── .gitkeep
-└── src/                    # Source code
-    └── app/                # Next.js App Router
-        ├── layout.tsx      # Root layout
-        ├── page.tsx        # Home page
-        ├── globals.css     # Global styles
-        └── favicon.ico     # Site icon
+app/src/main/java/com/kilocode/android/
+├── ui/
+│   ├── screens/          # Compose screens
+│   ├── components/       # Reusable components
+│   ├── navigation/       # Navigation setup
+│   └── viewmodel/        # ViewModels
+├── data/
+│   ├── model/            # Data classes
+│   ├── repository/       # Repositories
+│   └── api/              # API interfaces
+├── worker/               # WorkManager workers
+└── di/                   # DI (if needed)
 ```
 
 ## Technical Constraints
 
-### Starting Point
+### Android Requirements
 
-- Minimal structure - expand as needed
-- No database by default (use recipe to add)
-- No authentication by default (add when needed)
+- Min SDK: 26 (Android 8.0)
+- Target SDK: 35
+- JVM Target: 17
 
-### Browser Support
+### Background Tasks
 
-- Modern browsers (ES2020+)
-- No IE11 support
+- Use WorkManager for reliable background execution
+- Tag work requests for filtering (`prompt`, `branch_creation`)
+- Use coroutine workers for async operations
 
-## Performance Considerations
+### Networking
 
-### Image Optimization
-
-- Use Next.js `Image` component for optimization
-- Place images in `public/` directory
-
-### Bundle Size
-
-- Tree-shaking enabled by default
-- Tailwind CSS purges unused styles
-
-### Core Web Vitals
-
-- Server Components reduce client JavaScript
-- Streaming and Suspense for better UX
-
-## Deployment
-
-### Build Output
-
-- Server-rendered pages by default
-- Can be configured for static export
-
-### Environment Variables
-
-- None required for base template
-- Add as needed for features
-- Use `.env.local` for local development
+- Retrofit for API calls
+- OkHttp SSE for streaming responses
+- Session management with optimistic updates
